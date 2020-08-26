@@ -1,0 +1,25 @@
+#version 460 core
+layout(location = 0) in vec3 pos;
+layout(location = 1) in vec3 nrm;
+layout(location = 2) in vec2 _uv;
+layout(location = 3) in ivec4 bone_ids;
+layout(location = 4) in vec4 weights;
+uniform mat4 model;
+uniform mat4 model_transform;
+uniform mat4 view;
+uniform mat4 projection;
+uniform bool has_bones;
+uniform mat4 bones[100];
+out vec2 uv;
+void main() {
+	vec4 position = vec4(pos, 1.0);
+	if (has_bones) {
+		mat4 bone_transform = bones[bone_ids[0]] * weights[0];
+		bone_transform += bones[bone_ids[1]] * weights[1];
+		bone_transform += bones[bone_ids[2]] * weights[2];
+		bone_transform += bones[bone_ids[3]] * weights[3];
+		position = bone_transform * position;
+	}
+	gl_Position = projection * view * model * model_transform * position;
+	uv = _uv;
+}

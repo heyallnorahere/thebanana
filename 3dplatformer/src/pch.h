@@ -15,6 +15,9 @@
 #include <model_loader.h>
 #include <opengl_shader.h>
 #include <opengl_viewport.h>
+#include <imgui.h>
+#include <examples/imgui_impl_win32.h>
+#include <examples/imgui_impl_opengl3.h>
 #include <string>
 #include <iostream>
 #include <fstream>

@@ -2,8 +2,8 @@
 #include "game.h"
 #include "scene.h"
 #include "input_manager.h"
+#include "debug_tools.h"
 game* g_game = NULL;
-
 game::game(const win32_string& title) {
 	this->m_frame = 0;
 	this->m_window = CreateWindow(TEXT("3dplat"), title.c_str(), WS_VISIBLE | WS_SYSMENU | WS_MAXIMIZEBOX, CW_USEDEFAULT, CW_USEDEFAULT, 800, 600, NULL, NULL, HINST_THISCOMPONENT, this);
@@ -23,8 +23,14 @@ game::game(const win32_string& title) {
 		}
 	}
 	glEnable(GL_DEPTH_TEST);
+#ifdef _DEBUG
+	init_imgui(this->m_window);
+#endif
 }
 game::~game() {
+#ifdef _DEBUG
+	clean_up_imgui();
+#endif
 	delete this->m_scene;
 	delete this->m_model_registry;
 	delete this->m_viewport;
@@ -39,9 +45,12 @@ void game::update() {
 	this->m_scene->update();
 }
 void game::render() {
-	glClearColor(0.f, 1.f, 1.f, 0.f);
+	glClearColor(0.1f, 0.1f, 0.1f, 1.f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	this->m_scene->render();
+#ifdef _DEBUG
+	render_imgui(this);
+#endif
 	this->m_viewport->swap_buffers();
 }
 unsigned int game::get_current_frame() {
@@ -53,7 +62,14 @@ input_manager* game::get_input_manager() {
 model_registry* game::get_model_registry() {
 	return this->m_model_registry;
 }
+#ifdef _DEBUG
+extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
+#endif
 long long __stdcall game::wndproc(HWND window, unsigned int msg, unsigned long long w_param, long long l_param) {
+#ifdef _DEBUG
+	if (ImGui_ImplWin32_WndProcHandler(window, msg, w_param, l_param))
+		return true;
+#endif
 	switch (msg) {
 	case WM_DESTROY:
 		PostQuitMessage(0);

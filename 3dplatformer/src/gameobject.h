@@ -16,7 +16,9 @@ public:
 	size_t get_absolute_index() const;
 	size_t get_children_count() const;
 	const gameobject* get_child(size_t index) const;
+	gameobject* get_child(size_t index);
 	void add_object(gameobject* obj);
+	transform get_absolute_transform();
 protected:
 	void prepare_for_update();
 	void prepare_for_render();

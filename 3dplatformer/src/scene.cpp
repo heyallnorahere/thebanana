@@ -6,7 +6,9 @@
 #include "input_manager.h"
 #include "controller.h"
 #include "mouse.h"
+#include "keyboard.h"
 #include "../resource.h"
+#include "debug_tools.h"
 scene::scene(game* g) {
 	this->m_shader = std::unique_ptr<opengl_shader_library::shader>(new opengl_shader_library::win32_resource_shader(IDR_BASIC_VERTEX, IDR_BASIC_FRAGMENT, "SHADER"));
 	this->m_game = g;
@@ -21,6 +23,20 @@ void scene::add_object(gameobject* obj) {
 }
 void scene::update() {
 	OutputDebugString(TEXT("updating\n"));
+#ifdef _DEBUG
+	{
+		bool toggle = false;
+		if (this->m_game->get_input_manager()->get_device_type(0) == input_manager::device_type::keyboard) {
+			keyboard* kb = (keyboard*)this->m_game->get_input_manager()->get_device(0);
+			std::vector<keyboard::button> btns = kb->get_buttons();
+			toggle = btns[DIK_F1].down;
+		}
+		if (toggle) {
+			control = !control;
+		}
+	}
+	if (control)
+#endif
 	this->update_player_angle();
 	for (auto& c : this->m_children) {
 		c->update();

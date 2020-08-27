@@ -55,9 +55,22 @@ const gameobject* gameobject::get_child(size_t index) const {
 	const auto& c = *it;
 	return c.get();
 }
+gameobject* gameobject::get_child(size_t index) {
+	auto it = this->m_children.begin();
+	std::advance(it, index);
+	const auto& c = *it;
+	return c.get();
+}
 void gameobject::add_object(gameobject* obj) {
 	obj->init(this, this->m_scene, this->m_game);
 	this->m_children.push_back(std::unique_ptr<gameobject>(obj));
+}
+transform gameobject::get_absolute_transform() {
+	if (this->m_parent == ROOT) {
+		return this->m_transform;
+	} else {
+		return this->m_transform * this->m_parent->get_absolute_transform();
+	}
 }
 void gameobject::prepare_for_update() {
 	this->update_children();
@@ -68,7 +81,7 @@ void gameobject::prepare_for_update() {
 }
 void gameobject::prepare_for_render() {
 	this->render_children();
-	this->m_scene->get_shader()->get_uniforms().mat4("model", this->m_transform.get_matrix());
+	this->m_scene->get_shader()->get_uniforms().mat4("model", this->get_absolute_transform().get_matrix());
 }
 void gameobject::render_model(const std::string& name) {
 	transform model_transform = this->m_game->get_model_registry()->get_transform(name);

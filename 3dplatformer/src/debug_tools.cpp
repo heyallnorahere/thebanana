@@ -18,24 +18,24 @@ void clean_up_imgui() {
 	ImGui::DestroyContext();
 }
 constexpr ImGuiTreeNodeFlags open_flags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_OpenOnDoubleClick;
+void tree(gameobject* parent);
+void tree_helper(gameobject* object) {
+	if (object->get_children_count() > 0) {
+		tree(object);
+	}
+	else {
+		ImGui::Indent(ImGui::GetTreeNodeToLabelSpacing());
+		ImGui::Text("object, no children");
+		ImGui::Unindent();
+	}
+}
 void tree(gameobject* parent) {
 	char buf[256];
 	sprintf(buf, "object, children: %d", parent->get_children_count());
 	if (ImGui::TreeNodeEx(buf, open_flags)) {
 		for (size_t i = 0; i < parent->get_children_count(); i++) {
 			gameobject* obj = parent->get_child(i);
-			if (obj->get_children_count() > 0) {
-				char buf[256];
-				sprintf(buf, "object, children: %d", obj->get_children_count());
-				if (ImGui::TreeNodeEx(buf, open_flags)) {
-					tree(obj);
-					ImGui::TreePop();
-				}
-			} else {
-				ImGui::Indent(ImGui::GetTreeNodeToLabelSpacing());
-				ImGui::Text("object, no children");
-				ImGui::Unindent();
-			}
+			tree_helper(obj);
 		}
 		ImGui::TreePop();
 	}
@@ -45,13 +45,7 @@ void scene_hierarchy(scene* scene) {
 	if (ImGui::TreeNodeEx("root", ImGuiTreeNodeFlags_Leaf)) {
 		for (size_t i = 0; i < scene->get_children_count(); i++) {
 			gameobject* obj = scene->get_child(i);
-			if (obj->get_children_count() > 0) {
-				tree(obj);
-			} else {
-				ImGui::Indent(ImGui::GetTreeNodeToLabelSpacing());
-				ImGui::Text("object, no children");
-				ImGui::Unindent();
-			}
+			tree_helper(obj);
 		}
 		ImGui::TreePop();
 	}

@@ -3,13 +3,23 @@
 #include "game.h"
 #include "scene.h"
 #include "model_registry.h"
+gameobject::gameobject() {
+	this->initialized = false;
+}
 void gameobject::init(gameobject* parent, scene* sc, game* g) {
 	this->m_parent = parent;
 	this->m_scene = sc;
 	this->m_game = g;
 	this->m_animation_index = -1;
+	for (auto& c : this->m_components) {
+		c.second->initialize();
+	}
+	this->initialized = true;
 }
 gameobject::~gameobject() {
+	for (auto& c : this->m_components) {
+		c.second->clean_up();
+	}
 }
 const transform& gameobject::get_transform() const {
 	return this->m_transform;
@@ -77,6 +87,9 @@ void gameobject::prepare_for_update() {
 	std::stringstream ss;
 	ss << "updating gameobject; relative id: " << this->get_relative_index() << ", absolute id: " << this->get_absolute_index() << "\n";
 	std::string output = ss.str();
+	for (auto& c : this->m_components) {
+		c.second->update();
+	}
 	OutputDebugStringA(output.c_str());
 }
 void gameobject::prepare_for_render() {

@@ -9,6 +9,7 @@
 #include "prop.h"
 player::player() {
 	OutputDebugString(TEXT("created player\n"));
+	this->add_component<test_component>().do_stuff();
 }
 void player::update() {
 	const float speed = 0.05f;

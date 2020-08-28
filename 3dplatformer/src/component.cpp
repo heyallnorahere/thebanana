@@ -16,5 +16,5 @@ void test_component::clean_up() {
 	OutputDebugString(TEXT("test component uninitialized\n"));
 }
 void test_component::do_stuff() {
-	throw "owo";
+	throw "you found me";
 }

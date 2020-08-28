@@ -6,6 +6,7 @@
 #include "controller.h"
 #include "scene.h"
 #include "debug_tools.h"
+#include "prop.h"
 player::player() {
 	OutputDebugString(TEXT("created player\n"));
 }

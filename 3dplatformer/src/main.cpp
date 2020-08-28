@@ -29,8 +29,10 @@ std::string results_stage_paths(const std::string& path, void*) {
 void init_game() {
 	g_game = new game(TEXT("window"));
 	g_game->get_scene()->add_object(new prop("mk8rr"));
+	g_game->get_scene()->get_player()->add_object(new prop("kunai"));
 	g_game->add_model_desc({ "waluigi", "models/placeholder/waluigi.fbx", waluigi_paths, transform().scale(glm::vec3(0.0005f)) });
 	g_game->add_model_desc({ "mk8rr", "models/placeholder/mk8rainbowroad.obj", mk8rr_paths, transform() });
+	g_game->add_model_desc({ "kunai", "models/placeholder/kunai.obj", kunai_paths, transform() });
 	g_game->load_models();
 }
 void gameloop() {

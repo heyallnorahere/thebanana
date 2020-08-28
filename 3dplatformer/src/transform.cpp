@@ -45,6 +45,9 @@ const glm::mat4& transform::get_matrix() const {
 glm::mat4& transform::get_matrix() {
 	return this->m;
 }
+transform::operator glm::mat4() {
+	return this->m;
+}
 transform transform::operator*(const glm::mat4& other) {
 	return transform(this->m * other);
 }

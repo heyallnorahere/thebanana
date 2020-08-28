@@ -4,6 +4,7 @@
 #include "scene.h"
 #include "gameobject.h"
 #include "input_manager.h"
+#include "camera.h"
 void init_imgui(HWND window) {
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
@@ -19,20 +20,30 @@ void clean_up_imgui() {
 }
 constexpr ImGuiTreeNodeFlags open_flags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_OpenOnDoubleClick;
 void tree(gameobject* parent);
+static int id;
+#define ID() char id_str[256]; sprintf(id_str, "node%d", id++)
+static gameobject* current_selected_gameobject = NULL;
+static void set_current_gameobject(gameobject* obj) {
+	if (ImGui::IsItemClicked()) {
+		current_selected_gameobject = obj;
+	}
+}
 void tree_helper(gameobject* object) {
 	if (object->get_children_count() > 0) {
 		tree(object);
 	}
 	else {
-		ImGui::Indent(ImGui::GetTreeNodeToLabelSpacing());
-		ImGui::Text("object, no children");
-		ImGui::Unindent();
+		ID();
+		if (ImGui::TreeNodeEx(id_str, ImGuiTreeNodeFlags_Leaf, "object, no children")) {
+			set_current_gameobject(object);
+			ImGui::TreePop();
+		}
 	}
 }
 void tree(gameobject* parent) {
-	char buf[256];
-	sprintf(buf, "object, children: %d", parent->get_children_count());
-	if (ImGui::TreeNodeEx(buf, open_flags)) {
+	ID();
+	if (ImGui::TreeNodeEx(id_str, open_flags, "object, children: %d", parent->get_children_count())) {
+		set_current_gameobject(parent);
 		for (size_t i = 0; i < parent->get_children_count(); i++) {
 			gameobject* obj = parent->get_child(i);
 			tree_helper(obj);
@@ -41,6 +52,7 @@ void tree(gameobject* parent) {
 	}
 }
 void scene_hierarchy(scene* scene) {
+	id = 0xff;
 	ImGui::Begin("scene hierarchy");
 	if (ImGui::TreeNodeEx("root", ImGuiTreeNodeFlags_Leaf)) {
 		for (size_t i = 0; i < scene->get_children_count(); i++) {
@@ -80,6 +92,12 @@ void debug_menu(game* g_game) {
 		ImGui::Unindent();
 		ImGui::TreePop();
 	}
+	ImGui::TextColored(ImVec4(1.f, 1.f, 0.f, 1.f), "camera");
+	glm::vec3& camera_offset = g_game->get_scene()->get_camera()->get_camera_offset();
+	ImGui::Text("camera offset");
+	ImGui::InputFloat("x", &camera_offset.x);
+	ImGui::InputFloat("y", &camera_offset.y);
+	ImGui::InputFloat("z", &camera_offset.z);
 	ImGui::End();
 }
 void render_imgui(game* g_game) {

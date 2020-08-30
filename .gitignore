@@ -393,3 +393,4 @@ MigrationBackup/
 # custom gitignore
 placeholder/
 imgui.ini
+~AutoRecover.*proj

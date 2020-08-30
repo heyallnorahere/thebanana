@@ -2,8 +2,9 @@
 #include "camera.h"
 #include "player.h"
 #include "scene.h"
+#include "debug_tools.h"
 camera::camera(player* p) : m_player(p) {
-	OutputDebugString(TEXT("created camera\n"));
+	log_print("created camera");
 	this->offset = glm::vec3(0.f, 0.f, -2.f);
 	this->m_nickname = "camera";
 }

@@ -8,7 +8,7 @@
 #include "debug_tools.h"
 #include "prop.h"
 player::player() {
-	OutputDebugString(TEXT("created player\n"));
+	log_print("created player\n");
 	this->add_component<test_component>();
 	this->m_nickname = "player";
 }
@@ -44,12 +44,12 @@ void player::update() {
 	}
 #endif
 	this->post_update();
-	OutputDebugString(TEXT("updated player\n"));
+	log_print("updated player");
 }
 void player::render() {
 	this->prepare_for_render();
 	this->render_model("waluigi");
 	this->post_render();
-	OutputDebugString(TEXT("rendered player\n"));
+	log_print("rendered player");
 }
 player::~player() { }

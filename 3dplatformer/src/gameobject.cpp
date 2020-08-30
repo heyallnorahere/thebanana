@@ -3,6 +3,7 @@
 #include "game.h"
 #include "scene.h"
 #include "model_registry.h"
+#include "debug_tools.h"
 gameobject::gameobject() {
 #ifdef _DEBUG
 	this->add_component<debug_component>();
@@ -96,11 +97,10 @@ void gameobject::prepare_for_update() {
 	this->update_children();
 	std::stringstream ss;
 	ss << "updating gameobject; relative id: " << this->get_relative_index() << ", absolute id: " << this->get_absolute_index() << "\n";
-	std::string output = ss.str();
 	for (auto& c : this->m_components) {
 		c->pre_update();
 	}
-	OutputDebugStringA(output.c_str());
+	log_print(ss.str());
 }
 void gameobject::prepare_for_render() {
 	this->render_children();

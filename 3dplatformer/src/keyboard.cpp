@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "keyboard.h"
 #include "input_utils.h"
+#include "debug_tools.h"
 keyboard::keyboard() : is_connected(true) { }
 keyboard::~keyboard() { }
 std::vector<keyboard::button> keyboard::get_buttons() {
@@ -33,5 +34,5 @@ void keyboard::device_specific_init() {
 	this->keys = capabilities.dwButtons;
 	this->current.resize(this->keys);
 	this->last.resize(this->keys);
-	OutputDebugString(TEXT("created keyboard\n"));
+	log_print("created keyboard");
 }

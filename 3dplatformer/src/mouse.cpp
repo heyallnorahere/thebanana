@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "mouse.h"
 #include "input_utils.h"
+#include "debug_tools.h"
 mouse::mouse() : is_connected(true) { }
 mouse::~mouse() { }
 std::vector<mouse::button> mouse::get_buttons() {
@@ -41,5 +42,5 @@ void mouse::device_specific_init() {
 		this->last[i] = false;
 	}
 	ZeroMemory(&this->state, sizeof(DIMOUSESTATE));
-	OutputDebugString(TEXT("created mouse\n"));
+	log_print("created mouse");
 }

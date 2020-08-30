@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "controller.h"
 #include "input_utils.h"
+#include "debug_tools.h"
 controller::controller() : is_connected(true) { }
 controller::~controller() { }
 std::vector<controller::button> controller::get_buttons() {
@@ -51,5 +52,5 @@ void controller::device_specific_init() {
 		this->last[i] = false;
 	}
 	ZeroMemory(&this->state, sizeof(DIJOYSTATE));
-	OutputDebugString(TEXT("created controller\n"));
+	log_print("created controller");
 }

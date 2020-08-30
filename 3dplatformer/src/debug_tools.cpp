@@ -5,6 +5,7 @@
 #include "gameobject.h"
 #include "input_manager.h"
 #include "camera.h"
+std::stringstream debug_log;
 void init_imgui(HWND window) {
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
@@ -122,6 +123,15 @@ void property_editor(game* g_game) {
 	}
 	ImGui::End();
 }
+void debug_console() {
+	ImGui::Begin("console");
+	std::string log = debug_log.str();
+	ImGui::InputTextMultiline("console log", &log, ImVec2(1000, 1000), ImGuiInputTextFlags_ReadOnly);
+	ImGui::BeginChild("console log");
+	ImGui::SetScrollY(ImGui::GetScrollMaxY());
+	ImGui::EndChild();
+	ImGui::End();
+}
 void render_imgui(game* g_game) {
 	ImGui_ImplOpenGL3_NewFrame();
 	ImGui_ImplWin32_NewFrame();
@@ -129,6 +139,10 @@ void render_imgui(game* g_game) {
 	scene_hierarchy(g_game->get_scene());
 	debug_menu(g_game);
 	property_editor(g_game);
+	debug_console();
 	ImGui::Render();
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+}
+void log_print(const std::string& message) {
+	debug_log << message << "\n";
 }

@@ -22,7 +22,7 @@ void scene::add_object(gameobject* obj) {
 	this->m_children.push_back(std::unique_ptr<gameobject>(obj));
 }
 void scene::update() {
-	OutputDebugString(TEXT("updating\n"));
+	log_print("updating");
 #ifdef _DEBUG
 	{
 		bool toggle = false;
@@ -43,7 +43,7 @@ void scene::update() {
 	}
 }
 void scene::render() {
-	OutputDebugString(TEXT("rendering\n"));
+	log_print("rendering");
 	opengl_shader_library::shader::use(this->m_shader.get());
 	glm::mat4 projection = glm::perspective(glm::radians(45.f), this->m_game->get_aspect_ratio(), 0.1f, 100.f);
 	this->m_shader->get_uniforms().mat4("projection", projection);

@@ -4,6 +4,9 @@
 #include "scene.h"
 #include "model_registry.h"
 gameobject::gameobject() {
+#ifdef _DEBUG
+	this->add_component<debug_component>();
+#endif
 	this->initialized = false;
 	this->m_nickname = "object";
 }
@@ -86,19 +89,35 @@ transform gameobject::get_absolute_transform() {
 std::string& gameobject::get_nickname() {
 	return this->m_nickname;
 }
+scene* gameobject::get_scene() {
+	return this->m_scene;
+}
 void gameobject::prepare_for_update() {
 	this->update_children();
 	std::stringstream ss;
 	ss << "updating gameobject; relative id: " << this->get_relative_index() << ", absolute id: " << this->get_absolute_index() << "\n";
 	std::string output = ss.str();
 	for (auto& c : this->m_components) {
-		c->update();
+		c->pre_update();
 	}
 	OutputDebugStringA(output.c_str());
 }
 void gameobject::prepare_for_render() {
 	this->render_children();
+	for (auto& c : this->m_components) {
+		c->pre_render();
+	}
 	this->m_scene->get_shader()->get_uniforms().mat4("model", this->get_absolute_transform().get_matrix());
+}
+void gameobject::post_update() {
+	for (auto& c : this->m_components) {
+		c->post_update();
+	}
+}
+void gameobject::post_render() {
+	for (auto& c : this->m_components) {
+		c->post_render();
+	}
 }
 void gameobject::render_model(const std::string& name) {
 	transform model_transform = this->m_game->get_model_registry()->get_transform(name);

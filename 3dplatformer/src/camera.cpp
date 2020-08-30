@@ -10,6 +10,7 @@ camera::camera(player* p) : m_player(p) {
 void camera::update() {
 	this->prepare_for_update();
 	this->m_transform = this->m_player->get_transform() * transform().translate(this->offset);
+	this->post_update();
 }
 void camera::render() {
 	this->prepare_for_render();
@@ -21,6 +22,7 @@ void camera::render() {
 	glm::vec3 up = glm::vec3(rotation * glm::vec4(0.f, 1.f, 0.f, 1.f));
 	glm::mat4 view = glm::lookAt(pos, player_pos, up);
 	this->m_scene->get_shader()->get_uniforms().mat4("view", view);
+	this->post_render();
 }
 glm::vec3& camera::get_camera_offset() {
 	return this->offset;

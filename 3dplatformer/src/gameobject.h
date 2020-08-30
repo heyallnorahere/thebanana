@@ -22,12 +22,15 @@ public:
 	void add_object(gameobject* obj);
 	transform get_absolute_transform();
 	std::string& get_nickname();
+	scene* get_scene();
 	template<typename _Ty> _Ty& add_component();
 	template<typename _Ty> _Ty& get_component(size_t index = 0);
 	template<typename _Ty> size_t get_number_components();
 protected:
 	void prepare_for_update();
 	void prepare_for_render();
+	void post_update();
+	void post_render();
 	void render_model(const std::string& name);
 	std::string m_nickname;
 	gameobject* m_parent;

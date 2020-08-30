@@ -27,7 +27,10 @@ public:
 	};
 	component(gameobject* obj);
 	virtual void initialize();
-	virtual void update();
+	virtual void pre_update();
+	virtual void post_update();
+	virtual void pre_render();
+	virtual void post_render();
 	virtual void clean_up();
 	const properties_t& get_properties() const;
 protected:
@@ -40,6 +43,13 @@ class test_component : public component {
 public:
 	test_component(gameobject* obj);
 	void print_properties();
+};
+class debug_component : public component {
+public:
+	debug_component(gameobject* obj);
+	virtual void pre_render() override;
+private:
+	double flash_start_time, flash_end_time;
 };
 template<typename T> inline component::property<T>::property(const T& value, const std::string& name) : property_base(name, sizeof(T)) {
 	this->value = new(this->ptr) T(value);

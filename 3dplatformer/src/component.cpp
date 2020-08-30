@@ -1,9 +1,14 @@
 #include "pch.h"
 #include "component.h"
 #include "gameobject.h"
+#include "scene.h"
+#include "util.h"
 component::component(gameobject* obj) : parent(obj) { }
 void component::initialize() { }
-void component::update() { }
+void component::pre_update() { }
+void component::post_update() { }
+void component::pre_render() { }
+void component::post_render() { }
 void component::clean_up() { }
 const component::properties_t& component::get_properties() const {
 	return this->properties;
@@ -70,4 +75,30 @@ void component::property<glm::vec3>::draw() const {
 }
 void component::property<glm::vec4>::draw() const {
 	ImGui::InputFloat4(this->name.c_str(), &this->value->x);
+}
+debug_component::debug_component(gameobject* obj) : component(obj), flash_start_time(0.0), flash_end_time(0.0) {
+	this->add_property(new property<double>(2.0, "flash rate"));
+	this->add_property(new property<double>(0.1, "flash length"));
+}
+extern gameobject* current_selected_gameobject;
+void debug_component::pre_render() {
+	this->parent->get_scene()->get_shader()->get_uniforms().vec3("fill_color", glm::vec3(1.f, 0.5f, 0.f));
+	property<double>* flash_rate = this->find_property<double>("flash rate");
+	property<double>* fl = this->find_property<double>("flash length");
+	double time = CURRENT_TIME(double);
+	double delay_length = flash_rate ? 1.0 / *flash_rate->get_value() : 0.5;
+	double flash_length = fl ? *fl->get_value() : 0.1;
+	bool solid = false;
+	if (this->flash_end_time == 0.0 || this->flash_end_time < this->flash_start_time) {
+		if (time - this->flash_start_time >= flash_length) {
+			this->flash_end_time = time;
+		} else {
+			solid = true;
+		}
+	} else {
+		if (time - this->flash_start_time >= delay_length) {
+			this->flash_start_time = time;
+		}
+	}
+	this->parent->get_scene()->get_shader()->get_uniforms()._int("solid_color", solid && this->parent == current_selected_gameobject);
 }

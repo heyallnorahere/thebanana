@@ -43,11 +43,13 @@ void player::update() {
 #ifdef _DEBUG
 	}
 #endif
+	this->post_update();
 	OutputDebugString(TEXT("updated player\n"));
 }
 void player::render() {
 	this->prepare_for_render();
 	this->render_model("waluigi");
+	this->post_render();
 	OutputDebugString(TEXT("rendered player\n"));
 }
 player::~player() { }

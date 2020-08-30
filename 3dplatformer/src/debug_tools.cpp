@@ -22,7 +22,7 @@ constexpr ImGuiTreeNodeFlags open_flags = ImGuiTreeNodeFlags_OpenOnArrow | ImGui
 void tree(gameobject* parent);
 static int id;
 #define ID() char id_str[256]; sprintf(id_str, "node%d", id++)
-static gameobject* current_selected_gameobject = NULL;
+gameobject* current_selected_gameobject = NULL;
 static void set_current_gameobject(gameobject* obj) {
 	if (ImGui::IsItemClicked()) {
 		current_selected_gameobject = obj;

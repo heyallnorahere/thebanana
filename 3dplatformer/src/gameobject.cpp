@@ -5,6 +5,7 @@
 #include "model_registry.h"
 gameobject::gameobject() {
 	this->initialized = false;
+	this->m_nickname = "object";
 }
 void gameobject::init(gameobject* parent, scene* sc, game* g) {
 	this->m_parent = parent;
@@ -12,13 +13,13 @@ void gameobject::init(gameobject* parent, scene* sc, game* g) {
 	this->m_game = g;
 	this->m_animation_index = -1;
 	for (auto& c : this->m_components) {
-		c.second->initialize();
+		c->initialize();
 	}
 	this->initialized = true;
 }
 gameobject::~gameobject() {
 	for (auto& c : this->m_components) {
-		c.second->clean_up();
+		c->clean_up();
 	}
 }
 const transform& gameobject::get_transform() const {
@@ -82,13 +83,16 @@ transform gameobject::get_absolute_transform() {
 		return this->m_transform * this->m_parent->get_absolute_transform();
 	}
 }
+std::string& gameobject::get_nickname() {
+	return this->m_nickname;
+}
 void gameobject::prepare_for_update() {
 	this->update_children();
 	std::stringstream ss;
 	ss << "updating gameobject; relative id: " << this->get_relative_index() << ", absolute id: " << this->get_absolute_index() << "\n";
 	std::string output = ss.str();
 	for (auto& c : this->m_components) {
-		c.second->update();
+		c->update();
 	}
 	OutputDebugStringA(output.c_str());
 }

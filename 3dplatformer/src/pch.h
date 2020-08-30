@@ -18,6 +18,7 @@
 #include <imgui.h>
 #include <examples/imgui_impl_win32.h>
 #include <examples/imgui_impl_opengl3.h>
+#include <misc/cpp/imgui_stdlib.h>
 #include <string>
 #include <iostream>
 #include <fstream>
@@ -30,3 +31,4 @@
 #include <memory>
 #include <chrono>
 #include <cassert>
+#include <typeinfo>

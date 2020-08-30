@@ -21,18 +21,21 @@ public:
 	gameobject* get_child(size_t index);
 	void add_object(gameobject* obj);
 	transform get_absolute_transform();
+	std::string& get_nickname();
 	template<typename _Ty> _Ty& add_component();
-	template<typename _Ty> _Ty& get_component();
+	template<typename _Ty> _Ty& get_component(size_t index = 0);
+	template<typename _Ty> size_t get_number_components();
 protected:
 	void prepare_for_update();
 	void prepare_for_render();
 	void render_model(const std::string& name);
+	std::string m_nickname;
 	gameobject* m_parent;
 	scene* m_scene;
 	game* m_game;
 	std::list<std::unique_ptr<gameobject>> m_children;
 	transform m_transform;
-	std::map<component::component_id, std::unique_ptr<component>> m_components;
+	std::vector<std::unique_ptr<component>> m_components;
 private:
 	bool initialized;
 	int m_animation_index;
@@ -42,10 +45,30 @@ private:
 template<typename _Ty> inline _Ty& gameobject::add_component() {
 	_Ty* c = new _Ty(this);
 	if (this->initialized) c->initialize();
-	this->m_components[_Ty::get_component_id()] = std::unique_ptr<component>(c);
-	return this->get_component<_Ty>();
+	this->m_components.push_back(std::unique_ptr<component>(c));
+	return *c;
 }
-template<typename _Ty> inline _Ty& gameobject::get_component() {
-	component::component_id id = _Ty::get_component_id();
-	return (_Ty&)*this->m_components[id];
+template<typename _Ty> inline _Ty& gameobject::get_component(size_t index) {
+	if (typeid(_Ty).hash_code() == typeid(component).hash_code()) return (_Ty&)*(this->m_components[index % this->m_components.size()].get());
+	std::vector<_Ty*> ptrs;
+	for (auto& c : this->m_components) {
+		if (typeid(*c).hash_code() == typeid(_Ty).hash_code()) {
+			ptrs.push_back((_Ty*)c.get());
+		}
+	}
+	if (ptrs.size() == 0) {
+		return *(_Ty*)NULL;
+	} else {
+		return *ptrs[index % ptrs.size()];
+	}
+}
+template<typename _Ty> inline size_t gameobject::get_number_components() {
+	if (typeid(_Ty).hash_code() == typeid(component).hash_code()) return this->m_components.size();
+	std::vector<_Ty*> ptrs;
+	for (auto& c : this->m_components) {
+		if (typeid(*c).hash_code() == typeid(_Ty).hash_code()) {
+			ptrs.push_back((_Ty*)c.get());
+		}
+	}
+	return ptrs.size();
 }

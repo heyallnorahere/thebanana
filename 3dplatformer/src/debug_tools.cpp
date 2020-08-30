@@ -34,7 +34,7 @@ void tree_helper(gameobject* object) {
 	}
 	else {
 		ID();
-		if (ImGui::TreeNodeEx(id_str, ImGuiTreeNodeFlags_Leaf, "object, no children")) {
+		if (ImGui::TreeNodeEx(id_str, ImGuiTreeNodeFlags_Leaf, "%s, no children", object->get_nickname().c_str())) {
 			set_current_gameobject(object);
 			ImGui::TreePop();
 		}
@@ -42,7 +42,7 @@ void tree_helper(gameobject* object) {
 }
 void tree(gameobject* parent) {
 	ID();
-	if (ImGui::TreeNodeEx(id_str, open_flags, "object, children: %d", parent->get_children_count())) {
+	if (ImGui::TreeNodeEx(id_str, open_flags, "%s, children: %d", parent->get_nickname().c_str(), parent->get_children_count())) {
 		set_current_gameobject(parent);
 		for (size_t i = 0; i < parent->get_children_count(); i++) {
 			gameobject* obj = parent->get_child(i);
@@ -55,6 +55,7 @@ void scene_hierarchy(scene* scene) {
 	id = 0xff;
 	ImGui::Begin("scene hierarchy");
 	if (ImGui::TreeNodeEx("root", ImGuiTreeNodeFlags_Leaf)) {
+		set_current_gameobject(NULL);
 		for (size_t i = 0; i < scene->get_children_count(); i++) {
 			gameobject* obj = scene->get_child(i);
 			tree_helper(obj);
@@ -100,12 +101,34 @@ void debug_menu(game* g_game) {
 	ImGui::InputFloat("z", &camera_offset.z);
 	ImGui::End();
 }
+void property_editor(game* g_game) {
+	ImGui::Begin("property editor");
+	if (current_selected_gameobject) {
+		char buf[256];
+		_ui64toa(reinterpret_cast<size_t>(current_selected_gameobject), buf, 0x10);
+		ImGui::Text("gameobject address: 0x%s", buf);
+		ImGui::InputText("gameobject nickname", &current_selected_gameobject->get_nickname());
+		for (size_t i = 0; i < current_selected_gameobject->get_number_components<component>(); i++) {
+			component& c = current_selected_gameobject->get_component<component>(i);
+			ImGui::Text("component: %s", typeid(c).name());
+			const component::properties_t& properties = c.get_properties();
+			for (auto& p : properties) {
+				p->draw();
+			}
+		}
+	}
+	else {
+		ImGui::Text("there is no gameobject selected");
+	}
+	ImGui::End();
+}
 void render_imgui(game* g_game) {
 	ImGui_ImplOpenGL3_NewFrame();
 	ImGui_ImplWin32_NewFrame();
 	ImGui::NewFrame();
 	scene_hierarchy(g_game->get_scene());
 	debug_menu(g_game);
+	property_editor(g_game);
 	ImGui::Render();
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 }

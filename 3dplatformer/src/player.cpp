@@ -9,11 +9,13 @@
 #include "prop.h"
 player::player() {
 	OutputDebugString(TEXT("created player\n"));
-	this->add_component<test_component>().do_stuff();
+	this->add_component<test_component>();
+	this->m_nickname = "player";
 }
 void player::update() {
 	const float speed = 0.05f;
 	this->prepare_for_update();
+	this->get_component<test_component>().print_properties();
 #ifdef _DEBUG
 	if (control) {
 #endif

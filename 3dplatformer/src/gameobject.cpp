@@ -93,6 +93,15 @@ std::string& gameobject::get_nickname() {
 scene* gameobject::get_scene() {
 	return this->m_scene;
 }
+game* gameobject::get_game() {
+	return this->m_game;
+}
+int gameobject::get_animation_index() {
+	return this->m_animation_index;
+}
+void gameobject::set_animation_index(int index) {
+	this->m_animation_index = index;
+}
 void gameobject::prepare_for_update() {
 	this->update_children();
 	std::stringstream ss;
@@ -123,7 +132,8 @@ void gameobject::render_model(const std::string& name) {
 	transform model_transform = this->m_game->get_model_registry()->get_transform(name);
 	model_transform *= this->m_game->get_model_registry()->get_scene(name)->mRootNode->mTransformation;
 	this->m_scene->get_shader()->get_uniforms().mat4("model_transform", model_transform.get_matrix());
-	this->m_game->get_model_registry()->draw(name, CURRENT_TIME(double), this->m_animation_index, this->m_scene->get_shader());
+	double animation_time = this->get_number_components<animation_component>() > 0 ? this->get_component<animation_component>().get_animation_time() : 0.0;
+	this->m_game->get_model_registry()->draw(name, animation_time, this->m_animation_index, this->m_scene->get_shader());
 }
 void gameobject::update_children() {
 	for (auto& c : this->m_children) {

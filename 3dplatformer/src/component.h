@@ -1,4 +1,5 @@
 #pragma once
+#include "transform.h"
 class gameobject;
 class component {
 public:
@@ -26,15 +27,26 @@ public:
 		T* value;
 	};
 	component(gameobject* obj);
+	// runs either when the parent gameobject is added to a scene/another gameobject or when the component is added to a gameobject; do not add other components during this stage, do it in constructor instead
 	virtual void initialize();
+	// runs before update
 	virtual void pre_update();
+	// runs after update
 	virtual void post_update();
+	// runs before render
 	virtual void pre_render();
+	// runs after render
 	virtual void post_render();
+	// runs on gameobject destruction
 	virtual void clean_up();
 	const properties_t& get_properties() const;
 protected:
 	void add_property(property_base* p);
+	transform& get_transform();
+	template<typename _Ty> size_t get_number_components();
+	template<typename _Ty> _Ty& get_component(size_t index = 0);
+	int get_animation_index();
+	void set_animation_index(int index);
 	template<typename _Ty> property<_Ty>* find_property(const std::string& name);
 	properties_t properties;
 	gameobject* parent;
@@ -50,6 +62,18 @@ public:
 	virtual void pre_render() override;
 private:
 	double flash_start_time, flash_end_time;
+};
+class animation_component : public component {
+public:
+	animation_component(gameobject* obj);
+	virtual void post_update() override;
+	void start_animation(int index, bool repeat = false);
+	void start_animation(const std::string& name, bool repeat = false);
+	void stop_animation();
+	double get_animation_time();
+private:
+	double animation_start_time;
+	bool repeat;
 };
 template<typename T> inline component::property<T>::property(const T& value, const std::string& name) : property_base(name, sizeof(T)) {
 	this->value = new(this->ptr) T(value);
@@ -69,6 +93,12 @@ template<typename T> inline T* component::property<T>::get_value() {
 template<typename T> inline void component::property<T>::draw() const {
 	ImGui::Text("sorry, no implementation for this type yet... heres the raw memory though");
 	ImGui::InputText(this->name.c_str(), (char*)this->ptr, sizeof(T));
+}
+template<typename _Ty> inline size_t component::get_number_components() {
+	return this->parent->get_number_components<_Ty>();
+}
+template<typename _Ty> inline _Ty& component::get_component(size_t index) {
+	return this->parent->get_component<_Ty>(index);
 }
 template<typename _Ty> inline component::property<_Ty>* component::find_property(const std::string& name) {
 	property<_Ty>* result = NULL;

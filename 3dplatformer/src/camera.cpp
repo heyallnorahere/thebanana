@@ -31,3 +31,6 @@ glm::vec3& camera::get_camera_offset() {
 const glm::vec3& camera::get_camera_offset() const {
 	return this->offset;
 }
+std::string camera::get_model_name() {
+	return "";
+}

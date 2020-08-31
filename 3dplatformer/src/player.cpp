@@ -9,30 +9,43 @@
 #include "prop.h"
 player::player() {
 	log_print("created player\n");
-	this->add_component<test_component>();
+	this->add_component<animation_component>();
 	this->m_nickname = "player";
+	this->m_walking = false;
 }
 void player::update() {
+	if (this->m_game->get_current_frame() == 1 && this->get_number_components<animation_component>() > 0) {
+		this->get_component<animation_component>().start_animation("idle", true);
+	}
 	const float speed = 0.05f;
 	this->prepare_for_update();
-	this->get_component<test_component>().print_properties();
 #ifdef _DEBUG
 	if (control) {
 #endif
 	glm::vec3 translate(0.f);
 	if (this->m_game->get_input_manager()->get_device_type(0) == input_manager::device_type::keyboard) {
 		std::vector<input_manager::device::button> btns = this->m_game->get_input_manager()->get_device_buttons(0);
-		if (btns[17].held) {
+		if (btns[DIK_W].held) {
 			translate.z += speed;
 		}
-		if (btns[31].held) {
+		if (btns[DIK_S].held) {
 			translate.z -= speed;
 		}
-		if (btns[30].held) {
+		if (btns[DIK_A].held) {
 			translate.x += speed;
 		}
-		if (btns[32].held) {
+		if (btns[DIK_D].held) {
 			translate.x -= speed;
+		}
+		if ((btns[DIK_W].down || btns[DIK_S].down || btns[DIK_A].down || btns[DIK_D].down) && !this->m_walking && this->get_number_components<animation_component>() > 0) {
+			this->get_component<animation_component>().stop_animation();
+			this->get_component<animation_component>().start_animation("walk", true);
+			this->m_walking = true;
+		}
+		if (this->m_walking && !(btns[DIK_W].held || btns[DIK_S].held || btns[DIK_A].held || btns[DIK_D].held) && this->get_number_components<animation_component>() > 0) {
+			this->get_component<animation_component>().stop_animation();
+			this->get_component<animation_component>().start_animation("idle", true);
+			this->m_walking = false;
 		}
 	}
 	else if (this->m_game->get_input_manager()->get_device_type(0) == input_manager::device_type::controller) {
@@ -53,3 +66,6 @@ void player::render() {
 	log_print("rendered player");
 }
 player::~player() { }
+std::string player::get_model_name() {
+	return "waluigi";
+}

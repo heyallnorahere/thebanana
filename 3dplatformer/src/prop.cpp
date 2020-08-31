@@ -15,3 +15,6 @@ void prop::render() {
 	this->post_render();
 }
 prop::~prop() { }
+std::string prop::get_model_name() {
+	return this->m_model_name;
+}

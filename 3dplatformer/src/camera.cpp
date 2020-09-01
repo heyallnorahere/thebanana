@@ -12,7 +12,7 @@ camera::camera(player* p) : m_player(p) {
 	this->m_direction = glm::vec3(0.f, 0.f, 1.f);
 	this->m_angle = glm::vec2(0.f, -90.f);
 	this->m_nickname = "camera";
-	this->add_property(new component::property<float>(1.f, "distance"));
+	this->add_property(new component::property<float>(2.f, "distance"));
 }
 void camera::update() {
 	this->prepare_for_update();
@@ -42,14 +42,13 @@ void camera::update() {
 	d.z = sin(glm::radians(this->m_angle.y)) * cos(glm::radians(this->m_angle.x));
 	this->m_direction = glm::normalize(d);
 	component::property<float>* distance = this->find_property<float>("distance");
-	this->m_transform = transform().translate(glm::vec3((glm::mat4)this->m_player->get_transform() * glm::vec4(0.f, 0.f, 0.f, 1.f)) + this->m_direction * (distance ? *distance->get_value() : 1.f));
+	this->m_transform = transform().translate(glm::vec3((glm::mat4)this->m_player->get_transform() * glm::vec4(0.f, 0.f, 0.f, 1.f)) + this->m_direction * (distance ? *distance->get_value() : 2.f));
 	this->post_update();
 }
 void camera::render() {
 	this->prepare_for_render();
-	glm::vec3 offset = glm::vec3(0.f, 1.f, 0.f);
-	glm::vec3 pos = this->m_transform.get_matrix() * glm::vec4(offset, 1.f);
-	glm::vec3 player_pos = this->m_player->get_transform().get_matrix() * glm::vec4(offset, 1.f);
+	glm::vec3 pos = this->m_transform.get_matrix() * glm::vec4(0.f, 1.f, 0.f, 1.f);
+	glm::vec3 player_pos = this->m_player->get_transform().get_matrix() * glm::vec4(0.f, 0.75f, 0.f, 1.f);
 	glm::mat4 rotation = this->m_player->get_transform().get_matrix();
 	rotation[3] = glm::vec4(0.f, 0.f, 0.f, rotation[3].w);
 	glm::vec3 up = glm::vec3(rotation * glm::vec4(0.f, 1.f, 0.f, 1.f));

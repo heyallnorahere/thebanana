@@ -30,7 +30,11 @@ public:
 	template<typename _Ty> size_t get_number_components();
 	int get_animation_index();
 	void set_animation_index(int index);
+	const component::properties_t& get_properties();
 protected:
+	component::properties_t m_properties;
+	void add_property(component::property_base* p);
+	template<typename _Ty> component::property<_Ty>* find_property(const std::string& name);
 	void prepare_for_update();
 	void prepare_for_render();
 	void post_update();
@@ -78,4 +82,14 @@ template<typename _Ty> inline size_t gameobject::get_number_components() {
 		}
 	}
 	return ptrs.size();
+}
+template<typename _Ty> inline component::property<_Ty>* gameobject::find_property(const std::string& name) {
+	component::property<_Ty>* result = NULL;
+	for (auto& p : this->m_properties) {
+		if (p->get_name() == name) {
+			result = (component::property<_Ty>*)p.get();
+			break;
+		}
+	}
+	return result;
 }

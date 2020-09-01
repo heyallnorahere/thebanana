@@ -63,30 +63,6 @@ component::property_base::~property_base() { }
 void* component::property_base::get_ptr() {
 	return this->ptr;
 }
-void component::property<int>::draw() const {
-	ImGui::InputInt(this->name.c_str(), this->value);
-}
-void component::property<bool>::draw() const {
-	ImGui::Checkbox(this->name.c_str(), this->value);
-}
-void component::property<float>::draw() const {
-	ImGui::InputFloat(this->name.c_str(), this->value);
-}
-void component::property<double>::draw() const {
-	ImGui::InputDouble(this->name.c_str(), this->value);
-}
-void component::property<std::string>::draw() const {
-	ImGui::InputText(this->name.c_str(), this->value);
-}
-void component::property<glm::vec2>::draw() const {
-	ImGui::InputFloat2(this->name.c_str(), &this->value->x);
-}
-void component::property<glm::vec3>::draw() const {
-	ImGui::InputFloat3(this->name.c_str(), &this->value->x);
-}
-void component::property<glm::vec4>::draw() const {
-	ImGui::InputFloat4(this->name.c_str(), &this->value->x);
-}
 debug_component::debug_component(gameobject* obj) : component(obj), flash_start_time(0.0), flash_end_time(0.0) {
 	this->add_property(new property<double>(2.0, "flash rate"));
 	this->add_property(new property<double>(0.1, "flash length"));
@@ -117,7 +93,9 @@ animation_component::animation_component(gameobject* obj) : component(obj), anim
 void animation_component::post_update() {
 	if (this->get_animation_index() > -1) {
 		double current_time = this->get_animation_time();
-		aiAnimation* animation = this->parent->get_game()->get_model_registry()->get_scene(this->parent->get_model_name())->mAnimations[this->get_animation_index()];
+		const aiScene* s = this->parent->get_game()->get_model_registry()->get_scene(this->parent->get_model_name());
+		if (!s) return;
+		aiAnimation* animation = s->mAnimations[this->get_animation_index()];
 		double length_in_sec = animation->mDuration / animation->mTicksPerSecond;
 		if (!this->repeat && current_time > length_in_sec) {
 			this->stop_animation();

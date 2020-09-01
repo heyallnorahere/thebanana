@@ -95,11 +95,6 @@ void debug_menu(game* g_game) {
 		ImGui::TreePop();
 	}
 	ImGui::TextColored(ImVec4(1.f, 1.f, 0.f, 1.f), "camera");
-	glm::vec3& camera_offset = g_game->get_scene()->get_camera()->get_camera_offset();
-	ImGui::Text("camera offset");
-	ImGui::InputFloat("x", &camera_offset.x);
-	ImGui::InputFloat("y", &camera_offset.y);
-	ImGui::InputFloat("z", &camera_offset.z);
 	ImGui::End();
 }
 void property_editor(game* g_game) {
@@ -109,6 +104,10 @@ void property_editor(game* g_game) {
 		_ui64toa(reinterpret_cast<size_t>(current_selected_gameobject), buf, 0x10);
 		ImGui::Text("gameobject address: 0x%s", buf);
 		ImGui::InputText("gameobject nickname", &current_selected_gameobject->get_nickname());
+		const component::properties_t& p = current_selected_gameobject->get_properties();
+		for (auto& pr : p) {
+			pr->draw();
+		}
 		for (size_t i = 0; i < current_selected_gameobject->get_number_components<component>(); i++) {
 			component& c = current_selected_gameobject->get_component<component>(i);
 			ImGui::Text("component: %s", typeid(c).name());

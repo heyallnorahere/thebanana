@@ -6,10 +6,11 @@ public:
 	camera(player* p);
 	virtual void update() override;
 	virtual void render() override;
-	glm::vec3& get_camera_offset();
-	const glm::vec3& get_camera_offset() const;
+	glm::vec3 get_direction();
+	glm::vec2 get_angle();
 	virtual std::string get_model_name() override;
 private:
 	player* m_player;
-	glm::vec3 offset;
+	glm::vec3 m_direction;
+	glm::vec2 m_angle;
 };

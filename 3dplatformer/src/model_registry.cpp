@@ -36,6 +36,7 @@ transform model_registry::get_transform(const std::string& name) {
 }
 const aiScene* model_registry::get_scene(const std::string& name) {
 	const auto& m = this->models[name];
+	if (!m.get()) return NULL;
 	return m->get_scene();
 }
 void model_registry::load(const std::vector<model_descriptor>& models) {

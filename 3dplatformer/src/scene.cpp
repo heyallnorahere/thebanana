@@ -37,7 +37,7 @@ void scene::update() {
 	}
 	if (control)
 #endif
-	this->update_player_angle();
+	this->update_camera_angle();
 	for (auto& c : this->m_children) {
 		c->update();
 	}
@@ -76,31 +76,6 @@ player* scene::get_player() {
 camera* scene::get_camera() {
 	return this->m_camera;
 }
-void scene::update_player_angle() {
-	static glm::mat4 last_inverse(1.f);
-	static glm::vec2 offset(0.f);
-	glm::vec2 result;
-	if (this->m_game->get_input_manager()->get_device_type(0) == input_manager::device_type::controller) {
-		controller* c = (controller*)this->m_game->get_input_manager()->get_device(0);
-		result = c->get_joysticks().right;
-	} else {
-		static glm::vec2 last(0.f);
-		mouse* m = (mouse*)this->m_game->get_input_manager()->get_device(1);
-		glm::vec2 current = m->get_pos();
-		result = current - last;
-		last = current;
-	}
-	result *= glm::vec2(-10.f);
-	offset += result;
-	const float limit = 89.f;
-	if (offset.y > limit)
-		offset.y = limit;
-	if (offset.y < -limit)
-		offset.y = -limit;
-	transform t;
-	t.rotate(offset.x, glm::vec3(0.f, 1.f, 0.f));
-	t.rotate(offset.y, glm::vec3(1.f, 0.f, 0.f));
-	this->m_player->get_transform() *= last_inverse;
-	this->m_player->get_transform() *= t;
-	last_inverse = glm::inverse(t.get_matrix());
+void scene::update_camera_angle() {
+	
 }

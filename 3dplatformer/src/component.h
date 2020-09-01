@@ -90,6 +90,30 @@ template<typename T> inline component::property<T>::~property() {
 template<typename T> inline T* component::property<T>::get_value() {
 	return this->value;
 }
+inline void component::property<int>::draw() const {
+	ImGui::InputInt(this->name.c_str(), this->value);
+}
+inline void component::property<bool>::draw() const {
+	ImGui::Checkbox(this->name.c_str(), this->value);
+}
+inline void component::property<float>::draw() const {
+	ImGui::InputFloat(this->name.c_str(), this->value);
+}
+inline void component::property<double>::draw() const {
+	ImGui::InputDouble(this->name.c_str(), this->value);
+}
+inline void component::property<std::string>::draw() const {
+	ImGui::InputText(this->name.c_str(), this->value);
+}
+inline void component::property<glm::vec2>::draw() const {
+	ImGui::InputFloat2(this->name.c_str(), &this->value->x);
+}
+inline void component::property<glm::vec3>::draw() const {
+	ImGui::InputFloat3(this->name.c_str(), &this->value->x);
+}
+inline void component::property<glm::vec4>::draw() const {
+	ImGui::InputFloat4(this->name.c_str(), &this->value->x);
+}
 template<typename T> inline void component::property<T>::draw() const {
 	ImGui::Text("sorry, no implementation for this type yet... heres the raw memory though");
 	ImGui::InputText(this->name.c_str(), (char*)this->ptr, sizeof(T));

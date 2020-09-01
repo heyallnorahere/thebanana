@@ -8,5 +8,7 @@ public:
 	virtual ~player() override;
 	virtual std::string get_model_name() override;
 private:
+	void move(float yaw_offset, glm::vec3& translate, const float speed);
 	bool m_walking;
+	glm::vec2 m_last_angle;
 };

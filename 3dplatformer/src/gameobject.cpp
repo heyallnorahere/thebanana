@@ -102,6 +102,12 @@ int gameobject::get_animation_index() {
 void gameobject::set_animation_index(int index) {
 	this->m_animation_index = index;
 }
+const component::properties_t& gameobject::get_properties() {
+	return this->m_properties;
+}
+void gameobject::add_property(component::property_base* p) {
+	this->m_properties.push_back(std::unique_ptr<component::property_base> (p));
+}
 void gameobject::prepare_for_update() {
 	this->update_children();
 	std::stringstream ss;
@@ -130,7 +136,8 @@ void gameobject::post_render() {
 }
 void gameobject::render_model(const std::string& name) {
 	transform model_transform = this->m_game->get_model_registry()->get_transform(name);
-	model_transform *= this->m_game->get_model_registry()->get_scene(name)->mRootNode->mTransformation;
+	const aiScene* scene = this->m_game->get_model_registry()->get_scene(name);
+	if (scene) model_transform *= scene->mRootNode->mTransformation;
 	this->m_scene->get_shader()->get_uniforms().mat4("model_transform", model_transform.get_matrix());
 	double animation_time = this->get_number_components<animation_component>() > 0 ? this->get_component<animation_component>().get_animation_time() : 0.0;
 	this->m_game->get_model_registry()->draw(name, animation_time, this->m_animation_index, this->m_scene->get_shader());

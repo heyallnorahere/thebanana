@@ -23,14 +23,19 @@ std::string kunai_paths(const std::string& path, void*) {
 std::string mk8rr_paths(const std::string& path, void*) {
 	return path_helper(path, "Wii U - Mario Kart 8 - Rainbow Road\\", "textures\\placeholder\\mk8rr\\");
 }
+std::string mk64rr_paths(const std::string& path, void*) {
+	return path_helper(path, "Mario Kart 64 - Rainbow Road\\", "textures\\placeholder\\mk64rr\\");
+}
 std::string results_stage_paths(const std::string& path, void*) {
 	return path_helper(path, "Results Stage\\Results Stage\\images\\", "textures\\placeholder\\resultsstage\\");
 }
 void init_game() {
 	g_game = new game(TEXT("window"));
-	g_game->get_scene()->add_object(new prop("mk8rr"));
+	g_game->get_scene()->add_object(new prop("mk64rr"));
 	g_game->add_model_desc({ "waluigi", "models/placeholder/waluigi.fbx", waluigi_paths, transform().scale(glm::vec3(0.0005f)) });
 	g_game->add_model_desc({ "mk8rr", "models/placeholder/mk8rainbowroad.obj", mk8rr_paths, transform() });
+	g_game->add_model_desc({ "resultsstage", "models/placeholder/resultsstage.obj", results_stage_paths, transform() });
+	g_game->add_model_desc({ "mk64rr", "models/placeholder/mk64rr.obj", mk64rr_paths, transform().scale(0.5f) });
 	g_game->add_model_desc({ "kunai", "models/placeholder/kunai.obj", kunai_paths, transform() });
 	g_game->load_models();
 }

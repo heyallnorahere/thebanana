@@ -35,17 +35,26 @@ void player::update() {
 	glm::vec3 right = glm::normalize(r);
 	if (this->m_game->get_input_manager()->get_device_type(0) == input_manager::device_type::keyboard) {
 		std::vector<input_manager::device::button> btns = this->m_game->get_input_manager()->get_device_buttons(0);
+		std::vector<float> angles;
 		if (btns[DIK_W].held) {
-			this->move(0.f, translate, speed);
-		}
-		if (btns[DIK_S].held) {
-			this->move(180.f, translate, speed);
+			angles.push_back(0.f);
 		}
 		if (btns[DIK_A].held) {
-			this->move(-90.f, translate, speed);
+			angles.push_back(-90.f);
 		}
 		if (btns[DIK_D].held) {
-			this->move(90.f, translate, speed);
+			angles.push_back(90.f);
+		}
+		if (btns[DIK_S].held) {
+			angles.push_back(btns[DIK_A].held ? -180.f : 180.f);
+		}
+		if (angles.size() > 0) {
+			float angle = 0.f;
+			for (float a : angles) {
+				angle += a;
+			}
+			angle /= angles.size();
+			this->move(angle, translate, speed);
 		}
 		if ((btns[DIK_W].down || btns[DIK_S].down || btns[DIK_A].down || btns[DIK_D].down) && !this->m_walking && this->get_number_components<animation_component>() > 0) {
 			this->get_component<animation_component>().stop_animation();

@@ -31,8 +31,11 @@ std::string results_stage_paths(const std::string& path, void*) {
 }
 void init_game() {
 	g_game = new game(TEXT("window"));
-	g_game->get_scene()->add_object(new prop("mk64rr"));
-	g_game->add_model_desc({ "waluigi", "models/placeholder/waluigi.fbx", waluigi_paths, transform().scale(glm::vec3(0.0005f)) });
+	prop* p = new prop("collision");
+	p->get_transform().translate(2.f, 0.f, 2.f);
+	g_game->get_scene()->add_object(p);
+	g_game->add_model_desc({ "waluigi", "models/placeholder/waluigi.fbx", waluigi_paths, transform().scale(0.0005f) });
+	g_game->add_model_desc({ "collision", "models/placeholder/collision.obj", waluigi_paths, transform() });
 	g_game->add_model_desc({ "mk8rr", "models/placeholder/mk8rainbowroad.obj", mk8rr_paths, transform() });
 	g_game->add_model_desc({ "resultsstage", "models/placeholder/resultsstage.obj", results_stage_paths, transform() });
 	g_game->add_model_desc({ "mk64rr", "models/placeholder/mk64rr.obj", mk64rr_paths, transform().scale(0.5f) });

@@ -16,7 +16,6 @@ public:
 	player* get_player();
 	camera* get_camera();
 private:
-	void update_camera_angle();
 	player* m_player;
 	camera* m_camera;
 	game* m_game;

@@ -1,10 +1,11 @@
 #include "pch.h"
 #include "prop.h"
 #include "debug_tools.h"
+#include "rigidbody.h"
 prop::prop(const std::string& model_name) : m_model_name(model_name) {
-	log_print("created prop with model: " + model_name + "\n");
-	this->m_nickname = "prop: " + model_name;
+	this->m_nickname = "prop";
 	this->add_property(new component::property<std::string>(model_name, "model name"));
+	this->add_component<rigidbody>();
 }
 void prop::update() {
 	this->prepare_for_update();

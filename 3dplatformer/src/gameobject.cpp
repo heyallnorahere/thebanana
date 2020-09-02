@@ -110,12 +110,9 @@ void gameobject::add_property(component::property_base* p) {
 }
 void gameobject::prepare_for_update() {
 	this->update_children();
-	std::stringstream ss;
-	ss << "updating gameobject; relative id: " << this->get_relative_index() << ", absolute id: " << this->get_absolute_index() << "\n";
 	for (auto& c : this->m_components) {
 		c->pre_update();
 	}
-	log_print(ss.str());
 }
 void gameobject::prepare_for_render() {
 	this->render_children();

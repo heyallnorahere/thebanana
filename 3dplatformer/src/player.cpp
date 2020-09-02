@@ -8,9 +8,11 @@
 #include "scene.h"
 #include "debug_tools.h"
 #include "prop.h"
+#include "rigidbody.h"
 player::player() {
-	log_print("created player\n");
+	log_print("created player");
 	this->add_component<animation_component>();
+	this->add_component<rigidbody>().set_collider_type<sphere_collider>();
 	this->m_nickname = "player";
 	this->m_walking = false;
 	this->m_last_angle = glm::vec2(0.f, -90.f);
@@ -37,15 +39,12 @@ void player::update() {
 			this->move(0.f, translate, speed);
 		}
 		if (btns[DIK_S].held) {
-			//translate += this->m_scene->get_camera()->get_direction() * glm::vec3(1.f, 0.f, 1.f) * speed;
 			this->move(180.f, translate, speed);
 		}
 		if (btns[DIK_A].held) {
-			//translate += right * glm::vec3(1.f, 0.f, 1.f) * speed;
 			this->move(-90.f, translate, speed);
 		}
 		if (btns[DIK_D].held) {
-			//translate -= right * glm::vec3(1.f, 0.f, 1.f) * speed;
 			this->move(90.f, translate, speed);
 		}
 		if ((btns[DIK_W].down || btns[DIK_S].down || btns[DIK_A].down || btns[DIK_D].down) && !this->m_walking && this->get_number_components<animation_component>() > 0) {
@@ -68,13 +67,11 @@ void player::update() {
 	}
 #endif
 	this->post_update();
-	log_print("updated player");
 }
 void player::render() {
 	this->prepare_for_render();
 	this->render_model("waluigi");
 	this->post_render();
-	log_print("rendered player");
 }
 player::~player() { }
 std::string player::get_model_name() {

@@ -54,7 +54,7 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(SolutionDir)imgui\imgui;$(DXSDK_DIR)include;$(ProjectDir)src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)imgui\imgui;$(DXSDK_DIR)include;$(ProjectDir)src\physics;$(ProjectDir)src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DisableSpecificWarnings>4996;%(DisableSpecificWarnings)</DisableSpecificWarnings>
     </ClCompile>
     <Link>
@@ -73,7 +73,7 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(SolutionDir)imgui\imgui;$(DXSDK_DIR)include;$(ProjectDir)src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)imgui\imgui;$(DXSDK_DIR)include;$(ProjectDir)src\physics;$(ProjectDir)src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DisableSpecificWarnings>4996;%(DisableSpecificWarnings)</DisableSpecificWarnings>
     </ClCompile>
     <Link>
@@ -100,6 +100,8 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="src\physics\collider.cpp" />
+    <ClCompile Include="src\physics\rigidbody.cpp" />
     <ClCompile Include="src\player.cpp" />
     <ClCompile Include="src\prop.cpp" />
     <ClCompile Include="src\scene.cpp" />
@@ -119,6 +121,8 @@
     <ClInclude Include="src\model_registry.h" />
     <ClInclude Include="src\mouse.h" />
     <ClInclude Include="src\pch.h" />
+    <ClInclude Include="src\physics\collider.h" />
+    <ClInclude Include="src\physics\rigidbody.h" />
     <ClInclude Include="src\player.h" />
     <ClInclude Include="src\prop.h" />
     <ClInclude Include="src\scene.h" />

@@ -22,7 +22,6 @@ void scene::add_object(gameobject* obj) {
 	this->m_children.push_back(std::unique_ptr<gameobject>(obj));
 }
 void scene::update() {
-	log_print("updating");
 #ifdef _DEBUG
 	{
 		bool toggle = false;
@@ -35,15 +34,12 @@ void scene::update() {
 			control = !control;
 		}
 	}
-	if (control)
 #endif
-	this->update_camera_angle();
 	for (auto& c : this->m_children) {
 		c->update();
 	}
 }
 void scene::render() {
-	log_print("rendering");
 	opengl_shader_library::shader::use(this->m_shader.get());
 	glm::mat4 projection = glm::perspective(glm::radians(45.f), this->m_game->get_aspect_ratio(), 0.1f, 100.f);
 	this->m_shader->get_uniforms().mat4("projection", projection);
@@ -75,7 +71,4 @@ player* scene::get_player() {
 }
 camera* scene::get_camera() {
 	return this->m_camera;
-}
-void scene::update_camera_angle() {
-	
 }

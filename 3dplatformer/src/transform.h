@@ -11,6 +11,7 @@ public:
 	transform scale(glm::vec3 s);
 	transform scale(float x, float y, float z);
 	transform scale(float s);
+	transform move(glm::vec3 offset);
 	const transform& operator=(const glm::mat4& m);
 	const transform& operator=(const aiMatrix4x4& m);
 	const glm::mat4& get_matrix() const;

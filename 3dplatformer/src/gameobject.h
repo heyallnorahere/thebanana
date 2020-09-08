@@ -31,6 +31,8 @@ public:
 	int get_animation_index();
 	void set_animation_index(int index);
 	const component::properties_t& get_properties();
+	void on_collision(gameobject* other);
+	virtual float get_last_walk_speed();
 protected:
 	component::properties_t m_properties;
 	void add_property(component::property_base* p);
@@ -48,6 +50,7 @@ protected:
 	transform m_transform;
 	std::vector<std::unique_ptr<component>> m_components;
 private:
+	unsigned int last_collided_frame;
 	bool initialized;
 	int m_animation_index;
 	void update_children();

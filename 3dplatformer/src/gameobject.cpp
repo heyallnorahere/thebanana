@@ -4,7 +4,7 @@
 #include "scene.h"
 #include "model_registry.h"
 #include "debug_tools.h"
-gameobject::gameobject() {
+gameobject::gameobject() : last_collided_frame(0) {
 #ifdef _DEBUG
 	this->add_component<debug_component>();
 #endif
@@ -104,6 +104,16 @@ void gameobject::set_animation_index(int index) {
 }
 const component::properties_t& gameobject::get_properties() {
 	return this->m_properties;
+}
+void gameobject::on_collision(gameobject* other) {
+	if (this->last_collided_frame == this->m_game->get_current_frame()) return;
+	for (auto& c : this->m_components) {
+		c->on_collision(other);
+	}
+	this->last_collided_frame = this->m_game->get_current_frame();
+}
+float gameobject::get_last_walk_speed() {
+	return 0.f;
 }
 void gameobject::add_property(component::property_base* p) {
 	this->m_properties.push_back(std::unique_ptr<component::property_base> (p));

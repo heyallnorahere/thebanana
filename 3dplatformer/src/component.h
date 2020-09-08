@@ -5,6 +5,17 @@ class component {
 public:
 	class property_base {
 	public:
+		class dropdown {
+		public:
+			dropdown(const std::vector<std::string>& items, int initial_index = 0);
+			dropdown(const std::vector<const char*>& items, int initial_index = 0);
+			int* get_index_ptr();
+			const std::vector<std::string>& get_items() const;
+			void set_items(const std::vector<std::string>& items);
+		private:
+			std::vector<std::string> m_items;
+			int m_index;
+		};
 		property_base(const std::string& name, size_t size);
 		const std::string& get_name();
 		virtual ~property_base();
@@ -37,6 +48,8 @@ public:
 	virtual void pre_render();
 	// runs after render
 	virtual void post_render();
+	// runs when gameobject collides with another
+	virtual void on_collision(gameobject* other);
 	// runs on gameobject destruction
 	virtual void clean_up();
 	const properties_t& get_properties() const;
@@ -54,7 +67,7 @@ protected:
 class test_component : public component {
 public:
 	test_component(gameobject* obj);
-	void print_properties();
+	virtual void on_collision(gameobject* other) override;
 };
 class debug_component : public component {
 public:
@@ -113,6 +126,14 @@ inline void component::property<glm::vec3>::draw() const {
 }
 inline void component::property<glm::vec4>::draw() const {
 	ImGui::InputFloat4(this->name.c_str(), &this->value->x);
+}
+inline void component::property<component::property_base::dropdown>::draw() const {
+	const std::vector<std::string>& std_items = this->value->get_items();
+	std::vector<const char*> items;
+	for (auto& str : std_items) {
+		items.push_back(str.c_str());
+	}
+	ImGui::Combo(this->name.c_str(), this->value->get_index_ptr(), items.data(), items.size());
 }
 template<typename T> inline void component::property<T>::draw() const {
 	ImGui::Text("sorry, no implementation for this type yet... heres the raw memory though");

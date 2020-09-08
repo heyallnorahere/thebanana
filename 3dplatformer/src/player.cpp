@@ -12,10 +12,12 @@
 player::player() {
 	log_print("created player");
 	this->add_component<animation_component>();
-	this->add_component<rigidbody>().set_collider_type<sphere_collider>();
+	this->add_component<rigidbody>().set_check_for_collisions(true).set_collider_type<mlfarrel_model>();
+	this->add_component<test_component>();
 	this->m_nickname = "player";
 	this->m_walking = false;
 	this->m_last_angle = glm::vec2(0.f, -90.f);
+	this->m_last_walk_speed = 0.f;
 }
 void player::update() {
 	if (this->m_game->get_current_frame() == 1 && this->get_number_components<animation_component>() > 0) {
@@ -86,9 +88,13 @@ player::~player() { }
 std::string player::get_model_name() {
 	return "waluigi";
 }
+float player::get_last_walk_speed() {
+	return this->m_last_walk_speed;
+}
 void player::move(float yaw_offset, glm::vec3& translate, const float speed) {
 	glm::vec2 current_angle = this->m_last_angle - (this->m_scene->get_camera()->get_angle() + glm::vec2(0.f, yaw_offset));
 	this->m_last_angle = this->m_scene->get_camera()->get_angle() + glm::vec2(0.f, yaw_offset);
 	this->m_transform.rotate(current_angle.y, glm::vec3(0.f, 1.f, 0.f));
 	translate.z += speed;
+	this->m_last_walk_speed = speed;
 }

@@ -11,6 +11,7 @@ void component::pre_update() { }
 void component::post_update() { }
 void component::pre_render() { }
 void component::post_render() { }
+void component::on_collision(gameobject* other) { }
 void component::clean_up() { }
 const component::properties_t& component::get_properties() const {
 	return this->properties;
@@ -27,30 +28,9 @@ int component::get_animation_index() {
 void component::set_animation_index(int index) {
 	this->parent->set_animation_index(index);
 }
-test_component::test_component(gameobject* obj) : component(obj) {
-	this->add_property(new property<int>(42, "x"));
-	this->add_property(new property<glm::vec3>(glm::vec3(1.f, -2.f, 3.4f), "y"));
-	this->add_property(new property<std::string>("hello", "z"));
-}
-void test_component::print_properties() {
-	property<int>* x = this->find_property<int>("x");
-	if (x) {
-		std::stringstream ss;
-		ss << "x: " << *x->get_value() << "\n";
-		log_print(ss.str());
-	}
-	property<glm::vec3>* y = this->find_property<glm::vec3>("y");
-	if (y) {
-		std::stringstream ss;
-		ss << "y: " << y->get_value()->x << ", " << y->get_value()->y << ", " << y->get_value()->z << "\n";
-		log_print(ss.str());
-	}
-	property<std::string>* z = this->find_property<std::string>("z");
-	if (z) {
-		std::stringstream ss;
-		ss << "z: " << *z->get_value() << "\n";
-		log_print(ss.str());
-	}
+test_component::test_component(gameobject* obj) : component(obj) { }
+void test_component::on_collision(gameobject* other) {
+	log_print("test component on gameobject of type " + std::string(typeid(*this->parent).name()) + ": collided with gameobject of type " + typeid(*other).name());
 }
 component::property_base::property_base(const std::string& name, size_t size) {
 	this->ptr = malloc(size);
@@ -123,4 +103,19 @@ void animation_component::stop_animation() {
 }
 double animation_component::get_animation_time() {
 	return CURRENT_TIME(double) - this->animation_start_time;
+}
+component::property_base::dropdown::dropdown(const std::vector<std::string>& items, int initial_index) : m_items(items), m_index(initial_index) { }
+component::property_base::dropdown::dropdown(const std::vector<const char*>& items, int initial_index) : m_index(initial_index) {
+	for (const char* str : items) {
+		this->m_items.push_back(str);
+	}
+}
+int* component::property_base::dropdown::get_index_ptr() {
+	return &this->m_index;
+}
+const std::vector<std::string>& component::property_base::dropdown::get_items() const {
+	return this->m_items;
+}
+void component::property_base::dropdown::set_items(const std::vector<std::string>& items) {
+	this->m_items = items;
 }

@@ -31,6 +31,13 @@ transform transform::scale(float x, float y, float z) {
 transform transform::scale(float s) {
 	return this->scale(glm::vec3(s));
 }
+transform transform::move(glm::vec3 offset) {
+	glm::mat4 inverse = *this;
+	inverse[3] = glm::vec4(0.f, 0.f, 0.f, inverse[3][3]);
+	inverse = glm::inverse(inverse);
+	inverse = glm::translate(inverse, offset);
+	return this->translate(glm::vec3(inverse * glm::vec4(0.f, 0.f, 0.f, 1.f)));
+}
 const transform& transform::operator=(const glm::mat4& m) {
 	this->m = m;
 	return *this;

@@ -20,7 +20,7 @@ private:
 	int num_collisions;
 	glm::vec3 shift_delta;
 	model_registry::model_vertex_data vertex_data;
-	bool is_player, check_for_collisions;
+	bool check_for_collisions;
 	collider* coll;
 	std::string last_frame_model_name;
 };

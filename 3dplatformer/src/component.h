@@ -53,6 +53,7 @@ public:
 	// runs on gameobject destruction
 	virtual void clean_up();
 	const properties_t& get_properties() const;
+	gameobject* get_parent();
 protected:
 	void add_property(property_base* p);
 	transform& get_transform();

@@ -16,6 +16,9 @@ void component::clean_up() { }
 const component::properties_t& component::get_properties() const {
 	return this->properties;
 }
+gameobject* component::get_parent() {
+	return this->parent;
+}
 void component::add_property(property_base* p) {
 	this->properties.push_back(std::unique_ptr<property_base>(p));
 }

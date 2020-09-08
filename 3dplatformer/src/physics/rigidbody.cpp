@@ -13,7 +13,6 @@ rigidbody::rigidbody(gameobject* obj) : component(obj) {
 }
 void rigidbody::initialize() {
 	rigidbodies.push_back(this);
-	this->is_player = typeid(*this->parent).hash_code() == typeid(player).hash_code();
 }
 void rigidbody::pre_update() {
 	if (this->parent->get_model_name() != this->last_frame_model_name) {
@@ -40,14 +39,7 @@ void rigidbody::post_update() {
 }
 void rigidbody::on_collision(gameobject* other) {
 	if (this->num_collisions != 0 && this->check_for_collisions) {
-		if (typeid(*this->coll).hash_code() == typeid(mlfarrel_model).hash_code()) {
-			float last_walk_speed = this->parent->get_last_walk_speed();
-			if (glm::length(this->shift_delta) > last_walk_speed) {
-				this->shift_delta = glm::normalize(this->shift_delta);
-				this->shift_delta *= last_walk_speed * 1.1f;
-			}
-			this->parent->get_transform().move(this->shift_delta);
-		}
+		this->coll->on_collision(other);
 	}
 }
 void rigidbody::clean_up() {

@@ -105,6 +105,15 @@ bool mlfarrel_model::detect_collision(rigidbody* other) {
 	}
 	return collided;
 }
+void mlfarrel_model::on_collision(gameobject* other) {
+	glm::vec3& shift_delta = this->parent->get_shift_delta();
+	float last_walk_speed = this->parent->get_parent()->get_last_walk_speed();
+	if (glm::length(shift_delta) > last_walk_speed) {
+		shift_delta = glm::normalize(shift_delta);
+		shift_delta *= last_walk_speed * 1.1f;
+	}
+	this->parent->get_parent()->get_transform().move(shift_delta);
+}
 mlfarrel_model& mlfarrel_model::set_radius(float radius) {
 	this->radius = radius;
 	return *this;

@@ -98,7 +98,6 @@ bool mlfarrel_model::detect_collision(rigidbody* other) {
 		if (outside_all_edges && outside_all_vertices && !fully_inside_plane) {
 			continue;
 		}
-		log_print("collided with gameobject of type " + std::string(typeid(*other->get_parent()).name()));
 		this->parent->get_num_collisions()++;
 		this->parent->get_shift_delta() += normal * (this->radius - ppd);
 		if (!collided) collided = true;

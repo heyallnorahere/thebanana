@@ -65,11 +65,6 @@ protected:
 	properties_t properties;
 	gameobject* parent;
 };
-class test_component : public component {
-public:
-	test_component(gameobject* obj);
-	virtual void on_collision(gameobject* other) override;
-};
 class debug_component : public component {
 public:
 	debug_component(gameobject* obj);

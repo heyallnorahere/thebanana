@@ -31,10 +31,6 @@ int component::get_animation_index() {
 void component::set_animation_index(int index) {
 	this->parent->set_animation_index(index);
 }
-test_component::test_component(gameobject* obj) : component(obj) { }
-void test_component::on_collision(gameobject* other) {
-	log_print("test component on gameobject of type " + std::string(typeid(*this->parent).name()) + ": collided with gameobject of type " + typeid(*other).name());
-}
 component::property_base::property_base(const std::string& name, size_t size) {
 	this->ptr = malloc(size);
 	this->name = name;

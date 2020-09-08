@@ -32,7 +32,7 @@ public:
 	void set_animation_index(int index);
 	const component::properties_t& get_properties();
 	void on_collision(gameobject* other);
-	virtual float get_last_walk_speed();
+	virtual float& get_last_walk_speed();
 protected:
 	component::properties_t m_properties;
 	void add_property(component::property_base* p);

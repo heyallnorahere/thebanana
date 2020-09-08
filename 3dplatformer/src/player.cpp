@@ -13,7 +13,6 @@ player::player() {
 	log_print("created player");
 	this->add_component<animation_component>();
 	this->add_component<rigidbody>().set_check_for_collisions(true).set_collider_type<mlfarrel_model>();
-	this->add_component<test_component>();
 	this->m_nickname = "player";
 	this->m_walking = false;
 	this->m_last_angle = glm::vec2(0.f, -90.f);
@@ -58,6 +57,21 @@ void player::update() {
 			angle /= angles.size();
 			this->move(angle, translate, speed);
 		}
+		if (this->get_number_components<rigidbody>() > 0) {
+			constexpr float drift_speed = 0.1f;
+			if (btns[DIK_NUMPAD6].down) {
+				this->get_component<rigidbody>().apply_force(glm::vec3(-drift_speed, 0.f, 0.f));
+			}
+			if (btns[DIK_NUMPAD4].down) {
+				this->get_component<rigidbody>().apply_force(glm::vec3(drift_speed, 0.f, 0.f));
+			}
+			if (btns[DIK_NUMPAD8].down) {
+				this->get_component<rigidbody>().apply_force(glm::vec3(0.f, 0.f, drift_speed));
+			}
+			if (btns[DIK_NUMPAD2].down) {
+				this->get_component<rigidbody>().apply_force(glm::vec3(0.f, 0.f, -drift_speed));
+			}
+		}
 		if ((btns[DIK_W].down || btns[DIK_S].down || btns[DIK_A].down || btns[DIK_D].down) && !this->m_walking && this->get_number_components<animation_component>() > 0) {
 			this->get_component<animation_component>().stop_animation();
 			this->get_component<animation_component>().start_animation("walk", true);
@@ -88,7 +102,7 @@ player::~player() { }
 std::string player::get_model_name() {
 	return "waluigi";
 }
-float player::get_last_walk_speed() {
+float& player::get_last_walk_speed() {
 	return this->m_last_walk_speed;
 }
 void player::move(float yaw_offset, glm::vec3& translate, const float speed) {

@@ -88,6 +88,7 @@ void animation_component::start_animation(int index, bool repeat) {
 }
 void animation_component::start_animation(const std::string& name, bool repeat) {
 	const aiScene* scene = this->parent->get_game()->get_model_registry()->get_scene(this->parent->get_model_name());
+	if (!scene) return;
 	for (int i = 0; i < scene->mNumAnimations; i++) {
 		std::string animation_name(scene->mAnimations[i]->mName.data, scene->mAnimations[i]->mName.length);
 		if (name == animation_name.substr(animation_name.find_last_of('|') + 1)) {

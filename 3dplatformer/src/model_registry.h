@@ -23,6 +23,7 @@ public:
 	void add_vertex_data(const std::string& model_name, model_vertex_data data);
 	model_vertex_data get_vertex_data(const std::string& model_name);
 private:
+	static void load_models(std::vector<model_descriptor> m, model_registry* r);
 	void load(const std::vector<model_descriptor>& models);
 	void unload();
 	std::map<std::string, model_vertex_data> vertex_data;

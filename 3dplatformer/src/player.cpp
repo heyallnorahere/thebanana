@@ -19,7 +19,7 @@ player::player() {
 	this->m_last_walk_speed = 0.f;
 }
 void player::update() {
-	if (this->m_game->get_current_frame() == 1 && this->get_number_components<animation_component>() > 0) {
+	if (this->get_animation_index() == -1 && this->get_number_components<animation_component>() > 0) {
 		this->get_component<animation_component>().start_animation("idle", true);
 	}
 	const float speed = 0.05f;

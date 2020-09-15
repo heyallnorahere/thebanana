@@ -6,7 +6,4 @@ public:
 	virtual void update() override;
 	virtual void render() override;
 	virtual ~prop() override;
-	virtual std::string get_model_name() override;
-private:
-	std::string m_model_name;
 };

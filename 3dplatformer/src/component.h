@@ -69,8 +69,6 @@ protected:
 	transform& get_transform();
 	template<typename _Ty> size_t get_number_components();
 	template<typename _Ty> _Ty& get_component(size_t index = 0);
-	int get_animation_index();
-	void set_animation_index(int index);
 	template<typename _Ty> property<_Ty>* find_property(const std::string& name);
 	properties_t properties;
 	gameobject* parent;
@@ -90,9 +88,21 @@ public:
 	void start_animation(const std::string& name, bool repeat = false);
 	void stop_animation();
 	double get_animation_time();
+	int get_animation_id() const;
+	bool is_animating() const;
 private:
+	int animation_id;
 	double animation_start_time;
 	bool repeat;
+};
+class mesh_component : public component {
+public:
+	mesh_component(gameobject* obj);
+	mesh_component& set_mesh_name(const std::string& name);
+	std::string get_mesh_name() const;
+	void render();
+private:
+	std::string model_name;
 };
 template<typename T> inline component::property<T>::property(const T& value, const std::string& name) : property_base(name, sizeof(T)) {
 	this->value = new(this->ptr) T(value);

@@ -10,7 +10,6 @@ public:
 	void init(gameobject* parent, scene* sc, game* g);
 	virtual void update() = 0;
 	virtual void render() = 0;
-	virtual std::string get_model_name() = 0;
 	virtual ~gameobject();
 	const transform& get_transform() const;
 	transform& get_transform();
@@ -28,8 +27,6 @@ public:
 	template<typename _Ty> _Ty& add_component();
 	template<typename _Ty> _Ty& get_component(size_t index = 0);
 	template<typename _Ty> size_t get_number_components();
-	int get_animation_index();
-	void set_animation_index(int index);
 	const component::properties_t& get_properties();
 	void on_collision(gameobject* other);
 	virtual float& get_last_walk_speed();
@@ -41,7 +38,6 @@ protected:
 	void prepare_for_render();
 	void post_update();
 	void post_render();
-	void render_model(const std::string& name);
 	std::string m_nickname;
 	gameobject* m_parent;
 	scene* m_scene;
@@ -52,7 +48,6 @@ protected:
 private:
 	unsigned int last_collided_frame;
 	bool initialized;
-	int m_animation_index;
 	void update_children();
 	void render_children();
 };

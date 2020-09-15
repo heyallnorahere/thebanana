@@ -12,6 +12,7 @@
 player::player() {
 	log_print("created player");
 	this->add_component<animation_component>();
+	this->add_component<mesh_component>().set_mesh_name("waluigi");
 	this->add_component<rigidbody>().set_check_for_collisions(true).set_collider_type<mlfarrel_model>();
 	this->m_nickname = "player";
 	this->m_walking = false;
@@ -19,8 +20,10 @@ player::player() {
 	this->m_last_walk_speed = 0.f;
 }
 void player::update() {
-	if (this->get_animation_index() == -1 && this->get_number_components<animation_component>() > 0) {
-		this->get_component<animation_component>().start_animation("idle", true);
+	if (this->get_number_components<animation_component>() > 0) {
+		if (!this->get_component<animation_component>().is_animating()) {
+			this->get_component<animation_component>().start_animation("idle", true);
+		}
 	}
 	const float speed = 0.05f;
 	this->prepare_for_update();
@@ -95,13 +98,12 @@ void player::update() {
 }
 void player::render() {
 	this->prepare_for_render();
-	this->render_model("waluigi");
+	if (this->get_number_components<mesh_component>() > 0) {
+		this->get_component<mesh_component>().render();
+	}
 	this->post_render();
 }
 player::~player() { }
-std::string player::get_model_name() {
-	return "waluigi";
-}
 float& player::get_last_walk_speed() {
 	return this->m_last_walk_speed;
 }

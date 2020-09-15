@@ -68,6 +68,3 @@ glm::vec3 camera::get_direction() {
 glm::vec2 camera::get_angle() {
 	return this->m_angle;
 }
-std::string camera::get_model_name() {
-	return "";
-}

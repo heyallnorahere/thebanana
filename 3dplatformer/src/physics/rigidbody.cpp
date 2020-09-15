@@ -8,7 +8,6 @@ rigidbody::rigidbody(gameobject* obj) : component(obj) {
 	this->add_property(new property<bool>(false, "gravity"));
 	this->add_property(new property<float>(1.f, "gravity multiplier"));
 	this->add_property(new property<float>(1.f, "mass"));
-	log_print("created rigidbody under gameobject " + std::string(typeid(*obj).name()));
 	this->coll = NULL;
 	this->last_frame_model_name = "";
 	this->check_for_collisions = false;
@@ -56,7 +55,6 @@ void rigidbody::post_update() {
 void rigidbody::on_collision(gameobject* other) {
 	if (this->num_collisions != 0 && this->check_for_collisions) {
 		this->coll->on_collision(other);
-		other->get_component<rigidbody>().apply_force(-this->get_shift_delta());
 	}
 }
 void rigidbody::clean_up() {

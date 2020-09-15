@@ -4,7 +4,6 @@
 #include "rigidbody.h"
 prop::prop(const std::string& model_name) {
 	this->m_nickname = "prop";
-	this->add_property(new component::property<std::string>(model_name, "model name"));
 	this->add_component<mesh_component>().set_mesh_name(model_name);
 }
 void prop::update() {

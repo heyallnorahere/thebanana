@@ -154,7 +154,7 @@ template<typename T> inline void component::property<T>::draw() const {
 		std::string substr = name.substr(pos, 7);
 		if (substr == "* __ptr") {
 			std::string text;
-			std::string ptr_type = name.substr(0, name.length() - 10);
+			std::string ptr_type = name.substr(0, pos - 1);
 			if (*this->value) {
 				text = ptr_type;
 			} else {

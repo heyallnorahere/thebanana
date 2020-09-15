@@ -48,7 +48,7 @@ void camera::update() {
 	}
 #endif
 	component::property<float>* distance = this->find_property<float>("distance");
-	this->m_transform = transform().translate(glm::vec3((glm::mat4)this->m_player->get_transform() * glm::vec4(0.f, 0.f, 0.f, 1.f)) + this->m_direction * (distance ? *distance->get_value() : 2.f));
+	this->m_transform = transform().translate(glm::vec3(this->m_player->get_transform()) + this->m_direction * (distance ? *distance->get_value() : 2.f));
 	this->post_update();
 }
 void camera::render() {

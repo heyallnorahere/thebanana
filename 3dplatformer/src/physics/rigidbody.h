@@ -17,6 +17,9 @@ public:
 	glm::vec3& get_shift_delta();
 	int& get_num_collisions();
 	void apply_force(const glm::vec3& force);
+	void set_collision_model_name(const std::string& model_name);
+	std::string get_collision_model_name();
+	static const std::vector<rigidbody*>& get_rigidbodies();
 	static constexpr glm::vec3 gravity = glm::vec3(0.f, -1.f, 0.f);
 private:
 	int num_collisions;
@@ -26,6 +29,8 @@ private:
 	collider* coll;
 	std::string last_frame_model_name;
 	glm::vec3 velocity, acceleration;
+	std::string collision_model_name;
+	static std::vector<rigidbody*> rigidbodies;
 };
 template<typename _Ty> inline _Ty& rigidbody::set_collider_type() {
 	delete this->coll;

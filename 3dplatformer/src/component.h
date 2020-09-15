@@ -1,5 +1,6 @@
 #pragma once
 #include "transform.h"
+#include "debug_tools.h"
 class gameobject;
 class component {
 public:
@@ -21,9 +22,13 @@ public:
 		virtual ~property_base();
 		void* get_ptr();
 		virtual void draw() const = 0;
+		bool is_selection_window_open() const;
+		void close_selection_window();
+		virtual gameobject** get_selection_window_ptr() const = 0;
 	protected:
 		std::string name;
 		void* ptr;
+		bool selection_window_open;
 	};
 	using properties_t = std::vector<std::unique_ptr<property_base>>;
 	template<typename T> class property : public property_base {
@@ -34,6 +39,7 @@ public:
 		virtual ~property() override;
 		virtual void draw() const override;
 		T* get_value();
+		virtual gameobject** get_selection_window_ptr() const override;
 	private:
 		T* value;
 	};
@@ -54,6 +60,8 @@ public:
 	virtual void clean_up();
 	const properties_t& get_properties() const;
 	gameobject* get_parent();
+	template<typename _Ty> void set_property(const std::string& name, const _Ty& value);
+	template<typename _Ty> _Ty* get_property(const std::string& name);
 protected:
 	void add_property(property_base* p);
 	transform& get_transform();
@@ -99,6 +107,12 @@ template<typename T> inline component::property<T>::~property() {
 template<typename T> inline T* component::property<T>::get_value() {
 	return this->value;
 }
+inline gameobject** component::property<gameobject*>::get_selection_window_ptr() const {
+	return this->value;
+}
+template<typename T> inline gameobject** component::property<T>::get_selection_window_ptr() const {
+	return NULL;
+}
 inline void component::property<int>::draw() const {
 	ImGui::InputInt(this->name.c_str(), this->value);
 }
@@ -132,8 +146,47 @@ inline void component::property<component::property_base::dropdown>::draw() cons
 	ImGui::Combo(this->name.c_str(), this->value->get_index_ptr(), items.data(), items.size());
 }
 template<typename T> inline void component::property<T>::draw() const {
+	std::string name = typeid(T).name();
+	size_t pos = name.find_last_of('*');
+	if (pos != std::string::npos) {
+		std::string substr = name.substr(pos, 7);
+		if (substr == "* __ptr") {
+			std::string text;
+			std::string ptr_type = name.substr(0, name.length() - 10);
+			if (*this->value) {
+				text = ptr_type;
+			} else {
+				text = "null (" + ptr_type + ")";
+			}
+			ImGui::InputText(this->name.c_str(), &text, ImGuiInputTextFlags_ReadOnly);
+			ImGui::SameLine();
+			if (ImGui::Button("clear")) {
+				*this->value = NULL;
+			}
+			if (typeid(T).hash_code() == typeid(gameobject*).hash_code()) {
+				if (ImGui::Button("open gameobject selection window")) {
+					property<T>* p = (property<T>*)this;
+					p->selection_window_open = true;
+				}
+			}
+			return;
+		}
+	}
 	ImGui::Text("sorry, no implementation for this type yet... heres the raw memory though");
 	ImGui::InputText(this->name.c_str(), (char*)this->ptr, sizeof(T));
+}
+template<typename _Ty> inline void component::set_property(const std::string& name, const _Ty& value) {
+	property<_Ty>* prop = this->find_property<_Ty>(name);
+	if (prop) {
+		*prop->get_value() = value;
+	}
+}
+template<typename _Ty> inline _Ty* component::get_property(const std::string& name) {
+	property<_Ty>* prop = this->find_property<_Ty>(name);
+	if (prop) {
+		return prop->get_value();
+	}
+	return NULL;
 }
 template<typename _Ty> inline size_t component::get_number_components() {
 	return this->parent->get_number_components<_Ty>();

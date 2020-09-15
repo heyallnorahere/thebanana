@@ -34,6 +34,7 @@ void component::set_animation_index(int index) {
 component::property_base::property_base(const std::string& name, size_t size) {
 	this->ptr = malloc(size);
 	this->name = name;
+	this->selection_window_open = false;
 }
 const std::string& component::property_base::get_name() {
 	return this->name;
@@ -42,12 +43,29 @@ component::property_base::~property_base() { }
 void* component::property_base::get_ptr() {
 	return this->ptr;
 }
+bool component::property_base::is_selection_window_open() const {
+	return this->selection_window_open;
+}
+void component::property_base::close_selection_window() {
+	this->selection_window_open = false;
+}
 debug_component::debug_component(gameobject* obj) : component(obj), flash_start_time(0.0), flash_end_time(0.0) {
 	this->add_property(new property<double>(2.0, "flash rate"));
 	this->add_property(new property<double>(0.1, "flash length"));
+	this->add_property(new property<gameobject*>(NULL, "test pointer"));
 }
 extern gameobject* current_selected_gameobject;
 void debug_component::pre_render() {
+	property<gameobject*>* _test_ptr = this->find_property<gameobject*>("test pointer");
+	gameobject* test_ptr = NULL;
+	if (_test_ptr) {
+		if (_test_ptr->get_value()) {
+			test_ptr = *_test_ptr->get_value();
+		}
+	}
+	if (test_ptr) {
+		test_ptr->get_transform().move(glm::vec3(0.f, 0.001f, 0.f));
+	}
 	this->parent->get_scene()->get_shader()->get_uniforms().vec3("fill_color", glm::vec3(1.f, 0.5f, 0.f));
 	property<double>* flash_rate = this->find_property<double>("flash rate");
 	property<double>* fl = this->find_property<double>("flash length");

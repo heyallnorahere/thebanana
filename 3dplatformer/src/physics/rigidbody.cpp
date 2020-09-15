@@ -4,10 +4,10 @@
 #include "debug_tools.h"
 #include "game.h"
 #include "player.h"
-std::vector<rigidbody*> rigidbodies;
 rigidbody::rigidbody(gameobject* obj) : component(obj) {
 	this->add_property(new property<bool>(false, "gravity"));
 	this->add_property(new property<float>(1.f, "gravity multiplier"));
+	this->add_property(new property<float>(1.f, "mass"));
 	log_print("created rigidbody under gameobject " + std::string(typeid(*obj).name()));
 	this->coll = NULL;
 	this->last_frame_model_name = "";
@@ -19,9 +19,9 @@ void rigidbody::initialize() {
 	rigidbodies.push_back(this);
 }
 void rigidbody::pre_update() {
-	if (this->parent->get_model_name() != this->last_frame_model_name) {
-		this->vertex_data = this->parent->get_game()->get_model_registry()->get_vertex_data(this->parent->get_model_name());
-		this->last_frame_model_name = this->parent->get_model_name();
+	if (this->collision_model_name != this->last_frame_model_name) {
+		this->vertex_data = this->parent->get_game()->get_model_registry()->get_vertex_data(this->collision_model_name);
+		this->last_frame_model_name = this->collision_model_name;
 	}
 }
 void rigidbody::post_update() {
@@ -56,6 +56,7 @@ void rigidbody::post_update() {
 void rigidbody::on_collision(gameobject* other) {
 	if (this->num_collisions != 0 && this->check_for_collisions) {
 		this->coll->on_collision(other);
+		other->get_component<rigidbody>().apply_force(-this->get_shift_delta());
 	}
 }
 void rigidbody::clean_up() {
@@ -78,5 +79,17 @@ int& rigidbody::get_num_collisions() {
 	return this->num_collisions;
 }
 void rigidbody::apply_force(const glm::vec3& force) {
-	this->acceleration += force;
+	property<float>* _mass = this->find_property<float>("mass");
+	float mass = _mass ? *_mass->get_value() : 1.f;
+	this->acceleration += force / mass;
 }
+void rigidbody::set_collision_model_name(const std::string& model_name) {
+	this->collision_model_name = model_name;
+}
+std::string rigidbody::get_collision_model_name() {
+	return this->collision_model_name;
+}
+const std::vector<rigidbody*>& rigidbody::get_rigidbodies() {
+	return rigidbodies;
+}
+std::vector<rigidbody*> rigidbody::rigidbodies;

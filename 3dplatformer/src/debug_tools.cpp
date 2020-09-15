@@ -20,50 +20,69 @@ void clean_up_imgui() {
 	ImGui::DestroyContext();
 }
 constexpr ImGuiTreeNodeFlags open_flags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_OpenOnDoubleClick;
-void tree(gameobject* parent);
 static int id;
 #define ID() char id_str[256]; sprintf(id_str, "node%d", id++)
-gameobject* current_selected_gameobject = NULL;
-static void set_current_gameobject(gameobject* obj) {
+gameobject* current_selected_gameobject = NULL, *selection_current_gameobject = NULL;
+static void set_current_gameobject(gameobject* obj, gameobject** object_ptr) {
 	if (ImGui::IsItemClicked()) {
-		current_selected_gameobject = obj;
+		*object_ptr = obj;
 	}
 }
-void tree_helper(gameobject* object) {
+void tree(gameobject* parent, gameobject** object_ptr);
+void tree_helper(gameobject* object, gameobject** object_ptr) {
 	if (object->get_children_count() > 0) {
-		tree(object);
+		tree(object, object_ptr);
 	}
 	else {
 		ID();
 		if (ImGui::TreeNodeEx(id_str, ImGuiTreeNodeFlags_Leaf, "%s, no children", object->get_nickname().c_str())) {
-			set_current_gameobject(object);
+			set_current_gameobject(object, object_ptr);
 			ImGui::TreePop();
 		}
 	}
 }
-void tree(gameobject* parent) {
+void tree(gameobject* parent, gameobject** object_ptr) {
 	ID();
 	if (ImGui::TreeNodeEx(id_str, open_flags, "%s, children: %d", parent->get_nickname().c_str(), parent->get_children_count())) {
-		set_current_gameobject(parent);
+		set_current_gameobject(parent, object_ptr);
 		for (size_t i = 0; i < parent->get_children_count(); i++) {
 			gameobject* obj = parent->get_child(i);
-			tree_helper(obj);
+			tree_helper(obj, object_ptr);
 		}
 		ImGui::TreePop();
 	}
 }
-void scene_hierarchy(scene* scene) {
-	id = 0xff;
-	ImGui::Begin("scene hierarchy");
+bool scene_hierarchy(scene* scene, bool is_selection_window = false, gameobject** object_ptr = &current_selected_gameobject, int id = 0) {
+	::id = 0xff;
+	std::string window_name = "scene hierarchy";
+	if (is_selection_window) {
+		std::stringstream ss;
+		ss << "selection window #" << id;
+		window_name = ss.str();
+	}
+	ImGui::Begin(window_name.c_str());
+	if (is_selection_window) {
+		bool confirmed = ImGui::Button("confirm");
+		ImGui::SameLine();
+		bool closed = confirmed || ImGui::Button("close");
+		if (closed) {
+			if (!confirmed) {
+				*object_ptr = NULL;
+			}
+			ImGui::End();
+			return true;
+		}
+	}
 	if (ImGui::TreeNodeEx("root", ImGuiTreeNodeFlags_Leaf)) {
-		set_current_gameobject(NULL);
+		set_current_gameobject(NULL, object_ptr);
 		for (size_t i = 0; i < scene->get_children_count(); i++) {
 			gameobject* obj = scene->get_child(i);
-			tree_helper(obj);
+			tree_helper(obj, object_ptr);
 		}
 		ImGui::TreePop();
 	}
 	ImGui::End();
+	return false;
 }
 bool control = true;
 void debug_menu(game* g_game) {
@@ -97,7 +116,12 @@ void debug_menu(game* g_game) {
 	ImGui::TextColored(ImVec4(1.f, 1.f, 0.f, 1.f), "camera");
 	ImGui::End();
 }
-void property_editor(game* g_game) {
+struct selection_struct {
+	component::property_base* prop;
+	gameobject** ptr;
+};
+std::vector<selection_struct> property_editor(game* g_game) {
+	std::vector<selection_struct> ptrs;
 	ImGui::Begin("property editor");
 	if (current_selected_gameobject) {
 		char buf[256];
@@ -107,6 +131,12 @@ void property_editor(game* g_game) {
 		const component::properties_t& p = current_selected_gameobject->get_properties();
 		for (auto& pr : p) {
 			pr->draw();
+			if (pr->is_selection_window_open()) {
+				gameobject** ptr = pr->get_selection_window_ptr();
+				if (ptr) {
+					ptrs.push_back({ pr.get(), ptr });
+				}
+			}
 		}
 		for (size_t i = 0; i < current_selected_gameobject->get_number_components<component>(); i++) {
 			component& c = current_selected_gameobject->get_component<component>(i);
@@ -114,6 +144,12 @@ void property_editor(game* g_game) {
 			const component::properties_t& properties = c.get_properties();
 			for (auto& p : properties) {
 				p->draw();
+				if (p->is_selection_window_open()) {
+					gameobject** ptr = p->get_selection_window_ptr();
+					if (ptr) {
+						ptrs.push_back({ p.get(), ptr });
+					}
+				}
 			}
 		}
 	}
@@ -121,6 +157,7 @@ void property_editor(game* g_game) {
 		ImGui::Text("there is no gameobject selected");
 	}
 	ImGui::End();
+	return ptrs;
 }
 void debug_console() {
 	ImGui::Begin("console");
@@ -137,7 +174,13 @@ void render_imgui(game* g_game) {
 	ImGui::NewFrame();
 	scene_hierarchy(g_game->get_scene());
 	debug_menu(g_game);
-	property_editor(g_game);
+	std::vector<selection_struct> ptrs = property_editor(g_game);
+	for (int i = 0; i < ptrs.size(); i++) {
+		auto p = ptrs[i];
+		if (scene_hierarchy(g_game->get_scene(), true, p.ptr, i + 1)) {
+			p.prop->close_selection_window();
+		}
+	}
 	debug_console();
 	ImGui::Render();
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());

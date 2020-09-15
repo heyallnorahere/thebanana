@@ -55,6 +55,12 @@ glm::mat4& transform::get_matrix() {
 transform::operator glm::mat4() {
 	return this->m;
 }
+transform::operator glm::vec3() {
+	return this->operator glm::vec4();
+}
+transform::operator glm::vec4() {
+	return this->m * glm::vec4(0.f, 0.f, 0.f, 1.f);
+}
 transform transform::operator*(const glm::mat4& other) {
 	return transform(this->m * other);
 }

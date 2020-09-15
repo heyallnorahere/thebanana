@@ -3,6 +3,7 @@
 #include "scene.h"
 #include "prop.h"
 #include "player.h"
+#include "rigidbody.h"
 std::string path_helper(const std::string& original, const std::string& find, const std::string& replace) {
 	size_t pos = std::string::npos;
 	std::string result = original;
@@ -33,14 +34,12 @@ void init_game() {
 	g_game = new game(TEXT("window"));
 	prop* p = new prop("collision");
 	p->get_transform().translate(2.f, 0.f, 2.f);
+	p->add_component<rigidbody>().set_collision_model_name("collision");
+	p->get_component<rigidbody>().set_property("mass", 1.5f);
 	g_game->get_scene()->add_object(p);
 	g_game->add_model_desc({ "waluigi", "models/placeholder/waluigi.fbx", waluigi_paths, transform().scale(0.0005f) });
 	g_game->add_model_desc({ "collision", "models/placeholder/collision.obj", waluigi_paths, transform() });
-	g_game->add_model_desc({ "resultsstage", "models/placeholder/resultsstage.obj", results_stage_paths, transform() });
-	g_game->add_model_desc({ "mk64rr", "models/placeholder/mk64rr.obj", mk64rr_paths, transform().scale(0.5f) });
-	g_game->add_model_desc({ "kunai", "models/placeholder/kunai.obj", kunai_paths, transform() });
 	g_game->load_models();
-	Sleep(3000);
 }
 void gameloop() {
 	g_game->update();

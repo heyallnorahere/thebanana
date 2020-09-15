@@ -112,7 +112,7 @@ void mlfarrel_model::on_collision(gameobject* other) {
 		shift_delta = glm::normalize(shift_delta);
 		shift_delta *= last_walk_speed * 1.1f;
 	}
-	this->parent->get_parent()->get_transform().move(shift_delta);
+	this->parent->apply_force(shift_delta);
 }
 mlfarrel_model& mlfarrel_model::set_radius(float radius) {
 	this->radius = radius;

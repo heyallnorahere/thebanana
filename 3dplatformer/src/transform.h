@@ -17,6 +17,8 @@ public:
 	const glm::mat4& get_matrix() const;
 	glm::mat4& get_matrix();
 	operator glm::mat4();
+	operator glm::vec3();
+	operator glm::vec4();
 	transform operator*(const glm::mat4& other);
 	transform operator*(const transform& other);
 	transform operator*(const aiMatrix4x4& other);

@@ -23,12 +23,13 @@ public:
 		void* get_ptr();
 		virtual void draw() const = 0;
 		bool is_selection_window_open() const;
-		void close_selection_window();
+		virtual void close_selection_window() = 0;
 		virtual gameobject** get_selection_window_ptr() const = 0;
 	protected:
 		std::string name;
 		void* ptr;
 		bool selection_window_open;
+		gameobject* selection_window_temp;
 	};
 	using properties_t = std::vector<std::unique_ptr<property_base>>;
 	template<typename T> class property : public property_base {
@@ -39,6 +40,7 @@ public:
 		virtual ~property() override;
 		virtual void draw() const override;
 		T* get_value();
+		virtual void close_selection_window() override;
 		virtual gameobject** get_selection_window_ptr() const override;
 	private:
 		T* value;
@@ -108,7 +110,7 @@ template<typename T> inline T* component::property<T>::get_value() {
 	return this->value;
 }
 inline gameobject** component::property<gameobject*>::get_selection_window_ptr() const {
-	return this->value;
+	return &((gameobject*&)this->selection_window_temp);
 }
 template<typename T> inline gameobject** component::property<T>::get_selection_window_ptr() const {
 	return NULL;
@@ -174,6 +176,13 @@ template<typename T> inline void component::property<T>::draw() const {
 	}
 	ImGui::Text("sorry, no implementation for this type yet... heres the raw memory though");
 	ImGui::InputText(this->name.c_str(), (char*)this->ptr, sizeof(T));
+}
+template<typename T> inline void component::property<T>::close_selection_window() {
+	this->selection_window_open = false;
+}
+inline void component::property<gameobject*>::close_selection_window() {
+	this->selection_window_open = false;
+	*this->value = this->selection_window_temp;
 }
 template<typename _Ty> inline void component::set_property(const std::string& name, const _Ty& value) {
 	property<_Ty>* prop = this->find_property<_Ty>(name);

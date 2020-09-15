@@ -35,6 +35,7 @@ component::property_base::property_base(const std::string& name, size_t size) {
 	this->ptr = malloc(size);
 	this->name = name;
 	this->selection_window_open = false;
+	this->selection_window_temp = NULL;
 }
 const std::string& component::property_base::get_name() {
 	return this->name;
@@ -45,9 +46,6 @@ void* component::property_base::get_ptr() {
 }
 bool component::property_base::is_selection_window_open() const {
 	return this->selection_window_open;
-}
-void component::property_base::close_selection_window() {
-	this->selection_window_open = false;
 }
 debug_component::debug_component(gameobject* obj) : component(obj), flash_start_time(0.0), flash_end_time(0.0) {
 	this->add_property(new property<double>(2.0, "flash rate"));

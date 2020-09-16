@@ -2,6 +2,7 @@
 #include "prop.h"
 #include "debug_tools.h"
 #include "rigidbody.h"
+#include "mesh.h"
 prop::prop(const std::string& model_name) {
 	this->m_nickname = "prop";
 	this->add_component<mesh_component>().set_mesh_name(model_name);

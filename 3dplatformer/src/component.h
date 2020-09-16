@@ -80,31 +80,6 @@ public:
 private:
 	double flash_start_time, flash_end_time;
 };
-class animation_component : public component {
-public:
-	animation_component(gameobject* obj);
-	virtual void post_update() override;
-	void start_animation(int index, bool repeat = false);
-	void start_animation(const std::string& name, bool repeat = false);
-	void stop_animation();
-	double get_animation_time();
-	int get_animation_id() const;
-	bool is_animating() const;
-private:
-	int animation_id;
-	double animation_start_time;
-	bool repeat;
-};
-class mesh_component : public component {
-public:
-	mesh_component(gameobject* obj);
-	mesh_component& set_mesh_name(const std::string& name);
-	std::string get_mesh_name() const;
-	virtual void pre_render() override;
-	void render();
-private:
-	std::string model_name;
-};
 template<typename T> inline component::property<T>::property(const T& value, const std::string& name) : property_base(name, sizeof(T)) {
 	this->value = new(this->ptr) T(value);
 }

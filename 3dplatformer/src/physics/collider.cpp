@@ -4,6 +4,7 @@
 #include "rigidbody.h"
 #include "gameobject.h"
 #include "debug_tools.h"
+#include "mesh.h"
 collider::collider(rigidbody* rb) : parent(rb) { }
 collider::~collider() { }
 mlfarrel_model::mlfarrel_model(rigidbody* rb) : collider(rb), origin_offset(glm::vec3(0.f, 0.5f, 0.f)), radius(0.5f) { }

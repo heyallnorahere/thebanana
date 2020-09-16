@@ -78,56 +78,6 @@ void debug_component::pre_render() {
 	}
 	this->parent->get_scene()->get_shader()->get_uniforms()._int("solid_color", solid && this->parent == current_selected_gameobject);
 }
-animation_component::animation_component(gameobject* obj) : component(obj), animation_start_time(0.0), repeat(false), animation_id(-1) { }
-void animation_component::post_update() {
-	if (this->animation_id > -1) {
-		double current_time = this->get_animation_time();
-		std::string model_name = "";
-		if (this->get_number_components<mesh_component>() > 0) {
-			model_name = this->get_component<mesh_component>().get_mesh_name();
-		}
-		const aiScene* s = this->parent->get_game()->get_model_registry()->get_scene(model_name);
-		if (!s) return;
-		aiAnimation* animation = s->mAnimations[this->animation_id];
-		double length_in_sec = animation->mDuration / animation->mTicksPerSecond;
-		if (!this->repeat && current_time > length_in_sec) {
-			this->stop_animation();
-		}
-	}
-}
-void animation_component::start_animation(int index, bool repeat) {
-	this->animation_id = index;
-	this->animation_start_time = CURRENT_TIME(double);
-	this->repeat = repeat;
-}
-void animation_component::start_animation(const std::string& name, bool repeat) {
-	std::string model_name = "";
-	if (this->get_number_components<mesh_component>() > 0) {
-		model_name = this->get_component<mesh_component>().get_mesh_name();
-	}
-	const aiScene* scene = this->parent->get_game()->get_model_registry()->get_scene(model_name);
-	if (!scene) return;
-	for (int i = 0; i < scene->mNumAnimations; i++) {
-		std::string animation_name(scene->mAnimations[i]->mName.data, scene->mAnimations[i]->mName.length);
-		if (name == animation_name.substr(animation_name.find_last_of('|') + 1)) {
-			this->start_animation(i, repeat);
-			break;
-		}
-	}
-}
-void animation_component::stop_animation() {
-	this->animation_id = -1;
-	this->repeat = false;
-}
-double animation_component::get_animation_time() {
-	return CURRENT_TIME(double) - this->animation_start_time;
-}
-int animation_component::get_animation_id() const {
-	return this->animation_id;
-}
-bool animation_component::is_animating() const {
-	return this->animation_id != -1;
-}
 component::property_base::dropdown::dropdown(const std::vector<std::string>& items, int initial_index) : m_items(items), m_index(initial_index) { }
 component::property_base::dropdown::dropdown(const std::vector<const char*>& items, int initial_index) : m_index(initial_index) {
 	for (const char* str : items) {
@@ -143,37 +93,4 @@ const std::vector<std::string>& component::property_base::dropdown::get_items() 
 void component::property_base::dropdown::set_items(const std::vector<std::string>& items) {
 	this->m_items = items;
 }
-mesh_component::mesh_component(gameobject* obj) : component(obj) {
-	this->model_name = "none";
-	this->add_property(new property<std::string>(this->model_name, "mesh name"));
-}
-mesh_component& mesh_component::set_mesh_name(const std::string& name) {
-	this->model_name = name;
-	this->set_property<std::string>("mesh name", name);
-	return *this;
-}
-std::string mesh_component::get_mesh_name() const {
-	return this->model_name;
-}
-void mesh_component::pre_render() {
-	property<std::string>* mn = this->find_property<std::string>("mesh name");
-	if (mn) {
-		if (this->model_name != *mn->get_value()) {
-			this->model_name = *mn->get_value();
-		}
-	}
-}
-void mesh_component::render() {
-	if (this->model_name != "none") {
-		transform model_transform = this->parent->get_game()->get_model_registry()->get_transform(this->model_name);
-		const aiScene* scene = this->parent->get_game()->get_model_registry()->get_scene(this->model_name);
-		if (scene) model_transform *= scene->mRootNode->mTransformation;
-		this->parent->get_scene()->get_shader()->get_uniforms().mat4("model_transform", model_transform.get_matrix());
-		double animation_time = this->get_number_components<animation_component>() > 0 ? this->get_component<animation_component>().get_animation_time() : 0.0;
-		int animation_index = -1;
-		if (this->get_number_components<animation_component>() > 0) {
-			animation_index = this->get_component<animation_component>().get_animation_id();
-		}
-		this->parent->get_game()->get_model_registry()->draw(this->model_name, animation_time, animation_index, this->parent->get_scene()->get_shader());
-	}
-}
+

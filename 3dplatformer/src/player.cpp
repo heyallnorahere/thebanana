@@ -9,6 +9,8 @@
 #include "debug_tools.h"
 #include "prop.h"
 #include "rigidbody.h"
+#include "animation.h"
+#include "mesh.h"
 player::player() {
 	log_print("created player");
 	this->add_component<animation_component>();

@@ -54,7 +54,7 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(SolutionDir)imgui\imgui;$(DXSDK_DIR)include;$(ProjectDir)src\physics;$(ProjectDir)src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)src\components;$(SolutionDir)imgui\imgui;$(DXSDK_DIR)include;$(ProjectDir)src\physics;$(ProjectDir)src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DisableSpecificWarnings>4996;%(DisableSpecificWarnings)</DisableSpecificWarnings>
     </ClCompile>
     <Link>
@@ -73,7 +73,7 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(SolutionDir)imgui\imgui;$(DXSDK_DIR)include;$(ProjectDir)src\physics;$(ProjectDir)src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)src\components;$(SolutionDir)imgui\imgui;$(DXSDK_DIR)include;$(ProjectDir)src\physics;$(ProjectDir)src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DisableSpecificWarnings>4996;%(DisableSpecificWarnings)</DisableSpecificWarnings>
     </ClCompile>
     <Link>
@@ -87,6 +87,8 @@
   <ItemGroup>
     <ClCompile Include="src\camera.cpp" />
     <ClCompile Include="src\component.cpp" />
+    <ClCompile Include="src\components\animation.cpp" />
+    <ClCompile Include="src\components\mesh.cpp" />
     <ClCompile Include="src\controller.cpp" />
     <ClCompile Include="src\debug_tools.cpp" />
     <ClCompile Include="src\game.cpp" />
@@ -111,6 +113,8 @@
     <ClInclude Include="resource.h" />
     <ClInclude Include="src\camera.h" />
     <ClInclude Include="src\component.h" />
+    <ClInclude Include="src\components\animation.h" />
+    <ClInclude Include="src\components\mesh.h" />
     <ClInclude Include="src\controller.h" />
     <ClInclude Include="src\debug_tools.h" />
     <ClInclude Include="src\game.h" />

@@ -17,7 +17,7 @@ public:
 	glm::vec3& get_shift_delta();
 	int& get_num_collisions();
 	void apply_force(const glm::vec3& force);
-	void set_collision_model_name(const std::string& model_name);
+	rigidbody& set_collision_model_name(const std::string& model_name);
 	std::string get_collision_model_name();
 	static const std::vector<rigidbody*>& get_rigidbodies();
 	static constexpr glm::vec3 gravity = glm::vec3(0.f, -1.f, 0.f);

@@ -4,6 +4,7 @@
 #include "prop.h"
 #include "player.h"
 #include "rigidbody.h"
+#include "null_object.h"
 std::string path_helper(const std::string& original, const std::string& find, const std::string& replace) {
 	size_t pos = std::string::npos;
 	std::string result = original;
@@ -37,6 +38,7 @@ void init_game() {
 	p->add_component<rigidbody>().set_collision_model_name("collision");
 	p->get_component<rigidbody>().set_property("mass", 1.5f);
 	g_game->get_scene()->add_object(p);
+	g_game->get_scene()->add_object(new null_object())->add_object(new prop("collision"))->add_component<rigidbody>().set_collision_model_name("collision");
 	g_game->add_model_desc({ "waluigi", "models/placeholder/waluigi.fbx", waluigi_paths, transform().scale(0.0005f) });
 	g_game->add_model_desc({ "collision", "models/placeholder/collision.obj", waluigi_paths, transform() });
 	g_game->load_models();

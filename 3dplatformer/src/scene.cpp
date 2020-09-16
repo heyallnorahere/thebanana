@@ -17,10 +17,6 @@ scene::scene(game* g) {
 	this->add_object(this->m_camera);
 	this->add_object(this->m_player);
 }
-void scene::add_object(gameobject* obj) {
-	obj->init(ROOT, this, this->m_game);
-	this->m_children.push_back(std::unique_ptr<gameobject>(obj));
-}
 void scene::update() {
 #ifdef _DEBUG
 	{

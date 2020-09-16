@@ -75,10 +75,6 @@ gameobject* gameobject::get_child(size_t index) {
 	const auto& c = *it;
 	return c.get();
 }
-void gameobject::add_object(gameobject* obj) {
-	obj->init(this, this->m_scene, this->m_game);
-	this->m_children.push_back(std::unique_ptr<gameobject>(obj));
-}
 transform gameobject::get_absolute_transform() {
 	if (this->m_parent == ROOT) {
 		return this->m_transform;

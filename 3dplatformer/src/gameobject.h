@@ -19,7 +19,7 @@ public:
 	size_t get_children_count() const;
 	const gameobject* get_child(size_t index) const;
 	gameobject* get_child(size_t index);
-	void add_object(gameobject* obj);
+	template<typename T> T* add_object(T* obj);
 	transform get_absolute_transform();
 	std::string& get_nickname();
 	scene* get_scene();
@@ -51,6 +51,11 @@ private:
 	void update_children();
 	void render_children();
 };
+template<typename T> inline T* gameobject::add_object(T* obj) {
+	obj->init(this, this->m_scene, this->m_game);
+	this->m_children.push_back(std::unique_ptr<gameobject>(obj));
+	return obj;
+}
 template<typename _Ty> inline _Ty& gameobject::add_component() {
 	_Ty* c = new _Ty(this);
 	if (this->initialized) c->initialize();

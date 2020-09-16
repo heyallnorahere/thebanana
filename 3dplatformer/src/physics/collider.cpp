@@ -69,9 +69,9 @@ bool mlfarrel_model::detect_collision(rigidbody* other) {
 		if (object->get_number_components<mesh_component>() > 0) {
 			model_name = object->get_component<mesh_component>().get_mesh_name();
 		}
-		glm::vec3 v0 = object->get_transform().get_matrix() * object->get_game()->get_model_registry()->get_transform(model_name).get_matrix() * glm::vec4(positions[indices[i][0]], 1.f);
-		glm::vec3 v1 = object->get_transform().get_matrix() * object->get_game()->get_model_registry()->get_transform(model_name).get_matrix() * glm::vec4(positions[indices[i][1]], 1.f);
-		glm::vec3 v2 = object->get_transform().get_matrix() * object->get_game()->get_model_registry()->get_transform(model_name).get_matrix() * glm::vec4(positions[indices[i][2]], 1.f);
+		glm::vec3 v0 = object->get_absolute_transform().get_matrix() * object->get_game()->get_model_registry()->get_transform(model_name).get_matrix() * glm::vec4(positions[indices[i][0]], 1.f);
+		glm::vec3 v1 = object->get_absolute_transform().get_matrix() * object->get_game()->get_model_registry()->get_transform(model_name).get_matrix() * glm::vec4(positions[indices[i][1]], 1.f);
+		glm::vec3 v2 = object->get_absolute_transform().get_matrix() * object->get_game()->get_model_registry()->get_transform(model_name).get_matrix() * glm::vec4(positions[indices[i][2]], 1.f);
 		glm::vec3 normal = glm::normalize(glm::mat3(glm::transpose(glm::inverse(object->get_transform().get_matrix()))) * normals[indices[i].x]);
 		if (fabs(normal.y) > 0.1f) continue;
 		float d = glm::dot(-((v0 + v1 + v2) / 3.f), normal);

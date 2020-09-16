@@ -98,6 +98,7 @@
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\model_registry.cpp" />
     <ClCompile Include="src\mouse.cpp" />
+    <ClCompile Include="src\null_object.cpp" />
     <ClCompile Include="src\pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
@@ -124,6 +125,7 @@
     <ClInclude Include="src\keyboard.h" />
     <ClInclude Include="src\model_registry.h" />
     <ClInclude Include="src\mouse.h" />
+    <ClInclude Include="src\null_object.h" />
     <ClInclude Include="src\pch.h" />
     <ClInclude Include="src\physics\collider.h" />
     <ClInclude Include="src\physics\rigidbody.h" />

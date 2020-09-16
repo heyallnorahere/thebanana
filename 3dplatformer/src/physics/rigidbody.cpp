@@ -81,8 +81,9 @@ void rigidbody::apply_force(const glm::vec3& force) {
 	float mass = _mass ? *_mass->get_value() : 1.f;
 	this->acceleration += force / mass;
 }
-void rigidbody::set_collision_model_name(const std::string& model_name) {
+rigidbody& rigidbody::set_collision_model_name(const std::string& model_name) {
 	this->collision_model_name = model_name;
+	return *this;
 }
 std::string rigidbody::get_collision_model_name() {
 	return this->collision_model_name;

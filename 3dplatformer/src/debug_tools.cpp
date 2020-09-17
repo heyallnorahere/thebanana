@@ -22,7 +22,7 @@ void clean_up_imgui() {
 constexpr ImGuiTreeNodeFlags open_flags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_OpenOnDoubleClick;
 static int id;
 #define ID() char id_str[256]; sprintf(id_str, "node%d", id++)
-gameobject* current_selected_gameobject = NULL, *selection_current_gameobject = NULL;
+gameobject* current_selected_gameobject = NULL;
 static void set_current_gameobject(gameobject* obj, gameobject** object_ptr) {
 	if (ImGui::IsItemClicked()) {
 		*object_ptr = obj;
@@ -120,8 +120,7 @@ struct selection_struct {
 	component::property_base* prop;
 	gameobject** ptr;
 };
-std::vector<selection_struct> property_editor(game* g_game) {
-	std::vector<selection_struct> ptrs;
+void property_editor(game* g_game, std::vector<selection_struct>& ptrs) {
 	ImGui::Begin("property editor");
 	if (current_selected_gameobject) {
 		char buf[256];
@@ -157,7 +156,6 @@ std::vector<selection_struct> property_editor(game* g_game) {
 		ImGui::Text("there is no gameobject selected");
 	}
 	ImGui::End();
-	return ptrs;
 }
 void debug_console() {
 	ImGui::Begin("console");
@@ -174,7 +172,8 @@ void render_imgui(game* g_game) {
 	ImGui::NewFrame();
 	scene_hierarchy(g_game->get_scene());
 	debug_menu(g_game);
-	std::vector<selection_struct> ptrs = property_editor(g_game);
+	std::vector<selection_struct> ptrs;
+	property_editor(g_game, ptrs);
 	for (int i = 0; i < ptrs.size(); i++) {
 		auto p = ptrs[i];
 		if (scene_hierarchy(g_game->get_scene(), true, p.ptr, i + 1)) {

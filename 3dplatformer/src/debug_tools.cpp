@@ -6,6 +6,7 @@
 #include "input_manager.h"
 #include "camera.h"
 #include "rigidbody.h"
+#include "framebuffer.h"
 std::stringstream debug_log;
 void init_imgui(HWND window) {
 	IMGUI_CHECKVERSION();
@@ -116,6 +117,14 @@ void debug_menu(game* g_game) {
 	}
 	ImGui::TextColored(ImVec4(1.f, 1.f, 0.f, 1.f), "physics");
 	ImGui::InputFloat3("gravity", &rigidbody::gravity.x);
+	void* tex = NULL;
+	int index = g_game->test_fb->get_attachment_map().color_index;
+	if (index > -1) {
+		tex = g_game->test_fb->get_attachments()[index].value;
+	}
+	if (tex) {
+		ImGui::Image(tex, ImVec2(400.f, 300.f), ImVec2(0.f, 1.f), ImVec2(1.f, 0.f));
+	}
 	ImGui::End();
 }
 struct selection_struct {

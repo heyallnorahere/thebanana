@@ -3,6 +3,9 @@
 #include "scene.h"
 #include "input_manager.h"
 #include "debug_tools.h"
+#include "framebuffer.h"
+#include "opengl/opengl_framebuffer.h"
+#include "../resource.h"
 game* g_game = NULL;
 game::game(const win32_string& title) {
 	this->m_frame = 0;
@@ -25,6 +28,26 @@ game::game(const win32_string& title) {
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	set_default_graphics_api(graphics_api::opengl);
+	opengl_framebuffer::desc desc;
+	desc.width = 800;
+	desc.height = 600;
+	desc.buffers = opengl_framebuffer::desc::color;
+	this->test_fb = framebuffer::create(&desc);
+	glGenVertexArrays(1, &this->vao);
+	glBindVertexArray(this->vao);
+	glGenBuffers(1, &this->vbo);
+	glBindBuffer(GL_ARRAY_BUFFER, this->vbo);
+	std::vector<glm::vec3> vertices = {
+		glm::vec3(-0.5f, -0.5f, 0.f),
+		glm::vec3( 0.5f, -0.5f, 0.f),
+		glm::vec3( 0.0f,  0.5f, 0.f),
+	};
+	glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(glm::vec3), vertices.data(), GL_STATIC_DRAW);
+	glVertexAttribPointer(0, 3, GL_FLOAT, false, sizeof(glm::vec3), NULL);
+	glEnableVertexAttribArray(0);
+	glBindVertexArray(NULL);
+	this->test_shader = new opengl_shader_library::win32_resource_shader(IDR_UI_VERTEX, IDR_UI_FRAGMENT);
 #ifdef _DEBUG
 	init_imgui(this->m_window);
 #endif
@@ -33,6 +56,10 @@ game::~game() {
 #ifdef _DEBUG
 	clean_up_imgui();
 #endif
+	delete this->test_shader;
+	glDeleteBuffers(1, &this->vbo);
+	glDeleteVertexArrays(1, &this->vao);
+	delete this->test_fb;
 	delete this->m_scene;
 	delete this->m_model_registry;
 	delete this->m_viewport;
@@ -50,6 +77,14 @@ void game::render() {
 	glClearColor(0.1f, 0.1f, 0.1f, 1.f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	this->m_scene->render();
+	this->test_fb->bind();
+	glClear(GL_COLOR_BUFFER_BIT);
+	opengl_shader_library::shader::use(this->test_shader);
+	glBindVertexArray(this->vao);
+	glDrawArrays(GL_TRIANGLES, 0, 3);
+	glBindVertexArray(NULL);
+	opengl_shader_library::shader::use(NULL);
+	this->test_fb->unbind();
 #ifdef _DEBUG
 	render_imgui(this);
 #endif
@@ -85,6 +120,7 @@ long long __stdcall game::wndproc(HWND window, unsigned int msg, unsigned long l
 			long height = r.bottom - r.top;
 			g_game->m_aspect_ratio = static_cast<float>(width) / static_cast<float>(height);
 			glViewport(0, 0, width, height);
+			g_game->test_fb->set_size(width, height);
 		}
 	}
 		break;

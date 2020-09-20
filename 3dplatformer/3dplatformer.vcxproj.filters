@@ -78,12 +78,23 @@
     <ClCompile Include="src\null_object.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\graphics\framebuffer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics\graphics_types.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics\opengl\opengl_framebuffer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
     <None Include="shaders\basic\vertex.shader" />
     <None Include="shaders\basic\fragment.shader" />
     <None Include="models\skullbandana.fbx" />
+    <None Include="shaders\ui\fragment.shader" />
+    <None Include="shaders\ui\vertex.shader" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\pch.h">
@@ -153,6 +164,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\null_object.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\framebuffer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\graphics_types.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\opengl\opengl_framebuffer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

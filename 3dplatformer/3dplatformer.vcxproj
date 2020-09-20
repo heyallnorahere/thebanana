@@ -54,7 +54,7 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(ProjectDir)src\components;$(SolutionDir)imgui\imgui;$(DXSDK_DIR)include;$(ProjectDir)src\physics;$(ProjectDir)src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)src\graphics;$(ProjectDir)src\components;$(SolutionDir)imgui\imgui;$(DXSDK_DIR)include;$(ProjectDir)src\physics;$(ProjectDir)src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DisableSpecificWarnings>4996;%(DisableSpecificWarnings)</DisableSpecificWarnings>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
@@ -74,7 +74,7 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(ProjectDir)src\components;$(SolutionDir)imgui\imgui;$(DXSDK_DIR)include;$(ProjectDir)src\physics;$(ProjectDir)src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)src\graphics;$(ProjectDir)src\components;$(SolutionDir)imgui\imgui;$(DXSDK_DIR)include;$(ProjectDir)src\physics;$(ProjectDir)src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DisableSpecificWarnings>4996;%(DisableSpecificWarnings)</DisableSpecificWarnings>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
@@ -95,6 +95,9 @@
     <ClCompile Include="src\debug_tools.cpp" />
     <ClCompile Include="src\game.cpp" />
     <ClCompile Include="src\gameobject.cpp" />
+    <ClCompile Include="src\graphics\framebuffer.cpp" />
+    <ClCompile Include="src\graphics\graphics_types.cpp" />
+    <ClCompile Include="src\graphics\opengl\opengl_framebuffer.cpp" />
     <ClCompile Include="src\input_manager.cpp" />
     <ClCompile Include="src\keyboard.cpp" />
     <ClCompile Include="src\main.cpp" />
@@ -122,6 +125,9 @@
     <ClInclude Include="src\debug_tools.h" />
     <ClInclude Include="src\game.h" />
     <ClInclude Include="src\gameobject.h" />
+    <ClInclude Include="src\graphics\framebuffer.h" />
+    <ClInclude Include="src\graphics\graphics_types.h" />
+    <ClInclude Include="src\graphics\opengl\opengl_framebuffer.h" />
     <ClInclude Include="src\input_manager.h" />
     <ClInclude Include="src\input_utils.h" />
     <ClInclude Include="src\keyboard.h" />
@@ -142,6 +148,8 @@
     <None Include="packages.config" />
     <None Include="shaders\basic\fragment.shader" />
     <None Include="shaders\basic\vertex.shader" />
+    <None Include="shaders\ui\fragment.shader" />
+    <None Include="shaders\ui\vertex.shader" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resources.rc" />

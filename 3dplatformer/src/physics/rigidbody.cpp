@@ -92,3 +92,4 @@ const std::vector<rigidbody*>& rigidbody::get_rigidbodies() {
 	return rigidbodies;
 }
 std::vector<rigidbody*> rigidbody::rigidbodies;
+glm::vec3 rigidbody::gravity = glm::vec3(0.f, -1.f, 0.f);

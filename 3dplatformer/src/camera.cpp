@@ -23,8 +23,7 @@ void camera::update() {
 	if (this->m_game->get_input_manager()->get_device_type(0) == input_manager::device_type::controller) {
 		controller* c = (controller*)this->m_game->get_input_manager()->get_device(0);
 		result = c->get_joysticks().right;
-	}
-	else {
+	} else {
 		static glm::vec2 last(0.f);
 		mouse* m = (mouse*)this->m_game->get_input_manager()->get_device(1);
 		glm::vec2 current = m->get_pos();

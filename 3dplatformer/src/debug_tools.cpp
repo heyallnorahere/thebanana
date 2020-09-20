@@ -5,6 +5,7 @@
 #include "gameobject.h"
 #include "input_manager.h"
 #include "camera.h"
+#include "rigidbody.h"
 std::stringstream debug_log;
 void init_imgui(HWND window) {
 	IMGUI_CHECKVERSION();
@@ -113,7 +114,8 @@ void debug_menu(game* g_game) {
 		ImGui::Unindent();
 		ImGui::TreePop();
 	}
-	ImGui::TextColored(ImVec4(1.f, 1.f, 0.f, 1.f), "camera");
+	ImGui::TextColored(ImVec4(1.f, 1.f, 0.f, 1.f), "physics");
+	ImGui::InputFloat3("gravity", &rigidbody::gravity.x);
 	ImGui::End();
 }
 struct selection_struct {

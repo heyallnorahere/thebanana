@@ -25,7 +25,7 @@ dummy_framebuffer::dummy_framebuffer(void* data) : framebuffer(data) { }
 void dummy_framebuffer::bind() { }
 void dummy_framebuffer::unbind() { }
 void dummy_framebuffer::set_size(int width, int height) { }
-void dummy_framebuffer::resize() { }
+void dummy_framebuffer::reload() { }
 std::vector<framebuffer::attachment> dummy_framebuffer::get_attachments() {
 	return std::vector<attachment>();
 }

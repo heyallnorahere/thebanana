@@ -13,9 +13,9 @@ void opengl_framebuffer::unbind() {
 void opengl_framebuffer::set_size(int width, int height) {
 	this->m_description.width = width;
 	this->m_description.height = height;
-	this->resize();
+	this->reload();
 }
-void opengl_framebuffer::resize() {
+void opengl_framebuffer::reload() {
 	this->clean_up();
 	this->setup();
 }

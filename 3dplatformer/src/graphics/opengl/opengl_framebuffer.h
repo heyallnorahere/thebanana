@@ -10,7 +10,7 @@ public:
 	virtual void bind() override;
 	virtual void unbind() override;
 	virtual void set_size(int width, int height) override;
-	virtual void resize() override;
+	virtual void reload() override;
 	virtual std::vector<attachment> get_attachments() override;
 	virtual ~opengl_framebuffer() override;
 private:

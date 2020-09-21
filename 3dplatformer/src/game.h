@@ -19,8 +19,6 @@ public:
 	scene* get_scene();
 	void add_model_desc(const model_registry::model_descriptor& desc);
 	void load_models();
-	framebuffer* test_fb;
-	opengl_shader_library::shader* test_shader;
 private:
 	unsigned int m_frame;
 	HWND m_window;
@@ -30,6 +28,5 @@ private:
 	model_registry* m_model_registry;
 	float m_aspect_ratio;
 	std::vector<model_registry::model_descriptor> descriptors;
-	unsigned int vao, vbo;
 };
 extern game* g_game;

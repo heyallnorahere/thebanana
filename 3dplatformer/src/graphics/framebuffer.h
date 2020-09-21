@@ -18,7 +18,7 @@ public:
 	virtual void bind() = 0;
 	virtual void unbind() = 0;
 	virtual void set_size(int width, int height) = 0;
-	virtual void resize() = 0;
+	virtual void reload() = 0;
 	virtual std::vector<attachment> get_attachments() = 0;
 	virtual ~framebuffer();
 	attachment_map get_attachment_map() const;
@@ -32,6 +32,6 @@ public:
 	virtual void bind() override;
 	virtual void unbind() override;
 	virtual void set_size(int width, int height) override;
-	virtual void resize() override;
+	virtual void reload() override;
 	virtual std::vector<attachment> get_attachments() override;
 };

@@ -1,6 +1,6 @@
 #include "pch.h"
-#include "framebuffer.h"
-#include "opengl/opengl_framebuffer.h"
+#include "graphics/framebuffer.h"
+#include "graphics/opengl/opengl_framebuffer.h"
 namespace thebanana {
 	framebuffer::framebuffer(void* data) { }
 	framebuffer::~framebuffer() { }

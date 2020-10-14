@@ -1,8 +1,8 @@
 #include "pch.h"
 #include "prop.h"
 #include "debug_tools.h"
-#include "rigidbody.h"
-#include "mesh.h"
+#include "physics/rigidbody.h"
+#include "components/mesh.h"
 namespace thebanana {
 	prop::prop(const std::string& model_name) {
 		this->m_nickname = "prop";

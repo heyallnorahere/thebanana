@@ -95,82 +95,82 @@
     <None Include="models\skullbandana.fbx" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\pch.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\game.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\scene.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\gameobject.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\util.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\transform.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\player.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\input_manager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\controller.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\input_utils.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\keyboard.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mouse.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="resource.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\model_registry.h">
+    <ClInclude Include="include\camera.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\camera.h">
+    <ClInclude Include="include\component.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\prop.h">
+    <ClInclude Include="include\controller.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\debug_tools.h">
+    <ClInclude Include="include\debug_tools.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\component.h">
+    <ClInclude Include="include\game.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\physics\rigidbody.h">
+    <ClInclude Include="include\gameobject.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\physics\collider.h">
+    <ClInclude Include="include\input_manager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\components\mesh.h">
+    <ClInclude Include="include\input_utils.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\components\animation.h">
+    <ClInclude Include="include\keyboard.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\null_object.h">
+    <ClInclude Include="include\model_registry.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\graphics\framebuffer.h">
+    <ClInclude Include="include\mouse.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\graphics\graphics_types.h">
+    <ClInclude Include="include\null_object.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\graphics\opengl\opengl_framebuffer.h">
+    <ClInclude Include="include\pch.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\player.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\prop.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\scene.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\transform.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\util.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\components\animation.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\components\mesh.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\graphics\framebuffer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\graphics\graphics_types.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\graphics\opengl\opengl_framebuffer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\physics\collider.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\physics\rigidbody.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

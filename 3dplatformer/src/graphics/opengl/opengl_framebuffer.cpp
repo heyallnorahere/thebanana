@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "opengl_framebuffer.h"
+#include "graphics/opengl/opengl_framebuffer.h"
 namespace thebanana {
 	opengl_framebuffer::opengl_framebuffer(desc* d) : framebuffer(d) {
 		this->m_description = *d;

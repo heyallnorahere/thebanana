@@ -5,8 +5,8 @@
 #include "gameobject.h"
 #include "input_manager.h"
 #include "camera.h"
-#include "rigidbody.h"
-#include "framebuffer.h"
+#include "physics/rigidbody.h"
+#include "graphics/framebuffer.h"
 namespace thebanana {
 	std::stringstream debug_log;
 	void init_imgui(HWND window) {

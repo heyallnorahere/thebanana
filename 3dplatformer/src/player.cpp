@@ -8,9 +8,9 @@
 #include "scene.h"
 #include "debug_tools.h"
 #include "prop.h"
-#include "rigidbody.h"
-#include "animation.h"
-#include "mesh.h"
+#include "physics/rigidbody.h"
+#include "components/animation.h"
+#include "components/mesh.h"
 namespace thebanana {
 	player::player() {
 		//this->m_transform.translate(2.f, 1.f, 2.f);

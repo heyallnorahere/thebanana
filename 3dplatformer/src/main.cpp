@@ -3,7 +3,7 @@
 #include "scene.h"
 #include "prop.h"
 #include "player.h"
-#include "rigidbody.h"
+#include "physics/rigidbody.h"
 #include "null_object.h"
 std::string path_helper(const std::string& original, const std::string& find, const std::string& replace) {
 	size_t pos = std::string::npos;

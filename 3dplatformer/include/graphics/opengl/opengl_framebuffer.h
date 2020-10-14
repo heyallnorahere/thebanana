@@ -1,5 +1,5 @@
 #pragma once
-#include "framebuffer.h"
+#include "graphics/framebuffer.h"
 namespace thebanana {
 	class opengl_framebuffer : public framebuffer {
 	public:

@@ -1,10 +1,10 @@
 #include "pch.h"
 #include "game.h"
-#include "collider.h"
-#include "rigidbody.h"
+#include "physics/collider.h"
+#include "physics/rigidbody.h"
 #include "gameobject.h"
 #include "debug_tools.h"
-#include "mesh.h"
+#include "components/mesh.h"
 namespace thebanana {
 	collider::collider(rigidbody* rb) : parent(rb) { }
 	collider::~collider() { }

@@ -55,7 +55,7 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(ProjectDir)src\graphics;$(ProjectDir)src\components;$(SolutionDir)imgui\imgui;$(DXSDK_DIR)include;$(ProjectDir)src\physics;$(ProjectDir)src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)imgui\imgui;$(DXSDK_DIR)include;$(ProjectDir)include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DisableSpecificWarnings>4996;%(DisableSpecificWarnings)</DisableSpecificWarnings>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
@@ -75,7 +75,7 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(ProjectDir)src\graphics;$(ProjectDir)src\components;$(SolutionDir)imgui\imgui;$(DXSDK_DIR)include;$(ProjectDir)src\physics;$(ProjectDir)src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)imgui\imgui;$(DXSDK_DIR)include;$(ProjectDir)include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DisableSpecificWarnings>4996;%(DisableSpecificWarnings)</DisableSpecificWarnings>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
@@ -118,31 +118,31 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h" />
-    <ClInclude Include="src\camera.h" />
-    <ClInclude Include="src\component.h" />
-    <ClInclude Include="src\components\animation.h" />
-    <ClInclude Include="src\components\mesh.h" />
-    <ClInclude Include="src\controller.h" />
-    <ClInclude Include="src\debug_tools.h" />
-    <ClInclude Include="src\game.h" />
-    <ClInclude Include="src\gameobject.h" />
-    <ClInclude Include="src\graphics\framebuffer.h" />
-    <ClInclude Include="src\graphics\graphics_types.h" />
-    <ClInclude Include="src\graphics\opengl\opengl_framebuffer.h" />
-    <ClInclude Include="src\input_manager.h" />
-    <ClInclude Include="src\input_utils.h" />
-    <ClInclude Include="src\keyboard.h" />
-    <ClInclude Include="src\model_registry.h" />
-    <ClInclude Include="src\mouse.h" />
-    <ClInclude Include="src\null_object.h" />
-    <ClInclude Include="src\pch.h" />
-    <ClInclude Include="src\physics\collider.h" />
-    <ClInclude Include="src\physics\rigidbody.h" />
-    <ClInclude Include="src\player.h" />
-    <ClInclude Include="src\prop.h" />
-    <ClInclude Include="src\scene.h" />
-    <ClInclude Include="src\transform.h" />
-    <ClInclude Include="src\util.h" />
+    <ClInclude Include="include\camera.h" />
+    <ClInclude Include="include\component.h" />
+    <ClInclude Include="include\components\animation.h" />
+    <ClInclude Include="include\components\mesh.h" />
+    <ClInclude Include="include\controller.h" />
+    <ClInclude Include="include\debug_tools.h" />
+    <ClInclude Include="include\game.h" />
+    <ClInclude Include="include\gameobject.h" />
+    <ClInclude Include="include\graphics\framebuffer.h" />
+    <ClInclude Include="include\graphics\graphics_types.h" />
+    <ClInclude Include="include\graphics\opengl\opengl_framebuffer.h" />
+    <ClInclude Include="include\input_manager.h" />
+    <ClInclude Include="include\input_utils.h" />
+    <ClInclude Include="include\keyboard.h" />
+    <ClInclude Include="include\model_registry.h" />
+    <ClInclude Include="include\mouse.h" />
+    <ClInclude Include="include\null_object.h" />
+    <ClInclude Include="include\pch.h" />
+    <ClInclude Include="include\physics\collider.h" />
+    <ClInclude Include="include\physics\rigidbody.h" />
+    <ClInclude Include="include\player.h" />
+    <ClInclude Include="include\prop.h" />
+    <ClInclude Include="include\scene.h" />
+    <ClInclude Include="include\transform.h" />
+    <ClInclude Include="include\util.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="models\skullbandana.fbx" />

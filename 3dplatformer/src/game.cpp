@@ -3,8 +3,8 @@
 #include "scene.h"
 #include "input_manager.h"
 #include "debug_tools.h"
-#include "framebuffer.h"
-#include "opengl/opengl_framebuffer.h"
+#include "graphics/framebuffer.h"
+#include "graphics/opengl/opengl_framebuffer.h"
 #include "../resource.h"
 #ifdef _DEBUG
 extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);

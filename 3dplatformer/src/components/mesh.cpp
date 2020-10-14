@@ -1,6 +1,6 @@
 #include "pch.h"
-#include "mesh.h"
-#include "animation.h"
+#include "components/mesh.h"
+#include "components/animation.h"
 #include "gameobject.h"
 #include "game.h"
 #include "scene.h"

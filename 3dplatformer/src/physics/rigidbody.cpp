@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "rigidbody.h"
+#include "physics/rigidbody.h"
 #include "gameobject.h"
 #include "debug_tools.h"
 #include "game.h"

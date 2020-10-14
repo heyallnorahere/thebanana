@@ -1,0 +1,35 @@
+#pragma once
+#include <GL/glew.h>
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
+#include <Windows.h>
+#include <initguid.h>
+#include <dinput.h>
+#ifdef min
+#undef min
+#endif
+#ifdef max
+#undef max
+#endif
+#include <model_loader.h>
+#include <opengl_shader.h>
+#include <opengl_viewport.h>
+#include <imgui.h>
+#include <examples/imgui_impl_win32.h>
+#include <examples/imgui_impl_opengl3.h>
+#include <misc/cpp/imgui_stdlib.h>
+#include <string>
+#include <iostream>
+#include <fstream>
+#include <sstream>
+#include <algorithm>
+#include <iterator>
+#include <vector>
+#include <list>
+#include <map>
+#include <memory>
+#include <chrono>
+#include <cassert>
+#include <typeinfo>
+#include <thread>

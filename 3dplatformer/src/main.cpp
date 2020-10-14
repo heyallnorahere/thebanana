@@ -1,10 +1,5 @@
 #include "pch.h"
-#include "game.h"
-#include "scene.h"
-#include "prop.h"
-#include "player.h"
-#include "physics/rigidbody.h"
-#include "null_object.h"
+#include "thebanana.h"
 std::string path_helper(const std::string& original, const std::string& find, const std::string& replace) {
 	size_t pos = std::string::npos;
 	std::string result = original;
@@ -33,7 +28,7 @@ std::string results_stage_paths(const std::string& path, void*) {
 }
 using namespace thebanana;
 void init_game() {
-	g_game = new game(TEXT("window"));
+	g_game = new game("banana window");
 	prop* p = new prop("collision");
 	p->get_transform().translate(2.f, 1.f, 2.f);
 	p->add_tag("test");
@@ -56,27 +51,4 @@ void gameloop() {
 }
 void clean_up_game() {
 	delete g_game;
-}
-int __stdcall WinMain(HINSTANCE instance, HINSTANCE prev, char* cmd_line, int cmd_show) {
-	WNDCLASS wc;
-	ZeroMemory(&wc, sizeof(WNDCLASS));
-	wc.lpfnWndProc = game::wndproc;
-	wc.lpszClassName = TEXT("3dplat");
-	wc.hCursor = LoadCursor(HINST_THISCOMPONENT, IDC_ARROW);
-	wc.hInstance = HINST_THISCOMPONENT;
-	wc.hbrBackground = (HBRUSH)COLOR_WINDOW;
-	wc.style = CS_HREDRAW | CS_VREDRAW;
-	assert(RegisterClass(&wc));
-	init_game();
-	MSG msg;
-	ZeroMemory(&msg, sizeof(MSG));
-	while (msg.message != WM_QUIT) {
-		if (PeekMessage(&msg, NULL, NULL, NULL, PM_REMOVE)) {
-			TranslateMessage(&msg);
-			DispatchMessage(&msg);
-		}
-		gameloop();
-	}
-	clean_up_game();
-	return static_cast<int>(msg.wParam);
 }

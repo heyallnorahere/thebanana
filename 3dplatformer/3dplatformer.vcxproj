@@ -117,6 +117,13 @@
     <ClCompile Include="src\transform.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="include\components\components.h" />
+    <ClInclude Include="include\graphics\graphics.h" />
+    <ClInclude Include="include\graphics\opengl\opengl.h" />
+    <ClInclude Include="include\includelist.h" />
+    <ClInclude Include="include\main_module.h" />
+    <ClInclude Include="include\physics\physics.h" />
+    <ClInclude Include="include\thebanana.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="include\camera.h" />
     <ClInclude Include="include\component.h" />

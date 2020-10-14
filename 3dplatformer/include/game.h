@@ -1,13 +1,14 @@
 #pragma once
 #include "util.h"
 #include "model_registry.h"
+#define BANANA_WINDOW_CLASS_NAME "banana_ui"
 namespace thebanana {
 	class scene;
 	class input_manager;
 	class framebuffer;
 	class game {
 	public:
-		game(const win32_string& title);
+		game(const std::string& title);
 		~game();
 		void destroy();
 		void update();

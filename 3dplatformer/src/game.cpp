@@ -11,9 +11,9 @@ extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg
 #endif
 namespace thebanana {
 	game* g_game = NULL;
-	game::game(const win32_string& title) {
+	game::game(const std::string& title) {
 		this->m_frame = 0;
-		this->m_window = CreateWindow(TEXT("3dplat"), title.c_str(), WS_VISIBLE | WS_SYSMENU | WS_MAXIMIZEBOX, CW_USEDEFAULT, CW_USEDEFAULT, 800, 600, NULL, NULL, HINST_THISCOMPONENT, this);
+		this->m_window = CreateWindowA(BANANA_WINDOW_CLASS_NAME, title.c_str(), WS_VISIBLE | WS_SYSMENU | WS_MAXIMIZEBOX, CW_USEDEFAULT, CW_USEDEFAULT, 800, 600, NULL, NULL, HINST_THISCOMPONENT, this);
 		RECT r;
 		GetWindowRect(this->m_window, &r);
 		this->m_aspect_ratio = static_cast<float>(r.right - r.left) / static_cast<float>(r.bottom - r.top);

@@ -30,14 +30,14 @@ using namespace thebanana;
 void init_game() {
 	g_game = new game("banana window");
 	prop* p = new prop("collision");
-	p->get_transform().translate(2.f, 0.f, 2.f);
+	p->get_transform().translate(2.f, 0.75f, 2.f);
 	p->add_tag("test");
 	p->add_component<rigidbody>().set_collision_model_name("collision").set_collision_tags({ "ground" }).set_collider_type<mlfarrel_model>().set_radius(0.5f).set_origin_offset(glm::vec3(0.f, 0.5f, 0.f));
 	p->get_component<rigidbody>().set_property("mass", 1.5f);
 	g_game->get_scene()->add_object(p);
 	p = new prop("collision");
-	p->get_transform().translate(0.f, -6.f, 0.f);
-	p->get_transform().scale(100.f, 5.f, 100.f);
+	p->get_transform().translate(0.f, -1.f, 0.f);
+	p->get_transform().scale(100.f, 1.f, 100.f);
 	p->add_tag("ground");
 	p->add_component<rigidbody>().set_collision_model_name("collision");
 	g_game->get_scene()->add_object(p);

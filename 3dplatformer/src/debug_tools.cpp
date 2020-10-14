@@ -58,10 +58,10 @@ namespace thebanana {
 		}
 		bool scene_hierarchy(scene* scene, bool is_selection_window = false, gameobject** object_ptr = &current_selected_gameobject, int id = 0) {
 			::thebanana::debug::id = 0xff;
-			std::string window_name = "scene hierarchy";
+			std::string window_name = "the banana: scene hierarchy";
 			if (is_selection_window) {
 				std::stringstream ss;
-				ss << "selection window #" << id;
+				ss << "the banana: selection window #" << id;
 				window_name = ss.str();
 			}
 			ImGui::Begin(window_name.c_str());
@@ -90,7 +90,7 @@ namespace thebanana {
 		}
 		bool control = true;
 		void debug_menu(game* g_game) {
-			ImGui::Begin("debug menu");
+			ImGui::Begin("the banana: debug menu");
 			ImGui::TextColored(ImVec4(1.f, 0.f, 1.f, 1.f), "input");
 			ImGui::Checkbox("controls active", &control);
 			if (ImGui::TreeNodeEx("devices", open_flags)) {
@@ -125,13 +125,17 @@ namespace thebanana {
 			component::property_base* prop;
 			gameobject** ptr;
 		};
+		std::map<gameobject*, bool> transform_menu_values;
 		void property_editor(game* g_game, std::vector<selection_struct>& ptrs) {
-			ImGui::Begin("property editor");
+			ImGui::Begin("the banana: property editor");
 			if (current_selected_gameobject) {
 				char buf[256];
 				_ui64toa(reinterpret_cast<size_t>(current_selected_gameobject), buf, 0x10);
 				ImGui::Text("gameobject address: 0x%s", buf);
 				ImGui::InputText("gameobject nickname", &current_selected_gameobject->get_nickname());
+				if (ImGui::Button("toggle transform menu")) {
+					transform_menu_values[current_selected_gameobject] = !(transform_menu_values[current_selected_gameobject]);
+				}
 				const component::properties_t& p = current_selected_gameobject->get_properties();
 				for (auto& pr : p) {
 					pr->draw();
@@ -163,12 +167,62 @@ namespace thebanana {
 			ImGui::End();
 		}
 		void debug_console() {
-			ImGui::Begin("console");
+			ImGui::Begin("the banana: console");
 			std::string log = debug_log.str();
 			ImGui::InputTextMultiline("console log", &log, ImVec2(1000, 1000), ImGuiInputTextFlags_ReadOnly);
 			ImGui::BeginChild("console log");
 			ImGui::SetScrollY(ImGui::GetScrollMaxY());
 			ImGui::EndChild();
+			ImGui::End();
+		}
+		void transform_menu(gameobject* obj, int id) {
+			std::stringstream ss;
+			ss << "the banana: transform menu #" << id;
+			std::string window_name = ss.str();
+			ImGui::Begin(window_name.c_str());
+			ImGui::Text("transform menu for gameobject: %s", obj->get_nickname().c_str());
+			static glm::vec3 translate(0.f);
+			ImGui::InputFloat3("translation values", &translate.x);
+			if (ImGui::Button("translate")) {
+				obj->get_transform().translate(translate);
+				translate = glm::vec3(0.f);
+			}
+			static glm::vec3 move(0.f);
+			ImGui::InputFloat3("motion values", &move.x);
+			if (ImGui::Button("move")) {
+				obj->get_transform().move(move);
+				move = glm::vec3(0.f);
+			}
+			static glm::vec3 rotate(0.f);
+			static bool rotate_x = false, rotate_y = false, rotate_z = false;
+			ImGui::Checkbox("rotate x", &rotate_x);
+			ImGui::Checkbox("rotate y", &rotate_y);
+			ImGui::Checkbox("rotate z", &rotate_z);
+			ImGui::InputFloat3("rotation values", &rotate.x);
+			if (ImGui::Button("rotate")) {
+				if (rotate_x) {
+					obj->get_transform().rotate(rotate.x, glm::vec3(1.f, 0.f, 0.f));
+					rotate_x = false;
+				}
+				if (rotate_y) {
+					obj->get_transform().rotate(rotate.y, glm::vec3(0.f, 1.f, 0.f));
+					rotate_y = false;
+				}
+				if (rotate_z) {
+					obj->get_transform().rotate(rotate.z, glm::vec3(0.f, 0.f, 1.f));
+					rotate_z = false;
+				}
+				rotate = glm::vec3(0.f);
+			}
+			static glm::vec3 scale(0.f);
+			ImGui::InputFloat3("dilation values", &scale.x);
+			if (ImGui::Button("scale")) {
+				obj->get_transform().scale(scale);
+				scale = glm::vec3(0.f);
+			}
+			if (ImGui::Button("close")) {
+				transform_menu_values[obj] = false;
+			}
 			ImGui::End();
 		}
 		void render_imgui(game* g_game) {
@@ -184,6 +238,13 @@ namespace thebanana {
 				if (scene_hierarchy(g_game->get_scene(), true, p.ptr, i + 1)) {
 					p.prop->close_selection_window();
 				}
+			}
+			std::vector<gameobject*> objects;
+			for (auto p : transform_menu_values) {
+				if (p.second) objects.push_back(p.first);
+			}
+			for (int i = 0; i < objects.size(); i++) {
+				transform_menu(objects[i], i + 1);
 			}
 			debug_console();
 			ImGui::Render();

@@ -41,7 +41,7 @@ void init_game() {
 	p->add_tag("ground");
 	p->add_component<rigidbody>().set_collision_model_name("collision");
 	g_game->get_scene()->add_object(p);
-	g_game->add_model_desc({ "waluigi", "models/placeholder/waluigi.fbx", waluigi_paths, transform().scale(0.0005f) });
+	g_game->add_model_desc({ "player", "models/placeholder/waluigi.fbx", waluigi_paths, transform().scale(0.0005f) });
 	g_game->add_model_desc({ "collision", "models/placeholder/collision.obj", waluigi_paths, transform() });
 	g_game->load_models();
 }

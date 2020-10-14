@@ -53,6 +53,6 @@ namespace thebanana {
 			this->last[i] = false;
 		}
 		ZeroMemory(&this->state, sizeof(DIJOYSTATE));
-		log_print("created controller");
+		debug::log_print("created controller");
 	}
 }

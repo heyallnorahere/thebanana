@@ -43,6 +43,6 @@ namespace thebanana {
 			this->last[i] = false;
 		}
 		ZeroMemory(&this->state, sizeof(DIMOUSESTATE));
-		log_print("created mouse");
+		debug::log_print("created mouse");
 	}
 }

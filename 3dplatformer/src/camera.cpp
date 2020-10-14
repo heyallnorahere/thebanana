@@ -9,7 +9,7 @@
 #include "mouse.h"
 namespace thebanana {
 	camera::camera(player* p) : m_player(p) {
-		log_print("created camera");
+		debug::log_print("created camera");
 		this->m_direction = glm::vec3(0.f, 0.f, 1.f);
 		this->m_angle = glm::vec2(0.f, -90.f);
 		this->m_nickname = "camera";
@@ -18,7 +18,7 @@ namespace thebanana {
 	void camera::update() {
 		this->prepare_for_update();
 #ifdef _DEBUG
-		if (control) {
+		if (debug::control) {
 #endif
 			glm::vec2 result;
 			if (this->m_game->get_input_manager()->get_device_type(0) == input_manager::device_type::controller) {

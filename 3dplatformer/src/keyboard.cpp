@@ -35,6 +35,6 @@ namespace thebanana {
 		this->keys = capabilities.dwButtons;
 		this->current.resize(this->keys);
 		this->last.resize(this->keys);
-		log_print("created keyboard");
+		debug::log_print("created keyboard");
 	}
 }

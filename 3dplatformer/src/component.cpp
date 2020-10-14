@@ -47,7 +47,9 @@ namespace thebanana {
 		this->add_property(new property<double>(0.1, "flash length"));
 		this->add_property(new property<gameobject*>(NULL, "test pointer"));
 	}
-	extern gameobject* current_selected_gameobject;
+	namespace debug {
+		extern gameobject* current_selected_gameobject;
+	}
 	void debug_component::pre_render() {
 		property<gameobject*>* _test_ptr = this->find_property<gameobject*>("test pointer");
 		gameobject* test_ptr = NULL;
@@ -79,7 +81,7 @@ namespace thebanana {
 				this->flash_start_time = time;
 			}
 		}
-		this->parent->get_scene()->get_shader()->get_uniforms()._int("solid_color", solid && this->parent == current_selected_gameobject);
+		this->parent->get_scene()->get_shader()->get_uniforms()._int("solid_color", solid && this->parent == debug::current_selected_gameobject);
 	}
 	component::property_base::dropdown::dropdown(const std::vector<std::string>& items, int initial_index) : m_items(items), m_index(initial_index) { }
 	component::property_base::dropdown::dropdown(const std::vector<const char*>& items, int initial_index) : m_index(initial_index) {

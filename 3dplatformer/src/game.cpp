@@ -32,14 +32,14 @@ namespace thebanana {
 		glEnable(GL_DEPTH_TEST);
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-		set_default_graphics_api(graphics_api::opengl);
+		graphics::set_default_graphics_api(graphics::graphics_api::opengl);
 #ifdef _DEBUG
-		init_imgui(this->m_window);
+		debug::init_imgui(this->m_window);
 #endif
 	}
 	game::~game() {
 #ifdef _DEBUG
-		clean_up_imgui();
+		debug::clean_up_imgui();
 #endif
 		delete this->m_scene;
 		delete this->m_model_registry;
@@ -59,7 +59,7 @@ namespace thebanana {
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		this->m_scene->render();
 #ifdef _DEBUG
-		render_imgui(this);
+		debug::render_imgui(this);
 #endif
 		this->m_viewport->swap_buffers();
 	}

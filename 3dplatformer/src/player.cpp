@@ -13,8 +13,7 @@
 #include "components/mesh.h"
 namespace thebanana {
 	player::player() {
-		//this->m_transform.translate(2.f, 1.f, 2.f);
-		log_print("created player");
+		debug::log_print("created player");
 		this->add_component<animation_component>();
 		this->add_component<mesh_component>().set_mesh_name("waluigi");
 		this->add_component<rigidbody>().set_check_for_collisions(true).set_speed_cap(1.2f).set_collision_tags({ "ground", "test" }).set_collider_type<mlfarrel_model>().set_radius(0.4f).set_origin_offset(glm::vec3(0.f, 0.6f, 0.f));
@@ -33,7 +32,7 @@ namespace thebanana {
 		const float speed = 0.005f;
 		this->prepare_for_update();
 #ifdef _DEBUG
-		if (control) {
+		if (debug::control) {
 #endif
 			glm::vec3 translate(0.f);
 			glm::vec2 angle = this->m_scene->get_camera()->get_angle() + glm::vec2(0.f, 90.f);

@@ -28,7 +28,7 @@ namespace thebanana {
 				toggle = btns[DIK_F1].down;
 			}
 			if (toggle) {
-				control = !control;
+				debug::control = !debug::control;
 			}
 		}
 #endif

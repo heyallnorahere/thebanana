@@ -31,6 +31,7 @@ std::string mk64rr_paths(const std::string& path, void*) {
 std::string results_stage_paths(const std::string& path, void*) {
 	return path_helper(path, "Results Stage\\Results Stage\\images\\", "textures\\placeholder\\resultsstage\\");
 }
+using namespace thebanana;
 void init_game() {
 	g_game = new game(TEXT("window"));
 	prop* p = new prop("collision");

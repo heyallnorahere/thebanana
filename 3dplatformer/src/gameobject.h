@@ -29,7 +29,9 @@ public:
 	template<typename _Ty> size_t get_number_components();
 	const component::properties_t& get_properties();
 	void on_collision(gameobject* other);
-	virtual float& get_last_walk_speed();
+	std::vector<std::string> get_tags() const;
+	void add_tag(const std::string& tag);
+	bool has_tag(const std::string& tag) const;
 protected:
 	component::properties_t m_properties;
 	void add_property(component::property_base* p);
@@ -45,6 +47,7 @@ protected:
 	std::list<std::unique_ptr<gameobject>> m_children;
 	transform m_transform;
 	std::vector<std::unique_ptr<component>> m_components;
+	std::vector<std::string> m_tags;
 private:
 	unsigned int last_collided_frame;
 	bool initialized;

@@ -19,6 +19,8 @@ public:
 	mlfarrel_model& set_radius(float radius);
 	mlfarrel_model& set_origin_offset(glm::vec3 offset);
 private:
+	bool will_pass(rigidbody* other, glm::vec3& d, const std::vector<glm::vec3>& vertices, glm::vec<3, unsigned int, glm::packed_highp>* indices, size_t i);
 	glm::vec3 origin_offset;
+	glm::vec3 last_frame_position;
 	float radius;
 };

@@ -101,9 +101,17 @@ void gameobject::on_collision(gameobject* other) {
 	}
 	this->last_collided_frame = this->m_game->get_current_frame();
 }
-float& gameobject::get_last_walk_speed() {
-	float temp = 0.f;
-	return temp;
+std::vector<std::string> gameobject::get_tags() const {
+	return this->m_tags;
+}
+void gameobject::add_tag(const std::string& tag) {
+	this->m_tags.push_back(tag);
+}
+bool gameobject::has_tag(const std::string& tag) const {
+	for (auto t : this->m_tags) {
+		if (tag == t) return true;
+	}
+	return false;
 }
 void gameobject::add_property(component::property_base* p) {
 	this->m_properties.push_back(std::unique_ptr<component::property_base> (p));

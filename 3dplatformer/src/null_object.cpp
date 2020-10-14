@@ -11,7 +11,3 @@ void null_object::render() {
 	this->prepare_for_render();
 	this->post_render();
 }
-float& null_object::get_last_walk_speed() {
-	float unused = 0;
-	return unused;
-}

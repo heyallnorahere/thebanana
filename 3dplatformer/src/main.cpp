@@ -34,11 +34,17 @@ std::string results_stage_paths(const std::string& path, void*) {
 void init_game() {
 	g_game = new game(TEXT("window"));
 	prop* p = new prop("collision");
-	p->get_transform().translate(2.f, 0.f, 2.f);
-	p->add_component<rigidbody>().set_collision_model_name("collision");
+	p->get_transform().translate(2.f, 1.f, 2.f);
+	p->add_tag("test");
+	p->add_component<rigidbody>().set_collision_model_name("collision").set_collision_tags({ "ground" }).set_collider_type<mlfarrel_model>().set_radius(0.5f).set_origin_offset(glm::vec3(0.f, 0.5f, 0.f));
 	p->get_component<rigidbody>().set_property("mass", 1.5f);
 	g_game->get_scene()->add_object(p);
-	g_game->get_scene()->add_object(new null_object())->add_object(new prop("collision"))->add_component<rigidbody>().set_collision_model_name("collision");
+	p = new prop("collision");
+	p->get_transform().translate(0.f, -6.f, 0.f);
+	p->get_transform().scale(10.f, 5.f, 10.f);
+	p->add_tag("ground");
+	p->add_component<rigidbody>().set_collision_model_name("collision");
+	g_game->get_scene()->add_object(p);
 	g_game->add_model_desc({ "waluigi", "models/placeholder/waluigi.fbx", waluigi_paths, transform().scale(0.0005f) });
 	g_game->add_model_desc({ "collision", "models/placeholder/collision.obj", waluigi_paths, transform() });
 	g_game->load_models();

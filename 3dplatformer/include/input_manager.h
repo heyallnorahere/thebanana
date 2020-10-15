@@ -30,7 +30,7 @@ namespace thebanana {
 				T val;
 				unsigned char operator[](size_t index) const;
 			};
-			bool init(const dinput_device& device, IDirectInput8* context);
+			bool init(const dinput_device& device, IDirectInput8* context, input_manager* parent);
 			virtual ~device();
 			virtual std::vector<button> get_buttons() = 0;
 			virtual void update() = 0;
@@ -40,6 +40,7 @@ namespace thebanana {
 			virtual const DIDATAFORMAT* get_format() = 0;
 			virtual void device_specific_init() = 0;
 			IDirectInputDevice8* device;
+			input_manager* parent;
 		};
 		input_manager(game* g_game);
 		void enum_devices();
@@ -53,6 +54,7 @@ namespace thebanana {
 		static device_type get_device_type(const dinput_device& dev);
 		device_type get_device_type(size_t index);
 		device* get_device(size_t index);
+		game* get_parent();
 	private:
 		game* m_game;
 		IDirectInput8* m_context;

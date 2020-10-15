@@ -118,4 +118,7 @@ namespace thebanana {
 	void game::load_models() {
 		this->m_model_registry = new model_registry(this->descriptors);
 	}
+	HWND game::get_window() {
+		return this->m_window;
+	}
 }

@@ -2,6 +2,7 @@
 #include "mouse.h"
 #include "input_utils.h"
 #include "debug_tools.h"
+#include "game.h"
 namespace thebanana {
 	mouse::mouse() : is_connected(true) { }
 	mouse::~mouse() { }
@@ -9,6 +10,16 @@ namespace thebanana {
 		return std::vector<button>();
 	}
 	void mouse::update() {
+		if (GetFocus() == this->parent->get_parent()->get_window()) {
+			RECT clip_rect;
+			GetClientRect(this->parent->get_parent()->get_window(), &clip_rect);
+			ClientToScreen(this->parent->get_parent()->get_window(), (POINT*)& clip_rect.left);
+			ClientToScreen(this->parent->get_parent()->get_window(), (POINT*)& clip_rect.right);
+			ClipCursor(&clip_rect);
+			SetCursor(NULL);
+		} else {
+			ClipCursor(NULL);
+		}
 		this->is_connected = SUCCEEDED(this->device->Poll());
 		HRESULT hr = this->device->GetDeviceState(sizeof(DIMOUSESTATE), &this->state);
 		if (FAILED(hr)) __debugbreak();

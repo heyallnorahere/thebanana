@@ -4,6 +4,7 @@
 #include "controller.h"
 #include "keyboard.h"
 #include "mouse.h"
+#include "game.h"
 namespace thebanana {
 	input_manager::input_manager(game* g_game) : m_game(g_game) {
 		HRESULT hr = DirectInput8Create(HINST_THISCOMPONENT, DIRECTINPUT_VERSION, IID_IDirectInput8, (void**)& this->m_context, NULL);
@@ -45,7 +46,7 @@ namespace thebanana {
 		default:
 			return type;
 		}
-		if (!_device->init(this->enumerated_devices[index], this->m_context)) return device_type::does_not_exist;
+		if (!_device->init(this->enumerated_devices[index], this->m_context, this)) return device_type::does_not_exist;
 		this->devices.push_back(std::unique_ptr<device>(_device));
 		return type;
 	}
@@ -59,6 +60,7 @@ namespace thebanana {
 	}
 	void input_manager::update_devices() {
 		this->devices.remove_if([](const std::unique_ptr<device>& obj) { return !obj->connected(); });
+		if (GetFocus() != this->m_game->get_window()) return;
 		for (auto& d : this->devices) {
 			d->update();
 		}
@@ -94,12 +96,16 @@ namespace thebanana {
 		const auto& d = *it;
 		return d.get();
 	}
+	game* input_manager::get_parent() {
+		return this->m_game;
+	}
 	int __stdcall input_manager::enum_callback(const DIDEVICEINSTANCE* inst, dinput_callback_env* passed_env) {
 		dinput_callback_env env = *passed_env;
 		env.im->enumerated_devices.push_back({ *inst, env });
 		return DIENUM_CONTINUE;
 	}
-	bool input_manager::device::init(const dinput_device& device, IDirectInput8* context) {
+	bool input_manager::device::init(const dinput_device& device, IDirectInput8* context, input_manager* parent) {
+		this->parent = parent;
 		HRESULT hr = context->CreateDevice(device.inst.guidInstance, &this->device, NULL);
 		if (FAILED(hr)) return false;
 		this->device->SetDataFormat(this->get_format());

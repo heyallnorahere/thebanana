@@ -21,6 +21,7 @@ namespace thebanana {
 		scene* get_scene();
 		void add_model_desc(const model_registry::model_descriptor& desc);
 		void load_models();
+		HWND get_window();
 	private:
 		unsigned int m_frame;
 		HWND m_window;

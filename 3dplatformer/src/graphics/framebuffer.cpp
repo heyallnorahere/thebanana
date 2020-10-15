@@ -28,6 +28,7 @@ namespace thebanana {
 		void dummy_framebuffer::unbind() { }
 		void dummy_framebuffer::set_size(int width, int height) { }
 		void dummy_framebuffer::reload() { }
+		void* dummy_framebuffer::get_id() { return NULL; }
 		std::vector<framebuffer::attachment> dummy_framebuffer::get_attachments() {
 			return std::vector<attachment>();
 		}

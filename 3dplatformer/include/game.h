@@ -6,6 +6,9 @@ namespace thebanana {
 	class scene;
 	class input_manager;
 	class framebuffer;
+	namespace ui {
+		class menu_manager;
+	}
 	class game {
 	public:
 		game(const std::string& title);
@@ -16,6 +19,7 @@ namespace thebanana {
 		unsigned int get_current_frame();
 		input_manager* get_input_manager();
 		model_registry* get_model_registry();
+		ui::menu_manager* get_menu_manager();
 		static long long __stdcall wndproc(HWND window, unsigned int msg, unsigned long long w_param, long long l_param);
 		float get_aspect_ratio();
 		scene* get_scene();
@@ -29,6 +33,7 @@ namespace thebanana {
 		scene* m_scene;
 		input_manager* m_input_manager;
 		model_registry* m_model_registry;
+		ui::menu_manager* m_menu_manager;
 		float m_aspect_ratio;
 		std::vector<model_registry::model_descriptor> descriptors;
 	};

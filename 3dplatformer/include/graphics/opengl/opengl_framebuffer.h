@@ -14,6 +14,7 @@ namespace thebanana {
 				virtual void unbind() override;
 				virtual void set_size(int width, int height) override;
 				virtual void reload() override;
+				virtual void* get_id() override;
 				virtual std::vector<attachment> get_attachments() override;
 				virtual ~opengl_framebuffer() override;
 			private:

@@ -12,6 +12,9 @@
 #ifdef max
 #undef max
 #endif
+#ifdef interface
+#undef interface
+#endif
 #include <model_loader.h>
 #include <opengl_shader.h>
 #include <opengl_viewport.h>
@@ -33,3 +36,12 @@
 #include <cassert>
 #include <typeinfo>
 #include <thread>
+#include <include/gpu/GrBackendSurface.h>
+#include <include/gpu/GrDirectContext.h>
+#include <include/core/SkCanvas.h>
+#include <include/core/SkFont.h>
+#include <include/core/SkSurface.h>
+#include <include/utils/SkRandom.h>
+#include <include/gpu/gl/GrGLInterface.h>
+#include <nlohmann/json.hpp>
+#include <stb_image.h>

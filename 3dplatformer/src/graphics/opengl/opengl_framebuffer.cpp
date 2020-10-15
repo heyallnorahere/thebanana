@@ -22,6 +22,9 @@ namespace thebanana {
 				this->clean_up();
 				this->setup();
 			}
+			void* opengl_framebuffer::get_id() {
+				return &this->m_id;
+			}
 			std::vector<framebuffer::attachment> opengl_framebuffer::get_attachments() {
 				return this->m_attachments;
 			}

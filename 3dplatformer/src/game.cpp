@@ -6,6 +6,7 @@
 #include "graphics/framebuffer.h"
 #include "graphics/opengl/opengl_framebuffer.h"
 #include "../resource.h"
+#include "ui/menu_manager.h"
 #ifdef _DEBUG
 extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 #endif
@@ -33,6 +34,7 @@ namespace thebanana {
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		graphics::set_default_graphics_api(graphics::graphics_api::opengl);
+		this->m_menu_manager = new ui::menu_manager(this);
 #ifdef _DEBUG
 		debug::init_imgui(this->m_window);
 #endif
@@ -41,6 +43,7 @@ namespace thebanana {
 #ifdef _DEBUG
 		debug::clean_up_imgui();
 #endif
+		delete this->m_menu_manager;
 		delete this->m_scene;
 		delete this->m_model_registry;
 		delete this->m_viewport;
@@ -60,6 +63,7 @@ namespace thebanana {
 		this->m_scene->update();
 	}
 	void game::render() {
+		this->m_menu_manager->draw();
 		glClearColor(0.1f, 0.1f, 0.1f, 1.f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		this->m_scene->render();
@@ -76,6 +80,9 @@ namespace thebanana {
 	}
 	model_registry* game::get_model_registry() {
 		return this->m_model_registry;
+	}
+	ui::menu_manager* game::get_menu_manager() {
+		return this->m_menu_manager;
 	}
 	long long __stdcall game::wndproc(HWND window, unsigned int msg, unsigned long long w_param, long long l_param) {
 #ifdef _DEBUG

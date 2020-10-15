@@ -26,29 +26,28 @@ std::string mk64rr_paths(const std::string& path, void*) {
 std::string results_stage_paths(const std::string& path, void*) {
 	return path_helper(path, "Results Stage\\Results Stage\\images\\", "textures\\placeholder\\resultsstage\\");
 }
-using namespace thebanana;
 void init_game() {
-	g_game = new game("banana window");
-	prop* p = new prop("collision");
+	thebanana::g_game = new thebanana::game("banana window");
+	thebanana::prop* p = new thebanana::prop("collision");
 	p->get_transform().translate(2.f, 0.75f, 2.f);
 	p->add_tag("test");
-	p->add_component<rigidbody>().set_collision_model_name("collision").set_collision_tags({ "ground" }).set_collider_type<mlfarrel_model>().set_radius(0.5f).set_origin_offset(glm::vec3(0.f, 0.5f, 0.f));
-	p->get_component<rigidbody>().set_property("mass", 1.5f);
-	g_game->get_scene()->add_object(p);
-	p = new prop("collision");
+	p->add_component<thebanana::rigidbody>().set_collision_model_name("collision").set_collision_tags({ "ground" }).set_collider_type<thebanana::mlfarrel_model>().set_radius(0.5f).set_origin_offset(glm::vec3(0.f, 0.5f, 0.f));
+	p->get_component<thebanana::rigidbody>().set_property("mass", 1.5f);
+	thebanana::g_game->get_scene()->add_object(p);
+	p = new thebanana::prop("collision");
 	p->get_transform().translate(0.f, -1.f, 0.f);
 	p->get_transform().scale(100.f, 1.f, 100.f);
 	p->add_tag("ground");
-	p->add_component<rigidbody>().set_collision_model_name("collision");
-	g_game->get_scene()->add_object(p);
-	g_game->add_model_desc({ "player", "models/placeholder/waluigi.fbx", waluigi_paths, transform().scale(0.0005f) });
-	g_game->add_model_desc({ "collision", "models/placeholder/collision.obj", waluigi_paths, transform() });
-	g_game->load_models();
+	p->add_component<thebanana::rigidbody>().set_collision_model_name("collision");
+	thebanana::g_game->get_scene()->add_object(p);
+	thebanana::g_game->add_model_desc({ "player", "models/placeholder/waluigi.fbx", waluigi_paths, thebanana::transform().scale(0.0005f) });
+	thebanana::g_game->add_model_desc({ "collision", "models/placeholder/collision.obj", waluigi_paths, thebanana::transform() });
+	thebanana::g_game->load_models();
 }
 void gameloop() {
-	g_game->update();
-	g_game->render();
+	thebanana::g_game->update();
+	thebanana::g_game->render();
 }
 void clean_up_game() {
-	delete g_game;
+	delete thebanana::g_game;
 }

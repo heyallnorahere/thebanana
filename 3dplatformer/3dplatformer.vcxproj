@@ -55,7 +55,7 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(SolutionDir)imgui\imgui;$(DXSDK_DIR)include;$(ProjectDir)include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)third-party\stb;$(SolutionDir)third-party\json\single_include;$(SolutionDir)imgui\imgui;$(DXSDK_DIR)include;$(ProjectDir)include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DisableSpecificWarnings>4996;%(DisableSpecificWarnings)</DisableSpecificWarnings>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
@@ -75,7 +75,7 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(SolutionDir)imgui\imgui;$(DXSDK_DIR)include;$(ProjectDir)include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)third-party\stb;$(SolutionDir)third-party\json\single_include;$(SolutionDir)imgui\imgui;$(DXSDK_DIR)include;$(ProjectDir)include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DisableSpecificWarnings>4996;%(DisableSpecificWarnings)</DisableSpecificWarnings>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
@@ -99,6 +99,8 @@
     <ClCompile Include="src\graphics\framebuffer.cpp" />
     <ClCompile Include="src\graphics\graphics_types.cpp" />
     <ClCompile Include="src\graphics\opengl\opengl_framebuffer.cpp" />
+    <ClCompile Include="src\graphics\opengl\opengl_texture.cpp" />
+    <ClCompile Include="src\graphics\texture.cpp" />
     <ClCompile Include="src\input_manager.cpp" />
     <ClCompile Include="src\keyboard.cpp" />
     <ClCompile Include="src\main.cpp" />
@@ -115,15 +117,22 @@
     <ClCompile Include="src\prop.cpp" />
     <ClCompile Include="src\scene.cpp" />
     <ClCompile Include="src\transform.cpp" />
+    <ClCompile Include="src\ui\menu.cpp" />
+    <ClCompile Include="src\ui\menu_manager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\components\components.h" />
     <ClInclude Include="include\graphics\graphics.h" />
     <ClInclude Include="include\graphics\opengl\opengl.h" />
+    <ClInclude Include="include\graphics\opengl\opengl_texture.h" />
+    <ClInclude Include="include\graphics\texture.h" />
     <ClInclude Include="include\includelist.h" />
     <ClInclude Include="include\main_module.h" />
     <ClInclude Include="include\physics\physics.h" />
     <ClInclude Include="include\thebanana.h" />
+    <ClInclude Include="include\ui\menu.h" />
+    <ClInclude Include="include\ui\menu_manager.h" />
+    <ClInclude Include="include\ui\ui.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="include\camera.h" />
     <ClInclude Include="include\component.h" />

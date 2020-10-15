@@ -21,6 +21,7 @@ namespace thebanana {
 			virtual void unbind() = 0;
 			virtual void set_size(int width, int height) = 0;
 			virtual void reload() = 0;
+			virtual void* get_id() = 0;
 			virtual std::vector<attachment> get_attachments() = 0;
 			virtual ~framebuffer();
 			attachment_map get_attachment_map() const;
@@ -35,6 +36,7 @@ namespace thebanana {
 			virtual void unbind() override;
 			virtual void set_size(int width, int height) override;
 			virtual void reload() override;
+			virtual void* get_id() override;
 			virtual std::vector<attachment> get_attachments() override;
 		};
 	}

@@ -17,7 +17,7 @@ namespace thebanana {
 		this->add_component<animation_component>();
 		this->add_component<mesh_component>().set_mesh_name("player");
 		this->add_component<rigidbody>().set_check_for_collisions(true).set_speed_cap(0.5f).set_collision_tags({ "ground", "test" }).set_collider_type<mlfarrel_model>().set_radius(0.4f).set_origin_offset(glm::vec3(0.f, 0.6f, 0.f));
-		this->get_component<rigidbody>().set_property("mass", 5.f);
+		this->get_component<rigidbody>().set_property("mass", 2.5f);
 		this->add_tag("player");
 		this->m_nickname = "player";
 		this->m_walking = false;

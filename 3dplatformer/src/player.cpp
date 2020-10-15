@@ -67,6 +67,9 @@ namespace thebanana {
 				if (btns[DIK_SPACE].down) {
 					this->get_component<rigidbody>().apply_force(glm::vec3(0.f, 1.f, 0.f));
 				}
+				if (btns[DIK_TAB].down) {
+					debug::menus_shown = !debug::menus_shown;
+				}
 				if ((btns[DIK_W].down || btns[DIK_S].down || btns[DIK_A].down || btns[DIK_D].down) && !this->m_walking && this->get_number_components<animation_component>() > 0) {
 					this->get_component<animation_component>().stop_animation();
 					this->get_component<animation_component>().start_animation("walk", true);
@@ -81,6 +84,7 @@ namespace thebanana {
 			else if (this->m_game->get_input_manager()->get_device_type(0) == input_manager::device_type::controller) {
 				glm::vec2 left_stick = ((controller*)this->m_game->get_input_manager()->get_device(0))->get_joysticks().left;
 				translate += glm::vec3(-left_stick.x, 0.f, left_stick.y) * speed * 2.f;
+				std::vector<input_manager::device::button> btns = this->m_game->get_input_manager()->get_device_buttons(0);
 			}
 			glm::mat4 rotation = this->m_transform;
 			rotation[3] = glm::vec4(0.f, 0.f, 0.f, rotation[3].w);

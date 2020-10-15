@@ -91,6 +91,7 @@ namespace thebanana {
 		}
 		bool control = true;
 		bool cursor = false;
+		bool menus_shown = false;
 		void debug_menu(game* g_game) {
 			ImGui::Begin("the banana: debug menu");
 			ImGui::TextColored(ImVec4(1.f, 0.f, 1.f, 1.f), "input");

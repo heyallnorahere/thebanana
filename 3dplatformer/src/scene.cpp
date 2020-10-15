@@ -21,14 +21,18 @@ namespace thebanana {
 	void scene::update() {
 #ifdef _DEBUG
 		{
-			bool toggle = false;
+			bool toggle_control = false, toggle_cursor = false;
 			if (this->m_game->get_input_manager()->get_device_type(0) == input_manager::device_type::keyboard) {
 				keyboard* kb = (keyboard*)this->m_game->get_input_manager()->get_device(0);
 				std::vector<keyboard::button> btns = kb->get_buttons();
-				toggle = btns[DIK_F1].down;
+				toggle_control = btns[DIK_F1].down;
+				toggle_cursor = btns[DIK_F2].down;
 			}
-			if (toggle) {
+			if (toggle_control) {
 				debug::control = !debug::control;
+			}
+			if (toggle_cursor) {
+				debug::cursor = !debug::cursor;
 			}
 		}
 #endif

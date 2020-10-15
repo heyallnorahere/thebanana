@@ -51,6 +51,11 @@ namespace thebanana {
 	}
 	void game::update() {
 		this->m_frame++;
+		if (debug::cursor) {
+			SetCursor(LoadCursor(NULL, IDC_ARROW));
+		} else {
+			SetCursor(NULL);
+		}
 		this->m_input_manager->update_devices();
 		this->m_scene->update();
 	}
@@ -78,6 +83,9 @@ namespace thebanana {
 			return true;
 #endif
 		switch (msg) {
+		case WM_CREATE:
+			SetCursor(NULL);
+			break;
 		case WM_DESTROY:
 			PostQuitMessage(0);
 			break;

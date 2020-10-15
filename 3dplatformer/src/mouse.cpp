@@ -16,7 +16,6 @@ namespace thebanana {
 			ClientToScreen(this->parent->get_parent()->get_window(), (POINT*)& clip_rect.left);
 			ClientToScreen(this->parent->get_parent()->get_window(), (POINT*)& clip_rect.right);
 			ClipCursor(&clip_rect);
-			SetCursor(NULL);
 		} else {
 			ClipCursor(NULL);
 		}

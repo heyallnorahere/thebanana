@@ -99,12 +99,21 @@
     <ClCompile Include="src\graphics\opengl\opengl_texture.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\graphics\quad.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics\opengl\opengl_quad.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
     <None Include="shaders\basic\vertex.shader" />
     <None Include="shaders\basic\fragment.shader" />
     <None Include="models\skullbandana.fbx" />
+    <None Include="shaders\2d\vertex.shader" />
+    <None Include="shaders\2d\fragment.shader" />
+    <None Include="test_menu.json" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h">
@@ -219,6 +228,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\graphics\opengl\opengl_texture.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\graphics\quad.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\graphics\opengl\opengl_quad.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

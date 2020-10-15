@@ -35,7 +35,7 @@ namespace thebanana {
 			return NULL;
 		}
 		dummy_texture::dummy_texture(const data& d) : texture(d) { }
-		void dummy_texture::bind() { }
+		void dummy_texture::bind(unsigned int slot) { }
 		void dummy_texture::unbind() { }
 		void dummy_texture::set_data(void* pixels) { }
 	}

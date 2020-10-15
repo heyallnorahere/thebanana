@@ -45,6 +45,7 @@ namespace thebanana {
 		glm::mat4 projection = glm::perspective(glm::radians(45.f), this->m_game->get_aspect_ratio(), 0.1f, 100.f);
 		this->m_shader->get_uniforms().mat4("projection", projection);
 		for (auto& c : this->m_children) {
+			opengl_shader_library::shader::use(this->m_shader.get());
 			c->render();
 		}
 		opengl_shader_library::shader::use(NULL);

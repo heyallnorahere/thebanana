@@ -9,7 +9,7 @@ namespace thebanana {
 				void* pixels;
 			};
 			texture(const data& d);
-			virtual void bind() = 0;
+			virtual void bind(unsigned int slot = 0) = 0;
 			virtual void unbind() = 0;
 			virtual void set_data(void* pixels) = 0;
 			virtual ~texture();
@@ -25,7 +25,7 @@ namespace thebanana {
 		class dummy_texture : public texture {
 		public:
 			dummy_texture(const data& d);
-			virtual void bind() override;
+			virtual void bind(unsigned int slot = 0) override;
 			virtual void unbind() override;
 			virtual void set_data(void* pixels) override;
 		};

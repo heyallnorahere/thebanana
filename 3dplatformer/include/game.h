@@ -6,6 +6,7 @@ namespace thebanana {
 	class scene;
 	class input_manager;
 	class framebuffer;
+	class gameobject;
 	namespace ui {
 		class menu_manager;
 	}
@@ -34,6 +35,7 @@ namespace thebanana {
 		input_manager* m_input_manager;
 		model_registry* m_model_registry;
 		ui::menu_manager* m_menu_manager;
+		gameobject* m_menu_quad;
 		float m_aspect_ratio;
 		std::vector<model_registry::model_descriptor> descriptors;
 	};

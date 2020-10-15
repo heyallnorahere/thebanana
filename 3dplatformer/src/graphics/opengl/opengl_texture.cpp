@@ -3,16 +3,19 @@
 namespace thebanana {
 	namespace graphics {
 		namespace opengl {
-			opengl_texture::opengl_texture(const data& d, void* api_specific) : texture(d) {
+			opengl_texture::opengl_texture(const data& d, void* api_specific) : texture(d), last_bound_slot(0) {
 				if (api_specific) {
 					this->m_settings = *(settings*)api_specific;
 				}
 				this->create_texture(d.pixels);
 			}
-			void opengl_texture::bind() {
+			void opengl_texture::bind(unsigned int slot) {
+				glActiveTexture(GL_TEXTURE0 + slot);
 				glBindTexture(GL_TEXTURE_2D, this->id);
+				this->last_bound_slot = slot;
 			}
 			void opengl_texture::unbind() {
+				glActiveTexture(GL_TEXTURE0 + this->last_bound_slot);
 				glBindTexture(GL_TEXTURE_2D, NULL);
 			}
 			void opengl_texture::set_data(void* pixels) {

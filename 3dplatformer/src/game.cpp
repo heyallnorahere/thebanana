@@ -4,7 +4,9 @@
 #include "input_manager.h"
 #include "debug_tools.h"
 #include "graphics/framebuffer.h"
+#include "graphics/quad.h"
 #include "graphics/opengl/opengl_framebuffer.h"
+#include "graphics/opengl/opengl_quad.h"
 #include "../resource.h"
 #include "ui/menu_manager.h"
 #ifdef _DEBUG
@@ -35,6 +37,8 @@ namespace thebanana {
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		graphics::set_default_graphics_api(graphics::graphics_api::opengl);
 		this->m_menu_manager = new ui::menu_manager(this);
+		graphics::opengl::opengl_quad::init_shader();
+		this->m_menu_quad = graphics::quad::create(2.f, 2.f, this->m_menu_manager->get_texture());
 #ifdef _DEBUG
 		debug::init_imgui(this->m_window);
 #endif
@@ -43,11 +47,13 @@ namespace thebanana {
 #ifdef _DEBUG
 		debug::clean_up_imgui();
 #endif
+		delete this->m_menu_quad;
 		delete this->m_menu_manager;
 		delete this->m_scene;
 		delete this->m_model_registry;
 		delete this->m_viewport;
 		delete this->m_input_manager;
+		graphics::opengl::opengl_quad::destroy_shader();
 	}
 	void game::destroy() {
 		DestroyWindow(this->m_window);
@@ -67,6 +73,7 @@ namespace thebanana {
 		glClearColor(0.1f, 0.1f, 0.1f, 1.f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		this->m_scene->render();
+		this->m_menu_quad->render();
 #ifdef _DEBUG
 		debug::render_imgui(this);
 #endif

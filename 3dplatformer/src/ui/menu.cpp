@@ -26,7 +26,9 @@ namespace thebanana {
 			j["color"].get_to(n.color);
 			j["children"].get_to(n.children);
 		}
-		menu::menu() { }
+		menu::menu() {
+			this->font.setTypeface(SkTypeface::MakeDefault());
+		}
 		menu::menu(const std::string& json_file) {
 			this->load_from_json_file(json_file);
 		}
@@ -44,28 +46,28 @@ namespace thebanana {
 			}
 		}
 		void menu::draw_node(SkCanvas* canvas, node& n) {
-			RECT window_rect;
-			GetWindowRect(this->g_game->get_window(), &window_rect);
-			int width = window_rect.right - window_rect.left;
-			int height = window_rect.bottom - window_rect.top;
 			this->paint.setColor4f({ n.color.r, n.color.g, n.color.b, n.color.a });
+			canvas->save();
+			canvas->translate(n.x, n.y);
 			switch (n.type) {
 			case node_type::text:
-				canvas->drawString(n.text.c_str(), n.x * width, n.y * height, this->font, this->paint);
+				this->font.setSize(n.h);
+				canvas->drawString(n.text.c_str(), 0.f, 0.f, this->font, this->paint);
 				break;
 			case node_type::rectangle:
 			{
-				SkRect r = SkRect::MakeXYWH(n.x * width, n.y * height, n.w * width, n.h * height);
+				SkRect r = SkRect::MakeXYWH(0.f, 0.f, n.w, n.h);
 				canvas->drawRect(r, this->paint);
 			}
 				break;
 			case node_type::ellipse:
 			{
-				SkRect r = SkRect::MakeXYWH(n.x * width, n.y * height, n.w * width, n.h * height);
+				SkRect r = SkRect::MakeXYWH(0.f, 0.f, n.w, n.h);
 				canvas->drawOval(r, this->paint);
 			}
 				break;
 			}
+			canvas->restore();
 			for (auto& n : n.children) {
 				this->draw_node(canvas, n);
 			}

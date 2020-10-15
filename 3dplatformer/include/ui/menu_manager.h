@@ -13,12 +13,13 @@ namespace thebanana {
 			void draw();
 			graphics::texture* get_texture();
 			~menu_manager();
+			void update_canvas_size();
+			void update_texture_pixels();
 		private:
 			void setup_canvas();
 			void setup_texture();
 			void destroy_texture();
 			sk_sp<SkData> get_canvas_data();
-			void update_texture_pixels();
 			graphics::texture* m_texture;
 			game* m_game;
 			menu* m_current_menu;

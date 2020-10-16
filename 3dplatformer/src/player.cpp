@@ -35,15 +35,9 @@ namespace thebanana {
 		if (debug::control) {
 #endif
 			glm::vec3 translate(0.f);
-			glm::vec2 angle = this->m_scene->get_camera()->get_angle() + glm::vec2(0.f, 90.f);
-			glm::vec3 r;
-			r.x = cos(glm::radians(angle.y)) * cos(glm::radians(angle.x));
-			r.y = sin(glm::radians(angle.x));
-			r.z = sin(glm::radians(angle.y)) * cos(glm::radians(angle.x));
-			glm::vec3 right = glm::normalize(r);
+			std::vector<float> angles;
 			if (this->m_game->get_input_manager()->get_device_type(0) == input_manager::device_type::keyboard) {
 				std::vector<input_manager::device::button> btns = this->m_game->get_input_manager()->get_device_buttons(0);
-				std::vector<float> angles;
 				if (btns[DIK_W].held) {
 					angles.push_back(0.f);
 				}
@@ -55,17 +49,6 @@ namespace thebanana {
 				}
 				if (btns[DIK_S].held) {
 					angles.push_back(btns[DIK_A].held ? -180.f : 180.f);
-				}
-				if (angles.size() > 0) {
-					float angle = 0.f;
-					for (float a : angles) {
-						angle += a;
-					}
-					angle /= angles.size();
-					this->move(angle, translate, speed);
-				}
-				if (btns[DIK_SPACE].down) {
-					this->get_component<rigidbody>().apply_force(glm::vec3(0.f, 1.f, 0.f));
 				}
 				if (btns[DIK_TAB].down) {
 					debug::menus_shown = !debug::menus_shown;
@@ -82,9 +65,38 @@ namespace thebanana {
 				}
 			}
 			else if (this->m_game->get_input_manager()->get_device_type(0) == input_manager::device_type::controller) {
+				constexpr float deadzone = 0.05f;
 				glm::vec2 left_stick = ((controller*)this->m_game->get_input_manager()->get_device(0))->get_joysticks().left;
-				translate += glm::vec3(-left_stick.x, 0.f, left_stick.y) * speed * 2.f;
+				float angle = atan2(left_stick.x, left_stick.y) * (180.f / static_cast<float>(M_PI));
+				if (fabs(left_stick.x) > deadzone && fabs(left_stick.y) > deadzone) {
+					angles.push_back(angle);
+					if (this->get_number_components<animation_component>() > 0 && !this->m_walking) {
+						this->get_component<animation_component>().stop_animation();
+						this->get_component<animation_component>().start_animation("walk", true);
+						this->m_walking = true;
+					}
+				} else {
+					if (this->get_number_components<animation_component>() > 0 && this->m_walking) {
+						this->get_component<animation_component>().stop_animation();
+						this->get_component<animation_component>().start_animation("idle", true);
+						this->m_walking = false;
+					}
+				}
 				std::vector<input_manager::device::button> btns = this->m_game->get_input_manager()->get_device_buttons(0);
+				if (btns[6].down) {
+					debug::menus_shown = !debug::menus_shown;
+				}
+				if (btns[7].down) {
+					this->m_game->destroy();
+				}
+			}
+			if (angles.size() > 0) {
+				float angle = 0.f;
+				for (float a : angles) {
+					angle += a;
+				}
+				angle /= angles.size();
+				this->move(angle, translate, speed);
 			}
 			glm::mat4 rotation = this->m_transform;
 			rotation[3] = glm::vec4(0.f, 0.f, 0.f, rotation[3].w);

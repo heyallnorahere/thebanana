@@ -35,6 +35,8 @@ namespace thebanana {
 		glEnable(GL_DEPTH_TEST);
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		glEnable(GL_CULL_FACE);
+		glCullFace(GL_BACK);
 		graphics::set_default_graphics_api(graphics::graphics_api::opengl);
 		this->m_menu_manager = new ui::menu_manager(this);
 		graphics::opengl::opengl_quad::init_shader();

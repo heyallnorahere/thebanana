@@ -44,5 +44,5 @@
 #include <include/core/SkSurface.h>
 #include <include/utils/SkRandom.h>
 #include <include/gpu/gl/GrGLInterface.h>
-#include <nlohmann/json.hpp>
-#include <stb_image.h>
+#include <AL/al.h>
+#include <AL/alc.h>

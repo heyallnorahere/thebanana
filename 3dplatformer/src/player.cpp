@@ -11,6 +11,7 @@
 #include "physics/rigidbody.h"
 #include "components/animation.h"
 #include "components/mesh.h"
+#include "sound/sound.h"
 namespace thebanana {
 	player::player() {
 		debug::log_print("created player");
@@ -83,10 +84,10 @@ namespace thebanana {
 					}
 				}
 				std::vector<input_manager::device::button> btns = this->m_game->get_input_manager()->get_device_buttons(0);
-				if (btns[6].down) {
+				if (btns[6].down) { // select/touchpad
 					debug::menus_shown = !debug::menus_shown;
 				}
-				if (btns[7].down) {
+				if (btns[7].down) { // start/menu/options
 					this->m_game->destroy();
 				}
 			}

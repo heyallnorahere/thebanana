@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "ui/menu.h"
 #include "game.h"
+#include <nlohmann/json.hpp>
 using json = nlohmann::json;
 namespace glm {
 	void from_json(const json& j, glm::vec4& color) {

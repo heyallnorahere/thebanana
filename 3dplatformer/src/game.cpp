@@ -7,6 +7,7 @@
 #include "graphics/quad.h"
 #include "graphics/opengl/opengl_framebuffer.h"
 #include "graphics/opengl/opengl_quad.h"
+#include "sound/sound.h"
 #include "../resource.h"
 #include "ui/menu_manager.h"
 #ifdef _DEBUG
@@ -37,10 +38,13 @@ namespace thebanana {
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		glEnable(GL_CULL_FACE);
 		glCullFace(GL_BACK);
+		sound::sound_manager::init_decoders();
+		sound::set_default_sound_api(sound::sound_api::openal);
+		graphics::opengl::opengl_quad::init_shader();
 		graphics::set_default_graphics_api(graphics::graphics_api::opengl);
 		this->m_menu_manager = new ui::menu_manager(this);
-		graphics::opengl::opengl_quad::init_shader();
 		this->m_menu_quad = graphics::quad::create(2.f, 2.f, this->m_menu_manager->get_texture());
+		this->m_sound_manager = new sound::sound_manager(this);
 #ifdef _DEBUG
 		debug::init_imgui(this->m_window);
 #endif
@@ -49,6 +53,7 @@ namespace thebanana {
 #ifdef _DEBUG
 		debug::clean_up_imgui();
 #endif
+		delete this->m_sound_manager;
 		delete this->m_menu_quad;
 		delete this->m_menu_manager;
 		delete this->m_scene;
@@ -144,5 +149,8 @@ namespace thebanana {
 	}
 	HWND game::get_window() {
 		return this->m_window;
+	}
+	sound::sound_manager* game::get_sound_manager() {
+		return this->m_sound_manager;
 	}
 }

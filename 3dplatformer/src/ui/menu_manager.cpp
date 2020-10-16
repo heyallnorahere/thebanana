@@ -3,6 +3,7 @@
 #include "ui/menu.h"
 #include "game.h"
 #include "graphics/texture.h"
+#include <stb_image.h>
 namespace thebanana {
 	namespace ui {
 		menu_manager::menu_manager(game* g_game) : m_game(g_game), m_current_menu(NULL), m_canvas(NULL), m_texture(NULL) {

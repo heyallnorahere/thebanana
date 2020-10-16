@@ -10,6 +10,9 @@ namespace thebanana {
 	namespace ui {
 		class menu_manager;
 	}
+	namespace sound {
+		class sound_manager;
+	}
 	class game {
 	public:
 		game(const std::string& title);
@@ -27,6 +30,7 @@ namespace thebanana {
 		void add_model_desc(const model_registry::model_descriptor& desc);
 		void load_models();
 		HWND get_window();
+		sound::sound_manager* get_sound_manager();
 	private:
 		unsigned int m_frame;
 		HWND m_window;
@@ -35,6 +39,7 @@ namespace thebanana {
 		input_manager* m_input_manager;
 		model_registry* m_model_registry;
 		ui::menu_manager* m_menu_manager;
+		sound::sound_manager* m_sound_manager;
 		gameobject* m_menu_quad;
 		float m_aspect_ratio;
 		std::vector<model_registry::model_descriptor> descriptors;

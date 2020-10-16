@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\OpenAL.Soft.1.19.1\build\openal.soft.props" Condition="Exists('..\packages\OpenAL.Soft.1.19.1\build\openal.soft.props')" />
   <Import Project="..\packages\skia.native.1.1.0\build\native\skia.native.props" Condition="Exists('..\packages\skia.native.1.1.0\build\native\skia.native.props')" />
   <Import Project="..\packages\opengl_viewport.1.2.0\build\native\opengl_viewport.props" Condition="Exists('..\packages\opengl_viewport.1.2.0\build\native\opengl_viewport.props')" />
   <Import Project="..\packages\gl_model_loader.1.7.5\build\native\gl_model_loader.props" Condition="Exists('..\packages\gl_model_loader.1.7.5\build\native\gl_model_loader.props')" />
@@ -55,7 +56,7 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(SolutionDir)third-party\stb;$(SolutionDir)third-party\json\single_include;$(SolutionDir)imgui\imgui;$(DXSDK_DIR)include;$(ProjectDir)include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)third-party\minimp3;$(SolutionDir)third-party\stb;$(SolutionDir)third-party\json\single_include;$(SolutionDir)imgui\imgui;$(DXSDK_DIR)include;$(ProjectDir)include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DisableSpecificWarnings>4996;%(DisableSpecificWarnings)</DisableSpecificWarnings>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
@@ -75,7 +76,7 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(SolutionDir)third-party\stb;$(SolutionDir)third-party\json\single_include;$(SolutionDir)imgui\imgui;$(DXSDK_DIR)include;$(ProjectDir)include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)third-party\minimp3;$(SolutionDir)third-party\stb;$(SolutionDir)third-party\json\single_include;$(SolutionDir)imgui\imgui;$(DXSDK_DIR)include;$(ProjectDir)include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DisableSpecificWarnings>4996;%(DisableSpecificWarnings)</DisableSpecificWarnings>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
@@ -118,6 +119,12 @@
     <ClCompile Include="src\player.cpp" />
     <ClCompile Include="src\prop.cpp" />
     <ClCompile Include="src\scene.cpp" />
+    <ClCompile Include="src\sound\context.cpp" />
+    <ClCompile Include="src\sound\load_sound.cpp" />
+    <ClCompile Include="src\sound\misc.cpp" />
+    <ClCompile Include="src\sound\openal_sound_effect.cpp" />
+    <ClCompile Include="src\sound\sound_effect.cpp" />
+    <ClCompile Include="src\sound\sound_manager.cpp" />
     <ClCompile Include="src\transform.cpp" />
     <ClCompile Include="src\ui\menu.cpp" />
     <ClCompile Include="src\ui\menu_manager.cpp" />
@@ -133,6 +140,12 @@
     <ClInclude Include="include\includelist.h" />
     <ClInclude Include="include\main_module.h" />
     <ClInclude Include="include\physics\physics.h" />
+    <ClInclude Include="include\sound\context.h" />
+    <ClInclude Include="include\sound\misc.h" />
+    <ClInclude Include="include\sound\openal_sound_effect.h" />
+    <ClInclude Include="include\sound\sound.h" />
+    <ClInclude Include="include\sound\sound_effect.h" />
+    <ClInclude Include="include\sound\sound_manager.h" />
     <ClInclude Include="include\thebanana.h" />
     <ClInclude Include="include\ui\menu.h" />
     <ClInclude Include="include\ui\menu_manager.h" />
@@ -163,6 +176,7 @@
     <ClInclude Include="include\scene.h" />
     <ClInclude Include="include\transform.h" />
     <ClInclude Include="include\util.h" />
+    <ClInclude Include="src\sound\load_sound.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="models\skullbandana.fbx" />
@@ -183,6 +197,8 @@
     <Import Project="..\packages\glm.0.9.9.800\build\native\glm.targets" Condition="Exists('..\packages\glm.0.9.9.800\build\native\glm.targets')" />
     <Import Project="..\packages\assimp.v140.redist.3.2\build\native\assimp.v140.redist.targets" Condition="Exists('..\packages\assimp.v140.redist.3.2\build\native\assimp.v140.redist.targets')" />
     <Import Project="..\packages\assimp.v140.3.2\build\native\assimp.v140.targets" Condition="Exists('..\packages\assimp.v140.3.2\build\native\assimp.v140.targets')" />
+    <Import Project="..\packages\vorbis-msvc-x64.1.3.5.8787\build\native\vorbis-msvc-x64.targets" Condition="Exists('..\packages\vorbis-msvc-x64.1.3.5.8787\build\native\vorbis-msvc-x64.targets')" />
+    <Import Project="..\packages\ogg-msvc-x64.1.3.2.8787\build\native\ogg-msvc-x64.targets" Condition="Exists('..\packages\ogg-msvc-x64.1.3.2.8787\build\native\ogg-msvc-x64.targets')" />
   </ImportGroup>
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
@@ -197,5 +213,8 @@
     <Error Condition="!Exists('..\packages\gl_model_loader.1.7.5\build\native\gl_model_loader.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\gl_model_loader.1.7.5\build\native\gl_model_loader.props'))" />
     <Error Condition="!Exists('..\packages\opengl_viewport.1.2.0\build\native\opengl_viewport.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\opengl_viewport.1.2.0\build\native\opengl_viewport.props'))" />
     <Error Condition="!Exists('..\packages\skia.native.1.1.0\build\native\skia.native.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\skia.native.1.1.0\build\native\skia.native.props'))" />
+    <Error Condition="!Exists('..\packages\OpenAL.Soft.1.19.1\build\openal.soft.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\OpenAL.Soft.1.19.1\build\openal.soft.props'))" />
+    <Error Condition="!Exists('..\packages\vorbis-msvc-x64.1.3.5.8787\build\native\vorbis-msvc-x64.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\vorbis-msvc-x64.1.3.5.8787\build\native\vorbis-msvc-x64.targets'))" />
+    <Error Condition="!Exists('..\packages\ogg-msvc-x64.1.3.2.8787\build\native\ogg-msvc-x64.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\ogg-msvc-x64.1.3.2.8787\build\native\ogg-msvc-x64.targets'))" />
   </Target>
 </Project>

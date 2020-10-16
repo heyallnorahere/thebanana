@@ -4,6 +4,7 @@
 #include "graphics/graphics.h"
 #include "physics/physics.h"
 #include "ui/ui.h"
+#include "sound/sound.h"
 #include "main_module.h"
 #ifndef BANANA_MAIN_HANDLED
 void init_game();

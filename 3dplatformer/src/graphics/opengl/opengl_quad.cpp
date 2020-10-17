@@ -8,8 +8,8 @@ struct vertex {
 namespace thebanana {
 	namespace graphics {
 		namespace opengl {
-			opengl_quad::opengl_quad(float width, float height, texture* tex) : quad(width, height, tex) {
-				this->init_quad();
+			opengl_quad::opengl_quad(float width, float height, texture* tex, bool invert_uv) : quad(width, height, tex, invert_uv) {
+				this->init_quad(invert_uv);
 			}
 			opengl_quad::~opengl_quad() {
 				this->delete_quad();
@@ -28,12 +28,12 @@ namespace thebanana {
 				glBindVertexArray(NULL);
 				glEnable(GL_DEPTH_TEST);
 			}
-			void opengl_quad::init_quad() {
+			void opengl_quad::init_quad(bool invert_uv) {
 				std::vector<vertex> vertices = {
-					 { glm::vec3(-(this->m_width / 2.f), -(this->m_height / 2.f), 0.f), glm::vec2(0.f, 0.f) },
-					 { glm::vec3( (this->m_width / 2.f), -(this->m_height / 2.f), 0.f), glm::vec2(1.f, 0.f) },
-					 { glm::vec3( (this->m_width / 2.f),  (this->m_height / 2.f), 0.f), glm::vec2(1.f, 1.f) },
-					 { glm::vec3(-(this->m_width / 2.f),  (this->m_height / 2.f), 0.f), glm::vec2(0.f, 1.f) },
+					 { glm::vec3(-(this->m_width / 2.f), -(this->m_height / 2.f), 0.f), glm::vec2(0.f, invert_uv ? 1.f : 0.f) },
+					 { glm::vec3( (this->m_width / 2.f), -(this->m_height / 2.f), 0.f), glm::vec2(1.f, invert_uv ? 1.f : 0.f) },
+					 { glm::vec3( (this->m_width / 2.f),  (this->m_height / 2.f), 0.f), glm::vec2(1.f, invert_uv ? 0.f : 1.f) },
+					 { glm::vec3(-(this->m_width / 2.f),  (this->m_height / 2.f), 0.f), glm::vec2(0.f, invert_uv ? 0.f : 1.f) },
 				};
 				std::vector<unsigned int> indices = {
 					0, 1, 3,

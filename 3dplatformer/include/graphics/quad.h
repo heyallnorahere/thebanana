@@ -6,10 +6,10 @@ namespace thebanana {
 		class texture;
 		class quad : public gameobject {
 		public:
-			quad(float width, float height, texture* tex);
+			quad(float width, float height, texture* tex, bool invert_uv);
 			virtual void update() override;
 			virtual void render() override;
-			static quad* create(float width, float height, texture* tex, graphics_api api = graphics_api::none);
+			static quad* create(float width, float height, texture* tex, bool invert_uv = false, graphics_api api = graphics_api::none);
 		protected:
 			virtual void api_render() = 0;
 			float m_width, m_height;
@@ -18,7 +18,7 @@ namespace thebanana {
 		};
 		class dummy_quad : public quad {
 		public:
-			dummy_quad(float width, float height, texture* tex);
+			dummy_quad(float width, float height, texture* tex, bool invert_uv);
 		protected:
 			virtual void api_render() override;
 		};

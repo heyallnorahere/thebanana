@@ -24,7 +24,7 @@ namespace thebanana {
 			void setup_canvas();
 			void setup_texture();
 			void destroy_texture();
-			sk_sp<SkData> get_canvas_data();
+			sk_sp<SkImage> get_canvas_data();
 			graphics::texture* m_texture;
 			game* m_game;
 			menu* m_current_menu;

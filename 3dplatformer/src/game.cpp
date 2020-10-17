@@ -45,7 +45,7 @@ namespace thebanana {
 		graphics::opengl::opengl_quad::init_shader();
 		graphics::set_default_graphics_api(graphics::graphics_api::opengl);
 		this->m_menu_manager = new ui::menu_manager(this);
-		this->m_menu_quad = graphics::quad::create(2.f, 2.f, this->m_menu_manager->get_texture());
+		this->m_menu_quad = graphics::quad::create(2.f, 2.f, this->m_menu_manager->get_texture(), true);
 		this->m_sound_manager = new sound::sound_manager(this);
 #ifdef _DEBUG
 		debug::init_imgui(this->m_window);

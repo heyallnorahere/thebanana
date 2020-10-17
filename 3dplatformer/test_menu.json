@@ -52,5 +52,6 @@
       },
       "children": []
     }
-  ]
+  ],
+  "script": "test_script.lua"
 }

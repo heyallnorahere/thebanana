@@ -1,4 +1,5 @@
 #include "pch.h"
+#define BANANA_MAIN
 #include "thebanana.h"
 std::string path_helper(const std::string& original, const std::string& find, const std::string& replace) {
 	size_t pos = std::string::npos;

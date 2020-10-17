@@ -123,6 +123,9 @@
     <ClCompile Include="src\sound\load_sound.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\lua_interpreter.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -132,6 +135,7 @@
     <None Include="shaders\2d\vertex.shader" />
     <None Include="shaders\2d\fragment.shader" />
     <None Include="test_menu.json" />
+    <None Include="test_script.lua" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h">
@@ -273,6 +277,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\sound\load_sound.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\lua_interpreter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

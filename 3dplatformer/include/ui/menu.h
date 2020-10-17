@@ -1,6 +1,7 @@
 #pragma once
 namespace thebanana {
 	class game;
+	class lua_interpreter;
 	namespace ui {
 		class menu {
 		public:
@@ -19,16 +20,20 @@ namespace thebanana {
 			};
 			menu();
 			menu(const std::string& json_file);
+			~menu();
 			void load_from_json_file(const std::string& json_file);
 			void draw(SkCanvas* canvas);
 			void draw_node(SkCanvas* canvas, node& n);
-			void set_game_ptr(game* g_game);
+			void set_ptrs(game* g_game, lua_interpreter* interpreter);
 		private:
 			std::vector<node> children;
 			SkPaint paint;
 			SkFont font;
 			game* g_game;
+			lua_interpreter* interpreter;
 			glm::vec4 clear_color;
+			bool has_script;
+			std::string script_path;
 		};
 	}
 }

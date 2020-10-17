@@ -10,6 +10,7 @@
 #include "sound/sound.h"
 #include "../resource.h"
 #include "ui/menu_manager.h"
+#include "lua_interpreter.h"
 #ifdef _DEBUG
 extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 #endif
@@ -22,6 +23,7 @@ namespace thebanana {
 		GetWindowRect(this->m_window, &r);
 		this->m_aspect_ratio = static_cast<float>(r.right - r.left) / static_cast<float>(r.bottom - r.top);
 		this->m_viewport = new opengl_viewport(opengl_viewport::viewport_attribs{ this->m_window, 0, 0, 800, 600, 3, 3, opengl_viewport::viewport_attribs::passed_window });
+		this->m_interpreter = new lua_interpreter;
 		this->m_scene = new scene(this);
 		this->m_input_manager = new input_manager(this);
 		if (this->m_input_manager->add_device(0) == input_manager::device_type::keyboard) {
@@ -57,6 +59,7 @@ namespace thebanana {
 		delete this->m_menu_quad;
 		delete this->m_menu_manager;
 		delete this->m_scene;
+		delete this->m_interpreter;
 		delete this->m_model_registry;
 		delete this->m_viewport;
 		delete this->m_input_manager;
@@ -80,7 +83,9 @@ namespace thebanana {
 		glClearColor(0.1f, 0.1f, 0.1f, 1.f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		this->m_scene->render();
-		if (debug::menus_shown) this->m_menu_quad->render();
+		if (this->m_menu_manager->menus_open()) {
+			this->m_menu_quad->render();
+		}
 #ifdef _DEBUG
 		debug::render_imgui(this);
 #endif
@@ -152,5 +157,8 @@ namespace thebanana {
 	}
 	sound::sound_manager* game::get_sound_manager() {
 		return this->m_sound_manager;
+	}
+	lua_interpreter* game::get_lua_interpreter() {
+		return this->m_interpreter;
 	}
 }

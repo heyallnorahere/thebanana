@@ -7,6 +7,7 @@ namespace thebanana {
 	class input_manager;
 	class framebuffer;
 	class gameobject;
+	class lua_interpreter;
 	namespace ui {
 		class menu_manager;
 	}
@@ -31,6 +32,7 @@ namespace thebanana {
 		void load_models();
 		HWND get_window();
 		sound::sound_manager* get_sound_manager();
+		lua_interpreter* get_lua_interpreter();
 	private:
 		unsigned int m_frame;
 		HWND m_window;
@@ -41,6 +43,7 @@ namespace thebanana {
 		ui::menu_manager* m_menu_manager;
 		sound::sound_manager* m_sound_manager;
 		gameobject* m_menu_quad;
+		lua_interpreter* m_interpreter;
 		float m_aspect_ratio;
 		std::vector<model_registry::model_descriptor> descriptors;
 	};

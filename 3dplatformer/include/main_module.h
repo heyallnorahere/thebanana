@@ -14,3 +14,4 @@
 #include "prop.h"
 #include "scene.h"
 #include "transform.h"
+#include "lua_interpreter.h"

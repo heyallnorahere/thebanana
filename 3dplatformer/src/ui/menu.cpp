@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "ui/menu.h"
 #include "game.h"
+#include "lua_interpreter.h"
 #include <nlohmann/json.hpp>
 using json = nlohmann::json;
 namespace glm {
@@ -29,9 +30,16 @@ namespace thebanana {
 		}
 		menu::menu() {
 			this->font.setTypeface(SkTypeface::MakeDefault());
+			this->paint.setAntiAlias(true);
+			this->has_script = false;
 		}
-		menu::menu(const std::string& json_file) {
+		menu::menu(const std::string& json_file) : menu() {
 			this->load_from_json_file(json_file);
+		}
+		menu::~menu() {
+			if (this->has_script) {
+				this->interpreter->call_function("on_unload", std::vector<lua_interpreter::param_type>());
+			}
 		}
 		void menu::load_from_json_file(const std::string& json_file) {
 			std::ifstream file(json_file);
@@ -39,6 +47,12 @@ namespace thebanana {
 			file >> j;
 			j["nodes"].get_to(this->children);
 			j["clear_color"].get_to(this->clear_color);
+			if (!j["script"].is_null()) {
+				j["script"].get_to(this->script_path);
+				this->has_script = true;
+			} else {
+				this->has_script = false;
+			}
 		}
 		void menu::draw(SkCanvas* canvas) {
 			canvas->clear({ this->clear_color.r, this->clear_color.g, this->clear_color.b, this->clear_color.a });
@@ -73,8 +87,13 @@ namespace thebanana {
 				this->draw_node(canvas, n);
 			}
 		}
-		void menu::set_game_ptr(game* g_game) {
+		void menu::set_ptrs(game* g_game, lua_interpreter* interpreter) {
 			this->g_game = g_game;
+			this->interpreter = interpreter;
+			if (this->has_script) {
+				this->interpreter->open_file(this->script_path);
+				this->interpreter->call_function("on_load", std::vector<lua_interpreter::param_type>());
+			}
 		}
 	}
 }

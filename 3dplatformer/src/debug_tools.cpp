@@ -91,16 +91,11 @@ namespace thebanana {
 		}
 		bool control = true;
 		bool cursor = false;
-		bool menus_shown = false;
 		void debug_menu(game* g_game) {
 			ImGui::Begin("the banana: debug menu");
 			ImGui::TextColored(ImVec4(1.f, 0.f, 1.f, 1.f), "input");
 			ImGui::Checkbox("controls active", &control);
 			ImGui::Checkbox("cursor visible", &cursor);
-			if (ImGui::Button("reload menu")) {
-				g_game->get_menu_manager()->load_menu(new ui::menu("test_menu.json"));
-				g_game->get_menu_manager()->update_texture_pixels();
-			}
 			if (ImGui::TreeNodeEx("devices", open_flags)) {
 				ImGui::Indent(ImGui::GetTreeNodeToLabelSpacing());
 				for (size_t i = 0; i < g_game->get_input_manager()->get_num_devices(); i++) {

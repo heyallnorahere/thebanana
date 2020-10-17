@@ -12,6 +12,8 @@
 #include "components/animation.h"
 #include "components/mesh.h"
 #include "sound/sound.h"
+#include "ui/ui.h"
+#include "lua_interpreter.h"
 namespace thebanana {
 	player::player() {
 		debug::log_print("created player");
@@ -52,7 +54,7 @@ namespace thebanana {
 					angles.push_back(btns[DIK_A].held ? -180.f : 180.f);
 				}
 				if (btns[DIK_TAB].down) {
-					debug::menus_shown = !debug::menus_shown;
+					this->m_game->get_menu_manager()->toggle_menus();
 				}
 				if ((btns[DIK_W].down || btns[DIK_S].down || btns[DIK_A].down || btns[DIK_D].down) && !this->m_walking && this->get_number_components<animation_component>() > 0) {
 					this->get_component<animation_component>().stop_animation();
@@ -85,7 +87,7 @@ namespace thebanana {
 				}
 				std::vector<input_manager::device::button> btns = this->m_game->get_input_manager()->get_device_buttons(0);
 				if (btns[6].down) { // select/touchpad
-					debug::menus_shown = !debug::menus_shown;
+					this->m_game->get_menu_manager()->toggle_menus();
 				}
 				if (btns[7].down) { // start/menu/options
 					this->m_game->destroy();

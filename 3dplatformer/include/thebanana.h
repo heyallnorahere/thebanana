@@ -6,7 +6,7 @@
 #include "ui/ui.h"
 #include "sound/sound.h"
 #include "main_module.h"
-#ifndef BANANA_MAIN_HANDLED
+#if defined(BANANA_MAIN) && !defined(BANANA_MAIN_HANDLED)
 void init_game();
 void gameloop();
 void clean_up_game();

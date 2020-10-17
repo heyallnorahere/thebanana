@@ -46,3 +46,12 @@
 #include <include/gpu/gl/GrGLInterface.h>
 #include <AL/al.h>
 #include <AL/alc.h>
+#ifdef __cplusplus
+extern "C" {
+#endif
+#include <lua.h>
+#include <lualib.h>
+#ifdef __cplusplus
+}
+#endif
+#include <lua.hpp>

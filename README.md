@@ -5,7 +5,7 @@ This is a 3D game engine I'm making. It currently supports the following platfor
 ## TO IMPLEMENT
 If you want to implement WinMain/main on your own, define `BANANA_MAIN_HANDLED` before including `thebanana.h`. It is required to set up the window (`WNDCLASS`, etc.) if you choose this option.
 
-Otherwise, your main file should look something like this:
+Otherwise, your `main.cpp` file should look something like this:
 ```cpp
 // defining this tells thebanana.h to define WinMain/main
 #define BANANA_MAIN

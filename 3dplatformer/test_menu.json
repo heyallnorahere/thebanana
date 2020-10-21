@@ -19,6 +19,7 @@
         "b": 0,
         "a": 1
       },
+      "onclick": "rect_button",
       "children": [
         {
           "node_type": "text",
@@ -50,7 +51,40 @@
         "b": 0,
         "a": 1
       },
+      "onclick": "ellipse_button",
       "children": []
+    },
+    {
+      "node_type": "rect",
+      "x": 0,
+      "y": 0.9,
+      "w": 0.2,
+      "h": 0.1,
+      "text": "",
+      "color": {
+        "r": 1,
+        "g": 1,
+        "b": 1,
+        "a": 1
+      },
+      "onclick": "exit",
+      "children": [
+        {
+          "node_type": "text",
+          "x": 0,
+          "y": 0.95,
+          "w": 0,
+          "h": 0.05,
+          "text": "exit",
+          "color": {
+            "r": 0,
+            "g": 0,
+            "b": 0,
+            "a": 1
+          },
+          "children": []
+        }
+      ]
     }
   ],
   "script": "test_script.lua"

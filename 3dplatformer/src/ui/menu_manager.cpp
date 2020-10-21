@@ -4,6 +4,7 @@
 #include "game.h"
 #include "graphics/texture.h"
 #include "lua_interpreter.h"
+#include "debug_tools.h"
 #include <stb_image.h>
 namespace thebanana {
 	namespace ui {
@@ -19,7 +20,7 @@ namespace thebanana {
 			this->update_texture_pixels();
 		}
 		void menu_manager::update() {
-			if (this->m_current_menu) this->m_current_menu->update();
+			if (this->m_current_menu && this->m_draw_menus) this->m_current_menu->update();
 		}
 		void menu_manager::draw() {
 			if (this->m_draw_menus && this->m_current_menu) {
@@ -77,14 +78,16 @@ namespace thebanana {
 		void menu_manager::open_menus() {
 			this->m_draw_menus = true;
 			this->m_game->show_cursor();
+			debug::log_print("opened menus");
 		}
 		void menu_manager::close_menus() {
 			this->m_draw_menus = false;
 			this->m_game->hide_cursor();
+			debug::log_print("closed menus");
 		}
 		void menu_manager::toggle_menus() {
-			this->m_draw_menus = !this->m_draw_menus;
-			this->m_game->showing_cursor() = this->m_draw_menus;
+			if (this->m_draw_menus) this->close_menus();
+			else this->open_menus();
 		}
 		bool menu_manager::menus_open() {
 			return this->m_draw_menus;

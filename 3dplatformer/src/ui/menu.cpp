@@ -2,6 +2,8 @@
 #include "ui/menu.h"
 #include "game.h"
 #include "lua_interpreter.h"
+#include "input_manager.h"
+#include "mouse.h"
 #include <nlohmann/json.hpp>
 using json = nlohmann::json;
 namespace glm {
@@ -11,6 +13,9 @@ namespace glm {
 		j["b"].get_to(color.b);
 		j["a"].get_to(color.a);
 	}
+}
+bool exists(const json& j, const std::string& name) {
+	return j.find(name) != j.end();
 }
 namespace thebanana {
 	namespace ui {
@@ -27,13 +32,38 @@ namespace thebanana {
 			j["h"].get_to(n.h);
 			j["text"].get_to(n.text);
 			j["color"].get_to(n.color);
-			n.onclick = "";
+			n.onclick = "no_function";
 			if (currently_loading_menu) {
-				if (currently_loading_menu->script_loaded() && !j["onclick"].is_null()) {
+				if (currently_loading_menu->script_loaded() && exists(j, "onclick")) {
 					j["onclick"].get_to(n.onclick);
 				}
 			}
 			j["children"].get_to(n.children);
+		}
+		void menu::on_click() {
+			glm::vec2 cursor_pos(0.5f);
+			switch (this->g_game->get_input_manager()->get_device_type(0)) {
+			case input_manager::device_type::keyboard:
+			{
+				POINT p;
+				GetCursorPos(&p);
+				RECT r;
+				GetWindowRect(this->g_game->get_window(), &r);
+				p.x -= r.left;
+				p.y -= r.top;
+				cursor_pos = glm::vec2(static_cast<float>(p.x) / (r.right - r.left), static_cast<float>(p.y) / (r.bottom - r.top));
+			}
+				break;
+			}
+			node* n = NULL;
+			for (auto& c : this->children) {
+				c.get_top_node_at_pos(n, cursor_pos);
+			}
+			if (n) {
+				if (n->onclick != "no_function") {
+					this->interpreter->call_function(n->onclick, std::vector<lua_interpreter::param_type>());
+				}
+			}
 		}
 		menu::menu() {
 			this->font.setTypeface(SkTypeface::MakeDefault());
@@ -49,10 +79,11 @@ namespace thebanana {
 			}
 		}
 		void menu::load_from_json_file(const std::string& json_file) {
+			currently_loading_menu = this;
 			std::ifstream file(json_file);
 			json j;
 			file >> j;
-			if (!j["script"].is_null()) {
+			if (exists(j, "script")) {
 				j["script"].get_to(this->script_path);
 				this->has_script = true;
 			}
@@ -63,7 +94,13 @@ namespace thebanana {
 			j["clear_color"].get_to(this->clear_color);
 		}
 		void menu::update() {
-			// update
+			if (this->g_game->get_input_manager()->get_device_type(0) == input_manager::device_type::keyboard) {
+				mouse* m = (mouse*)this->g_game->get_input_manager()->get_device(1);
+				std::vector<input_manager::device::button> btns = m->get_buttons();
+				if (btns[0].down) {
+					this->on_click();
+				}
+			}
 		}
 		void menu::draw(SkCanvas* canvas) {
 			canvas->clear({ this->clear_color.r, this->clear_color.g, this->clear_color.b, this->clear_color.a });
@@ -85,13 +122,13 @@ namespace thebanana {
 				SkRect r = SkRect::MakeXYWH(0.f, 0.f, n.w, n.h);
 				canvas->drawRect(r, this->paint);
 			}
-				break;
+			break;
 			case node_type::ellipse:
 			{
 				SkRect r = SkRect::MakeXYWH(0.f, 0.f, n.w, n.h);
 				canvas->drawOval(r, this->paint);
 			}
-				break;
+			break;
 			}
 			canvas->restore();
 			for (auto& n : n.children) {
@@ -108,6 +145,37 @@ namespace thebanana {
 		}
 		bool menu::script_loaded() {
 			return this->has_script;
+		}
+		void menu::node::get_top_node_at_pos(node*& ptr, glm::vec2 cursor_pos) {
+			switch (this->type) {
+			case node_type::rectangle:
+			{
+				bool x = (this->x < cursor_pos.x) && (this->x + this->w > cursor_pos.x);
+				bool y = (this->y < cursor_pos.y) && (this->y + this->h > cursor_pos.y);
+				if (x && y) {
+					ptr = this;
+				}
+			}
+			break;
+			case node_type::ellipse:
+			{
+				glm::vec2 local_pos = (cursor_pos - glm::vec2(this->x, this->y)) / glm::vec2(this->w, this->h);
+				if (local_pos.x < 0.f || local_pos.y < 0.f) break;
+				if (local_pos.x > 1.f || local_pos.y > 1.f) break;
+				glm::vec2 relative_pos = local_pos - 0.5f;
+				float angle = atan2(relative_pos.y, relative_pos.x);
+				float limit_y = sin(angle) * 0.5f;
+				float limit_x = sin(angle) * 0.5f;
+				if ((fabs(relative_pos.x) > fabs(limit_x)) && (fabs(relative_pos.y) > fabs(limit_y))) {
+					break;
+				}
+				ptr = this;
+			}
+				break;
+			}
+			for (auto& c : this->children) {
+				c.get_top_node_at_pos(ptr, cursor_pos);
+			}
 		}
 	}
 }

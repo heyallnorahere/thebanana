@@ -19,6 +19,10 @@ namespace thebanana {
 		g_game->get_menu_manager()->close_menus();
 		return 0;
 	}
+	int close_game(lua_State* state) {
+		g_game->destroy();
+		return 0;
+	}
 	int play_sound(lua_State* state) {
 		std::string name = lua_tostring(state, 1);
 		bool repeat = lua_toboolean(state, 2);
@@ -121,6 +125,7 @@ namespace thebanana {
 		this->register_function("debug_print", debug_print);
 		this->register_function("load_menu", load_menu);
 		this->register_function("close_menus", close_menus);
+		this->register_function("close_game", close_game);
 		this->register_function("play_sound", play_sound);
 	}
 	template<typename _Ty> lua_param<_Ty>::lua_param(va_list& vl, lua_State* state) : state(state) {

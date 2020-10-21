@@ -17,6 +17,7 @@ namespace thebanana {
 				std::string text, onclick;
 				std::vector<node> children;
 				node_type type;
+				void get_top_node_at_pos(node*& ptr, glm::vec2 cursor_pos);
 			};
 			menu(const std::string& json_file);
 			~menu();
@@ -27,6 +28,7 @@ namespace thebanana {
 			void set_ptrs(game* g_game, lua_interpreter* interpreter);
 			bool script_loaded();
 		private:
+			void on_click();
 			menu();
 			std::vector<node> children;
 			SkPaint paint;

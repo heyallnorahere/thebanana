@@ -7,7 +7,7 @@ namespace thebanana {
 	mouse::mouse() : is_connected(true) { }
 	mouse::~mouse() { }
 	std::vector<mouse::button> mouse::get_buttons() {
-		return std::vector<button>();
+		return this->current;
 	}
 	void mouse::update() {
 		if (GetFocus() == this->parent->get_parent()->get_window()) {

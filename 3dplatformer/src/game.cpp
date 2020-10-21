@@ -47,6 +47,7 @@ namespace thebanana {
 		this->m_menu_manager = new ui::menu_manager(this);
 		this->m_menu_quad = graphics::quad::create(2.f, 2.f, this->m_menu_manager->get_texture(), true);
 		this->m_sound_manager = new sound::sound_manager(this);
+		this->m_show_cursor = false;
 #ifdef _DEBUG
 		debug::init_imgui(this->m_window);
 #endif
@@ -70,11 +71,12 @@ namespace thebanana {
 	}
 	void game::update() {
 		this->m_frame++;
-		if (debug::cursor) {
+		if (this->m_show_cursor) {
 			SetCursor(LoadCursor(NULL, IDC_ARROW));
 		} else {
 			SetCursor(NULL);
 		}
+		this->m_menu_manager->update();
 		this->m_input_manager->update_devices();
 		this->m_scene->update();
 	}
@@ -147,10 +149,10 @@ namespace thebanana {
 		return this->m_scene;
 	}
 	void game::add_model_desc(const model_registry::model_descriptor& desc) {
-		this->descriptors.push_back(desc);
+		this->m_descriptors.push_back(desc);
 	}
 	void game::load_models() {
-		this->m_model_registry = new model_registry(this->descriptors);
+		this->m_model_registry = new model_registry(this->m_descriptors);
 	}
 	HWND game::get_window() {
 		return this->m_window;
@@ -160,5 +162,17 @@ namespace thebanana {
 	}
 	lua_interpreter* game::get_lua_interpreter() {
 		return this->m_interpreter;
+	}
+	bool& game::showing_cursor() {
+		return this->m_show_cursor;
+	}
+	void game::show_cursor() {
+		this->m_show_cursor = true;
+	}
+	void game::hide_cursor() {
+		this->m_show_cursor = false;
+	}
+	void game::toggle_cursor() {
+		this->m_show_cursor = !this->m_show_cursor;
 	}
 }

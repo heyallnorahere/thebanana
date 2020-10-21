@@ -14,6 +14,7 @@ namespace glm {
 }
 namespace thebanana {
 	namespace ui {
+		menu* currently_loading_menu = NULL;
 		void from_json(const json& j, menu::node& n) {
 			std::string type_name = j["node_type"].get<std::string>();
 			if (type_name == "label" || type_name == "text") n.type = menu::node_type::text;
@@ -26,6 +27,12 @@ namespace thebanana {
 			j["h"].get_to(n.h);
 			j["text"].get_to(n.text);
 			j["color"].get_to(n.color);
+			n.onclick = "";
+			if (currently_loading_menu) {
+				if (currently_loading_menu->script_loaded() && !j["onclick"].is_null()) {
+					j["onclick"].get_to(n.onclick);
+				}
+			}
 			j["children"].get_to(n.children);
 		}
 		menu::menu() {
@@ -45,14 +52,18 @@ namespace thebanana {
 			std::ifstream file(json_file);
 			json j;
 			file >> j;
-			j["nodes"].get_to(this->children);
-			j["clear_color"].get_to(this->clear_color);
 			if (!j["script"].is_null()) {
 				j["script"].get_to(this->script_path);
 				this->has_script = true;
-			} else {
+			}
+			else {
 				this->has_script = false;
 			}
+			j["nodes"].get_to(this->children);
+			j["clear_color"].get_to(this->clear_color);
+		}
+		void menu::update() {
+			// update
 		}
 		void menu::draw(SkCanvas* canvas) {
 			canvas->clear({ this->clear_color.r, this->clear_color.g, this->clear_color.b, this->clear_color.a });
@@ -94,6 +105,9 @@ namespace thebanana {
 				this->interpreter->open_file(this->script_path);
 				this->interpreter->call_function("on_load", std::vector<lua_interpreter::param_type>());
 			}
+		}
+		bool menu::script_loaded() {
+			return this->has_script;
 		}
 	}
 }

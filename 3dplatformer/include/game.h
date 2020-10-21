@@ -33,6 +33,10 @@ namespace thebanana {
 		HWND get_window();
 		sound::sound_manager* get_sound_manager();
 		lua_interpreter* get_lua_interpreter();
+		bool& showing_cursor();
+		void show_cursor();
+		void hide_cursor();
+		void toggle_cursor();
 	private:
 		unsigned int m_frame;
 		HWND m_window;
@@ -45,7 +49,8 @@ namespace thebanana {
 		gameobject* m_menu_quad;
 		lua_interpreter* m_interpreter;
 		float m_aspect_ratio;
-		std::vector<model_registry::model_descriptor> descriptors;
+		std::vector<model_registry::model_descriptor> m_descriptors;
+		bool m_show_cursor;
 	};
 	extern game* g_game;
 }

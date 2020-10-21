@@ -1,16 +1,34 @@
 #include "pch.h"
 #include "lua_interpreter.h"
 #include "debug_tools.h"
+#include "ui/ui.h"
+#include "sound/sound.h"
+#include "game.h"
 namespace thebanana {
 	int debug_print(lua_State* state) {
 		std::string text = lua_tostring(state, 1);
 		debug::log_print(text);
 		return 0;
 	}
+	int load_menu(lua_State* state) {
+		std::string path = lua_tostring(state, 1);
+		g_game->get_menu_manager()->load_menu(new ui::menu(path));
+		return 0;
+	}
+	int close_menus(lua_State* state) {
+		g_game->get_menu_manager()->close_menus();
+		return 0;
+	}
+	int play_sound(lua_State* state) {
+		std::string name = lua_tostring(state, 1);
+		bool repeat = lua_toboolean(state, 2);
+		g_game->get_sound_manager()->get_sound(name)->play(repeat);
+		return 0;
+	}
 	lua_interpreter::lua_interpreter() {
 		this->m_state = luaL_newstate();
 		luaL_openlibs(this->m_state);
-		this->register_function("debug_print", debug_print);
+		this->add_engine_functions();
 	}
 	lua_interpreter::~lua_interpreter() {
 		lua_close(this->m_state);
@@ -98,6 +116,12 @@ namespace thebanana {
 	}
 	bool lua_interpreter::check_lua(int return_value) {
 		return return_value == LUA_OK;
+	}
+	void lua_interpreter::add_engine_functions() {
+		this->register_function("debug_print", debug_print);
+		this->register_function("load_menu", load_menu);
+		this->register_function("close_menus", close_menus);
+		this->register_function("play_sound", play_sound);
 	}
 	template<typename _Ty> lua_param<_Ty>::lua_param(va_list& vl, lua_State* state) : state(state) {
 		va_list vl_ = vl;

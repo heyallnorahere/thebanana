@@ -32,7 +32,7 @@ namespace thebanana {
 				debug::control = !debug::control;
 			}
 			if (toggle_cursor) {
-				debug::cursor = !debug::cursor;
+				this->m_game->toggle_cursor();
 			}
 		}
 #endif

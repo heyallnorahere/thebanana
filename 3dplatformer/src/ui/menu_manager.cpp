@@ -18,6 +18,9 @@ namespace thebanana {
 			this->m_current_menu->set_ptrs(this->m_game, this->m_interpreter);
 			this->update_texture_pixels();
 		}
+		void menu_manager::update() {
+			if (this->m_current_menu) this->m_current_menu->update();
+		}
 		void menu_manager::draw() {
 			if (this->m_draw_menus && this->m_current_menu) {
 				// if the menus should be drawn, and there is a menu loaded, draw the menu
@@ -73,12 +76,15 @@ namespace thebanana {
 		}
 		void menu_manager::open_menus() {
 			this->m_draw_menus = true;
+			this->m_game->show_cursor();
 		}
 		void menu_manager::close_menus() {
 			this->m_draw_menus = false;
+			this->m_game->hide_cursor();
 		}
 		void menu_manager::toggle_menus() {
 			this->m_draw_menus = !this->m_draw_menus;
+			this->m_game->showing_cursor() = this->m_draw_menus;
 		}
 		bool menu_manager::menus_open() {
 			return this->m_draw_menus;

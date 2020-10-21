@@ -184,6 +184,7 @@
     <None Include="models\skullbandana.fbx" />
     <None Include="packages.config" />
     <None Include="shaders\2d\fragment.shader" />
+    <None Include="sounds\click.ogg" />
     <None Include="test_menu.json" />
     <None Include="shaders\2d\vertex.shader" />
     <None Include="shaders\basic\fragment.shader" />

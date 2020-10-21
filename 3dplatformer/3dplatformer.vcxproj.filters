@@ -136,6 +136,7 @@
     <None Include="shaders\2d\fragment.shader" />
     <None Include="test_menu.json" />
     <None Include="test_script.lua" />
+    <None Include="sounds\click.ogg" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h">

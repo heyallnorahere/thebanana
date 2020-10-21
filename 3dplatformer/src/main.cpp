@@ -44,6 +44,7 @@ void init_game() {
 	thebanana::g_game->add_model_desc({ "player", "models/placeholder/waluigi.fbx", waluigi_paths, thebanana::transform().scale(0.0005f) });
 	thebanana::g_game->add_model_desc({ "collision", "models/placeholder/collision.obj", waluigi_paths, thebanana::transform() });
 	thebanana::g_game->load_models();
+	thebanana::g_game->get_sound_manager()->load_sound("click", "sounds/click.ogg");
 	thebanana::g_game->get_menu_manager()->load_menu(new thebanana::ui::menu("test_menu.json"));
 }
 void gameloop() {

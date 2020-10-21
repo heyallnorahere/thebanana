@@ -14,18 +14,20 @@ namespace thebanana {
 			struct node {
 				float x, y, w, h;
 				glm::vec4 color;
-				std::string text;
+				std::string text, onclick;
 				std::vector<node> children;
 				node_type type;
 			};
-			menu();
 			menu(const std::string& json_file);
 			~menu();
 			void load_from_json_file(const std::string& json_file);
+			void update();
 			void draw(SkCanvas* canvas);
 			void draw_node(SkCanvas* canvas, node& n);
 			void set_ptrs(game* g_game, lua_interpreter* interpreter);
+			bool script_loaded();
 		private:
+			menu();
 			std::vector<node> children;
 			SkPaint paint;
 			SkFont font;

@@ -11,6 +11,7 @@ namespace thebanana {
 		public:
 			menu_manager(game* g_game);
 			void load_menu(menu* m);
+			void update();
 			void draw();
 			graphics::texture* get_texture();
 			~menu_manager();
@@ -24,7 +25,6 @@ namespace thebanana {
 			void setup_canvas();
 			void setup_texture();
 			void destroy_texture();
-			sk_sp<SkImage> get_canvas_data();
 			graphics::texture* m_texture;
 			game* m_game;
 			menu* m_current_menu;

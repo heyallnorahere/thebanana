@@ -40,11 +40,6 @@ namespace thebanana {
 			delete this->m_interpreter;
 			this->destroy_texture();
 		}
-		void menu_manager::update_canvas_size() {
-			RECT r;
-			GetClientRect(this->m_game->get_window(), &r);
-			this->m_canvas->scale(r.right, r.bottom);
-		}
 		void menu_manager::setup_canvas() {
 			RECT window_rect;
 			GetWindowRect(this->m_game->get_window(), &window_rect);
@@ -52,7 +47,7 @@ namespace thebanana {
 			int height = abs(window_rect.bottom - window_rect.top);
 			this->m_surface = SkSurface::MakeRasterN32Premul(width, height);
 			this->m_canvas = this->m_surface->getCanvas();
-			this->update_canvas_size();
+			this->m_canvas->scale(width, height);
 		}
 		void menu_manager::setup_texture() {
 			graphics::texture::data d;

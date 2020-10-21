@@ -110,27 +110,24 @@ namespace thebanana {
 		}
 		void menu::draw_node(SkCanvas* canvas, node& n) {
 			this->paint.setColor4f({ n.color.r, n.color.g, n.color.b, n.color.a });
-			canvas->save();
-			canvas->translate(n.x, n.y);
 			switch (n.type) {
 			case node_type::text:
 				this->font.setSize(n.h);
-				canvas->drawString(n.text.c_str(), 0.f, 0.f, this->font, this->paint);
+				canvas->drawString(n.text.c_str(), n.x, n.y, this->font, this->paint);
 				break;
 			case node_type::rectangle:
 			{
-				SkRect r = SkRect::MakeXYWH(0.f, 0.f, n.w, n.h);
+				SkRect r = SkRect::MakeXYWH(n.x, n.y, n.w, n.h);
 				canvas->drawRect(r, this->paint);
 			}
 			break;
 			case node_type::ellipse:
 			{
-				SkRect r = SkRect::MakeXYWH(0.f, 0.f, n.w, n.h);
+				SkRect r = SkRect::MakeXYWH(n.x, n.y, n.w, n.h);
 				canvas->drawOval(r, this->paint);
 			}
 			break;
 			}
-			canvas->restore();
 			for (auto& n : n.children) {
 				this->draw_node(canvas, n);
 			}

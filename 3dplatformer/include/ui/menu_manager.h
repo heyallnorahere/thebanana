@@ -15,7 +15,6 @@ namespace thebanana {
 			void draw();
 			graphics::texture* get_texture();
 			~menu_manager();
-			void update_canvas_size();
 			void update_texture_pixels();
 			void open_menus();
 			void close_menus();

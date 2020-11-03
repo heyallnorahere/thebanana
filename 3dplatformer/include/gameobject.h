@@ -27,6 +27,7 @@ namespace thebanana {
 		game* get_game();
 		template<typename _Ty> _Ty& add_component();
 		template<typename _Ty> _Ty& get_component(size_t index = 0);
+		template<typename _Ty> void remove_component(size_t index = 0);
 		template<typename _Ty> size_t get_number_components();
 		const component::properties_t& get_properties();
 		void on_collision(gameobject* other);
@@ -47,7 +48,7 @@ namespace thebanana {
 		game* m_game;
 		std::list<std::unique_ptr<gameobject>> m_children;
 		transform m_transform;
-		std::vector<std::unique_ptr<component>> m_components;
+		std::list<std::unique_ptr<component>> m_components;
 		std::vector<std::string> m_tags;
 	private:
 		unsigned int last_collided_frame;
@@ -68,7 +69,12 @@ namespace thebanana {
 		return *c;
 	}
 	template<typename _Ty> inline _Ty& gameobject::get_component(size_t index) {
-		if (typeid(_Ty).hash_code() == typeid(component).hash_code()) return (_Ty&) * (this->m_components[index % this->m_components.size()].get());
+		if (typeid(_Ty).hash_code() == typeid(component).hash_code()) {
+			auto it = this->m_components.begin();
+			std::advance(it, index % this->m_components.size());
+			auto& p = *it;
+			return (_Ty&)*p;
+		}
 		std::vector<_Ty*> ptrs;
 		for (auto& c : this->m_components) {
 			if (typeid(*c).hash_code() == typeid(_Ty).hash_code()) {
@@ -80,6 +86,29 @@ namespace thebanana {
 		}
 		else {
 			return *ptrs[index % ptrs.size()];
+		}
+	}
+	template<typename _Ty> inline void gameobject::remove_component(size_t index) {
+		if (typeid(_Ty).hash_code() == typeid(component).hash_code()) {
+			auto it = this->m_components.begin();
+			std::advance(it, index % this->m_components.size());
+			auto& p = *it;
+			this->m_components.remove(p);
+			return;
+		}
+		std::vector<size_t> indices;
+		size_t current_index = 0;
+		for (auto& c : this->m_components) {
+			if (typeid(*c).hash_code() == typeid(_Ty).hash_code()) {
+				indices.push_back(current_index);
+			}
+			current_index++;
+		}
+		if (indices.size() > 0) {
+			auto it = this->m_components.begin();
+			std::advance(it, indices[index % indices.size()]);
+			auto& p = *it;
+			this->m_components.remove(p);
 		}
 	}
 	template<typename _Ty> inline size_t gameobject::get_number_components() {

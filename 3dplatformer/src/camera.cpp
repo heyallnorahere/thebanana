@@ -16,6 +16,9 @@ namespace thebanana {
 		this->add_property(new component::property<float>(2.f, "distance"));
 	}
 	void camera::update() {
+		if (this->get_number_components<debug_component>() > 0) {
+			this->remove_component<debug_component>();
+		}
 		this->prepare_for_update();
 #ifdef _DEBUG
 		if (debug::control) {

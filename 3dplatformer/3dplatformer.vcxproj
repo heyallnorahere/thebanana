@@ -120,6 +120,7 @@
     <ClCompile Include="src\player.cpp" />
     <ClCompile Include="src\prop.cpp" />
     <ClCompile Include="src\scene.cpp" />
+    <ClCompile Include="src\scene_serializer.cpp" />
     <ClCompile Include="src\sound\context.cpp" />
     <ClCompile Include="src\sound\load_sound.cpp" />
     <ClCompile Include="src\sound\misc.cpp" />
@@ -142,6 +143,7 @@
     <ClInclude Include="include\lua_interpreter.h" />
     <ClInclude Include="include\main_module.h" />
     <ClInclude Include="include\physics\physics.h" />
+    <ClInclude Include="include\scene_serializer.h" />
     <ClInclude Include="include\sound\context.h" />
     <ClInclude Include="include\sound\misc.h" />
     <ClInclude Include="include\sound\openal_sound_effect.h" />

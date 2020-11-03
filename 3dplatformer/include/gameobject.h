@@ -54,6 +54,7 @@ namespace thebanana {
 		bool initialized;
 		void update_children();
 		void render_children();
+		friend class scene_serializer;
 	};
 	template<typename T> inline T* gameobject::add_object(T* obj) {
 		obj->init(this, this->m_scene, this->m_game);

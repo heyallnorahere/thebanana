@@ -126,6 +126,9 @@
     <ClCompile Include="src\lua_interpreter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\scene_serializer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -281,6 +284,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\lua_interpreter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\scene_serializer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

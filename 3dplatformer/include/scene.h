@@ -22,6 +22,7 @@ namespace thebanana {
 		game* m_game;
 		std::list<std::unique_ptr<gameobject>> m_children;
 		std::unique_ptr<opengl_shader_library::shader> m_shader;
+		friend class scene_serializer;
 	};
 	template<typename T> inline T* scene::add_object(T* obj) {
 		obj->init(ROOT, this, this->m_game);

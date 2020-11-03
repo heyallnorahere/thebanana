@@ -105,6 +105,7 @@
     <ClCompile Include="src\graphics\quad.cpp" />
     <ClCompile Include="src\graphics\texture.cpp" />
     <ClCompile Include="src\input_manager.cpp" />
+    <ClCompile Include="src\internal_util.cpp" />
     <ClCompile Include="src\keyboard.cpp" />
     <ClCompile Include="src\lua_interpreter.cpp" />
     <ClCompile Include="src\main.cpp" />
@@ -180,6 +181,7 @@
     <ClInclude Include="include\scene.h" />
     <ClInclude Include="include\transform.h" />
     <ClInclude Include="include\util.h" />
+    <ClInclude Include="src\internal_util.h" />
     <ClInclude Include="src\sound\load_sound.h" />
   </ItemGroup>
   <ItemGroup>

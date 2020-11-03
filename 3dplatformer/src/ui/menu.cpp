@@ -1,9 +1,11 @@
 #include "pch.h"
 #include "ui/menu.h"
+#include "graphics/texture.h"
 #include "game.h"
 #include "lua_interpreter.h"
 #include "input_manager.h"
 #include "mouse.h"
+#include "../internal_util.h"
 #include <nlohmann/json.hpp>
 using json = nlohmann::json;
 namespace glm {
@@ -19,6 +21,28 @@ bool exists(const json& j, const std::string& name) {
 }
 namespace thebanana {
 	namespace ui {
+		void from_json(const json& j, menu::color*& c) {
+			menu::color_type type = menu::color_type::solid_color;
+			if (exists(j, "type")) {
+				std::string type_str = j["type"].get<std::string>();
+				if (type_str == "solid" || type_str == "color") {
+					type = menu::color_type::solid_color;
+				} else if (type_str == "texture" || type_str == "image") {
+					type = menu::color_type::texture;
+				} else {
+					throw "unrecognizable color type";
+				}
+			}
+			switch (type) {
+			case menu::color_type::solid_color:
+				c = new menu::color_impl<menu::color_type::solid_color>;
+				break;
+			case menu::color_type::texture:
+				c = new menu::color_impl<menu::color_type::texture>;
+				break;
+			}
+			c->init((void*)&j);
+		}
 		menu* currently_loading_menu = NULL;
 		void from_json(const json& j, menu::node& n) {
 			std::string type_name = j["node_type"].get<std::string>();
@@ -31,7 +55,7 @@ namespace thebanana {
 			j["w"].get_to(n.w);
 			j["h"].get_to(n.h);
 			j["text"].get_to(n.text);
-			j["color"].get_to(n.color);
+			j["color"].get_to(n.c);
 			n.onclick = "no_function";
 			if (currently_loading_menu) {
 				if (currently_loading_menu->script_loaded() && exists(j, "onclick")) {
@@ -77,6 +101,9 @@ namespace thebanana {
 			if (this->has_script) {
 				this->interpreter->call_function("on_unload", std::vector<lua_interpreter::param_type>());
 			}
+			for (auto& c : this->children) {
+				c.on_unload();
+			}
 		}
 		void menu::load_from_json_file(const std::string& json_file) {
 			currently_loading_menu = this;
@@ -108,25 +135,49 @@ namespace thebanana {
 				this->draw_node(canvas, n);
 			}
 		}
+		template<menu::color_type t> menu::color_impl<t>* color_cast(menu::color* ptr) {
+			return (menu::color_impl<t>*)ptr;
+		}
 		void menu::draw_node(SkCanvas* canvas, node& n) {
-			this->paint.setColor4f({ n.color.r, n.color.g, n.color.b, n.color.a });
+			if (n.c->get_type() == color_type::solid_color) {
+				// a little hacky, but hey, it works
+				color_impl<color_type::solid_color>* color = color_cast<color_type::solid_color>(n.c);
+				this->paint.setColor4f({ color->storage.c.r, color->storage.c.g, color->storage.c.b, color->storage.c.a });
+			}
 			switch (n.type) {
 			case node_type::text:
 				this->font.setSize(n.h);
-				canvas->drawString(n.text.c_str(), n.x, n.y, this->font, this->paint);
+				// textures arent implemented for text *yet*
+				if (n.c->get_type() == color_type::solid_color) {
+					canvas->drawString(n.text.c_str(), n.x, n.y, this->font, this->paint);
+				}
 				break;
 			case node_type::rectangle:
 			{
 				SkRect r = SkRect::MakeXYWH(n.x, n.y, n.w, n.h);
-				canvas->drawRect(r, this->paint);
+				switch (n.c->get_type()) {
+				case color_type::solid_color:
+					canvas->drawRect(r, this->paint);
+					break;
+				case color_type::texture:
+				{
+					color_impl<color_type::texture>* color = color_cast<color_type::texture>(n.c);
+					canvas->drawImageRect(color->storage.tex, r, NULL);
+				}
+					break;
+				}
 			}
-			break;
+				break;
 			case node_type::ellipse:
 			{
 				SkRect r = SkRect::MakeXYWH(n.x, n.y, n.w, n.h);
-				canvas->drawOval(r, this->paint);
+				switch (n.c->get_type()) {
+				case color_type::solid_color:
+					canvas->drawOval(r, this->paint);
+					break;
+				}
 			}
-			break;
+				break;
 			}
 			for (auto& n : n.children) {
 				this->draw_node(canvas, n);
@@ -173,6 +224,42 @@ namespace thebanana {
 			for (auto& c : this->children) {
 				c.get_top_node_at_pos(ptr, cursor_pos);
 			}
+		}
+		void menu::node::on_unload() {
+			delete this->c;
+			for (auto& c : this->children) {
+				c.on_unload();
+			}
+		}
+		sk_sp<SkImage> menu::color::init_texture(void* color_node) {
+			using namespace graphics;
+			json j = *(nlohmann::json*)color_node;
+			std::string path = j["texture_path"].get<std::string>();
+			bool flip = false;
+			if (exists(j, "flip")) flip = j["flip"].get<bool>();
+			int width, height, channels;
+			unsigned char* pixels = load_image_from_file(path, width, height, channels, flip);
+			sk_sp<SkData> data = SkData::MakeWithCopy(pixels, width * height * channels);
+			free_image(pixels);
+			SkColorType color_type;
+			switch (channels) {
+			case 4:
+				color_type = kBGRA_8888_SkColorType;
+				break;
+			case 3:
+				color_type = kRGB_888x_SkColorType;
+				break;
+			default:
+				color_type = kUnknown_SkColorType;
+				break;
+			}
+			SkImageInfo info = SkImageInfo::Make(width, height, color_type, SkAlphaType::kUnpremul_SkAlphaType);
+			sk_sp<SkImage> img = SkImage::MakeRasterData(info, data, width * channels);
+			return img;
+		}
+		glm::vec4 menu::color::init_color(void* color_node) {
+			json j = *(nlohmann::json*)color_node;
+			return j.get<glm::vec4>();
 		}
 	}
 }

@@ -11,7 +11,7 @@
 #include "mouse.h"
 #include "null_object.h"
 #include "player.h"
-#include "prop.h"
+#include "static_mesh.h"
 #include "scene.h"
 #include "transform.h"
 #include "lua_interpreter.h"

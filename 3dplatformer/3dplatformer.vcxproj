@@ -119,7 +119,7 @@
     <ClCompile Include="src\physics\collider.cpp" />
     <ClCompile Include="src\physics\rigidbody.cpp" />
     <ClCompile Include="src\player.cpp" />
-    <ClCompile Include="src\prop.cpp" />
+    <ClCompile Include="src\static_mesh.cpp" />
     <ClCompile Include="src\scene.cpp" />
     <ClCompile Include="src\scene_serializer.cpp" />
     <ClCompile Include="src\sound\context.cpp" />
@@ -177,7 +177,7 @@
     <ClInclude Include="include\physics\collider.h" />
     <ClInclude Include="include\physics\rigidbody.h" />
     <ClInclude Include="include\player.h" />
-    <ClInclude Include="include\prop.h" />
+    <ClInclude Include="include\static_mesh.h" />
     <ClInclude Include="include\scene.h" />
     <ClInclude Include="include\transform.h" />
     <ClInclude Include="include\util.h" />

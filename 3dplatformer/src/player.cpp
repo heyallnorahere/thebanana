@@ -7,7 +7,7 @@
 #include "camera.h"
 #include "scene.h"
 #include "debug_tools.h"
-#include "prop.h"
+#include "static_mesh.h"
 #include "physics/rigidbody.h"
 #include "components/animation.h"
 #include "components/mesh.h"

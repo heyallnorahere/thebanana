@@ -1,14 +1,14 @@
 #include "pch.h"
-#include "prop.h"
+#include "static_mesh.h"
 #include "debug_tools.h"
 #include "physics/rigidbody.h"
 #include "components/mesh.h"
 namespace thebanana {
-	prop::prop(const std::string& model_name) {
-		this->m_nickname = "prop";
+	static_mesh::static_mesh(const std::string& model_name) {
+		this->m_nickname = "static mesh";
 		this->add_component<mesh_component>().set_mesh_name(model_name);
 	}
-	void prop::update() {
+	void static_mesh::update() {
 		this->prepare_for_update();
 		if (this->get_number_components<mesh_component>() > 0) {
 			component::property<std::string>* mn = this->find_property<std::string>("model name");
@@ -20,7 +20,7 @@ namespace thebanana {
 		}
 		this->post_update();
 	}
-	void prop::render() {
+	void static_mesh::render() {
 		this->prepare_for_render();
 		component::property<std::string>* model_name = this->find_property<std::string>("model name");
 		if (this->get_number_components<mesh_component>() > 0) {
@@ -28,5 +28,5 @@ namespace thebanana {
 		}
 		this->post_render();
 	}
-	prop::~prop() { }
+	static_mesh::~static_mesh() { }
 }

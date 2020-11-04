@@ -27,10 +27,10 @@ namespace thebanana {
 			graphics::texture* m_texture;
 			game* m_game;
 			menu* m_current_menu;
-			lua_interpreter* m_interpreter;
 			SkCanvas* m_canvas;
 			sk_sp<SkSurface> m_surface;
 			bool m_draw_menus;
+			menu* m_last_frame_menu_ptr;
 		};
 	}
 }

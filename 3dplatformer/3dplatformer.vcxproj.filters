@@ -143,6 +143,8 @@
     <None Include="test_menu.json" />
     <None Include="test_script.lua" />
     <None Include="sounds\click.ogg" />
+    <None Include="test_sub_menu.json" />
+    <None Include="sub_menu_script.lua" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h">

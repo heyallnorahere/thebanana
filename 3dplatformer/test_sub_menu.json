@@ -1,0 +1,44 @@
+{
+  "clear_color": {
+    "r": 0.5,
+    "g": 0.5,
+    "b": 0.5,
+    "a": 1
+  },
+  "nodes": [
+    {
+      "node_type": "rect",
+      "x": 0,
+      "y": 0,
+      "w": 0.125,
+      "h": 0.125,
+      "color": {
+        "type": "solid",
+        "r": 1,
+        "g": 1,
+        "b": 1,
+        "a": 1
+      },
+      "onclick": "back",
+      "children": [
+        {
+          "node_type": "text",
+          "x": 0,
+          "y": 0,
+          "w": 0,
+          "h": 0.1,
+          "text": "back",
+          "color": {
+            "type": "solid",
+            "r": 0,
+            "g": 0,
+            "b": 0,
+            "a": 1
+          },
+          "children": []
+        }
+      ]
+    }
+  ],
+  "script": "sub_menu_script.lua"
+}

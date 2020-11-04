@@ -30,12 +30,10 @@ namespace thebanana {
 		return 0;
 	}
 	lua_interpreter::lua_interpreter() {
-		this->m_state = luaL_newstate();
-		luaL_openlibs(this->m_state);
-		this->add_engine_functions();
+		this->init_state();
 	}
 	lua_interpreter::~lua_interpreter() {
-		lua_close(this->m_state);
+		this->destroy_state();
 	}
 	void lua_interpreter::open_file(const std::string& path) {
 		if (!check_lua(luaL_dofile(this->m_state, path.c_str()))) {
@@ -120,6 +118,18 @@ namespace thebanana {
 	}
 	bool lua_interpreter::check_lua(int return_value) {
 		return return_value == LUA_OK;
+	}
+	void lua_interpreter::init_state() {
+		this->m_state = luaL_newstate();
+		luaL_openlibs(this->m_state);
+		this->add_engine_functions();
+	}
+	void lua_interpreter::destroy_state() {
+		lua_close(this->m_state);
+	}
+	void lua_interpreter::reset_state() {
+		this->destroy_state();
+		this->init_state();
 	}
 	void lua_interpreter::add_engine_functions() {
 		this->register_function("debug_print", debug_print);

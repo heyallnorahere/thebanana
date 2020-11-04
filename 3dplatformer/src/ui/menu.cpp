@@ -54,7 +54,8 @@ namespace thebanana {
 			j["y"].get_to(n.y);
 			j["w"].get_to(n.w);
 			j["h"].get_to(n.h);
-			j["text"].get_to(n.text);
+			if (exists(j, "text")) j["text"].get_to(n.text);
+			else n.text = "";
 			j["color"].get_to(n.c);
 			n.onclick = "no_function";
 			if (currently_loading_menu) {
@@ -98,12 +99,10 @@ namespace thebanana {
 			this->load_from_json_file(json_file);
 		}
 		menu::~menu() {
-			if (this->has_script) {
-				this->interpreter->call_function("on_unload", std::vector<lua_interpreter::param_type>());
-			}
 			for (auto& c : this->children) {
 				c.on_unload();
 			}
+			delete this->interpreter;
 		}
 		void menu::load_from_json_file(const std::string& json_file) {
 			currently_loading_menu = this;
@@ -119,6 +118,11 @@ namespace thebanana {
 			}
 			j["nodes"].get_to(this->children);
 			j["clear_color"].get_to(this->clear_color);
+			this->interpreter = new lua_interpreter;
+			if (this->has_script) {
+				this->interpreter->open_file(this->script_path);
+				this->interpreter->call_function("on_load", std::vector<lua_interpreter::param_type>());
+			}
 		}
 		void menu::update() {
 			if (this->g_game->get_input_manager()->get_device_type(0) == input_manager::device_type::keyboard) {
@@ -183,13 +187,9 @@ namespace thebanana {
 				this->draw_node(canvas, n);
 			}
 		}
-		void menu::set_ptrs(game* g_game, lua_interpreter* interpreter) {
+		void menu::set_ptrs(game* g_game) {
 			this->g_game = g_game;
-			this->interpreter = interpreter;
-			if (this->has_script) {
-				this->interpreter->open_file(this->script_path);
-				this->interpreter->call_function("on_load", std::vector<lua_interpreter::param_type>());
-			}
+			
 		}
 		bool menu::script_loaded() {
 			return this->has_script;

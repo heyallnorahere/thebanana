@@ -14,11 +14,9 @@ namespace thebanana {
 		this->m_angle = glm::vec2(0.f, -90.f);
 		this->m_nickname = "camera";
 		this->add_property(new component::property<float>(2.f, "distance"));
+		this->remove_component<debug_component>();
 	}
 	void camera::update() {
-		if (this->get_number_components<debug_component>() > 0) {
-			this->remove_component<debug_component>();
-		}
 		this->prepare_for_update();
 #ifdef _DEBUG
 		if (debug::control) {

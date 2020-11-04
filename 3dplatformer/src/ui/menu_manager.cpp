@@ -3,23 +3,27 @@
 #include "ui/menu.h"
 #include "game.h"
 #include "graphics/texture.h"
+#include "graphics/opengl/opengl_texture.h"
 #include "lua_interpreter.h"
 #include "debug_tools.h"
 #include <stb_image.h>
 namespace thebanana {
 	namespace ui {
-		menu_manager::menu_manager(game* g_game) : m_game(g_game), m_current_menu(NULL), m_canvas(NULL), m_texture(NULL), m_draw_menus(false) {
+		menu_manager::menu_manager(game* g_game) : m_game(g_game), m_current_menu(NULL), m_canvas(NULL), m_texture(NULL), m_draw_menus(false), m_last_frame_menu_ptr(NULL) {
 			this->setup_canvas();
 			this->setup_texture();
-			this->m_interpreter = new lua_interpreter;
 		}
 		void menu_manager::load_menu(menu* m) {
-			delete this->m_current_menu;
 			this->m_current_menu = m;
-			this->m_current_menu->set_ptrs(this->m_game, this->m_interpreter);
+			this->m_current_menu->set_ptrs(this->m_game);
 			this->update_texture_pixels();
 		}
 		void menu_manager::update() {
+			// to avoid lua exceptions
+			if (this->m_current_menu != this->m_last_frame_menu_ptr) {
+				delete this->m_last_frame_menu_ptr;
+				this->m_last_frame_menu_ptr = this->m_current_menu;
+			}
 			if (this->m_current_menu && this->m_draw_menus) this->m_current_menu->update();
 		}
 		void menu_manager::draw() {
@@ -37,7 +41,6 @@ namespace thebanana {
 		}
 		menu_manager::~menu_manager() {
 			delete this->m_current_menu;
-			delete this->m_interpreter;
 			this->destroy_texture();
 		}
 		void menu_manager::setup_canvas() {
@@ -56,7 +59,9 @@ namespace thebanana {
 			d.channels = info.bytesPerPixel();
 			d.width = info.width();
 			d.height = info.height();
-			this->m_texture = graphics::texture::create(d);
+			graphics::opengl::opengl_texture::settings s;
+			s.format = GL_BGRA;
+			this->m_texture = graphics::texture::create(d, &s);
 		}
 		void menu_manager::destroy_texture() {
 			delete this->m_texture;

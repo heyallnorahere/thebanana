@@ -6,7 +6,7 @@ namespace thebanana {
 			class opengl_texture : public texture {
 			public:
 				struct settings {
-					int wrap_s = 0, wrap_t = 0, min_filter = 0, mag_filter = 0;
+					int wrap_s = 0, wrap_t = 0, min_filter = 0, mag_filter = 0, format = 0;
 				};
 				opengl_texture(const data& d, void* api_specific);
 				virtual void bind(unsigned int slot = 0) override;

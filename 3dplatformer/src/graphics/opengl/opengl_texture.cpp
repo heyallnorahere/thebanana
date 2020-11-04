@@ -20,25 +20,29 @@ namespace thebanana {
 			}
 			void opengl_texture::set_data(void* pixels) {
 				this->bind();
-				int format;
+				int internal_format;
 				switch (this->m_channels) {
 				case 1:
-					format = GL_RED;
+					internal_format = GL_RED;
 					break;
 				case 2:
-					format = GL_RG;
+					internal_format = GL_RG;
 					break;
 				case 3:
-					format = GL_RGB;
+					internal_format = GL_RGB;
 					break;
 				case 4:
-					format = GL_RGBA;
+					internal_format = GL_RGBA;
 					break;
 				default:
 					return;
 					break;
 				}
-				glTexImage2D(GL_TEXTURE_2D, NULL, format, this->m_width, this->m_height, NULL, format, GL_UNSIGNED_BYTE, pixels);
+				int format = this->m_settings.format;
+				if (!format) {
+					format = internal_format;
+				}
+				glTexImage2D(GL_TEXTURE_2D, NULL, internal_format, this->m_width, this->m_height, NULL, format, GL_UNSIGNED_BYTE, pixels);
 				if (pixels) {
 					glGenerateMipmap(GL_TEXTURE_2D);
 				}

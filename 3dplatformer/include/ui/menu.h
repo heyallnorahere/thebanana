@@ -54,7 +54,7 @@ namespace thebanana {
 			void update();
 			void draw(SkCanvas* canvas);
 			void draw_node(SkCanvas* canvas, node& n);
-			void set_ptrs(game* g_game, lua_interpreter* interpreter);
+			void set_ptrs(game* g_game);
 			bool script_loaded();
 		private:
 			void on_click();

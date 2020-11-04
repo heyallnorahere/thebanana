@@ -21,6 +21,9 @@ namespace thebanana {
 		void register_function(const std::string& name, func ptr);
 		static bool check_lua(int return_value);
 	private:
+		void init_state();
+		void destroy_state();
+		void reset_state();
 		void add_engine_functions();
 		lua_State* m_state;
 		std::vector<std::string> m_registered_functions;

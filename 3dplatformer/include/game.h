@@ -37,7 +37,10 @@ namespace thebanana {
 		void show_cursor();
 		void hide_cursor();
 		void toggle_cursor();
+		std::string get_steam_name();
 	private:
+		void init_steam();
+		void shutdown_steam();
 		unsigned int m_frame;
 		HWND m_window;
 		opengl_viewport* m_viewport;

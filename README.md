@@ -23,3 +23,8 @@ void clean_up_game() {
 ```
 
 For all methods of implementation, `thebanana::g_game` *needs* to be initialized and freed for the engine to properly work.
+
+## TO BUILD
+### WINDOWS
+[Visual Studio 2019](https://visualstudio.microsoft.com/) solution/project included, with NuGet packages installed.
+The only thing you need to download is the [Steamworks SDK](https://partner.steamgames.com/) and copy the `sdk` folder into `C:/steamsdk`. Then, copy `redistributable_bin/win64/steam_api64.dll` to the main project directory.

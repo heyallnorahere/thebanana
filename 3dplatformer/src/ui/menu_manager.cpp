@@ -78,12 +78,12 @@ namespace thebanana {
 		void menu_manager::open_menus() {
 			this->m_draw_menus = true;
 			this->m_game->show_cursor();
-			debug::log_print("opened menus");
+			debug::log_print(this->m_game->get_steam_name() + " opened menus");
 		}
 		void menu_manager::close_menus() {
 			this->m_draw_menus = false;
 			this->m_game->hide_cursor();
-			debug::log_print("closed menus");
+			debug::log_print(this->m_game->get_steam_name() + " closed menus");
 		}
 		void menu_manager::toggle_menus() {
 			if (this->m_draw_menus) this->close_menus();

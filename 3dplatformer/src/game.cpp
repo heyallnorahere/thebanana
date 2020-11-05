@@ -51,8 +51,10 @@ namespace thebanana {
 #ifdef _DEBUG
 		debug::init_imgui(this->m_window);
 #endif
+		this->init_steam();
 	}
 	game::~game() {
+		this->shutdown_steam();
 #ifdef _DEBUG
 		debug::clean_up_imgui();
 #endif
@@ -174,5 +176,14 @@ namespace thebanana {
 	}
 	void game::toggle_cursor() {
 		this->m_show_cursor = !this->m_show_cursor;
+	}
+	std::string game::get_steam_name() {
+		return std::string(SteamFriends()->GetPersonaName());
+	}
+	void game::init_steam() {
+		SteamAPI_Init();
+	}
+	void game::shutdown_steam() {
+		SteamAPI_Shutdown();
 	}
 }

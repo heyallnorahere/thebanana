@@ -50,12 +50,14 @@ namespace thebanana {
 		this->m_show_cursor = false;
 #ifdef _DEBUG
 		debug::init_imgui(this->m_window);
-#endif
+#else
 		this->init_steam();
+#endif
 	}
 	game::~game() {
+#ifndef _DEBUG
 		this->shutdown_steam();
-#ifdef _DEBUG
+#else
 		debug::clean_up_imgui();
 #endif
 		delete this->m_sound_manager;
@@ -178,7 +180,11 @@ namespace thebanana {
 		this->m_show_cursor = !this->m_show_cursor;
 	}
 	std::string game::get_steam_name() {
+#ifdef _DEBUG
+		return "test player";
+#else
 		return std::string(SteamFriends()->GetPersonaName());
+#endif
 	}
 	void game::init_steam() {
 		SteamAPI_Init();

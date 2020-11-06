@@ -5,6 +5,8 @@
 #include "gameobject.h"
 #include "debug_tools.h"
 #include "components/mesh.h"
+#include "scene.h"
+#include "camera.h"
 namespace thebanana {
 	collider::collider(rigidbody* rb) : parent(rb) { }
 	collider::~collider() { }
@@ -54,6 +56,10 @@ namespace thebanana {
 		glm::vec3 origin = glm::vec3(this->parent->get_parent()->get_transform().get_matrix() * glm::vec4(0.f, 0.f, 0.f, 1.f)) + this->origin_offset;
 		float radius_2 = this->radius * this->radius;
 		gameobject* object = other->get_parent();
+		std::string model_name = "";
+		if (object->get_number_components<mesh_component>() > 0) {
+			model_name = other->get_collision_model_name();
+		}
 		model_registry::model_vertex_data data = other->get_vertex_data();
 		std::vector<glm::vec3> positions, normals;
 		for (auto v : data.vertices) {
@@ -68,10 +74,6 @@ namespace thebanana {
 			bool outside_all_vertices = false;
 			bool outside_all_edges = false;
 			bool fully_inside_plane = false;
-			std::string model_name = "";
-			if (object->get_number_components<mesh_component>() > 0) {
-				model_name = object->get_component<mesh_component>().get_mesh_name();
-			}
 			glm::vec3 v0 = object->get_absolute_transform().get_matrix() * object->get_game()->get_model_registry()->get_transform(model_name).get_matrix() * glm::vec4(positions[indices[i][0]], 1.f);
 			glm::vec3 v1 = object->get_absolute_transform().get_matrix() * object->get_game()->get_model_registry()->get_transform(model_name).get_matrix() * glm::vec4(positions[indices[i][1]], 1.f);
 			glm::vec3 v2 = object->get_absolute_transform().get_matrix() * object->get_game()->get_model_registry()->get_transform(model_name).get_matrix() * glm::vec4(positions[indices[i][2]], 1.f);
@@ -117,6 +119,18 @@ namespace thebanana {
 			this->parent->get_shift_delta() += normal * (this->radius - ppd);
 			if (!collided) collided = true;
 		}
+#ifdef _DEBUG
+		if (collided) {
+			opengl_shader_library::shader::use(object->get_scene()->get_shader());
+			glm::mat4 projection = glm::perspective(glm::radians(45.f), object->get_game()->get_aspect_ratio(), 0.1f, 100.f);
+			object->get_scene()->get_shader()->get_uniforms().mat4("projection", projection);
+			object->get_scene()->get_camera()->render();
+			object->get_scene()->get_shader()->get_uniforms().mat4("model", object->get_absolute_transform().get_matrix() * object->get_game()->get_model_registry()->get_transform(model_name).get_matrix());
+			object->get_scene()->get_shader()->get_uniforms().mat4("model_transform", glm::mat4(1.f));
+			object->get_game()->get_model_registry()->draw(model_name, 0.0, -1, object->get_scene()->get_shader());
+			opengl_shader_library::shader::use(NULL);
+		}
+#endif
 		return collided;
 	}
 	void mlfarrel_model::on_collision(gameobject* other) {

@@ -39,10 +39,10 @@ void init_game() {
 	p->get_component<thebanana::rigidbody>().set_property("mass", 1.5f);
 	thebanana::g_game->get_scene()->add_object(p);
 	p = new thebanana::static_mesh("test_Lblock");
-	p->get_transform().translate(-5.f, 5.f, -5.f);
-	p->add_tag("test");
-	p->add_component<thebanana::rigidbody>().set_collision_model_name("test_cube").set_collision_tags({ "ground" }).set_collider_type<thebanana::mlfarrel_model>().set_radius(0.5f).set_origin_offset(glm::vec3(0.f, 0.5f, 0.f));
-	p->get_component<thebanana::rigidbody>().set_property("mass", 1.5f);
+	p->get_transform().translate(-5.f, 0.f, -5.f);
+	p->get_transform().scale(0.5f);
+	p->add_tag("ground");
+	p->add_component<thebanana::rigidbody>().set_collision_model_name("test_Lblock");
 	thebanana::g_game->get_scene()->add_object(p);
 	p = new thebanana::static_mesh("test_cube");
 	p->get_transform().translate(0.f, -1.f, 0.f);

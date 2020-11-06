@@ -36,7 +36,10 @@ namespace thebanana {
 		if (index == std::string::npos) {
 			return transform();
 		}
-		return this->descriptors[index].model_transform;
+		transform model_transform = this->descriptors[index].model_transform;
+		const aiScene* scene = this->get_scene(name);
+		if (scene) model_transform *= scene->mRootNode->mTransformation;
+		return model_transform;
 	}
 	const aiScene* model_registry::get_scene(const std::string& name) {
 		if (!this->has_loaded) return NULL;

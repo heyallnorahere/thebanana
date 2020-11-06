@@ -59,6 +59,17 @@ namespace thebanana {
 		if (!this->has_loaded) return model_vertex_data();
 		return this->vertex_data[model_name];
 	}
+	std::string model_registry::path_helper(const std::string& original, const std::string& find, const std::string& replace) {
+		size_t pos = std::string::npos;
+		std::string result = original;
+		do {
+			if (pos != std::string::npos) {
+				result = replace + original.substr(pos + find.length());
+			}
+			pos = original.find(find, pos + 1);
+		} while (pos != std::string::npos);
+		return result;
+	}
 	struct vertex_loader_params {
 		model_registry* r;
 		std::string n;

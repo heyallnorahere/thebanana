@@ -89,6 +89,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\application_layer.cpp" />
     <ClCompile Include="src\camera.cpp" />
     <ClCompile Include="src\component.cpp" />
     <ClCompile Include="src\components\animation.cpp" />
@@ -133,6 +134,7 @@
     <ClCompile Include="src\ui\menu_manager.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="include\application_layer.h" />
     <ClInclude Include="include\components\components.h" />
     <ClInclude Include="include\graphics\graphics.h" />
     <ClInclude Include="include\graphics\opengl\opengl.h" />

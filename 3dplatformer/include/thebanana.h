@@ -7,10 +7,9 @@
 #include "sound/sound.h"
 #include "main_module.h"
 #ifdef BANANA_MAIN
-void init_game();
-void gameloop();
-void clean_up_game();
+::thebanana::application_layer* create_application_layer();
 int __stdcall WinMain(HINSTANCE instance, HINSTANCE prev, char* cmd_line, int cmd_show) {
+	::thebanana::application_layer* app_layer = create_application_layer();
 	WNDCLASS wc;
 	ZeroMemory(&wc, sizeof(WNDCLASS));
 	wc.lpfnWndProc = ::thebanana::game::wndproc;
@@ -20,7 +19,8 @@ int __stdcall WinMain(HINSTANCE instance, HINSTANCE prev, char* cmd_line, int cm
 	wc.hbrBackground = (HBRUSH)COLOR_WINDOW;
 	wc.style = CS_HREDRAW | CS_VREDRAW;
 	assert(RegisterClass(&wc));
-	init_game();
+	::thebanana::g_game = new ::thebanana::game(app_layer->window_title());
+	app_layer->init();
 	MSG msg;
 	ZeroMemory(&msg, sizeof(MSG));
 	while (msg.message != WM_QUIT) {
@@ -28,9 +28,14 @@ int __stdcall WinMain(HINSTANCE instance, HINSTANCE prev, char* cmd_line, int cm
 			TranslateMessage(&msg);
 			DispatchMessage(&msg);
 		}
-		gameloop();
+		app_layer->gameloop();
 	}
-	clean_up_game();
+	app_layer->clean_up();
+	delete ::thebanana::g_game;
+	delete app_layer;
 	return static_cast<int>(msg.wParam);
 }
-#endif
+#ifdef BANANA_DEMO
+// todo: add demo
+#endif//BANANA_DEMO
+#endif//BANANA_MAIN

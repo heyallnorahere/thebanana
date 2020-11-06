@@ -1,37 +1,20 @@
 #include "pch.h"
 #define BANANA_MAIN
 #include "thebanana.h"
-std::string path_helper(const std::string& original, const std::string& find, const std::string& replace) {
-	size_t pos = std::string::npos;
-	std::string result = original;
-	do {
-		if (pos != std::string::npos) {
-			result = replace + original.substr(pos + find.length());
-		}
-		pos = original.find(find, pos + 1);
-	} while (pos != std::string::npos);
-	return result;
-}
 std::string waluigi_paths(const std::string& path, void*) {
-	return path_helper(path, "Waluigi\\Waluigi\\", "textures\\placeholder\\waluigi\\");
-}
-std::string kunai_paths(const std::string& path, void*) {
-	return path_helper(path, "Ibukis Kunai\\SFV_IBUKI_Kunai\\", "textures\\placeholder\\kunai\\");
-}
-std::string mk8rr_paths(const std::string& path, void*) {
-	return path_helper(path, "Wii U - Mario Kart 8 - Rainbow Road\\", "textures\\placeholder\\mk8rr\\");
-}
-std::string mk64rr_paths(const std::string& path, void*) {
-	return path_helper(path, "Mario Kart 64 - Rainbow Road\\", "textures\\placeholder\\mk64rr\\");
-}
-std::string results_stage_paths(const std::string& path, void*) {
-	return path_helper(path, "Results Stage\\Results Stage\\images\\", "textures\\placeholder\\resultsstage\\");
+	return thebanana::model_registry::path_helper(path, "Waluigi\\Waluigi\\", "textures\\placeholder\\waluigi\\");
 }
 std::string test_texture_path(const std::string& path, void*) {
-	return path_helper(path, "3dplatformer\\3dplatformer\\", "");
+	return thebanana::model_registry::path_helper(path, "3dplatformer\\3dplatformer\\", "");
 }
-void init_game() {
-	thebanana::g_game = new thebanana::game("banana window");
+class thebanana_test_application_layer : public thebanana::application_layer {
+public:
+	virtual void init() override;
+};
+thebanana::application_layer* create_application_layer() {
+	return new thebanana_test_application_layer;
+}
+void thebanana_test_application_layer::init() {
 	thebanana::static_mesh* p = new thebanana::static_mesh("test_cube");
 	p->get_transform().translate(2.f, 0.75f, 2.f);
 	p->add_tag("test");
@@ -57,11 +40,4 @@ void init_game() {
 	thebanana::g_game->load_models();
 	thebanana::g_game->get_sound_manager()->load_sound("click", "sounds/click.ogg");
 	thebanana::g_game->get_menu_manager()->load_menu(new thebanana::ui::menu("test_menu.json"));
-}
-void gameloop() {
-	thebanana::g_game->update();
-	thebanana::g_game->render();
-}
-void clean_up_game() {
-	delete thebanana::g_game;
 }

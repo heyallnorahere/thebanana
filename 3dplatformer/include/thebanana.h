@@ -35,7 +35,4 @@ int __stdcall WinMain(HINSTANCE instance, HINSTANCE prev, char* cmd_line, int cm
 	delete app_layer;
 	return static_cast<int>(msg.wParam);
 }
-#ifdef BANANA_DEMO
-// todo: add demo
-#endif//BANANA_DEMO
 #endif//BANANA_MAIN

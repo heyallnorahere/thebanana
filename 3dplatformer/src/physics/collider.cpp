@@ -6,7 +6,6 @@
 #include "debug_tools.h"
 #include "components/mesh.h"
 #include "scene.h"
-#include "camera.h"
 namespace thebanana {
 	collider::collider(rigidbody* rb) : parent(rb) { }
 	collider::~collider() { }

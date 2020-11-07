@@ -3,7 +3,6 @@
 #include "gameobject.h"
 #include "debug_tools.h"
 #include "game.h"
-#include "player.h"
 namespace thebanana {
 	rigidbody::rigidbody(gameobject* obj) : component(obj) {
 		this->add_property(new property<bool>(false, "gravity"));

@@ -1,8 +1,6 @@
 #include "pch.h"
 #include "scene.h"
 #include "game.h"
-#include "player.h"
-#include "camera.h"
 #include "input_manager.h"
 #include "controller.h"
 #include "mouse.h"
@@ -13,10 +11,6 @@ namespace thebanana {
 	scene::scene(game* g) {
 		this->m_shader = std::unique_ptr<opengl_shader_library::shader>(new opengl_shader_library::win32_resource_shader(IDR_BASIC_VERTEX, IDR_BASIC_FRAGMENT, "SHADER"));
 		this->m_game = g;
-		this->m_player = new player;
-		this->m_camera = new camera(this->m_player);
-		this->add_object(this->m_camera);
-		this->add_object(this->m_player);
 	}
 	void scene::update() {
 #ifdef _DEBUG
@@ -42,8 +36,6 @@ namespace thebanana {
 	}
 	void scene::render() {
 		opengl_shader_library::shader::use(this->m_shader.get());
-		glm::mat4 projection = glm::perspective(glm::radians(45.f), this->m_game->get_aspect_ratio(), 0.1f, 100.f);
-		this->m_shader->get_uniforms().mat4("projection", projection);
 		for (auto& c : this->m_children) {
 			opengl_shader_library::shader::use(this->m_shader.get());
 			c->render();
@@ -67,11 +59,5 @@ namespace thebanana {
 	}
 	opengl_shader_library::shader* scene::get_shader() const {
 		return this->m_shader.get();
-	}
-	player* scene::get_player() {
-		return this->m_player;
-	}
-	camera* scene::get_camera() {
-		return this->m_camera;
 	}
 }

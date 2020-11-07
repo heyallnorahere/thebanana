@@ -1,5 +1,4 @@
 #pragma once
-#include "camera.h"
 #include "component.h"
 #include "controller.h"
 #include "debug_tools.h"
@@ -10,7 +9,6 @@
 #include "model_registry.h"
 #include "mouse.h"
 #include "null_object.h"
-#include "player.h"
 #include "static_mesh.h"
 #include "scene.h"
 #include "transform.h"

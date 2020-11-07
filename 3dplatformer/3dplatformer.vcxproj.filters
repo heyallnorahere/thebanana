@@ -153,9 +153,6 @@
     <ClInclude Include="resource.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\camera.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\component.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -190,9 +187,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\pch.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\player.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\scene.h">
@@ -304,6 +298,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\application_layer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\player.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\camera.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

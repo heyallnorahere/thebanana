@@ -159,7 +159,7 @@
     <ClInclude Include="include\ui\menu_manager.h" />
     <ClInclude Include="include\ui\ui.h" />
     <ClInclude Include="resource.h" />
-    <ClInclude Include="include\camera.h" />
+    <ClInclude Include="src\camera.h" />
     <ClInclude Include="include\component.h" />
     <ClInclude Include="include\components\animation.h" />
     <ClInclude Include="include\components\mesh.h" />
@@ -179,7 +179,7 @@
     <ClInclude Include="include\pch.h" />
     <ClInclude Include="include\physics\collider.h" />
     <ClInclude Include="include\physics\rigidbody.h" />
-    <ClInclude Include="include\player.h" />
+    <ClInclude Include="src\player.h" />
     <ClInclude Include="include\static_mesh.h" />
     <ClInclude Include="include\scene.h" />
     <ClInclude Include="include\transform.h" />

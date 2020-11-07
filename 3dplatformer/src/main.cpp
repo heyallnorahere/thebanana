@@ -1,6 +1,8 @@
 #include "pch.h"
 #define BANANA_MAIN
 #include "thebanana.h"
+#include "player.h"
+#include "camera.h"
 std::string waluigi_paths(const std::string& path, void*) {
 	return thebanana::model_registry::path_helper(path, "Waluigi\\Waluigi\\", "textures\\placeholder\\waluigi\\");
 }
@@ -10,11 +12,19 @@ std::string test_texture_path(const std::string& path, void*) {
 class thebanana_test_application_layer : public thebanana::application_layer {
 public:
 	virtual void init() override;
+private:
+	player* m_player;
+	camera* m_camera;
 };
 thebanana::application_layer* create_application_layer() {
 	return new thebanana_test_application_layer;
 }
 void thebanana_test_application_layer::init() {
+	this->m_player = new player;
+	this->m_camera = new camera(this->m_player);
+	this->m_player->set_camera(this->m_camera);
+	thebanana::g_game->get_scene()->add_object(this->m_camera);
+	thebanana::g_game->get_scene()->add_object(this->m_player);
 	thebanana::static_mesh* p = new thebanana::static_mesh("test_cube");
 	p->get_transform().translate(2.f, 0.75f, 2.f);
 	p->add_tag("test");
@@ -24,8 +34,8 @@ void thebanana_test_application_layer::init() {
 	/*p = new thebanana::static_mesh("test_Lblock");
 	p->get_transform().translate(-5.f, 0.f, -5.f);
 	p->add_tag("ground");
-	p->add_component<thebanana::rigidbody>().set_collision_model_name("test_Lblock");*/
-	thebanana::g_game->get_scene()->add_object(p);
+	p->add_component<thebanana::rigidbody>().set_collision_model_name("test_Lblock");
+	thebanana::g_game->get_scene()->add_object(p);*/
 	p = new thebanana::static_mesh("test_cube");
 	p->get_transform().translate(0.f, -1.f, 0.f);
 	p->get_transform().scale(100.f, 1.f, 100.f);

@@ -54,7 +54,8 @@ namespace thebanana {
 		bool collided = false;
 		using uint3 = glm::vec<3, unsigned int, glm::packed_highp>;
 		glm::vec3 origin = glm::vec3(this->parent->get_parent()->get_transform().get_matrix() * glm::vec4(0.f, 0.f, 0.f, 1.f)) + this->origin_offset;
-		float radius_2 = this->radius * this->radius;
+		float trans_radius = glm::length(glm::vec3(this->parent->get_parent()->get_transform().get_matrix() * glm::vec4(this->radius, 0, 0, 1.f)) + this->origin_offset - origin);
+		float radius_2 = trans_radius*trans_radius;
 		gameobject* object = other->get_parent();
 		std::string model_name = "";
 		if (object->get_number_components<mesh_component>() > 0) {
@@ -87,7 +88,7 @@ namespace thebanana {
 			//if (fabs(normal.y) > 0.1f) continue;
 			float d = glm::dot(-((v0 + v1 + v2) / 3.f), normal);
 			float ppd = glm::dot(normal, origin) + d;
-			if (fabs(ppd) > this->radius) {
+			if (fabs(ppd) > trans_radius) {
 				outside_plane = true;
 				continue;
 			}
@@ -119,18 +120,6 @@ namespace thebanana {
 			this->parent->get_shift_delta() += normal * (this->radius - ppd);
 			if (!collided) collided = true;
 		}
-#ifdef _DEBUG
-		if (collided) {
-			opengl_shader_library::shader::use(object->get_scene()->get_shader());
-			glm::mat4 projection = glm::perspective(glm::radians(45.f), object->get_game()->get_aspect_ratio(), 0.1f, 100.f);
-			object->get_scene()->get_shader()->get_uniforms().mat4("projection", projection);
-			object->get_scene()->get_camera()->render();
-			object->get_scene()->get_shader()->get_uniforms().mat4("model", object->get_absolute_transform().get_matrix() * object->get_game()->get_model_registry()->get_transform(model_name).get_matrix());
-			object->get_scene()->get_shader()->get_uniforms().mat4("model_transform", glm::mat4(1.f));
-			object->get_game()->get_model_registry()->draw(model_name, 0.0, -1, object->get_scene()->get_shader());
-			opengl_shader_library::shader::use(NULL);
-		}
-#endif
 		return collided;
 	}
 	void mlfarrel_model::on_collision(gameobject* other) {

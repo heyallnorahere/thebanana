@@ -18,7 +18,7 @@ player_behavior::player_behavior(thebanana::gameobject* object) : script(object)
 	thebanana::debug::log_print("created player");
 	this->add_component<thebanana::animation_component>();
 	this->add_component<thebanana::mesh_component>().set_mesh_name("player");
-	this->add_component<thebanana::rigidbody>().set_check_for_collisions(true).set_speed_cap(0.5f).set_collision_tags({ "ground", "test" }).set_collider_type<thebanana::mlfarrel_model>().set_radius(0.4f).set_origin_offset(glm::vec3(0.f, 0.6f, 0.f));
+	this->add_component<thebanana::rigidbody>().set_check_for_collisions(true).set_speed_cap(0.5f).set_collider_type<thebanana::mlfarrel_model>().set_radius(0.4f).set_origin_offset(glm::vec3(0.f, 0.6f, 0.f));
 	this->get_component<thebanana::rigidbody>().set_property("mass", 2.5f);
 	this->parent->add_tag("player");
 	this->parent->get_nickname() = "player";
@@ -106,12 +106,12 @@ void player_behavior::update() {
 	}
 #endif
 }
-void player_behavior::set_camera(camera* c) {
+void player_behavior::set_camera(thebanana::gameobject* c) {
 	this->m_camera = c;
 }
 void player_behavior::move(float yaw_offset, glm::vec3& translate, const float speed) {
-	glm::vec2 current_angle = this->m_last_angle - (this->m_camera->get_angle() + glm::vec2(0.f, yaw_offset));
-	this->m_last_angle = this->m_camera->get_angle() + glm::vec2(0.f, yaw_offset);
+	glm::vec2 current_angle = this->m_last_angle - (this->m_camera->get_component<thebanana::native_script_component>().get_script<camera_behavior>()->get_angle() + glm::vec2(0.f, yaw_offset));
+	this->m_last_angle = this->m_camera->get_component<thebanana::native_script_component>().get_script<camera_behavior>()->get_angle() + glm::vec2(0.f, yaw_offset);
 	this->get_transform().rotate(current_angle.y, glm::vec3(0.f, 1.f, 0.f));
 	translate.z += speed;
 }

@@ -100,5 +100,6 @@ namespace thebanana {
 	void component::property_base::dropdown::set_items(const std::vector<std::string>& items) {
 		this->m_items = items;
 	}
-
+	component::property_base::read_only_text::read_only_text(const std::string& text) : text(text) { }
+	std::string& component::property_base::read_only_text::get_text() { return this->text; }
 }

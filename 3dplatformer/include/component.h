@@ -18,6 +18,13 @@ namespace thebanana {
 				std::vector<std::string> m_items;
 				int m_index;
 			};
+			class read_only_text {
+			public:
+				read_only_text(const std::string& text);
+				std::string& get_text();
+			private:
+				std::string text;
+			};
 			property_base(const std::string& name, size_t size);
 			const std::string& get_name();
 			virtual ~property_base();
@@ -137,6 +144,9 @@ namespace thebanana {
 			items.push_back(str.c_str());
 		}
 		ImGui::Combo(this->name.c_str(), this->value->get_index_ptr(), items.data(), items.size());
+	}
+	inline void component::property<component::property_base::read_only_text>::draw() const {
+		ImGui::InputText(this->name.c_str(), &this->value->get_text(), ImGuiInputTextFlags_ReadOnly);
 	}
 	template<typename T> inline void component::property<T>::draw() const {
 		std::string name = typeid(T).name();

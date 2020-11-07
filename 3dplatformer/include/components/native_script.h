@@ -36,7 +36,9 @@ namespace thebanana {
 		script* m_script;
 	};
 	template<typename T> inline void native_script_component::bind() {
+		if (this->m_destroy_script) this->m_destroy_script(this);
 		this->m_script = (script*)new T(this->parent);
 		this->m_destroy_script = [](native_script_component* x) { delete (T*)(x->get_script()); };
+		this->get_property<property_base::read_only_text>("script")->get_text() = typeid(T).name();
 	}
 }

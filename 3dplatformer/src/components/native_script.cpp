@@ -13,6 +13,12 @@ namespace thebanana {
 	void script::post_render() { }
 	void script::on_collision(gameobject* other) { }
 	void script::clean_up() { }
+	void script::add_property(component::property_base* p) {
+		((component*)this->interface)->add_property(p);
+	}
+	transform& script::get_transform() {
+		return this->parent->get_transform();
+	}
 	native_script_component::native_script_component(gameobject* object) : component(object) {
 		this->m_destroy_script = NULL;
 		this->m_script = NULL;

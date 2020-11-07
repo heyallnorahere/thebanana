@@ -84,6 +84,7 @@ namespace thebanana {
 		template<typename _Ty> property<_Ty>* find_property(const std::string& name);
 		properties_t properties;
 		gameobject* parent;
+		friend class script;
 	};
 	class debug_component : public component {
 	public:

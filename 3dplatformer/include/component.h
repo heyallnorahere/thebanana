@@ -114,6 +114,7 @@ namespace thebanana {
 	template<typename T> inline gameobject** component::property<T>::get_selection_window_ptr() const {
 		return NULL;
 	}
+#ifdef BANANA_BUILD
 	inline void component::property<int>::draw() const {
 		ImGui::InputInt(this->name.c_str(), this->value);
 	}
@@ -180,6 +181,7 @@ namespace thebanana {
 		ImGui::Text("sorry, no implementation for this type yet... heres the raw memory though");
 		ImGui::InputText(this->name.c_str(), (char*)this->ptr, sizeof(T));
 	}
+#endif
 	template<typename T> inline void component::property<T>::close_selection_window() {
 		this->selection_window_open = false;
 	}

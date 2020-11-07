@@ -14,7 +14,10 @@ Otherwise, your `main.cpp` file should look something like this:
 // this class defines the games behavior and whatnot
 class my_game_application_layer : public thebanana::application_layer {
 public:
-	// all of these are optional, though if you dont define any of them (or dont define this class at all and use the base class), the "game" is just gonna be a tech demo
+	// all of these are optional,
+	// though if you dont define any of them
+	// (or dont define this class at all and use the base class),
+	// the "game" is just gonna be a tech demo
 	virtual void init() override;
 	virtual void gameloop() override;
 	virtual void clean_up() override;

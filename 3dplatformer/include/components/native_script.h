@@ -31,7 +31,7 @@ namespace thebanana {
 	public:
 		native_script_component(gameobject* object);
 		template<typename T> void bind();
-		script* get_script();
+		template<typename T> T* get_script();
 		virtual void pre_update() override;
 		virtual void update() override;
 		virtual void post_update() override;
@@ -47,8 +47,11 @@ namespace thebanana {
 	template<typename T> inline void native_script_component::bind() {
 		if (this->m_destroy_script) this->m_destroy_script(this);
 		this->m_script = (script*)new T(this->parent);
-		this->m_destroy_script = [](native_script_component* x) { delete (T*)(x->get_script()); };
+		this->m_destroy_script = [](native_script_component* x) { delete x->get_script<T>(); };
 		this->get_property<property_base::read_only_text>("script")->get_text() = typeid(T).name();
+	}
+	template<typename T> inline T* native_script_component::get_script() {
+		return (T*)this->m_script;
 	}
 	template<typename _Ty> inline void script::set_property(const std::string& name, const _Ty& value) {
 		this->interface->set_property<_Ty>(name, value);

@@ -24,9 +24,6 @@ namespace thebanana {
 		this->m_script = NULL;
 		this->add_property(new property<property_base::read_only_text>(property_base::read_only_text("none"), "script"));
 	}
-	script* native_script_component::get_script() {
-		return this->m_script;
-	}
 	void native_script_component::pre_update() {
 		if (this->m_script) this->m_script->pre_update();
 	}

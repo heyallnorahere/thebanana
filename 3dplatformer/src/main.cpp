@@ -13,16 +13,17 @@ class thebanana_test_application_layer : public thebanana::application_layer {
 public:
 	virtual void init() override;
 private:
-	player* m_player;
 	camera* m_camera;
+	thebanana::gameobject* m_player;
 };
 thebanana::application_layer* create_application_layer() {
 	return new thebanana_test_application_layer;
 }
 void thebanana_test_application_layer::init() {
-	this->m_player = new player;
+	this->m_player = new thebanana::basic_gameobject;
+	this->m_player->add_component<thebanana::native_script_component>().bind<player_behavior>();
 	this->m_camera = new camera(this->m_player);
-	this->m_player->set_camera(this->m_camera);
+	this->m_player->get_component<thebanana::native_script_component>().get_script<player_behavior>()->set_camera(this->m_camera);
 	thebanana::g_game->get_scene()->add_object(this->m_camera);
 	thebanana::g_game->get_scene()->add_object(this->m_player);
 	thebanana::gameobject* p = new thebanana::static_mesh("test_cube");

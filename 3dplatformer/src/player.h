@@ -1,12 +1,13 @@
 #pragma once
-#include "gameobject.h"
+#include "components/native_script.h"
+namespace thebanana {
+	class gameobject;
+}
 class camera;
-class player : public thebanana::gameobject {
+class player_behavior : public thebanana::script {
 public:
-	player();
+	player_behavior(thebanana::gameobject* object);
 	virtual void update() override;
-	virtual void render() override;
-	virtual ~player() override;
 	void set_camera(camera* c);
 private:
 	void move(float yaw_offset, glm::vec3& translate, const float speed);

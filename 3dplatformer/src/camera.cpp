@@ -7,7 +7,7 @@
 #include "input_manager.h"
 #include "controller.h"
 #include "mouse.h"
-camera::camera(player* p) : m_player(p) {
+camera::camera(thebanana::gameobject* p) : m_player(p) {
 	thebanana::debug::log_print("created camera");
 	this->m_direction = glm::vec3(0.f, 0.f, 1.f);
 	this->m_angle = glm::vec2(0.f, -90.f);

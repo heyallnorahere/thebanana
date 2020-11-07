@@ -106,13 +106,12 @@ void player::update() {
 #ifdef _DEBUG
 	}
 #endif
+	this->update_components();
 	this->post_update();
 }
 void player::render() {
 	this->prepare_for_render();
-	if (this->get_number_components<thebanana::mesh_component>() > 0) {
-		this->get_component<thebanana::mesh_component>().render();
-	}
+	this->render_components();
 	this->post_render();
 }
 player::~player() { }

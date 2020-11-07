@@ -50,6 +50,7 @@ void camera::update() {
 #endif
 	thebanana::component::property<float>* distance = this->find_property<float>("distance");
 	this->m_transform = thebanana::transform().translate(glm::vec3(this->m_player->get_transform()) + this->m_direction * (distance ? * distance->get_value() : 2.f));
+	this->update_components();
 	this->post_update();
 }
 void camera::render() {
@@ -63,6 +64,7 @@ void camera::render() {
 	glm::vec3 up = glm::vec3(rotation * glm::vec4(0.f, 1.f, 0.f, 1.f));
 	glm::mat4 view = glm::lookAt(pos, player_pos, up);
 	this->m_scene->get_shader()->get_uniforms().mat4("view", view);
+	this->render_components();
 	this->post_render();
 }
 glm::vec3 camera::get_direction() {

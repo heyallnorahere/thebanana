@@ -8,7 +8,7 @@
 #include "keyboard.h"
 #include "model_registry.h"
 #include "mouse.h"
-#include "null_object.h"
+#include "basic_gameobject.h"
 #include "static_mesh.h"
 #include "scene.h"
 #include "transform.h"

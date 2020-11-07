@@ -94,6 +94,7 @@
     <ClCompile Include="src\component.cpp" />
     <ClCompile Include="src\components\animation.cpp" />
     <ClCompile Include="src\components\mesh.cpp" />
+    <ClCompile Include="src\components\native_script.cpp" />
     <ClCompile Include="src\controller.cpp" />
     <ClCompile Include="src\debug_tools.cpp" />
     <ClCompile Include="src\game.cpp" />
@@ -112,7 +113,7 @@
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\model_registry.cpp" />
     <ClCompile Include="src\mouse.cpp" />
-    <ClCompile Include="src\null_object.cpp" />
+    <ClCompile Include="src\basic_gameobject.cpp" />
     <ClCompile Include="src\pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
@@ -136,6 +137,7 @@
   <ItemGroup>
     <ClInclude Include="include\application_layer.h" />
     <ClInclude Include="include\components\components.h" />
+    <ClInclude Include="include\components\native_script.h" />
     <ClInclude Include="include\graphics\graphics.h" />
     <ClInclude Include="include\graphics\opengl\opengl.h" />
     <ClInclude Include="include\graphics\opengl\opengl_quad.h" />
@@ -175,7 +177,7 @@
     <ClInclude Include="include\keyboard.h" />
     <ClInclude Include="include\model_registry.h" />
     <ClInclude Include="include\mouse.h" />
-    <ClInclude Include="include\null_object.h" />
+    <ClInclude Include="include\basic_gameobject.h" />
     <ClInclude Include="include\pch.h" />
     <ClInclude Include="include\physics\collider.h" />
     <ClInclude Include="include\physics\rigidbody.h" />

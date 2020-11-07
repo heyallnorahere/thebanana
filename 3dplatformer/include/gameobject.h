@@ -40,6 +40,8 @@ namespace thebanana {
 		template<typename _Ty> component::property<_Ty>* find_property(const std::string& name);
 		void prepare_for_update();
 		void prepare_for_render();
+		void update_components();
+		void render_components();
 		void post_update();
 		void post_render();
 		std::string m_nickname;

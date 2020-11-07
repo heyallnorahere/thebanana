@@ -129,6 +129,7 @@ namespace thebanana {
 			shift_delta *= last_move_speed * 1.1f;
 		}
 		this->parent->get_parent()->get_transform().move(shift_delta);
+		this->parent->apply_force(shift_delta);
 	}
 	mlfarrel_model& mlfarrel_model::set_radius(float radius) {
 		this->radius = radius;

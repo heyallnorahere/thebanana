@@ -19,13 +19,20 @@ private:
 thebanana::application_layer* create_application_layer() {
 	return new thebanana_test_application_layer;
 }
+class sirpogalot : public thebanana::script {
+public:
+	sirpogalot(thebanana::gameobject* obj) : script(obj) { }
+	virtual void update() override {
+		thebanana::debug::log_print("pog");
+	}
+};
 void thebanana_test_application_layer::init() {
 	this->m_player = new player;
 	this->m_camera = new camera(this->m_player);
 	this->m_player->set_camera(this->m_camera);
 	thebanana::g_game->get_scene()->add_object(this->m_camera);
 	thebanana::g_game->get_scene()->add_object(this->m_player);
-	thebanana::static_mesh* p = new thebanana::static_mesh("test_cube");
+	thebanana::gameobject* p = new thebanana::static_mesh("test_cube");
 	p->get_transform().translate(2.f, 0.75f, 2.f);
 	p->add_tag("test");
 	p->add_component<thebanana::rigidbody>().set_collision_model_name("test_cube").set_collision_tags({ "ground" }).set_collider_type<thebanana::mlfarrel_model>().set_radius(0.5f).set_origin_offset(glm::vec3(0.f, 0.5f, 0.f));
@@ -41,6 +48,10 @@ void thebanana_test_application_layer::init() {
 	p->get_transform().scale(100.f, 1.f, 100.f);
 	p->add_tag("ground");
 	p->add_component<thebanana::rigidbody>().set_collision_model_name("test_cube");
+	thebanana::g_game->get_scene()->add_object(p);
+	p = new thebanana::basic_gameobject;
+	p->add_component<thebanana::native_script_component>().bind<sirpogalot>();
+	p->get_nickname() = "sir pog alot";
 	thebanana::g_game->get_scene()->add_object(p);
 	thebanana::g_game->add_model_desc({ "player", "models/placeholder/waluigi.fbx", waluigi_paths, thebanana::transform().scale(0.0005f) });
 	thebanana::g_game->add_model_desc({ "collision", "models/placeholder/collision.obj", waluigi_paths, thebanana::transform() });

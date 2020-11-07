@@ -1,9 +1,9 @@
 #pragma once
 #include "gameobject.h"
 namespace thebanana {
-	class null_object : public gameobject {
+	class basic_gameobject : public gameobject {
 	public:
-		null_object();
+		basic_gameobject();
 		virtual void update() override;
 		virtual void render() override;
 	};

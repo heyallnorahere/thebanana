@@ -132,6 +132,16 @@ namespace thebanana {
 		}
 		this->m_scene->get_shader()->get_uniforms().mat4("model", this->get_absolute_transform().get_matrix());
 	}
+	void gameobject::update_components() {
+		for (auto& c : this->m_components) {
+			c->update();
+		}
+	}
+	void gameobject::render_components() {
+		for (auto& c : this->m_components) {
+			c->render();
+		}
+	}
 	void gameobject::post_update() {
 		for (auto& c : this->m_components) {
 			c->post_update();

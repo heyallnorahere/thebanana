@@ -8,7 +8,7 @@ namespace thebanana {
 		mesh_component& set_mesh_name(const std::string& name);
 		std::string get_mesh_name() const;
 		virtual void pre_render() override;
-		void render();
+		virtual void render() override;
 	private:
 		std::string model_name;
 	};

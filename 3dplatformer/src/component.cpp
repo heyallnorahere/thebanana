@@ -9,8 +9,10 @@ namespace thebanana {
 	component::component(gameobject* obj) : parent(obj) { }
 	void component::initialize() { }
 	void component::pre_update() { }
+	void component::update() { }
 	void component::post_update() { }
 	void component::pre_render() { }
+	void component::render() { }
 	void component::post_render() { }
 	void component::on_collision(gameobject* other) { }
 	void component::clean_up() { }

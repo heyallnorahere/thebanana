@@ -51,10 +51,14 @@ namespace thebanana {
 		virtual void initialize();
 		// runs before update
 		virtual void pre_update();
+		// runs as part of the update
+		virtual void update();
 		// runs after update
 		virtual void post_update();
 		// runs before render
 		virtual void pre_render();
+		// runs as part of the parent gameobject's render
+		virtual void render();
 		// runs after render
 		virtual void post_render();
 		// runs when gameobject collides with another

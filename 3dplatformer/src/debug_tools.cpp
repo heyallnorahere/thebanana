@@ -4,7 +4,6 @@
 #include "scene.h"
 #include "gameobject.h"
 #include "input_manager.h"
-#include "camera.h"
 #include "physics/rigidbody.h"
 #include "graphics/framebuffer.h"
 #include "ui/ui.h"

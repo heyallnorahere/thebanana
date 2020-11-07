@@ -7,8 +7,7 @@ namespace thebanana {
 			public:
 				opengl_quad(float width, float height, texture* tex, bool invert_uv);
 				virtual ~opengl_quad() override;
-				static void init_shader();
-				static void destroy_shader();
+				static void init_shader(const std::string& name);
 			protected:
 				virtual void api_render() override;
 			private:

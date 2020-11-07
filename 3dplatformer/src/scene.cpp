@@ -5,11 +5,11 @@
 #include "controller.h"
 #include "mouse.h"
 #include "keyboard.h"
-#include "../resource.h"
 #include "debug_tools.h"
+#include "shader_registry.h"
 namespace thebanana {
 	scene::scene(game* g) {
-		this->m_shader = std::unique_ptr<opengl_shader_library::shader>(new opengl_shader_library::win32_resource_shader(IDR_BASIC_VERTEX, IDR_BASIC_FRAGMENT, "SHADER"));
+		this->m_shader = NULL;
 		this->m_game = g;
 	}
 	void scene::update() {
@@ -35,9 +35,9 @@ namespace thebanana {
 		}
 	}
 	void scene::render() {
-		opengl_shader_library::shader::use(this->m_shader.get());
+		opengl_shader_library::shader::use(this->m_shader);
 		for (auto& c : this->m_children) {
-			opengl_shader_library::shader::use(this->m_shader.get());
+			opengl_shader_library::shader::use(this->m_shader);
 			c->render();
 		}
 		opengl_shader_library::shader::use(NULL);
@@ -58,6 +58,9 @@ namespace thebanana {
 		return c.get();
 	}
 	opengl_shader_library::shader* scene::get_shader() const {
-		return this->m_shader.get();
+		return this->m_shader;
+	}
+	void scene::set_shader_name(const std::string& shader_name) {
+		this->m_shader = this->m_game->get_shader_registry()->get_shader(shader_name);
 	}
 }

@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "graphics/opengl/opengl_quad.h"
-#include "../resource.h"
+#include "game.h"
+#include "shader_registry.h"
 struct vertex {
 	glm::vec3 pos;
 	glm::vec2 uv;
@@ -14,11 +15,8 @@ namespace thebanana {
 			opengl_quad::~opengl_quad() {
 				this->delete_quad();
 			}
-			void opengl_quad::init_shader() {
-				quad_shader = new opengl_shader_library::win32_resource_shader(IDR_2D_VERTEX, IDR_2D_FRAGMENT);
-			}
-			void opengl_quad::destroy_shader() {
-				delete quad_shader;
+			void opengl_quad::init_shader(const std::string& name) {
+				quad_shader = g_game->get_shader_registry()->get_shader(name);
 			}
 			void opengl_quad::api_render() {
 				opengl_shader_library::shader::use(quad_shader);

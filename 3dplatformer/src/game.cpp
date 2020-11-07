@@ -8,9 +8,9 @@
 #include "graphics/opengl/opengl_framebuffer.h"
 #include "graphics/opengl/opengl_quad.h"
 #include "sound/sound.h"
-#include "../resource.h"
 #include "ui/menu_manager.h"
 #include "lua_interpreter.h"
+#include "shader_registry.h"
 #ifdef _DEBUG
 extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 #endif
@@ -26,6 +26,7 @@ namespace thebanana {
 		this->m_interpreter = new lua_interpreter;
 		this->m_scene = new scene(this);
 		this->m_input_manager = new input_manager(this);
+		this->m_shader_registry = new shader_registry;
 		if (this->m_input_manager->add_device(0) == input_manager::device_type::keyboard) {
 			std::vector<input_manager::dinput_device> enumerated_devices = this->m_input_manager->get_enumerated_devices();
 			for (size_t i = 0; i < enumerated_devices.size(); i++) {
@@ -42,7 +43,6 @@ namespace thebanana {
 		glCullFace(GL_BACK);
 		sound::sound_manager::init_decoders();
 		sound::set_default_sound_api(sound::sound_api::openal);
-		graphics::opengl::opengl_quad::init_shader();
 		graphics::set_default_graphics_api(graphics::graphics_api::opengl);
 		this->m_menu_manager = new ui::menu_manager(this);
 		this->m_menu_quad = graphics::quad::create(2.f, 2.f, this->m_menu_manager->get_texture(), true);
@@ -67,8 +67,8 @@ namespace thebanana {
 		delete this->m_interpreter;
 		delete this->m_model_registry;
 		delete this->m_viewport;
+		delete this->m_shader_registry;
 		delete this->m_input_manager;
-		graphics::opengl::opengl_quad::destroy_shader();
 	}
 	void game::destroy() {
 		DestroyWindow(this->m_window);
@@ -185,6 +185,9 @@ namespace thebanana {
 #else
 		return std::string(SteamFriends()->GetPersonaName());
 #endif
+	}
+	shader_registry* game::get_shader_registry() {
+		return this->m_shader_registry;
 	}
 	void game::init_steam() {
 		SteamAPI_Init();

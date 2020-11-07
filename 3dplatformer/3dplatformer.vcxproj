@@ -20,16 +20,17 @@
     <ProjectGuid>{3FECBE35-6E24-468C-A08C-6C442A9CD08E}</ProjectGuid>
     <RootNamespace>My3dplatformer</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>thebanana</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
@@ -59,12 +60,19 @@
       <AdditionalIncludeDirectories>C:\steamsdk\sdk\public;$(SolutionDir)third-party\minimp3;$(SolutionDir)third-party\stb;$(SolutionDir)third-party\json\single_include;$(SolutionDir)imgui\imgui;$(DXSDK_DIR)include;$(ProjectDir)include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DisableSpecificWarnings>4996;%(DisableSpecificWarnings)</DisableSpecificWarnings>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <PreprocessorDefinitions>BANANA_BUILD;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <AdditionalDependencies>opengl32.lib;dinput8.lib;imgui.lib;steam_api64.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(OutDir);C:\steamsdk\sdk\redistributable_bin\win64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
+    <Lib>
+      <AdditionalDependencies>dinput8.lib;imgui.lib;steam_api64.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Lib>
+    <Lib>
+      <AdditionalLibraryDirectories>C:\steamsdk\sdk\redistributable_bin\win64;$(OutDir);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -79,6 +87,7 @@
       <AdditionalIncludeDirectories>C:\steamsdk\sdk\public;$(SolutionDir)third-party\minimp3;$(SolutionDir)third-party\stb;$(SolutionDir)third-party\json\single_include;$(SolutionDir)imgui\imgui;$(DXSDK_DIR)include;$(ProjectDir)include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DisableSpecificWarnings>4996;%(DisableSpecificWarnings)</DisableSpecificWarnings>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <PreprocessorDefinitions>BANANA_BUILD;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -87,10 +96,15 @@
       <AdditionalDependencies>opengl32.lib;dinput8.lib;imgui.lib;steam_api64.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(OutDir);C:\steamsdk\sdk\redistributable_bin\win64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
+    <Lib>
+      <AdditionalDependencies>dinput8.lib;imgui.lib;steam_api64.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Lib>
+    <Lib>
+      <AdditionalLibraryDirectories>C:\steamsdk\sdk\redistributable_bin\win64;$(OutDir);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\application_layer.cpp" />
-    <ClCompile Include="src\camera.cpp" />
     <ClCompile Include="src\component.cpp" />
     <ClCompile Include="src\components\animation.cpp" />
     <ClCompile Include="src\components\mesh.cpp" />
@@ -111,7 +125,6 @@
     <ClCompile Include="src\internal_util.cpp" />
     <ClCompile Include="src\keyboard.cpp" />
     <ClCompile Include="src\lua_interpreter.cpp" />
-    <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\model_registry.cpp" />
     <ClCompile Include="src\mouse.cpp" />
     <ClCompile Include="src\basic_gameobject.cpp" />
@@ -121,7 +134,7 @@
     </ClCompile>
     <ClCompile Include="src\physics\collider.cpp" />
     <ClCompile Include="src\physics\rigidbody.cpp" />
-    <ClCompile Include="src\player.cpp" />
+    <ClCompile Include="src\shader_registry.cpp" />
     <ClCompile Include="src\static_mesh.cpp" />
     <ClCompile Include="src\scene.cpp" />
     <ClCompile Include="src\scene_serializer.cpp" />
@@ -152,6 +165,7 @@
     <ClInclude Include="include\main_module.h" />
     <ClInclude Include="include\physics\physics.h" />
     <ClInclude Include="include\scene_serializer.h" />
+    <ClInclude Include="include\shader_registry.h" />
     <ClInclude Include="include\sound\context.h" />
     <ClInclude Include="include\sound\misc.h" />
     <ClInclude Include="include\sound\openal_sound_effect.h" />
@@ -162,8 +176,6 @@
     <ClInclude Include="include\ui\menu.h" />
     <ClInclude Include="include\ui\menu_manager.h" />
     <ClInclude Include="include\ui\ui.h" />
-    <ClInclude Include="resource.h" />
-    <ClInclude Include="src\camera.h" />
     <ClInclude Include="include\component.h" />
     <ClInclude Include="include\components\animation.h" />
     <ClInclude Include="include\components\mesh.h" />
@@ -183,7 +195,6 @@
     <ClInclude Include="include\pch.h" />
     <ClInclude Include="include\physics\collider.h" />
     <ClInclude Include="include\physics\rigidbody.h" />
-    <ClInclude Include="src\player.h" />
     <ClInclude Include="include\static_mesh.h" />
     <ClInclude Include="include\scene.h" />
     <ClInclude Include="include\transform.h" />
@@ -195,17 +206,9 @@
     <None Include="models\skullbandana.fbx" />
     <None Include="packages.config" />
     <None Include="shaders\2d\fragment.shader" />
-    <None Include="sounds\click.ogg" />
-    <None Include="sub_menu_script.lua" />
-    <None Include="test_sub_menu.json" />
-    <None Include="test_menu.json" />
     <None Include="shaders\2d\vertex.shader" />
     <None Include="shaders\basic\fragment.shader" />
     <None Include="shaders\basic\vertex.shader" />
-    <None Include="test_script.lua" />
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="resources.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

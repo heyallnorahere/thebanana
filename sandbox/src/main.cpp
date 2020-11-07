@@ -1,8 +1,8 @@
-#include "pch.h"
 #define BANANA_MAIN
-#include "thebanana.h"
+#include <thebanana.h>
 #include "player.h"
 #include "camera.h"
+#include "../resource.h"
 std::string waluigi_paths(const std::string& path, void*) {
 	return thebanana::model_registry::path_helper(path, "Waluigi\\Waluigi\\", "textures\\placeholder\\waluigi\\");
 }
@@ -20,6 +20,10 @@ thebanana::application_layer* create_application_layer() {
 	return new thebanana_test_application_layer;
 }
 void thebanana_test_application_layer::init() {
+	thebanana::g_game->get_shader_registry()->register_shader("basic", new opengl_shader_library::win32_resource_shader(IDR_BASIC_VERTEX, IDR_BASIC_FRAGMENT));
+	thebanana::g_game->get_shader_registry()->register_shader("2d", new opengl_shader_library::win32_resource_shader(IDR_2D_VERTEX, IDR_2D_FRAGMENT));
+	thebanana::g_game->get_scene()->set_shader_name("basic");
+	thebanana::graphics::opengl::opengl_quad::init_shader("2d");
 	this->m_player = new thebanana::basic_gameobject;
 	this->m_player->add_component<thebanana::native_script_component>().bind<player_behavior>();
 	this->m_camera = new thebanana::basic_gameobject;

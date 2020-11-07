@@ -95,6 +95,7 @@
     <ClCompile Include="src\components\animation.cpp" />
     <ClCompile Include="src\components\mesh.cpp" />
     <ClCompile Include="src\components\native_script.cpp" />
+    <ClCompile Include="src\components\tag.cpp" />
     <ClCompile Include="src\controller.cpp" />
     <ClCompile Include="src\debug_tools.cpp" />
     <ClCompile Include="src\game.cpp" />
@@ -138,6 +139,7 @@
     <ClInclude Include="include\application_layer.h" />
     <ClInclude Include="include\components\components.h" />
     <ClInclude Include="include\components\native_script.h" />
+    <ClInclude Include="include\components\tag.h" />
     <ClInclude Include="include\graphics\graphics.h" />
     <ClInclude Include="include\graphics\opengl\opengl.h" />
     <ClInclude Include="include\graphics\opengl\opengl_quad.h" />

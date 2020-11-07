@@ -51,7 +51,6 @@ namespace thebanana {
 		std::list<std::unique_ptr<gameobject>> m_children;
 		transform m_transform;
 		std::list<std::unique_ptr<component>> m_components;
-		std::vector<std::string> m_tags;
 	private:
 		unsigned int last_collided_frame;
 		bool initialized;

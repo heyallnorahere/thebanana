@@ -4,6 +4,7 @@
 #include "scene.h"
 #include "model_registry.h"
 #include "debug_tools.h"
+#include "components/tag.h"
 namespace thebanana {
 	gameobject::gameobject() : last_collided_frame(0) {
 #ifdef _DEBUG
@@ -105,14 +106,18 @@ namespace thebanana {
 		this->last_collided_frame = this->m_game->get_current_frame();
 	}
 	std::vector<std::string> gameobject::get_tags() const {
-		return this->m_tags;
+		std::vector<std::string> tags;
+		for (size_t i = 0; i < ((gameobject*)this)->get_number_components<tag_component>(); i++) {
+			tags.push_back(((gameobject*)this)->get_component<tag_component>(i).get_tag());
+		}
+		return tags;
 	}
 	void gameobject::add_tag(const std::string& tag) {
-		this->m_tags.push_back(tag);
+		this->add_component<tag_component>().set_tag(tag);
 	}
 	bool gameobject::has_tag(const std::string& tag) const {
-		for (auto t : this->m_tags) {
-			if (tag == t) return true;
+		for (size_t i = 0; i < ((gameobject*)this)->get_number_components<tag_component>(); i++) {
+			if (tag == ((gameobject*)this)->get_component<tag_component>().get_tag()) return true;
 		}
 		return false;
 	}

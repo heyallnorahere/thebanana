@@ -215,11 +215,11 @@ namespace thebanana {
 				}
 				rotate = glm::vec3(0.f);
 			}
-			static glm::vec3 scale(0.f);
+			static glm::vec3 scale(1.f);
 			ImGui::InputFloat3("dilation values", &scale.x);
 			if (ImGui::Button("scale")) {
 				obj->get_transform().scale(scale);
-				scale = glm::vec3(0.f);
+				scale = glm::vec3(1.f);
 			}
 			if (ImGui::Button("close")) {
 				transform_menu_values[obj] = false;

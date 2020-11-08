@@ -43,13 +43,13 @@ void thebanana_test_application_layer::init() {
 	p = new thebanana::static_mesh("test_cube");
 	p->get_transform().scale(1.f, 1.f, 2.f);
 	p->get_transform().translate(-5.f, 0.75f, -5.f);
-	//p->get_transform().rotate(11.25f, glm::vec3(0.f, 1.f, 0.f));
 	thebanana::g_game->get_scene()->add_object(p);
-	// this is commented out because of buggy collision
-	/*p = new thebanana::static_mesh("test_Lblock");
-	p->get_transform().translate(-5.f, 0.f, -5.f);
+	// this was commented out because of buggy collision
+	p = new thebanana::static_mesh("test_Lblock");
+	p->get_transform().translate(10.f, 0.f, 10.f);
+	p->get_transform().scale(0.5f);
 	p->add_tag("ground");
-	thebanana::g_game->get_scene()->add_object(p);*/
+	thebanana::g_game->get_scene()->add_object(p);
 	p = new thebanana::static_mesh("test_cube");
 	p->get_transform().translate(0.f, -1.f, 0.f);
 	p->get_transform().scale(100.f, 1.f, 100.f);

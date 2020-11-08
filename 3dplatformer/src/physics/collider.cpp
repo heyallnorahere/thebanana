@@ -73,16 +73,12 @@ namespace thebanana {
 			bool outside_all_vertices = false;
 			bool outside_all_edges = false;
 			bool fully_inside_plane = false;
-			glm::vec3 v0 = object->get_absolute_transform().get_matrix() * object->get_game()->get_model_registry()->get_transform(model_name).get_matrix() * glm::vec4(positions[indices[i][0]], 1.f);
-			glm::vec3 v1 = object->get_absolute_transform().get_matrix() * object->get_game()->get_model_registry()->get_transform(model_name).get_matrix() * glm::vec4(positions[indices[i][1]], 1.f);
-			glm::vec3 v2 = object->get_absolute_transform().get_matrix() * object->get_game()->get_model_registry()->get_transform(model_name).get_matrix() * glm::vec4(positions[indices[i][2]], 1.f);
-			glm::vec3 d_;
-			if (this->will_pass(other, d_, { v0, v1, v2 }, indices, i)) {
-				this->parent->get_num_collisions()++;
-				this->parent->get_shift_delta() += d_ * (*this->parent->get_property<float>("mass"));
-				if (!collided) collided = true;
-			}
-			glm::vec3 normal = glm::normalize(glm::mat3(glm::transpose(glm::inverse(object->get_absolute_transform().get_matrix()))) * glm::mat3(glm::transpose(glm::inverse(object->get_game()->get_model_registry()->get_transform(model_name).get_matrix()))) * normals[indices[i].x]);
+			glm::mat4 object_transform = object->get_absolute_transform().get_matrix();
+			glm::mat4 model_transform = object->get_game()->get_model_registry()->get_transform(model_name).get_matrix();
+			glm::vec3 v0 = model_transform * object_transform * glm::vec4(positions[indices[i][0]], 1.f);
+			glm::vec3 v1 = model_transform * object_transform * glm::vec4(positions[indices[i][1]], 1.f);
+			glm::vec3 v2 = model_transform * object_transform * glm::vec4(positions[indices[i][2]], 1.f);
+			glm::vec3 normal = glm::normalize(glm::mat3(glm::transpose(glm::inverse(object_transform))) * glm::mat3(glm::transpose(glm::inverse(model_transform))) * normals[indices[i].x]);
 			if (fabs(normal.y) > 0.1f) continue;
 			float d = glm::dot(-((v0 + v1 + v2) / 3.f), normal);
 			float ppd = glm::dot(normal, origin) + d;

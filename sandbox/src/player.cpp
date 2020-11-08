@@ -14,7 +14,7 @@
 #include "sound/sound.h"
 #include "ui/ui.h"
 #include "lua_interpreter.h"
-const float speed = 0.0075f;
+const float speed = 0.01f;
 player_behavior::player_behavior(thebanana::gameobject* object) : script(object) {
 	thebanana::debug::log_print("created player");
 	this->add_property(new thebanana::component::property<float>(speed, "speed"));

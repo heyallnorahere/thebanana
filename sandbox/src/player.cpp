@@ -14,8 +14,10 @@
 #include "sound/sound.h"
 #include "ui/ui.h"
 #include "lua_interpreter.h"
+const float speed = 0.0075f;
 player_behavior::player_behavior(thebanana::gameobject* object) : script(object) {
 	thebanana::debug::log_print("created player");
+	this->add_property(new thebanana::component::property<float>(speed, "speed"));
 	this->add_component<thebanana::animation_component>();
 	this->add_component<thebanana::mesh_component>().set_mesh_name("player");
 	this->add_component<thebanana::rigidbody>().set_check_for_collisions(true).set_speed_cap(0.5f).set_collider_type<thebanana::mlfarrel_model>().set_radius(0.4f).set_origin_offset(glm::vec3(0.f, 0.6f, 0.f));
@@ -31,7 +33,6 @@ void player_behavior::update() {
 			this->get_component<thebanana::animation_component>().start_animation("idle", true);
 		}
 	}
-	const float speed = 0.005f;
 #ifdef _DEBUG
 	if (thebanana::debug::control) {
 #endif
@@ -97,7 +98,8 @@ void player_behavior::update() {
 				angle += a;
 			}
 			angle /= angles.size();
-			this->move(angle, translate, speed);
+			thebanana::component::property<float>* _speed = this->find_property<float>("speed");
+			this->move(angle, translate, _speed ? *_speed->get_value() : speed);
 		}
 		glm::mat4 rotation = this->get_transform();
 		rotation[3] = glm::vec4(0.f, 0.f, 0.f, rotation[3].w);

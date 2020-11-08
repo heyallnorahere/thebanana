@@ -20,10 +20,12 @@ thebanana::application_layer* create_application_layer() {
 	return new thebanana_test_application_layer;
 }
 void thebanana_test_application_layer::init() {
+	// load shaders
 	thebanana::g_game->get_shader_registry()->register_shader("basic", new opengl_shader_library::win32_resource_shader(IDR_BASIC_VERTEX, IDR_BASIC_FRAGMENT));
 	thebanana::g_game->get_shader_registry()->register_shader("2d", new opengl_shader_library::win32_resource_shader(IDR_2D_VERTEX, IDR_2D_FRAGMENT));
 	thebanana::g_game->get_scene()->set_shader_name("basic");
 	thebanana::graphics::opengl::opengl_quad::init_shader("2d");
+	// add gameobjects to scene
 	this->m_player = new thebanana::basic_gameobject;
 	this->m_player->add_component<thebanana::native_script_component>().bind<player_behavior>();
 	this->m_camera = new thebanana::basic_gameobject;
@@ -38,20 +40,23 @@ void thebanana_test_application_layer::init() {
 	p->get_component<thebanana::rigidbody>().set_collision_tags({ "ground" }).set_collider_type<thebanana::mlfarrel_model>().set_radius(0.5f).set_origin_offset(glm::vec3(0.f, 0.5f, 0.f));
 	p->get_component<thebanana::rigidbody>().set_property("mass", 1.5f);
 	thebanana::g_game->get_scene()->add_object(p);
+	// this is commented out because of buggy collision
 	/*p = new thebanana::static_mesh("test_Lblock");
 	p->get_transform().translate(-5.f, 0.f, -5.f);
 	p->add_tag("ground");
-	p->add_component<thebanana::rigidbody>().set_collision_model_name("test_Lblock");
 	thebanana::g_game->get_scene()->add_object(p);*/
 	p = new thebanana::static_mesh("test_cube");
 	p->get_transform().translate(0.f, -1.f, 0.f);
 	p->get_transform().scale(100.f, 1.f, 100.f);
 	p->add_tag("ground");
 	thebanana::g_game->get_scene()->add_object(p);
+	// load models
 	thebanana::g_game->add_model_desc({ "player", "models/placeholder/waluigi.fbx", waluigi_paths, thebanana::transform().scale(0.0005f) });
 	thebanana::g_game->add_model_desc({ "test_cube", "models/cube.obj", test_texture_path, thebanana::transform() });
 	thebanana::g_game->add_model_desc({ "test_Lblock", "models/Lblock.obj", test_texture_path, thebanana::transform() });
 	thebanana::g_game->load_models();
+	// load sounds
 	thebanana::g_game->get_sound_manager()->load_sound("click", "sounds/click.ogg");
+	// load a menu
 	thebanana::g_game->get_menu_manager()->load_menu(new thebanana::ui::menu("test_menu.json"));
 }

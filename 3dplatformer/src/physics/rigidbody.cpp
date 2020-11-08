@@ -41,6 +41,7 @@ namespace thebanana {
 		}
 		this->parent->get_transform().move(this->velocity);
 		this->last_velocity_length = glm::length(this->velocity);
+		this->velocity *= 0.95f;
 		this->acceleration = glm::vec3(0.f);
 		this->num_collisions = 0;
 		this->shift_delta = glm::vec3(0.f);

@@ -1,5 +1,5 @@
 # The Banana
-This is a 3D game engine I'm making. It currently supports the following platforms:
+This is a 3D game engine I'm making. (the repository is named "3dplatformer" because I didnt initially have a name for the engine) It currently supports the following platforms:
 - Windows
 
 ## TO IMPLEMENT

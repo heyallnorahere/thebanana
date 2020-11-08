@@ -4,10 +4,12 @@
 #include "debug_tools.h"
 #include "game.h"
 namespace thebanana {
+	const float drag = 0.05f;
 	rigidbody::rigidbody(gameobject* obj) : component(obj) {
 		this->add_property(new property<bool>(false, "gravity"));
 		this->add_property(new property<float>(1.f, "gravity multiplier"));
 		this->add_property(new property<float>(1.f, "mass"));
+		this->add_property(new property<float>(drag, "drag"));
 		this->coll = NULL;
 		this->last_frame_model_name = "";
 		this->check_for_collisions = false;
@@ -41,7 +43,8 @@ namespace thebanana {
 		}
 		this->parent->get_transform().move(this->velocity);
 		this->last_velocity_length = glm::length(this->velocity);
-		this->velocity *= 0.95f;
+		property<float>* _drag = this->find_property<float>("drag");
+		this->velocity *= 1.f - (_drag ? *_drag->get_value() : drag);
 		this->acceleration = glm::vec3(0.f);
 		this->num_collisions = 0;
 		this->shift_delta = glm::vec3(0.f);

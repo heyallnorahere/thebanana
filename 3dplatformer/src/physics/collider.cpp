@@ -14,7 +14,7 @@ namespace thebanana {
 	}
 	//https://gamedev.stackexchange.com/questions/96459/fast-ray-sphere-collision-code
 	static bool intersectRaySegmentSphere(glm::vec3 o, glm::vec3 d, glm::vec3 so, float radius2, glm::vec3& ip) {
-		float l = d.length();
+		float l = glm::length(d);
 		d /= l;
 		glm::vec3 m = o - so;
 		float b = glm::dot(m, d);
@@ -28,9 +28,7 @@ namespace thebanana {
 		if (t < 0.0f)
 			t = 0.0f;
 		ip = o + (d * t);
-		if (t > l)
-			return false;
-		return true;
+		return t < l;
 	}
 	static bool left_of(const glm::vec2& a, const glm::vec2& b, const glm::vec2& p) {
 		float area = 0.5f * (a.x * (b.y - p.y) + b.x * (p.y - a.y) + p.x * (a.y - b.y));
@@ -52,8 +50,9 @@ namespace thebanana {
 	bool mlfarrel_model::detect_collision(rigidbody* other) {
 		bool collided = false;
 		using uint3 = glm::vec<3, unsigned int, glm::packed_highp>;
-		glm::vec3 origin = glm::vec3(this->parent->get_parent()->get_transform().get_matrix() * glm::vec4(0.f, 0.f, 0.f, 1.f)) + this->origin_offset;
-		float trans_radius = glm::length(glm::vec3(this->parent->get_parent()->get_transform().get_matrix() * glm::vec4(this->radius, 0, 0, 1.f)) + this->origin_offset - origin);
+		glm::vec3 offset = glm::vec3(this->parent->get_parent()->get_transform().get_matrix() * glm::vec4(this->origin_offset, 1.f)) - ((glm::vec3)this->parent->get_parent()->get_transform());
+		glm::vec3 origin = glm::vec3(this->parent->get_parent()->get_transform()) + offset;
+		float trans_radius = glm::length(glm::vec3(this->parent->get_parent()->get_transform().get_matrix() * glm::vec4(this->radius, 0, 0, 1.f)) + offset - origin);
 		float radius_2 = trans_radius*trans_radius;
 		gameobject* object = other->get_parent();
 		std::string model_name = "";
@@ -83,8 +82,8 @@ namespace thebanana {
 				this->parent->get_shift_delta() += d_ * (*this->parent->get_property<float>("mass"));
 				if (!collided) collided = true;
 			}
-			glm::vec3 normal = glm::normalize(glm::mat3(glm::transpose(glm::inverse(object->get_absolute_transform().get_matrix()))) * normals[indices[i].x]);
-			//if (fabs(normal.y) > 0.1f) continue;
+			glm::vec3 normal = glm::normalize(glm::mat3(glm::transpose(glm::inverse(object->get_absolute_transform().get_matrix()))) * glm::mat3(glm::transpose(glm::inverse(object->get_game()->get_model_registry()->get_transform(model_name).get_matrix()))) * normals[indices[i].x]);
+			if (fabs(normal.y) > 0.1f) continue;
 			float d = glm::dot(-((v0 + v1 + v2) / 3.f), normal);
 			float ppd = glm::dot(normal, origin) + d;
 			if (fabs(ppd) > trans_radius) {
@@ -116,7 +115,7 @@ namespace thebanana {
 				continue;
 			}
 			this->parent->get_num_collisions()++;
-			this->parent->get_shift_delta() += normal * (this->radius - ppd);
+			this->parent->get_shift_delta() += normal * (trans_radius - ppd);
 			if (!collided) collided = true;
 		}
 		return collided;

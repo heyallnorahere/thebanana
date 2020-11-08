@@ -25,7 +25,7 @@ void thebanana_test_application_layer::init() {
 	thebanana::g_game->get_shader_registry()->register_shader("2d", new opengl_shader_library::win32_resource_shader(IDR_2D_VERTEX, IDR_2D_FRAGMENT));
 	thebanana::g_game->get_scene()->set_shader_name("basic");
 	thebanana::graphics::opengl::opengl_quad::init_shader("2d");
-	// add gameobjects to scene
+	// add gameobjects to the scene
 	this->m_player = new thebanana::basic_gameobject;
 	this->m_player->add_component<thebanana::native_script_component>().bind<player_behavior>();
 	this->m_camera = new thebanana::basic_gameobject;
@@ -39,6 +39,11 @@ void thebanana_test_application_layer::init() {
 	p->add_tag("test");
 	p->get_component<thebanana::rigidbody>().set_collision_tags({ "ground" }).set_collider_type<thebanana::mlfarrel_model>().set_radius(0.5f).set_origin_offset(glm::vec3(0.f, 0.5f, 0.f));
 	p->get_component<thebanana::rigidbody>().set_property("mass", 1.5f);
+	thebanana::g_game->get_scene()->add_object(p);
+	p = new thebanana::static_mesh("test_cube");
+	p->get_transform().scale(1.f, 1.f, 2.f);
+	p->get_transform().translate(-5.f, 0.75f, -5.f);
+	//p->get_transform().rotate(11.25f, glm::vec3(0.f, 1.f, 0.f));
 	thebanana::g_game->get_scene()->add_object(p);
 	// this is commented out because of buggy collision
 	/*p = new thebanana::static_mesh("test_Lblock");

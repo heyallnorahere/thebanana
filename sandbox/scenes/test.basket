@@ -1,31 +1,34 @@
 scene: untitled
 objects:
-  - object: 352456345756
+  - object: 506
     nickname: camera
     transform:
       - [1, 0, 0, 0]
       - [0, 1, 0, 0]
       - [0, 0, 1, 0]
-      - [-3.21312809, 0.13813737, -2.94459057, 1]
+      - [-0.119245529, -0.200307816, -2.06648993, 1]
     components:
-      {}
+      []
     children:
       []
-  - object: 352456345756
+  - object: 468
     nickname: player
     transform:
-      - [0.960194767, 0, -0.279331565, 0]
-      - [0, 0.999999702, 0, 0]
-      - [0.279331565, 0, 0.960194767, 0]
-      - [-3.77045631, 0, -4.86039448, 1]
+      - [-0.219457105, 0, 0.975622177, 0]
+      - [0, 1, 0, 0]
+      - [-0.975622177, 0, -0.219457105, 0]
+      - [-0.567180216, 0, -0.127581894, 1]
     components:
-      tag_component 0:
+      - type: tag_component
+        uuid: 454
         value: player
-      mesh_component 0:
+      - type: mesh_component
+        uuid: 296
         mesh name: player
-      animation_component 0:
-        {}
-      rigidbody 0:
+      - type: animation_component
+        uuid: 495
+      - type: rigidbody
+        uuid: 568
         gravity: false
         gravity multiplier: 1
         mass: 2.5
@@ -36,7 +39,7 @@ objects:
           origin_offset: [0, 0.600000024, 0]
     children:
       []
-  - object: 352456345756
+  - object: 468
     nickname: static mesh
     transform:
       - [1, 0, 0, 0]
@@ -44,13 +47,17 @@ objects:
       - [0, 0, 1, 0]
       - [2, 0.75, 2, 1]
     components:
-      tag_component 0:
+      - type: tag_component
+        uuid: 481
         value: staticmesh
-      tag_component 1:
+      - type: tag_component
+        uuid: 370
         value: test
-      mesh_component 0:
+      - type: mesh_component
+        uuid: 392
         mesh name: test_cube
-      rigidbody 0:
+      - type: rigidbody
+        uuid: 524
         gravity: false
         gravity multiplier: 1
         mass: 1.5
@@ -61,7 +68,7 @@ objects:
           origin_offset: [0, 0.5, 0]
     children:
       []
-  - object: 352456345756
+  - object: 589
     nickname: static mesh
     transform:
       - [1, 0, 0, 0]
@@ -69,18 +76,21 @@ objects:
       - [0, 0, 2, 0]
       - [-5, 0.75, -10, 1]
     components:
-      tag_component 0:
+      - type: tag_component
+        uuid: 405
         value: staticmesh
-      mesh_component 0:
+      - type: mesh_component
+        uuid: 426
         mesh name: test_cube
-      rigidbody 0:
+      - type: rigidbody
+        uuid: 398
         gravity: false
         gravity multiplier: 1
         mass: 1
         drag: 0.0500000007
     children:
       []
-  - object: 352456345756
+  - object: 385
     nickname: static mesh
     transform:
       - [0.5, 0, 0, 0]
@@ -88,20 +98,24 @@ objects:
       - [0, 0, 0.5, 0]
       - [10, 0, 10, 1]
     components:
-      tag_component 0:
+      - type: tag_component
+        uuid: 387
         value: staticmesh
-      tag_component 1:
+      - type: tag_component
+        uuid: 384
         value: ground
-      mesh_component 0:
+      - type: mesh_component
+        uuid: 533
         mesh name: test_Lblock
-      rigidbody 0:
+      - type: rigidbody
+        uuid: 330
         gravity: false
         gravity multiplier: 1
         mass: 1
         drag: 0.0500000007
     children:
       []
-  - object: 352456345756
+  - object: 671
     nickname: static mesh
     transform:
       - [100, 0, 0, 0]
@@ -109,13 +123,17 @@ objects:
       - [0, 0, 100, 0]
       - [0, -1, 0, 1]
     components:
-      tag_component 0:
+      - type: tag_component
+        uuid: 529
         value: staticmesh
-      tag_component 1:
+      - type: tag_component
+        uuid: 348
         value: ground
-      mesh_component 0:
+      - type: mesh_component
+        uuid: 452
         mesh name: test_cube
-      rigidbody 0:
+      - type: rigidbody
+        uuid: 507
         gravity: false
         gravity multiplier: 1
         mass: 1

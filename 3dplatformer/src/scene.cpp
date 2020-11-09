@@ -12,6 +12,9 @@ namespace thebanana {
 		this->m_shader = NULL;
 		this->m_game = g;
 	}
+	void scene::clear() {
+		this->m_children.clear();
+	}
 	void scene::update() {
 #ifdef _DEBUG
 		{

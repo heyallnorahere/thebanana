@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "components/tag.h"
+#include "components/tag_component.h"
 namespace thebanana {
 	tag_component::tag_component(gameobject* object) : component(object) {
 		this->add_property(new property<std::string>("", "value"));

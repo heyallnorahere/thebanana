@@ -34,6 +34,8 @@ namespace thebanana {
 		std::vector<std::string> get_tags() const;
 		void add_tag(const std::string& tag);
 		bool has_tag(const std::string& tag) const;
+		unsigned long long get_uuid() const;
+		void set_uuid(unsigned long long uuid);
 	protected:
 		component::properties_t m_properties;
 		void add_property(component::property_base* p);
@@ -51,6 +53,7 @@ namespace thebanana {
 		std::list<std::unique_ptr<gameobject>> m_children;
 		transform m_transform;
 		std::list<std::unique_ptr<component>> m_components;
+		unsigned long long m_uuid;
 	private:
 		unsigned int last_collided_frame;
 		bool initialized;

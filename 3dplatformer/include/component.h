@@ -77,6 +77,8 @@ namespace thebanana {
 		gameobject* get_parent();
 		template<typename _Ty> void set_property(const std::string& name, const _Ty& value);
 		template<typename _Ty> _Ty* get_property(const std::string& name);
+		unsigned long long get_uuid() const;
+		void set_uuid(unsigned long long uuid);
 	protected:
 		void add_property(property_base* p);
 		transform& get_transform();
@@ -85,6 +87,7 @@ namespace thebanana {
 		template<typename _Ty> property<_Ty>* find_property(const std::string& name);
 		properties_t properties;
 		gameobject* parent;
+		unsigned long long uuid;
 		friend class script;
 	};
 	class debug_component : public component {

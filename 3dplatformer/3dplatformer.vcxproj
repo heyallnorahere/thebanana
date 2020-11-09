@@ -106,10 +106,10 @@
   <ItemGroup>
     <ClCompile Include="src\application_layer.cpp" />
     <ClCompile Include="src\component.cpp" />
-    <ClCompile Include="src\components\animation.cpp" />
-    <ClCompile Include="src\components\mesh.cpp" />
-    <ClCompile Include="src\components\native_script.cpp" />
-    <ClCompile Include="src\components\tag.cpp" />
+    <ClCompile Include="src\components\animation_component.cpp" />
+    <ClCompile Include="src\components\mesh_component.cpp" />
+    <ClCompile Include="src\components\native_script_component.cpp" />
+    <ClCompile Include="src\components\tag_component.cpp" />
     <ClCompile Include="src\controller.cpp" />
     <ClCompile Include="src\debug_tools.cpp" />
     <ClCompile Include="src\game.cpp" />
@@ -151,8 +151,8 @@
   <ItemGroup>
     <ClInclude Include="include\application_layer.h" />
     <ClInclude Include="include\components\components.h" />
-    <ClInclude Include="include\components\native_script.h" />
-    <ClInclude Include="include\components\tag.h" />
+    <ClInclude Include="include\components\native_script_component.h" />
+    <ClInclude Include="include\components\tag_component.h" />
     <ClInclude Include="include\graphics\graphics.h" />
     <ClInclude Include="include\graphics\opengl\opengl.h" />
     <ClInclude Include="include\graphics\opengl\opengl_quad.h" />
@@ -177,8 +177,8 @@
     <ClInclude Include="include\ui\menu_manager.h" />
     <ClInclude Include="include\ui\ui.h" />
     <ClInclude Include="include\component.h" />
-    <ClInclude Include="include\components\animation.h" />
-    <ClInclude Include="include\components\mesh.h" />
+    <ClInclude Include="include\components\animation_component.h" />
+    <ClInclude Include="include\components\mesh_component.h" />
     <ClInclude Include="include\controller.h" />
     <ClInclude Include="include\debug_tools.h" />
     <ClInclude Include="include\game.h" />

@@ -1,5 +1,5 @@
 #pragma once
-#include "animation.h"
-#include "mesh.h"
-#include "native_script.h"
-#include "tag.h"
+#include "animation_component.h"
+#include "mesh_component.h"
+#include "native_script_component.h"
+#include "tag_component.h"

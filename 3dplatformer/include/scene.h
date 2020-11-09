@@ -6,6 +6,7 @@ namespace thebanana {
 	public:
 		scene(game* g);
 		template<typename T> T* add_object(T* obj);
+		void clear();
 		void update();
 		void render();
 		size_t get_children_count() const;

@@ -11,12 +11,14 @@
 #include "ui/menu_manager.h"
 #include "lua_interpreter.h"
 #include "shader_registry.h"
+#include "util.h"
 #ifdef _DEBUG
 extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 #endif
 namespace thebanana {
 	game* g_game = NULL;
 	game::game(const std::string& title) {
+		srand(CURRENT_TIME(unsigned int));
 		this->m_frame = 0;
 		this->m_window = CreateWindowA(BANANA_WINDOW_CLASS_NAME, title.c_str(), WS_VISIBLE | WS_SYSMENU | WS_MAXIMIZEBOX, CW_USEDEFAULT, CW_USEDEFAULT, 800, 600, NULL, NULL, HINST_THISCOMPONENT, this);
 		RECT r;

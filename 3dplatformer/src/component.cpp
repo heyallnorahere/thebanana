@@ -5,8 +5,11 @@
 #include "game.h"
 #include "util.h"
 #include "debug_tools.h"
+#include "internal_util.h"
 namespace thebanana {
-	component::component(gameobject* obj) : parent(obj) { }
+	component::component(gameobject* obj) : parent(obj) {
+		this->uuid = generate_uuid();
+	}
 	void component::initialize() { }
 	void component::pre_update() { }
 	void component::update() { }
@@ -21,6 +24,12 @@ namespace thebanana {
 	}
 	gameobject* component::get_parent() {
 		return this->parent;
+	}
+	unsigned long long component::get_uuid() const {
+		return this->uuid;
+	}
+	void component::set_uuid(unsigned long long uuid) {
+		this->uuid = uuid;
 	}
 	void component::add_property(property_base* p) {
 		this->properties.push_back(std::unique_ptr<property_base>(p));

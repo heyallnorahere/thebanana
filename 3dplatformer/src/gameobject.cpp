@@ -4,7 +4,8 @@
 #include "scene.h"
 #include "model_registry.h"
 #include "debug_tools.h"
-#include "components/tag.h"
+#include "components/tag_component.h"
+#include "internal_util.h"
 namespace thebanana {
 	gameobject::gameobject() : last_collided_frame(0) {
 #ifdef _DEBUG
@@ -12,6 +13,7 @@ namespace thebanana {
 #endif
 		this->initialized = false;
 		this->m_nickname = "object";
+		this->m_uuid = generate_uuid();
 	}
 	void gameobject::init(gameobject* parent, scene* sc, game* g) {
 		this->m_parent = parent;
@@ -120,6 +122,12 @@ namespace thebanana {
 			if (tag == ((gameobject*)this)->get_component<tag_component>().get_tag()) return true;
 		}
 		return false;
+	}
+	unsigned long long gameobject::get_uuid() const {
+		return this->m_uuid;
+	}
+	void gameobject::set_uuid(unsigned long long uuid) {
+		this->m_uuid = uuid;
 	}
 	void gameobject::add_property(component::property_base* p) {
 		this->m_properties.push_back(std::unique_ptr<component::property_base>(p));

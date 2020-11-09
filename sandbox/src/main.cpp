@@ -12,6 +12,7 @@ std::string test_texture_path(const std::string& path, void*) {
 class thebanana_test_application_layer : public thebanana::application_layer {
 public:
 	virtual void init() override;
+	virtual void gameloop() override;
 private:
 	thebanana::gameobject* m_camera;
 	thebanana::gameobject* m_player;
@@ -64,4 +65,21 @@ void thebanana_test_application_layer::init() {
 	thebanana::g_game->get_sound_manager()->load_sound("click", "sounds/click.ogg");
 	// load a menu
 	thebanana::g_game->get_menu_manager()->load_menu(new thebanana::ui::menu("test_menu.json"));
+}
+void thebanana_test_application_layer::gameloop() {
+	thebanana::g_game->update();
+	thebanana::g_game->render();
+#ifdef _DEBUG
+	if (thebanana::g_game->get_input_manager()->get_device_type(0) == thebanana::input_manager::device_type::keyboard) {
+		std::vector<thebanana::input_manager::device::button> btns = thebanana::g_game->get_input_manager()->get_device_buttons(0);
+		if (btns[DIK_EQUALS].down) {
+			thebanana::scene_serializer serializer(thebanana::g_game->get_scene());
+			serializer.serialize("scenes/test.basket");
+		}
+		if (btns[DIK_MINUS].down) {
+			thebanana::scene_serializer serializer(thebanana::g_game->get_scene());
+			serializer.deserialize("scenes/test.basket");
+		}
+	}
+#endif
 }

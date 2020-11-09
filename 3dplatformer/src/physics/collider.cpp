@@ -4,7 +4,7 @@
 #include "physics/rigidbody.h"
 #include "gameobject.h"
 #include "debug_tools.h"
-#include "components/mesh.h"
+#include "components/mesh_component.h"
 #include "scene.h"
 namespace thebanana {
 	collider::collider(rigidbody* rb) : parent(rb) { }

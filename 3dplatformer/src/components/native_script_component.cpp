@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "components/native_script.h"
+#include "components/native_script_component.h"
 #include "gameobject.h"
 namespace thebanana {
 	script::script(gameobject* object) : parent(object) {

@@ -2,7 +2,7 @@
 #include "static_mesh.h"
 #include "debug_tools.h"
 #include "physics/rigidbody.h"
-#include "components/mesh.h"
+#include "components/mesh_component.h"
 namespace thebanana {
 	static_mesh::static_mesh(const std::string& model_name) {
 		this->m_nickname = "static mesh";

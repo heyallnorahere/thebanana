@@ -1,5 +1,5 @@
 #pragma once
-#include "components/native_script.h"
+#include "components/native_script_component.h"
 namespace thebanana {
 	class gameobject;
 }

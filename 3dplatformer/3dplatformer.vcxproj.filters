@@ -57,12 +57,6 @@
     <ClCompile Include="src\physics\collider.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\components\mesh.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\components\animation.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\graphics\framebuffer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -123,16 +117,22 @@
     <ClCompile Include="src\application_layer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\components\native_script.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\basic_gameobject.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\components\tag.cpp">
+    <ClCompile Include="src\shader_registry.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\shader_registry.cpp">
+    <ClCompile Include="src\components\tag_component.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\components\native_script_component.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\components\mesh_component.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\components\animation_component.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -185,12 +185,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\util.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\components\animation.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\components\mesh.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\graphics\framebuffer.h">
@@ -289,16 +283,22 @@
     <ClInclude Include="include\application_layer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\components\native_script.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\basic_gameobject.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\components\tag.h">
+    <ClInclude Include="include\shader_registry.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\shader_registry.h">
+    <ClInclude Include="include\components\animation_component.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\components\mesh_component.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\components\native_script_component.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\components\tag_component.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

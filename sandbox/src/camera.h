@@ -1,6 +1,6 @@
 #pragma once
 #include "gameobject.h"
-#include "components/native_script.h"
+#include "components/native_script_component.h"
 class camera_behavior : public thebanana::script {
 public:
 	camera_behavior(thebanana::gameobject* object);

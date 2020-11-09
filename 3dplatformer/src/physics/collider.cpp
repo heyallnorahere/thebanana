@@ -134,40 +134,10 @@ namespace thebanana {
 		this->origin_offset = offset;
 		return *this;
 	}
-	bool mlfarrel_model::will_pass(rigidbody* other, glm::vec3& d, const std::vector<glm::vec3>& vertices, glm::vec<3, unsigned int, glm::packed_highp>* indices, size_t i) {
-		glm::vec3 current_position = this->parent->get_parent()->get_transform();
-		d = current_position - this->last_frame_position;
-		this->last_frame_position = current_position;
-		current_position += this->origin_offset;
-		glm::vec3 z = glm::normalize(((vertices[0] + vertices[1] + vertices[2]) / 3.f) - current_position);
-		glm::vec3 x = glm::normalize(vertices[1] - vertices[0]);
-		glm::vec3 y = glm::normalize(glm::cross(z, x));
-		auto get_x_length = [&](glm::vec3 v) {
-			return glm::length(v * x);
-		};
-		auto get_y_length = [&](glm::vec3 v) {
-			return glm::length(v * y);
-		};
-		auto get_z_length = [&](glm::vec3 v) {
-			return glm::length(v * z);
-		};
-		auto difference_between_current_pos = [&](glm::vec3 v) {
-			return fabs(get_z_length(v) - get_z_length(current_position));
-		};
-		bool valid_x = (get_x_length(current_position) > get_x_length(vertices[0])) && (get_x_length(current_position) < get_x_length(vertices[1]));
-		float average_y = (get_y_length(vertices[0]) + get_y_length(vertices[1])) / 2.f;
-		bool valid_y = (get_y_length(current_position) > average_y) && (get_y_length(current_position) < get_y_length(vertices[2]));
-		if (valid_x && valid_y) {
-			glm::vec3 farthest_vertex = (vertices[0] + vertices[1] + vertices[2]) / 3.f;
-			for (glm::vec3 v : vertices) {
-				float diff_v = difference_between_current_pos(v);
-				float diff_farthest_vertex = difference_between_current_pos(farthest_vertex);
-				if (diff_v > diff_farthest_vertex) farthest_vertex = v;
-			}
-			if (difference_between_current_pos(current_position + d) - difference_between_current_pos(farthest_vertex) > this->radius) {
-				return true;
-			}
-		}
-		return false;
+	float mlfarrel_model::get_radius() const {
+		return this->radius;
+	}
+	glm::vec3 mlfarrel_model::get_origin_offset() const {
+		return this->origin_offset;
 	}
 }

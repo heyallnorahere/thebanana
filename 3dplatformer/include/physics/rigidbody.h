@@ -2,6 +2,7 @@
 #include "component.h"
 #include "model_registry.h"
 #include "collider.h"
+#include "scene_serializer.h"
 namespace thebanana {
 	class rigidbody : public component {
 	public:
@@ -25,6 +26,7 @@ namespace thebanana {
 		rigidbody& set_speed_cap(float cap);
 		float get_speed_cap();
 		float get_last_move_speed();
+		collider* get_collider() const;
 		static const std::vector<rigidbody*>& get_rigidbodies();
 		static glm::vec3 gravity;
 	private:
@@ -41,6 +43,7 @@ namespace thebanana {
 		float speed_cap;
 		bool has_cap;
 		static std::vector<rigidbody*> rigidbodies;
+		friend class scene_serializer;
 	};
 	template<typename _Ty> inline _Ty& rigidbody::set_collider_type() {
 		delete this->coll;

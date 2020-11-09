@@ -126,6 +126,9 @@ namespace thebanana {
 	float rigidbody::get_last_move_speed() {
 		return this->last_velocity_length;
 	}
+	collider* rigidbody::get_collider() const {
+		return this->coll;
+	}
 	const std::vector<rigidbody*>& rigidbody::get_rigidbodies() {
 		return rigidbodies;
 	}

@@ -1,5 +1,5 @@
 # The Banana
-This is a 3D game engine I'm making. (the repository is named "3dplatformer" because I didnt initially have a name for the engine) It currently supports the following platforms:
+This is a 3D game engine I'm making. (the repository is named "3dplatformer" because I didnt initially have a name for the engine) Many aspects of this engine are inspired by The Cherno's [Hazel](https://github.com/TheCherno/Hazel). It currently supports the following platforms:
 - Windows
 
 ## TO IMPLEMENT
@@ -49,4 +49,6 @@ std::string my_game_application_layer::window_title() {
 ## TO BUILD
 ### WINDOWS
 [Visual Studio 2019](https://visualstudio.microsoft.com/) solution/project included, with NuGet packages installed.
-The only thing you need to download is the [Steamworks SDK](https://partner.steamgames.com/) and copy the `sdk` folder into `C:/steamsdk`. Then, copy `redistributable_bin/win64/steam_api64.dll` to the main project directory.
+The only thing you need to download is the [Steamworks SDK](https://partner.steamgames.com/) and copy the `sdk` folder into `C:/steamsdk`. Then, copy `redistributable_bin/win64/steam_api64.dll` to the sandbox project directory.
+
+If you've done this, you're good to go!

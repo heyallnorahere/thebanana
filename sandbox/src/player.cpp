@@ -55,6 +55,16 @@ void player_behavior::update() {
 			if (btns[DIK_TAB].down) {
 				this->parent->get_game()->get_menu_manager()->toggle_menus();
 			}
+#ifdef _DEBUG
+			if (btns[DIK_EQUALS].down) {
+				thebanana::scene_serializer serializer(this->parent->get_scene());
+				serializer.serialize("scenes/scene.basket");
+			}
+			if (btns[DIK_MINUS].down) {
+				thebanana::scene_serializer serializer(this->parent->get_scene());
+				serializer.deserialize("scenes/scene.basket");
+			}
+#endif
 			if ((btns[DIK_W].down || btns[DIK_S].down || btns[DIK_A].down || btns[DIK_D].down) && !this->m_walking && this->get_number_components<thebanana::animation_component>() > 0) {
 				this->get_component<thebanana::animation_component>().stop_animation();
 				this->get_component<thebanana::animation_component>().start_animation("walk", true);

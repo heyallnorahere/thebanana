@@ -1,0 +1,124 @@
+scene: untitled
+objects:
+  - object: 352456345756
+    nickname: camera
+    transform:
+      - [1, 0, 0, 0]
+      - [0, 1, 0, 0]
+      - [0, 0, 1, 0]
+      - [-3.21312809, 0.13813737, -2.94459057, 1]
+    components:
+      {}
+    children:
+      []
+  - object: 352456345756
+    nickname: player
+    transform:
+      - [0.960194767, 0, -0.279331565, 0]
+      - [0, 0.999999702, 0, 0]
+      - [0.279331565, 0, 0.960194767, 0]
+      - [-3.77045631, 0, -4.86039448, 1]
+    components:
+      tag_component 0:
+        value: player
+      mesh_component 0:
+        mesh name: player
+      animation_component 0:
+        {}
+      rigidbody 0:
+        gravity: false
+        gravity multiplier: 1
+        mass: 2.5
+        drag: 0.0500000007
+        collider:
+          type: mlfarrel_model
+          radius: 0.400000006
+          origin_offset: [0, 0.600000024, 0]
+    children:
+      []
+  - object: 352456345756
+    nickname: static mesh
+    transform:
+      - [1, 0, 0, 0]
+      - [0, 1, 0, 0]
+      - [0, 0, 1, 0]
+      - [2, 0.75, 2, 1]
+    components:
+      tag_component 0:
+        value: staticmesh
+      tag_component 1:
+        value: test
+      mesh_component 0:
+        mesh name: test_cube
+      rigidbody 0:
+        gravity: false
+        gravity multiplier: 1
+        mass: 1.5
+        drag: 0.0500000007
+        collider:
+          type: mlfarrel_model
+          radius: 0.5
+          origin_offset: [0, 0.5, 0]
+    children:
+      []
+  - object: 352456345756
+    nickname: static mesh
+    transform:
+      - [1, 0, 0, 0]
+      - [0, 1, 0, 0]
+      - [0, 0, 2, 0]
+      - [-5, 0.75, -10, 1]
+    components:
+      tag_component 0:
+        value: staticmesh
+      mesh_component 0:
+        mesh name: test_cube
+      rigidbody 0:
+        gravity: false
+        gravity multiplier: 1
+        mass: 1
+        drag: 0.0500000007
+    children:
+      []
+  - object: 352456345756
+    nickname: static mesh
+    transform:
+      - [0.5, 0, 0, 0]
+      - [0, 0.5, 0, 0]
+      - [0, 0, 0.5, 0]
+      - [10, 0, 10, 1]
+    components:
+      tag_component 0:
+        value: staticmesh
+      tag_component 1:
+        value: ground
+      mesh_component 0:
+        mesh name: test_Lblock
+      rigidbody 0:
+        gravity: false
+        gravity multiplier: 1
+        mass: 1
+        drag: 0.0500000007
+    children:
+      []
+  - object: 352456345756
+    nickname: static mesh
+    transform:
+      - [100, 0, 0, 0]
+      - [0, 1, 0, 0]
+      - [0, 0, 100, 0]
+      - [0, -1, 0, 1]
+    components:
+      tag_component 0:
+        value: staticmesh
+      tag_component 1:
+        value: ground
+      mesh_component 0:
+        mesh name: test_cube
+      rigidbody 0:
+        gravity: false
+        gravity multiplier: 1
+        mass: 1
+        drag: 0.0500000007
+    children:
+      []

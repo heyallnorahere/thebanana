@@ -57,7 +57,7 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>C:\steamsdk\sdk\public;$(SolutionDir)third-party\minimp3;$(SolutionDir)third-party\stb;$(SolutionDir)third-party\json\single_include;$(SolutionDir)imgui\imgui;$(DXSDK_DIR)include;$(ProjectDir)include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)yaml\yaml-cpp\include;C:\steamsdk\sdk\public;$(SolutionDir)third-party\minimp3;$(SolutionDir)third-party\stb;$(SolutionDir)third-party\json\single_include;$(SolutionDir)imgui\imgui;$(DXSDK_DIR)include;$(ProjectDir)include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DisableSpecificWarnings>4996;%(DisableSpecificWarnings)</DisableSpecificWarnings>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <PreprocessorDefinitions>BANANA_BUILD;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -68,7 +68,7 @@
       <AdditionalLibraryDirectories>$(OutDir);C:\steamsdk\sdk\redistributable_bin\win64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <Lib>
-      <AdditionalDependencies>dinput8.lib;imgui.lib;steam_api64.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>dinput8.lib;imgui.lib;steam_api64.lib;yaml.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Lib>
     <Lib>
       <AdditionalLibraryDirectories>C:\steamsdk\sdk\redistributable_bin\win64;$(OutDir);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
@@ -84,7 +84,7 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>C:\steamsdk\sdk\public;$(SolutionDir)third-party\minimp3;$(SolutionDir)third-party\stb;$(SolutionDir)third-party\json\single_include;$(SolutionDir)imgui\imgui;$(DXSDK_DIR)include;$(ProjectDir)include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)yaml\yaml-cpp\include;C:\steamsdk\sdk\public;$(SolutionDir)third-party\minimp3;$(SolutionDir)third-party\stb;$(SolutionDir)third-party\json\single_include;$(SolutionDir)imgui\imgui;$(DXSDK_DIR)include;$(ProjectDir)include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DisableSpecificWarnings>4996;%(DisableSpecificWarnings)</DisableSpecificWarnings>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <PreprocessorDefinitions>BANANA_BUILD;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -97,7 +97,7 @@
       <AdditionalLibraryDirectories>$(OutDir);C:\steamsdk\sdk\redistributable_bin\win64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <Lib>
-      <AdditionalDependencies>dinput8.lib;imgui.lib;steam_api64.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>dinput8.lib;imgui.lib;steam_api64.lib;yaml.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Lib>
     <Lib>
       <AdditionalLibraryDirectories>C:\steamsdk\sdk\redistributable_bin\win64;$(OutDir);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>

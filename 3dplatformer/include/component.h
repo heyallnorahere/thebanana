@@ -38,6 +38,7 @@ namespace thebanana {
 			void* ptr;
 			bool selection_window_open;
 			gameobject* selection_window_temp;
+			friend class scene_serializer;
 		};
 		using properties_t = std::vector<std::unique_ptr<property_base>>;
 		template<typename T> class property : public property_base {

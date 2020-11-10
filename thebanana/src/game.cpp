@@ -75,6 +75,7 @@ namespace thebanana {
 		DestroyWindow(this->m_window);
 	}
 	void game::update() {
+		if (!this->m_show_cursor) SetCursor(NULL);
 		this->m_frame++;
 		this->m_menu_manager->update();
 		this->m_input_manager->update_devices();
@@ -110,7 +111,6 @@ namespace thebanana {
 #endif
 		switch (msg) {
 		case WM_CREATE:
-			SetCursor(NULL);
 			break;
 		case WM_DESTROY:
 			PostQuitMessage(0);

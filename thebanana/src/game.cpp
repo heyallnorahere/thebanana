@@ -91,9 +91,7 @@ namespace thebanana {
 		if (this->m_menu_manager->menus_open()) {
 			this->m_menu_quad->render();
 		}
-#ifdef _DEBUG
-		debug::render_imgui(this);
-#endif
+		if (this->m_debug_menus_initialized) debug::render_imgui(this);
 		this->m_viewport->swap_buffers();
 	}
 	unsigned int game::get_current_frame() {

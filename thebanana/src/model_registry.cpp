@@ -5,8 +5,7 @@ namespace thebanana {
 		this->unload();
 	}
 	model_registry::model_registry(const std::vector<model_descriptor>& models) : model_registry() {
-		// todo: extract into separate thread(s)
-		this->load_models(models, this);
+		this->load(models);
 	}
 	model_registry::~model_registry() {
 		this->unload();
@@ -76,9 +75,6 @@ namespace thebanana {
 	};
 	void vertex_loader(aiMesh*, aiNode*, gl_model_loader::model*, const std::vector<gl_model_loader::vertex>& vertices, const std::vector<unsigned int>& indices, const std::vector<gl_model_loader::texture>&, const std::vector<gl_model_loader::vbd>& bone_data, vertex_loader_params* params) {
 		params->r->add_vertex_data(params->n, { vertices, indices, bone_data });
-	}
-	void model_registry::load_models(std::vector<model_descriptor> m, model_registry* r) {
-		r->load(m);
 	}
 	void model_registry::load(const std::vector<model_descriptor>& models) {
 		for (auto m : models) {

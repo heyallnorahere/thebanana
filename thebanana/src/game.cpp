@@ -31,6 +31,7 @@ namespace thebanana {
 		this->m_input_manager = new input_manager(this);
 		this->m_shader_registry = new shader_registry;
 		this->m_script_registry = new script_registry;
+		this->m_model_registry = new model_registry;
 		if (this->m_input_manager->add_device(0) == input_manager::device_type::keyboard) {
 			std::vector<input_manager::dinput_device> enumerated_devices = this->m_input_manager->get_enumerated_devices();
 			for (size_t i = 0; i < enumerated_devices.size(); i++) {
@@ -153,7 +154,7 @@ namespace thebanana {
 		this->m_descriptors.push_back(desc);
 	}
 	void game::load_models() {
-		this->m_model_registry = new model_registry(this->m_descriptors);
+		this->m_model_registry->load(this->m_descriptors);
 	}
 	HWND game::get_window() {
 		return this->m_window;

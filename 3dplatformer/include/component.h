@@ -1,6 +1,7 @@
 #pragma once
 #include "transform.h"
 #include "debug_tools.h"
+#include "scene_serializer.h"
 namespace thebanana {
 	class gameobject;
 	class component {
@@ -30,6 +31,9 @@ namespace thebanana {
 			virtual ~property_base();
 			void* get_ptr();
 			virtual void draw() const = 0;
+#ifdef BANANA_BUILD
+			virtual void send_to_yaml(YAML::Emitter& out) const = 0;
+#endif
 			bool is_selection_window_open() const;
 			virtual void close_selection_window() = 0;
 			virtual gameobject** get_selection_window_ptr() const = 0;
@@ -48,6 +52,9 @@ namespace thebanana {
 			const property<T>& operator=(const property<T>& other);
 			virtual ~property() override;
 			virtual void draw() const override;
+#ifdef BANANA_BUILD
+			virtual void send_to_yaml(YAML::Emitter& out) const override;
+#endif
 			T* get_value();
 			virtual void close_selection_window() override;
 			virtual gameobject** get_selection_window_ptr() const override;
@@ -184,6 +191,26 @@ namespace thebanana {
 		}
 		ImGui::Text("sorry, no implementation for this type yet... heres the raw memory though");
 		ImGui::InputText(this->name.c_str(), (char*)this->ptr, sizeof(T));
+	}
+	inline void component::property<component::property_base::read_only_text>::send_to_yaml(YAML::Emitter& out) const {
+		out << this->value->get_text();
+	}
+	inline void component::property<component::property_base::dropdown>::send_to_yaml(YAML::Emitter& out) const {
+		out << YAML::BeginMap;
+		out << YAML::Key << "index" << YAML::Value << *this->value->get_index_ptr();
+		out << YAML::Key << "items" << YAML::Value << YAML::BeginSeq;
+		for (auto& item : this->value->get_items()) {
+			out << item;
+		}
+		out << YAML::EndSeq;
+		out << YAML::EndMap;
+	}
+	unsigned long long get_uuid(gameobject* obj);
+	inline void component::property<gameobject*>::send_to_yaml(YAML::Emitter& out) const {
+		out << ::thebanana::get_uuid(*this->value);
+	}
+	template<typename T> inline void component::property<T>::send_to_yaml(YAML::Emitter& out) const {
+		out << (*this->value);
 	}
 #endif
 	template<typename T> inline void component::property<T>::close_selection_window() {

@@ -391,6 +391,11 @@ MigrationBackup/
 
 # End of https://www.toptal.com/developers/gitignore/api/c++,visualstudio
 # custom gitignore
+# placeholder models and textures
 placeholder/
+# imgui settings
 imgui.ini
+# project backups
 ~AutoRecover.*proj
+# scene files
+*.basket

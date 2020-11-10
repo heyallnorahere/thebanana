@@ -45,16 +45,6 @@ namespace YAML {
 	};
 }
 namespace thebanana {
-	YAML::Emitter& operator<<(YAML::Emitter& out, const glm::vec3& v) {
-		out << YAML::Flow;
-		out << YAML::BeginSeq << v.x << v.y << v.z << YAML::EndSeq;
-		return out;
-	}
-	YAML::Emitter& operator<<(YAML::Emitter& out, const glm::vec4& v) {
-		out << YAML::Flow;
-		out << YAML::BeginSeq << v.x << v.y << v.z << v.w << YAML::EndSeq;
-		return out;
-	}
 	scene_serializer::scene_serializer(scene* scene) : m_scene(scene) { }
 	static void serialize_collider(YAML::Emitter& out, collider* c) {
 		assert(c);
@@ -112,7 +102,21 @@ namespace thebanana {
 			if (c) serialize_collider(out, c);
 			out << YAML::EndMap;
 		}
-		// todo: figure out how to serialize a native_script_component, oh god
+		for (size_t i = 0; i < object->get_number_components<native_script_component>(); i++) {
+			native_script_component& nsc = object->get_component<native_script_component>(i);
+			out << YAML::BeginMap;
+			out << YAML::Key << "type" << YAML::Value << "native_script_component";
+			out << YAML::Key << "uuid" << YAML::Value << nsc.get_uuid();
+			out << YAML::Key << "script" << YAML::Value << nsc.get_property<component::property_base::read_only_text>("script")->get_text();
+			out << YAML::Key << "script_properties" << YAML::BeginMap;
+			for (size_t i = 1; i < nsc.get_properties().size(); i++) {
+				auto& prop = nsc.get_properties()[i];
+				out << YAML::Key << prop->get_name() << YAML::Value;
+				prop->send_to_yaml(out);
+			}
+			out << YAML::EndMap;
+			out << YAML::EndMap;
+		}
 		out << YAML::EndSeq;
 		out << YAML::Key << "children" << YAML::Value << YAML::BeginSeq;
 		for (size_t i = 0; i < object->get_children_count(); i++) {

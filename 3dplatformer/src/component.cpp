@@ -111,4 +111,7 @@ namespace thebanana {
 	}
 	component::property_base::read_only_text::read_only_text(const std::string& text) : text(text) { }
 	std::string& component::property_base::read_only_text::get_text() { return this->text; }
+	unsigned long long get_uuid(gameobject* obj) {
+		return obj->get_uuid();
+	}
 }

@@ -1,11 +1,11 @@
 #pragma once
-#include "components/native_script_component.h"
 namespace thebanana {
 	class gameobject;
 }
 class player_behavior : public thebanana::script {
 public:
-	player_behavior(thebanana::gameobject* object);
+	player_behavior(thebanana::gameobject* object, thebanana::native_script_component* nsc);
+	virtual void initialize() override;
 	virtual void update() override;
 	void set_camera(thebanana::gameobject* c);
 private:

@@ -2,9 +2,11 @@
 #include "components/native_script_component.h"
 #include "gameobject.h"
 namespace thebanana {
-	script::script(gameobject* object) : parent(object) {
-		this->interface = &(this->parent->get_component<native_script_component>());
+	script::script(gameobject* object, native_script_component* nsc) {
+		this->parent = object;
+		this->interface = nsc;
 	}
+	void script::initialize() { }
 	void script::pre_update() { }
 	void script::update() { }
 	void script::post_update() { }

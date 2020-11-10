@@ -5,7 +5,8 @@ namespace thebanana {
 	class native_script_component;
 	class script {
 	public:
-		script(gameobject* object);
+		script(gameobject* object, native_script_component* nsc);
+		virtual void initialize();
 		virtual void pre_update();
 		virtual void update();
 		virtual void post_update();
@@ -31,6 +32,7 @@ namespace thebanana {
 	public:
 		native_script_component(gameobject* object);
 		template<typename T> void bind();
+		template<typename T> void bind(T* s);
 		template<typename T> T* get_script();
 		virtual void pre_update() override;
 		virtual void update() override;
@@ -46,8 +48,15 @@ namespace thebanana {
 	};
 	template<typename T> inline void native_script_component::bind() {
 		if (this->m_destroy_script) this->m_destroy_script(this);
-		this->m_script = (script*)new T(this->parent);
-		this->m_destroy_script = [](native_script_component* x) { delete x->get_script<T>(); };
+		this->m_script = (script*)new T(this->parent, this);
+		this->m_script->initialize();
+		this->m_destroy_script = [](native_script_component* nsc) { delete nsc->get_script<T>(); };
+		this->get_property<property_base::read_only_text>("script")->get_text() = typeid(T).name();
+	}
+	template<typename T> inline void native_script_component::bind(T* s) {
+		if (this->m_destroy_script) this->m_destroy_script(this);
+		this->m_script = (script*)s;
+		this->m_destroy_script = [](native_script_component* nsc) { delete nsc->get_script<T>(); };
 		this->get_property<property_base::read_only_text>("script")->get_text() = typeid(T).name();
 	}
 	template<typename T> inline T* native_script_component::get_script() {

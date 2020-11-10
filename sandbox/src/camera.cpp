@@ -1,19 +1,14 @@
-#include "pch.h"
+#include <thebanana.h>
 #include "camera.h"
-#include "player.h"
-#include "scene.h"
-#include "debug_tools.h"
-#include "game.h"
-#include "input_manager.h"
-#include "controller.h"
-#include "mouse.h"
-camera_behavior::camera_behavior(thebanana::gameobject* object) : script(object) {
+camera_behavior::camera_behavior(thebanana::gameobject* object, thebanana::native_script_component* nsc) : script(object, nsc) {
 	thebanana::debug::log_print("created camera");
 	this->m_direction = glm::vec3(0.f, 0.f, 1.f);
 	this->m_angle = glm::vec2(0.f, -90.f);
 	this->parent->get_nickname() = "camera";
 	this->add_property(new thebanana::component::property<float>(2.f, "distance"));
+#ifdef _DEBUG
 	this->remove_component<thebanana::debug_component>();
+#endif
 }
 void camera_behavior::update() {
 #ifdef _DEBUG

@@ -1,31 +1,20 @@
-#include "pch.h"
+#include <thebanana.h>
 #include "player.h"
-#include "game.h"
-#include "input_manager.h"
-#include "mouse.h"
-#include "controller.h"
 #include "camera.h"
-#include "scene.h"
-#include "debug_tools.h"
-#include "static_mesh.h"
-#include "physics/rigidbody.h"
-#include "components/animation_component.h"
-#include "components/mesh_component.h"
-#include "sound/sound.h"
-#include "ui/ui.h"
-#include "lua_interpreter.h"
 const float speed = 0.01f;
-player_behavior::player_behavior(thebanana::gameobject* object) : script(object) {
+player_behavior::player_behavior(thebanana::gameobject* object, thebanana::native_script_component* nsc) : script(object, nsc) {
 	thebanana::debug::log_print("created player");
 	this->add_property(new thebanana::component::property<float>(speed, "speed"));
+	this->m_walking = false;
+	this->m_last_angle = glm::vec2(0.f, -90.f);
+}
+void player_behavior::initialize() {
 	this->add_component<thebanana::animation_component>();
 	this->add_component<thebanana::mesh_component>().set_mesh_name("player");
 	this->add_component<thebanana::rigidbody>().set_check_for_collisions(true).set_speed_cap(0.5f).set_collider_type<thebanana::mlfarrel_model>().set_radius(0.4f).set_origin_offset(glm::vec3(0.f, 0.6f, 0.f));
 	this->get_component<thebanana::rigidbody>().set_property("mass", 2.5f);
 	this->parent->add_tag("player");
 	this->parent->get_nickname() = "player";
-	this->m_walking = false;
-	this->m_last_angle = glm::vec2(0.f, -90.f);
 }
 void player_behavior::update() {
 	if (this->get_number_components<thebanana::animation_component>() > 0) {

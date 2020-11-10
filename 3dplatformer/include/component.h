@@ -34,6 +34,7 @@ namespace thebanana {
 #ifdef BANANA_BUILD
 			virtual void send_to_yaml(YAML::Emitter& out) const = 0;
 #endif
+			virtual std::string get_type_name() const = 0;
 			bool is_selection_window_open() const;
 			virtual void close_selection_window() = 0;
 			virtual gameobject** get_selection_window_ptr() const = 0;
@@ -55,6 +56,7 @@ namespace thebanana {
 #ifdef BANANA_BUILD
 			virtual void send_to_yaml(YAML::Emitter& out) const override;
 #endif
+			virtual std::string get_type_name() const override;
 			T* get_value();
 			virtual void close_selection_window() override;
 			virtual gameobject** get_selection_window_ptr() const override;
@@ -115,6 +117,9 @@ namespace thebanana {
 	template<typename T> inline component::property<T>::~property() {
 		this->value->~T();
 		free(this->ptr);
+	}
+	template<typename T> inline std::string component::property<T>::get_type_name() const {
+		return typeid(T).name();
 	}
 	template<typename T> inline T* component::property<T>::get_value() {
 		return this->value;

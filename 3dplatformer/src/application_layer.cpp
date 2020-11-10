@@ -2,6 +2,7 @@
 #include "application_layer.h"
 #include "game.h"
 namespace thebanana {
+	void application_layer::register_scripts() { }
 	void application_layer::init() { }
 	void application_layer::gameloop() {
 		g_game->update();

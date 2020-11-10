@@ -11,6 +11,7 @@
 #include "ui/menu_manager.h"
 #include "lua_interpreter.h"
 #include "shader_registry.h"
+#include "script_registry.h"
 #include "util.h"
 #ifdef _DEBUG
 extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
@@ -29,6 +30,7 @@ namespace thebanana {
 		this->m_scene = new scene(this);
 		this->m_input_manager = new input_manager(this);
 		this->m_shader_registry = new shader_registry;
+		this->m_script_registry = new script_registry;
 		if (this->m_input_manager->add_device(0) == input_manager::device_type::keyboard) {
 			std::vector<input_manager::dinput_device> enumerated_devices = this->m_input_manager->get_enumerated_devices();
 			for (size_t i = 0; i < enumerated_devices.size(); i++) {
@@ -69,6 +71,7 @@ namespace thebanana {
 		delete this->m_interpreter;
 		delete this->m_model_registry;
 		delete this->m_viewport;
+		delete this->m_script_registry;
 		delete this->m_shader_registry;
 		delete this->m_input_manager;
 	}
@@ -190,6 +193,9 @@ namespace thebanana {
 	}
 	shader_registry* game::get_shader_registry() {
 		return this->m_shader_registry;
+	}
+	script_registry* game::get_script_registry() {
+		return this->m_script_registry;
 	}
 	void game::init_steam() {
 		SteamAPI_Init();

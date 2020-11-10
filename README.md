@@ -18,6 +18,7 @@ public:
 	// though if you dont define any of them
 	// (or dont define this class at all and use the base class),
 	// the "game" is just gonna be a tech demo
+	virtual void register_scripts() override;
 	virtual void init() override;
 	virtual void gameloop() override;
 	virtual void clean_up() override;
@@ -29,6 +30,9 @@ thebanana::application_layer* create_application_layer() {
 	return new my_game_application_layer;
 }
 
+void my_game_application_layer::register_scripts() {
+	// register scripts via thebanana::g_game->get_script_registry()
+}
 void my_game_application_layer::init() {
 	// initialize your game (add gameobjects, load models, etc.)
 }

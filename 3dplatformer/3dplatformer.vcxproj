@@ -164,6 +164,7 @@
     <ClInclude Include="include\lua_interpreter.h" />
     <ClInclude Include="include\main_module.h" />
     <ClInclude Include="include\physics\physics.h" />
+    <ClInclude Include="include\script_registry.h" />
     <ClInclude Include="include\scene_serializer.h" />
     <ClInclude Include="include\shader_registry.h" />
     <ClInclude Include="include\sound\context.h" />

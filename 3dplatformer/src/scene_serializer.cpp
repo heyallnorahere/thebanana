@@ -6,7 +6,24 @@
 #include "physics/physics.h"
 #include "components/components.h"
 #include "debug_tools.h"
+#include "script_registry.h"
+#include "game.h"
 namespace YAML {
+	template<> struct convert<glm::vec2> {
+		static Node encode(const glm::vec2& rhs) {
+			Node node;
+			node.push_back(rhs.x);
+			node.push_back(rhs.y);
+			node.SetStyle(EmitterStyle::Flow);
+			return node;
+		}
+		static bool decode(const Node& node, glm::vec2& rhs) {
+			if (!node.IsSequence() || node.size() != 3) return false;
+			rhs.x = node[0].as<float>();
+			rhs.y = node[1].as<float>();
+			return true;
+		}
+	};
 	template<> struct convert<glm::vec3> {
 		static Node encode(const glm::vec3& rhs) {
 			Node node;
@@ -108,13 +125,17 @@ namespace thebanana {
 			out << YAML::Key << "type" << YAML::Value << "native_script_component";
 			out << YAML::Key << "uuid" << YAML::Value << nsc.get_uuid();
 			out << YAML::Key << "script" << YAML::Value << nsc.get_property<component::property_base::read_only_text>("script")->get_text();
-			out << YAML::Key << "script_properties" << YAML::BeginMap;
+			out << YAML::Key << "script_properties" << YAML::BeginSeq;
 			for (size_t i = 1; i < nsc.get_properties().size(); i++) {
 				auto& prop = nsc.get_properties()[i];
-				out << YAML::Key << prop->get_name() << YAML::Value;
+				out << YAML::BeginMap;
+				out << YAML::Key << "name" << YAML::Value << prop->get_name();
+				out << YAML::Key << "value" << YAML::Value;
 				prop->send_to_yaml(out);
+				out << YAML::Key << "type" << YAML::Value << prop->get_type_name();
+				out << YAML::EndMap;
 			}
-			out << YAML::EndMap;
+			out << YAML::EndSeq;
 			out << YAML::EndMap;
 		}
 		out << YAML::EndSeq;
@@ -151,7 +172,7 @@ namespace thebanana {
 			c.set_origin_offset(node["origin_offset"].as<glm::vec3>());
 		}
 	}
-	static void deserialize_components(const YAML::Node& node, gameobject* object) {
+	static void deserialize_components(const YAML::Node& node, gameobject* object, scene* s) {
 		assert(node);
 		for (auto n : node) {
 			assert(n["uuid"]);
@@ -190,6 +211,85 @@ namespace thebanana {
 				rb.set_property<float>("drag", n["drag"].as<float>());
 				if (n["collider"]) deserialize_collider(n["collider"], rb);
 			}
+			else if (type == "native_script_component") {
+				native_script_component& nsc = object->add_component<native_script_component>();
+				nsc.set_uuid(uuid);
+				assert(n["script"]);
+				std::string script_name = n["script"].as<std::string>();
+				nsc.bind(s->get_game()->get_script_registry()->create_script(script_name, object, &nsc));
+				assert(n["script_properties"]);
+				for (auto p : n["script_properties"]) {
+					enum class property_type {
+						i,
+						b,
+						f,
+						d,
+						s,
+						v2,
+						v3,
+						v4,
+						read_only,
+						dropdown
+					};
+					property_type pt;
+					assert(p["type"]);
+					std::string type = p["type"].as<std::string>();
+					if (type == typeid(int).name()) pt = property_type::i;
+					else if (type == typeid(bool).name()) pt = property_type::b;
+					else if (type == typeid(float).name()) pt = property_type::f;
+					else if (type == typeid(double).name()) pt = property_type::d;
+					else if (type == typeid(std::string).name()) pt = property_type::s;
+					else if (type == typeid(glm::vec2).name()) pt = property_type::v2;
+					else if (type == typeid(glm::vec3).name()) pt = property_type::v3;
+					else if (type == typeid(glm::vec4).name()) pt = property_type::v4;
+					else if (type == typeid(component::property_base::read_only_text).name()) pt = property_type::read_only;
+					else if (type == typeid(component::property_base::dropdown).name()) pt = property_type::dropdown;
+					else assert(false);
+					assert(p["name"]);
+					std::string name = p["name"].as<std::string>();
+					YAML::Node value_node = p["value"];
+					assert(value_node);
+					switch (pt) {
+					case property_type::i:
+						nsc.set_property(name, value_node.as<int>());
+						break;
+					case property_type::b:
+						nsc.set_property(name, value_node.as<bool>());
+						break;
+					case property_type::f:
+						nsc.set_property(name, value_node.as<float>());
+						break;
+					case property_type::d:
+						nsc.set_property(name, value_node.as<double>());
+						break;
+					case property_type::s:
+						nsc.set_property(name, value_node.as<std::string>());
+						break;
+					case property_type::v2:
+						nsc.set_property(name, value_node.as<glm::vec2>());
+						break;
+					case property_type::v3:
+						nsc.set_property(name, value_node.as<glm::vec3>());
+						break;
+					case property_type::v4:
+						nsc.set_property(name, value_node.as<glm::vec4>());
+						break;
+					case property_type::read_only:
+						nsc.set_property(name, component::property_base::read_only_text(value_node.as<std::string>()));
+						break;
+					case property_type::dropdown:
+					{
+						int index = value_node["index"].as<int>();
+						std::vector<std::string> items;
+						for (auto item : value_node["items"]) {
+							items.push_back(item.as<std::string>());
+						}
+						nsc.set_property(name, component::property_base::dropdown(items, index));
+					}
+						break;
+					}
+				}
+			}
 		}
 	}
 	static gameobject* deserialize_object(const YAML::Node& node, gameobject* parent, scene* s) {
@@ -212,10 +312,12 @@ namespace thebanana {
 		object->get_nickname() = nickname_node.as<std::string>();
 		YAML::Node transform_node = node["transform"];
 		assert(transform_node);
+		glm::mat4 t(1.f);
 		for (size_t i = 0; i < 4; i++) {
-			object->get_transform().get_matrix()[i] = transform_node[i].as<glm::vec4>();
+			t[i] = transform_node[i].as<glm::vec4>();
 		}
-		deserialize_components(node["components"], object);
+		object->get_transform() = transform(t);
+		deserialize_components(node["components"], object, s);
 		assert(node["children"]);
 		for (auto n : node["children"]) {
 			gameobject* obj = deserialize_object(n, object, s);

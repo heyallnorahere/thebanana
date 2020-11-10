@@ -301,5 +301,8 @@
     <ClInclude Include="include\components\tag_component.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\script_registry.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

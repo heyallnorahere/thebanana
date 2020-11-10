@@ -11,6 +11,7 @@ std::string test_texture_path(const std::string& path, void*) {
 }
 class thebanana_test_application_layer : public thebanana::application_layer {
 public:
+	virtual void register_scripts() override;
 	virtual void init() override;
 	virtual void gameloop() override;
 private:
@@ -19,6 +20,11 @@ private:
 };
 thebanana::application_layer* create_application_layer() {
 	return new thebanana_test_application_layer;
+}
+void thebanana_test_application_layer::register_scripts() {
+	// register scripts
+	thebanana::g_game->get_script_registry()->register_script<player_behavior>();
+	thebanana::g_game->get_script_registry()->register_script<camera_behavior>();
 }
 void thebanana_test_application_layer::init() {
 	// load shaders

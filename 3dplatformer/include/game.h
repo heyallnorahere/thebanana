@@ -9,6 +9,7 @@ namespace thebanana {
 	class gameobject;
 	class lua_interpreter;
 	class shader_registry;
+	class script_registry;
 	namespace ui {
 		class menu_manager;
 	}
@@ -40,6 +41,7 @@ namespace thebanana {
 		void toggle_cursor();
 		std::string get_steam_name();
 		shader_registry* get_shader_registry();
+		script_registry* get_script_registry();
 	private:
 		void init_steam();
 		void shutdown_steam();
@@ -50,6 +52,7 @@ namespace thebanana {
 		input_manager* m_input_manager;
 		model_registry* m_model_registry;
 		shader_registry* m_shader_registry;
+		script_registry* m_script_registry;
 		ui::menu_manager* m_menu_manager;
 		sound::sound_manager* m_sound_manager;
 		gameobject* m_menu_quad;

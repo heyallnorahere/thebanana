@@ -20,6 +20,7 @@ int __stdcall WinMain(HINSTANCE instance, HINSTANCE prev, char* cmd_line, int cm
 	wc.style = CS_HREDRAW | CS_VREDRAW;
 	assert(RegisterClass(&wc));
 	::thebanana::g_game = new ::thebanana::game(app_layer->window_title());
+	app_layer->register_scripts();
 	app_layer->init();
 	MSG msg;
 	ZeroMemory(&msg, sizeof(MSG));

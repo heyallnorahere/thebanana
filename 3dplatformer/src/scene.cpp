@@ -66,4 +66,7 @@ namespace thebanana {
 	void scene::set_shader_name(const std::string& shader_name) {
 		this->m_shader = this->m_game->get_shader_registry()->get_shader(shader_name);
 	}
+	game* scene::get_game() {
+		return this->m_game;
+	}
 }

@@ -15,3 +15,4 @@
 #include "lua_interpreter.h"
 #include "application_layer.h"
 #include "shader_registry.h"
+#include "script_registry.h"

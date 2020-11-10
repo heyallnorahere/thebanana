@@ -12,7 +12,7 @@ unsigned long long generate_uuid() {
 	unsigned long long uuid = 0;
 	for (int i = 0; i < 10; i++) {
 		int digit = rand() % 10;
-		uuid += static_cast<unsigned long long>(digit) * (10 ^ static_cast<unsigned long long>(i));
+		uuid += static_cast<unsigned long long>(digit) * pow(10, static_cast<unsigned long long>(i));
 	}
 	return uuid;
 }

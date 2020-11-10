@@ -5,6 +5,7 @@ const float speed = 0.01f;
 player_behavior::player_behavior(thebanana::gameobject* object, thebanana::native_script_component* nsc) : script(object, nsc) {
 	thebanana::debug::log_print("created player");
 	this->add_property(new thebanana::component::property<float>(speed, "speed"));
+	this->add_property(new thebanana::component::property<thebanana::gameobject*>(NULL, "camera"));
 	this->m_walking = false;
 	this->m_last_angle = glm::vec2(0.f, -90.f);
 }
@@ -97,12 +98,10 @@ void player_behavior::update() {
 	}
 #endif
 }
-void player_behavior::set_camera(thebanana::gameobject* c) {
-	this->m_camera = c;
-}
 void player_behavior::move(float yaw_offset, glm::vec3& translate, const float speed) {
-	glm::vec2 current_angle = this->m_last_angle - (this->m_camera->get_component<thebanana::native_script_component>().get_script<camera_behavior>()->get_angle() + glm::vec2(0.f, yaw_offset));
-	this->m_last_angle = this->m_camera->get_component<thebanana::native_script_component>().get_script<camera_behavior>()->get_angle() + glm::vec2(0.f, yaw_offset);
+	thebanana::gameobject* camera = *this->get_property<thebanana::gameobject*>("camera");
+	glm::vec2 current_angle = this->m_last_angle - (camera->get_component<thebanana::native_script_component>().get_script<camera_behavior>()->get_angle() + glm::vec2(0.f, yaw_offset));
+	this->m_last_angle = camera->get_component<thebanana::native_script_component>().get_script<camera_behavior>()->get_angle() + glm::vec2(0.f, yaw_offset);
 	this->get_transform().rotate(current_angle.y, glm::vec3(0.f, 1.f, 0.f));
 	translate.z += speed;
 }

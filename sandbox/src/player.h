@@ -7,11 +7,9 @@ public:
 	player_behavior(thebanana::gameobject* object, thebanana::native_script_component* nsc);
 	virtual void initialize() override;
 	virtual void update() override;
-	void set_camera(thebanana::gameobject* c);
 private:
 	void move(float yaw_offset, glm::vec3& translate, const float speed);
 	bool m_walking;
 	glm::vec2 m_last_angle;
 	float m_last_walk_speed;
-	thebanana::gameobject* m_camera;
 };

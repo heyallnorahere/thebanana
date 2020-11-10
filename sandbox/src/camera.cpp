@@ -6,6 +6,7 @@ camera_behavior::camera_behavior(thebanana::gameobject* object, thebanana::nativ
 	this->m_angle = glm::vec2(0.f, -90.f);
 	this->parent->get_nickname() = "camera";
 	this->add_property(new thebanana::component::property<float>(2.f, "distance"));
+	this->add_property(new thebanana::component::property<thebanana::gameobject*>(NULL, "player"));
 #ifdef _DEBUG
 	this->remove_component<thebanana::debug_component>();
 #endif
@@ -43,14 +44,16 @@ void camera_behavior::update() {
 	}
 #endif
 	thebanana::component::property<float>* distance = this->find_property<float>("distance");
-	this->get_transform() = thebanana::transform().translate(glm::vec3(this->m_player->get_transform()) + this->m_direction * (distance ? * distance->get_value() : 2.f));
+	thebanana::gameobject* player = *this->get_property<thebanana::gameobject*>("player");
+	this->get_transform() = thebanana::transform().translate(glm::vec3(player->get_transform()) + this->m_direction * (distance ? * distance->get_value() : 2.f));
 }
 void camera_behavior::render() {
+	thebanana::gameobject* player = *this->get_property<thebanana::gameobject*>("player");
 	glm::mat4 projection = glm::perspective(glm::radians(45.f), this->parent->get_game()->get_aspect_ratio(), 0.1f, 100.f);
 	this->parent->get_scene()->get_shader()->get_uniforms().mat4("projection",projection);
 	glm::vec3 pos = this->get_transform().get_matrix() * glm::vec4(0.f, 1.f, 0.f, 1.f);
-	glm::vec3 player_pos = this->m_player->get_transform().get_matrix() * glm::vec4(0.f, 0.75f, 0.f, 1.f);
-	glm::mat4 rotation = this->m_player->get_transform().get_matrix();
+	glm::vec3 player_pos = player->get_transform().get_matrix() * glm::vec4(0.f, 0.75f, 0.f, 1.f);
+	glm::mat4 rotation = player->get_transform().get_matrix();
 	rotation[3] = glm::vec4(0.f, 0.f, 0.f, rotation[3].w);
 	glm::vec3 up = glm::vec3(rotation * glm::vec4(0.f, 1.f, 0.f, 1.f));
 	glm::mat4 view = glm::lookAt(pos, player_pos, up);
@@ -61,7 +64,4 @@ glm::vec3 camera_behavior::get_direction() {
 }
 glm::vec2 camera_behavior::get_angle() {
 	return this->m_angle;
-}
-void camera_behavior::set_player(thebanana::gameobject* p) {
-	this->m_player = p;
 }

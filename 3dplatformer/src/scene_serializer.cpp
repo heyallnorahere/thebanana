@@ -172,6 +172,11 @@ namespace thebanana {
 			c.set_origin_offset(node["origin_offset"].as<glm::vec3>());
 		}
 	}
+	struct find_struct {
+		unsigned long long uuid;
+		gameobject** ptr;
+	};
+	std::vector<find_struct> to_find;
 	static void deserialize_components(const YAML::Node& node, gameobject* object, scene* s) {
 		assert(node);
 		for (auto n : node) {
@@ -229,7 +234,8 @@ namespace thebanana {
 						v3,
 						v4,
 						read_only,
-						dropdown
+						dropdown,
+						object
 					};
 					property_type pt;
 					assert(p["type"]);
@@ -244,6 +250,7 @@ namespace thebanana {
 					else if (type == typeid(glm::vec4).name()) pt = property_type::v4;
 					else if (type == typeid(component::property_base::read_only_text).name()) pt = property_type::read_only;
 					else if (type == typeid(component::property_base::dropdown).name()) pt = property_type::dropdown;
+					else if (type == typeid(gameobject*).name()) pt = property_type::object;
 					else assert(false);
 					assert(p["name"]);
 					std::string name = p["name"].as<std::string>();
@@ -287,6 +294,9 @@ namespace thebanana {
 						nsc.set_property(name, component::property_base::dropdown(items, index));
 					}
 						break;
+					case property_type::object:
+						to_find.push_back({ value_node.as<unsigned long long>(), nsc.get_property<gameobject*>(name) });
+						break;
 					}
 				}
 			}
@@ -297,15 +307,9 @@ namespace thebanana {
 		YAML::Node uuid_node = node["object"];
 		assert(uuid_node);
 		unsigned long long uuid = uuid_node.as<unsigned long long>();
-		bool has_same_uuid = false;
-		for (size_t i = 0; i < (parent ? parent->get_children_count() : s->get_children_count()); i++) {
-			gameobject* obj = (parent ? parent->get_child(i) : s->get_child(i));
-			if (uuid == obj->get_uuid()) {
-				has_same_uuid = true;
-				break;
-			}
-		}
-		if (has_same_uuid) return NULL;
+		gameobject* o = s->find(uuid);
+		if (o)
+			return NULL;
 		object->set_uuid(uuid);
 		YAML::Node nickname_node = node["nickname"];
 		assert(nickname_node);
@@ -326,6 +330,7 @@ namespace thebanana {
 		return object;
 	}
 	void scene_serializer::deserialize(const std::string& path) {
+		to_find.clear();
 		this->m_scene->clear();
 		YAML::Node data = YAML::LoadFile(path);
 		assert(data["scene"]);
@@ -337,6 +342,9 @@ namespace thebanana {
 				gameobject* object = deserialize_object(obj, NULL, this->m_scene);
 				if (object) this->m_scene->add_object(object);
 			}
+		}
+		for (auto fs : to_find) {
+			*fs.ptr = this->m_scene->find(fs.uuid);
 		}
 	}
 }

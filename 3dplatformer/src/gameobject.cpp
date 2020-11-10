@@ -129,6 +129,16 @@ namespace thebanana {
 	void gameobject::set_uuid(unsigned long long uuid) {
 		this->m_uuid = uuid;
 	}
+	void gameobject::find(unsigned long long uuid, gameobject*& ptr) {
+		if (this->m_uuid == uuid) {
+			ptr = this;
+		} else {
+			for (auto& c : this->m_children) {
+				c->find(uuid, ptr);
+				if (ptr) break;
+			}
+		}
+	}
 	void gameobject::add_property(component::property_base* p) {
 		this->m_properties.push_back(std::unique_ptr<component::property_base>(p));
 	}

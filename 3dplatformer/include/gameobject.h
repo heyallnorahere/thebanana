@@ -36,6 +36,7 @@ namespace thebanana {
 		bool has_tag(const std::string& tag) const;
 		unsigned long long get_uuid() const;
 		void set_uuid(unsigned long long uuid);
+		void find(unsigned long long uuid, gameobject*& ptr);
 	protected:
 		component::properties_t m_properties;
 		void add_property(component::property_base* p);

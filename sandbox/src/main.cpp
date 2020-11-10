@@ -15,8 +15,6 @@ public:
 	virtual void init() override;
 	virtual void gameloop() override;
 private:
-	thebanana::gameobject* m_camera;
-	thebanana::gameobject* m_player;
 };
 thebanana::application_layer* create_application_layer() {
 	return new thebanana_test_application_layer;
@@ -33,14 +31,14 @@ void thebanana_test_application_layer::init() {
 	thebanana::g_game->get_scene()->set_shader_name("basic");
 	thebanana::graphics::opengl::opengl_quad::init_shader("2d");
 	// add gameobjects to the scene
-	this->m_player = new thebanana::basic_gameobject;
-	this->m_player->add_component<thebanana::native_script_component>().bind<player_behavior>();
-	this->m_camera = new thebanana::basic_gameobject;
-	this->m_camera->add_component<thebanana::native_script_component>().bind<camera_behavior>();
-	this->m_camera->get_component<thebanana::native_script_component>().get_script<camera_behavior>()->set_player(this->m_player);
-	this->m_player->get_component<thebanana::native_script_component>().get_script<player_behavior>()->set_camera(this->m_camera);
-	thebanana::g_game->get_scene()->add_object(this->m_camera);
-	thebanana::g_game->get_scene()->add_object(this->m_player);
+	thebanana::gameobject* player = new thebanana::basic_gameobject;
+	player->add_component<thebanana::native_script_component>().bind<player_behavior>();
+	thebanana::gameobject* camera = new thebanana::basic_gameobject;
+	camera->add_component<thebanana::native_script_component>().bind<camera_behavior>();
+	camera->get_component<thebanana::native_script_component>().set_property("player", player);
+	player->get_component<thebanana::native_script_component>().set_property("camera", camera);
+	thebanana::g_game->get_scene()->add_object(camera);
+	thebanana::g_game->get_scene()->add_object(player);
 	thebanana::gameobject* p = new thebanana::static_mesh("test_cube");
 	p->get_transform().translate(2.f, 0.75f, 2.f);
 	p->add_tag("test");

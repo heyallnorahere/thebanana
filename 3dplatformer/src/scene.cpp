@@ -69,4 +69,12 @@ namespace thebanana {
 	game* scene::get_game() {
 		return this->m_game;
 	}
+	gameobject* scene::find(unsigned long long uuid) {
+		gameobject* object = NULL;
+		for (auto& c : this->m_children) {
+			c->find(uuid, object);
+			if (object) break;
+		}
+		return object;
+	}
 }

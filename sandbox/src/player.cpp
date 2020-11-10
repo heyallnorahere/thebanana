@@ -30,6 +30,9 @@ void player_behavior::update() {
 		std::vector<float> angles;
 		if (this->parent->get_game()->get_input_manager()->get_device_type(0) == thebanana::input_manager::device_type::keyboard) {
 			std::vector<thebanana::input_manager::device::button> btns = this->parent->get_game()->get_input_manager()->get_device_buttons(0);
+			if (btns[DIK_ESCAPE].down) {
+				this->parent->get_game()->destroy();
+			}
 			if (btns[DIK_W].held) {
 				angles.push_back(0.f);
 			}

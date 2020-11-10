@@ -9,22 +9,23 @@ std::string waluigi_paths(const std::string& path, void*) {
 std::string test_texture_path(const std::string& path, void*) {
 	return thebanana::model_registry::path_helper(path, "3dplatformer\\3dplatformer\\", "");
 }
-class thebanana_test_application_layer : public thebanana::application_layer {
+class sandbox_application_layer : public thebanana::application_layer {
 public:
 	virtual void register_scripts() override;
 	virtual void init() override;
 	virtual void gameloop() override;
+	virtual std::string window_title() override;
 private:
 };
 thebanana::application_layer* create_application_layer() {
-	return new thebanana_test_application_layer;
+	return new sandbox_application_layer;
 }
-void thebanana_test_application_layer::register_scripts() {
+void sandbox_application_layer::register_scripts() {
 	// register scripts
 	thebanana::g_game->get_script_registry()->register_script<player_behavior>();
 	thebanana::g_game->get_script_registry()->register_script<camera_behavior>();
 }
-void thebanana_test_application_layer::init() {
+void sandbox_application_layer::init() {
 #ifdef _DEBUG
 	// initialize imgui debug menus
 	thebanana::g_game->init_debug_menus();
@@ -74,7 +75,7 @@ void thebanana_test_application_layer::init() {
 	// load a menu
 	thebanana::g_game->get_menu_manager()->load_menu(new thebanana::ui::menu("test_menu.json"));
 }
-void thebanana_test_application_layer::gameloop() {
+void sandbox_application_layer::gameloop() {
 	thebanana::g_game->update();
 	thebanana::g_game->render();
 #ifdef _DEBUG
@@ -90,4 +91,7 @@ void thebanana_test_application_layer::gameloop() {
 		}
 	}
 #endif
+}
+std::string sandbox_application_layer::window_title() {
+	return "sandbox";
 }

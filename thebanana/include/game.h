@@ -44,6 +44,10 @@ namespace thebanana {
 		script_registry* get_script_registry();
 		void init_debug_menus();
 		void init_steam();
+		bool should_clip_cursor();
+		void clip_cursor();
+		void unclip_cursor();
+		void toggle_cursor_clip();
 	private:
 		void shutdown_steam();
 		unsigned int m_frame;
@@ -63,6 +67,7 @@ namespace thebanana {
 		bool m_show_cursor;
 		bool m_debug_menus_initialized;
 		bool m_steam_initialized;
+		bool m_clip_cursor;
 	};
 	extern game* g_game;
 }

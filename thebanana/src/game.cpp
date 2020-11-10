@@ -53,6 +53,7 @@ namespace thebanana {
 		this->m_menu_quad = graphics::quad::create(2.f, 2.f, this->m_menu_manager->get_texture(), true);
 		this->m_sound_manager = new sound::sound_manager(this);
 		this->m_show_cursor = false;
+		this->m_clip_cursor = true;
 		this->m_debug_menus_initialized = false;
 		this->m_steam_initialized = false;
 	}
@@ -75,11 +76,6 @@ namespace thebanana {
 	}
 	void game::update() {
 		this->m_frame++;
-		if (this->m_show_cursor) {
-			SetCursor(LoadCursor(NULL, IDC_ARROW));
-		} else {
-			SetCursor(NULL);
-		}
 		this->m_menu_manager->update();
 		this->m_input_manager->update_devices();
 		this->m_scene->update();
@@ -130,13 +126,6 @@ namespace thebanana {
 				glViewport(0, 0, width, height);
 			}
 		}
-		break;
-		case WM_CHAR:
-			switch (w_param) {
-			case VK_ESCAPE:
-				DestroyWindow(window);
-				break;
-			}
 			break;
 		default:
 			return DefWindowProc(window, msg, w_param, l_param);
@@ -170,12 +159,15 @@ namespace thebanana {
 	}
 	void game::show_cursor() {
 		this->m_show_cursor = true;
+		SetCursor(LoadCursor(NULL, IDC_ARROW));
 	}
 	void game::hide_cursor() {
 		this->m_show_cursor = false;
+		SetCursor(NULL);
 	}
 	void game::toggle_cursor() {
-		this->m_show_cursor = !this->m_show_cursor;
+		if (this->m_show_cursor) this->hide_cursor();
+		else this->show_cursor();
 	}
 	std::string game::get_steam_name() {
 		if (this->m_steam_initialized) return std::string(SteamFriends()->GetPersonaName());
@@ -194,6 +186,18 @@ namespace thebanana {
 	void game::init_steam() {
 		SteamAPI_Init();
 		this->m_steam_initialized = true;
+	}
+	bool game::should_clip_cursor() {
+		return this->m_clip_cursor;
+	}
+	void game::clip_cursor() {
+		this->m_clip_cursor = true;
+	}
+	void game::unclip_cursor() {
+		this->m_clip_cursor = false;
+	}
+	void game::toggle_cursor_clip() {
+		this->m_clip_cursor = !this->m_clip_cursor;
 	}
 	void game::shutdown_steam() {
 		SteamAPI_Shutdown();

@@ -10,7 +10,7 @@ namespace thebanana {
 		return this->current;
 	}
 	void mouse::update() {
-		if (GetFocus() == this->parent->get_parent()->get_window()) {
+		if (GetFocus() == this->parent->get_parent()->get_window() && this->parent->get_parent()->should_clip_cursor()) {
 			RECT clip_rect;
 			GetClientRect(this->parent->get_parent()->get_window(), &clip_rect);
 			ClientToScreen(this->parent->get_parent()->get_window(), (POINT*)& clip_rect.left);

@@ -160,7 +160,7 @@
     <ClInclude Include="include\graphics\quad.h" />
     <ClInclude Include="include\graphics\texture.h" />
     <ClInclude Include="include\includelist.h" />
-    <ClInclude Include="include\internal_only_includelist.h" />
+    <ClInclude Include="src\internal_only_includelist.h" />
     <ClInclude Include="include\lua_interpreter.h" />
     <ClInclude Include="include\main_module.h" />
     <ClInclude Include="include\physics\physics.h" />
@@ -193,7 +193,7 @@
     <ClInclude Include="include\model_registry.h" />
     <ClInclude Include="include\mouse.h" />
     <ClInclude Include="include\basic_gameobject.h" />
-    <ClInclude Include="include\pch.h" />
+    <ClInclude Include="src\pch.h" />
     <ClInclude Include="include\physics\collider.h" />
     <ClInclude Include="include\physics\rigidbody.h" />
     <ClInclude Include="include\static_mesh.h" />

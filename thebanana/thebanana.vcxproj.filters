@@ -175,9 +175,6 @@
     <ClInclude Include="include\mouse.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\pch.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\scene.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -277,9 +274,6 @@
     <ClInclude Include="include\static_mesh.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\internal_only_includelist.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\application_layer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -302,6 +296,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\script_registry.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\internal_only_includelist.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\pch.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -6,7 +6,4 @@ public:
 	virtual void render() override;
 	glm::vec3 get_direction();
 	glm::vec2 get_angle();
-private:
-	glm::vec3 m_direction;
-	glm::vec2 m_angle;
 };

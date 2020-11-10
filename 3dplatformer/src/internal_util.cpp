@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "internal_util.h"
+#include "component.h"
 #include <stb_image.h>
 unsigned char* load_image_from_file(const std::string& path, int& width, int& height, int& channels, bool flip) {
 	stbi_set_flip_vertically_on_load(flip);
@@ -16,3 +17,7 @@ unsigned long long generate_uuid() {
 	}
 	return uuid;
 }
+// so the linker doesnt freak out
+thebanana::component::property<double> p1(0.0, "");
+thebanana::component::property<glm::vec2> p2(glm::vec2(), "");
+thebanana::component::property<glm::vec3> p3(glm::vec3(), "");

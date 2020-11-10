@@ -1,5 +1,5 @@
 # The Banana
-This is a 3D game engine I'm making. (the repository is named "3dplatformer" because I didnt initially have a name for the engine) Many aspects of this engine are inspired by The Cherno's [Hazel](https://github.com/TheCherno/Hazel). It currently supports the following platforms:
+This is a 3D game engine I'm making. Many aspects of this engine are inspired by The Cherno's [Hazel](https://github.com/TheCherno/Hazel). It currently supports the following platforms:
 - Windows
 
 ## TO IMPLEMENT

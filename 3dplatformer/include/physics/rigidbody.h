@@ -14,6 +14,7 @@ namespace thebanana {
 		virtual void clean_up() override;
 		template<typename _Ty> _Ty& set_collider_type();
 		rigidbody& set_check_for_collisions(bool check);
+		bool is_checking_for_collisions();
 		gameobject* get_parent();
 		model_registry::model_vertex_data get_vertex_data();
 		glm::vec3& get_shift_delta();

@@ -115,6 +115,8 @@ namespace thebanana {
 			out << YAML::Key << "gravity multiplier" << YAML::Value << *(rb.get_property<float>("gravity multiplier"));
 			out << YAML::Key << "mass" << YAML::Value << *(rb.get_property<float>("mass"));
 			out << YAML::Key << "drag" << YAML::Value << *(rb.get_property<float>("drag"));
+			out << YAML::Key << "collision_model_name" << YAML::Value << rb.get_collision_model_name();
+			out << YAML::Key << "check_for_collisions" << YAML::Value << rb.is_checking_for_collisions();
 			collider* c = rb.get_collider();
 			if (c) serialize_collider(out, c);
 			out << YAML::EndMap;
@@ -208,13 +210,17 @@ namespace thebanana {
 				ac.set_uuid(uuid);
 			} else if (type == "rigidbody") {
 				rigidbody& rb = object->add_component<rigidbody>();
+				rb.initialize();
 				rb.set_uuid(uuid);
 				assert(n["gravity"]);
 				rb.set_property<bool>("gravity", n["gravity"].as<bool>());
 				rb.set_property<float>("gravity multiplier", n["gravity multiplier"].as<float>());
 				rb.set_property<float>("mass", n["mass"].as<float>());
 				rb.set_property<float>("drag", n["drag"].as<float>());
-				if (n["collider"]) deserialize_collider(n["collider"], rb);
+				rb.set_collision_model_name(n["collision_model_name"].as<std::string>());
+				rb.set_check_for_collisions(n["check_for_collisions"].as<bool>());
+				if (n["collider"])
+					deserialize_collider(n["collider"], rb);
 			}
 			else if (type == "native_script_component") {
 				native_script_component& nsc = object->add_component<native_script_component>();
@@ -222,6 +228,7 @@ namespace thebanana {
 				assert(n["script"]);
 				std::string script_name = n["script"].as<std::string>();
 				nsc.bind(s->get_game()->get_script_registry()->create_script(script_name, object, &nsc));
+				nsc.set_property("script", script_name);
 				assert(n["script_properties"]);
 				for (auto p : n["script_properties"]) {
 					enum class property_type {

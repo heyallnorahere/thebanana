@@ -7,6 +7,7 @@
 #include "keyboard.h"
 #include "debug_tools.h"
 #include "shader_registry.h"
+#include "physics/rigidbody.h"
 namespace thebanana {
 	scene::scene(game* g) {
 		this->m_shader = NULL;
@@ -14,6 +15,8 @@ namespace thebanana {
 	}
 	void scene::clear() {
 		this->m_children.clear();
+		std::vector<rigidbody*>& rbs = (std::vector<rigidbody*>&)rigidbody::get_rigidbodies();
+		rbs.clear();
 	}
 	void scene::update() {
 #ifdef _DEBUG

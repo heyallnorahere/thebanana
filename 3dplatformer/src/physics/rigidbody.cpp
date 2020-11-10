@@ -84,6 +84,9 @@ namespace thebanana {
 		this->check_for_collisions = check;
 		return *this;
 	}
+	bool rigidbody::is_checking_for_collisions() {
+		return this->check_for_collisions;
+	}
 	gameobject* rigidbody::get_parent() {
 		return this->parent;
 	}

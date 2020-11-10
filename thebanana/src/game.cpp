@@ -52,18 +52,12 @@ namespace thebanana {
 		this->m_menu_quad = graphics::quad::create(2.f, 2.f, this->m_menu_manager->get_texture(), true);
 		this->m_sound_manager = new sound::sound_manager(this);
 		this->m_show_cursor = false;
-#ifdef _DEBUG
-		debug::init_imgui(this->m_window);
-#else
-		this->init_steam();
-#endif
+		this->m_debug_menus_initialized = false;
+		this->m_steam_initialized = false;
 	}
 	game::~game() {
-#ifndef _DEBUG
-		this->shutdown_steam();
-#else
-		debug::clean_up_imgui();
-#endif
+		if (this->m_steam_initialized) this->shutdown_steam();
+		if (this->m_debug_menus_initialized) debug::clean_up_imgui();
 		delete this->m_sound_manager;
 		delete this->m_menu_quad;
 		delete this->m_menu_manager;
@@ -185,11 +179,8 @@ namespace thebanana {
 		this->m_show_cursor = !this->m_show_cursor;
 	}
 	std::string game::get_steam_name() {
-#ifdef _DEBUG
-		return "test player";
-#else
-		return std::string(SteamFriends()->GetPersonaName());
-#endif
+		if (this->m_steam_initialized) return std::string(SteamFriends()->GetPersonaName());
+		else return "test player";
 	}
 	shader_registry* game::get_shader_registry() {
 		return this->m_shader_registry;
@@ -197,8 +188,13 @@ namespace thebanana {
 	script_registry* game::get_script_registry() {
 		return this->m_script_registry;
 	}
+	void game::init_debug_menus() {
+		debug::init_imgui(this->m_window);
+		this->m_debug_menus_initialized = true;
+	}
 	void game::init_steam() {
 		SteamAPI_Init();
+		this->m_steam_initialized = true;
 	}
 	void game::shutdown_steam() {
 		SteamAPI_Shutdown();

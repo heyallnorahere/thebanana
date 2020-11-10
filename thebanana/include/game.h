@@ -42,8 +42,9 @@ namespace thebanana {
 		std::string get_steam_name();
 		shader_registry* get_shader_registry();
 		script_registry* get_script_registry();
-	private:
+		void init_debug_menus();
 		void init_steam();
+	private:
 		void shutdown_steam();
 		unsigned int m_frame;
 		HWND m_window;
@@ -60,6 +61,8 @@ namespace thebanana {
 		float m_aspect_ratio;
 		std::vector<model_registry::model_descriptor> m_descriptors;
 		bool m_show_cursor;
+		bool m_debug_menus_initialized;
+		bool m_steam_initialized;
 	};
 	extern game* g_game;
 }

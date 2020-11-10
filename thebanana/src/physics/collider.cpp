@@ -79,7 +79,7 @@ namespace thebanana {
 			glm::vec3 v1 = model_transform * object_transform * glm::vec4(positions[indices[i][1]], 1.f);
 			glm::vec3 v2 = model_transform * object_transform * glm::vec4(positions[indices[i][2]], 1.f);
 			glm::vec3 normal = glm::normalize(glm::mat3(glm::transpose(glm::inverse(object_transform))) * glm::mat3(glm::transpose(glm::inverse(model_transform))) * normals[indices[i].x]);
-			if (fabs(normal.y) > 0.1f) continue;
+			//if (fabs(normal.y) > 0.1f) continue;
 			float d = glm::dot(-((v0 + v1 + v2) / 3.f), normal);
 			float ppd = glm::dot(normal, origin) + d;
 			if (fabs(ppd) > trans_radius) {

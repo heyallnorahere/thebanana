@@ -25,6 +25,10 @@ void thebanana_test_application_layer::register_scripts() {
 	thebanana::g_game->get_script_registry()->register_script<camera_behavior>();
 }
 void thebanana_test_application_layer::init() {
+#ifdef _DEBUG
+	// initialize imgui debug menus
+	thebanana::g_game->init_debug_menus();
+#endif
 	// load shaders
 	thebanana::g_game->get_shader_registry()->register_shader("basic", new opengl_shader_library::win32_resource_shader(IDR_BASIC_VERTEX, IDR_BASIC_FRAGMENT));
 	thebanana::g_game->get_shader_registry()->register_shader("2d", new opengl_shader_library::win32_resource_shader(IDR_2D_VERTEX, IDR_2D_FRAGMENT));

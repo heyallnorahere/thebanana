@@ -91,6 +91,7 @@
     <ClCompile Include="src\panels\property_editor_panel.cpp" />
     <ClCompile Include="src\panels\scene_hierarchy_panel.cpp" />
     <ClCompile Include="src\panels\viewport_panel.cpp" />
+    <ClCompile Include="src\util.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h" />
@@ -101,6 +102,7 @@
     <ClInclude Include="src\panels\property_editor_panel.h" />
     <ClInclude Include="src\panels\scene_hierarchy_panel.h" />
     <ClInclude Include="src\panels\viewport_panel.h" />
+    <ClInclude Include="src\util.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Resource.rc" />
@@ -109,6 +111,10 @@
     <None Include="..\sandbox\shaders\basic\fragment.shader" />
     <None Include="..\sandbox\shaders\basic\vertex.shader" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="fonts\OpenSans-Bold.ttf" />
+    <Font Include="fonts\OpenSans-Regular.ttf" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -39,6 +39,9 @@
     <ClCompile Include="src\panels\property_editor_panel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\util.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h">
@@ -65,6 +68,9 @@
     <ClInclude Include="src\panels\property_editor_panel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\util.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Resource.rc">
@@ -75,5 +81,9 @@
     <None Include="..\sandbox\shaders\basic\vertex.shader" />
     <None Include="..\sandbox\shaders\basic\fragment.shader" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="fonts\OpenSans-Regular.ttf" />
+    <Font Include="fonts\OpenSans-Bold.ttf" />
   </ItemGroup>
 </Project>

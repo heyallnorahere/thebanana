@@ -15,6 +15,7 @@ namespace bananatree {
 		void begin();
 		void end();
 		void start_dockspace();
+		void set_theme();
 		std::vector<std::unique_ptr<panel>> m_panels;
 	};
 	template<typename T> inline T* imgui_layer::add_panel() {

@@ -8,6 +8,8 @@
 #include "panels/log_panel.h"
 #include "panels/scene_hierarchy_panel.h"
 #include "panels/property_editor_panel.h"
+#include "util.h"
+#include "../resource.h"
 namespace bananatree {
 	imgui_layer::imgui_layer() {
 		IMGUI_CHECKVERSION();
@@ -16,12 +18,15 @@ namespace bananatree {
 		io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
 		io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
 		io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
+		io.Fonts->AddFontFromFileTTF("fonts/OpenSans-Bold.ttf", 18.f);
+		io.FontDefault = io.Fonts->AddFontFromFileTTF("fonts/OpenSans-Regular.ttf", 18.f);
 		ImGui::StyleColorsDark();
 		ImGuiStyle& style = ImGui::GetStyle();
 		if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable) {
 			style.WindowRounding = 0.0f;
 			style.Colors[ImGuiCol_WindowBg].w = 1.0f;
 		}
+		this->set_theme();
 		ImGui_ImplWin32_Init(thebanana::g_game->get_window(), wglGetCurrentContext());
 		ImGui_ImplOpenGL3_Init("#version 460");
 		this->add_panel<viewport_panel>();
@@ -138,5 +143,27 @@ namespace bananatree {
 			}
 			ImGui::EndMenuBar();
 		}
+	}
+	//https://github.com/TheCherno/Hazel/blob/master/Hazel/src/Hazel/ImGui/ImGuiLayer.cpp
+	void imgui_layer::set_theme() {
+		auto& colors = ImGui::GetStyle().Colors;
+		colors[ImGuiCol_WindowBg] = ImVec4(0.1f, 0.105f, 0.11f, 1.f);
+		colors[ImGuiCol_Header] = ImVec4(0.2f, 0.205f, 0.21f, 1.f);
+		colors[ImGuiCol_HeaderHovered] = ImVec4(0.3f, 0.305f, 0.31f, 1.f);
+		colors[ImGuiCol_HeaderActive] = ImVec4(0.15f, 0.1505f, 0.151f, 1.f);
+		colors[ImGuiCol_Button] = ImVec4(0.2f, 0.205f, 0.21f, 1.f);
+		colors[ImGuiCol_ButtonHovered] = ImVec4(0.3f, 0.305f, 0.31f, 1.f);
+		colors[ImGuiCol_ButtonActive] = ImVec4(0.15f, 0.1505f, 0.151f, 1.f);
+		colors[ImGuiCol_FrameBg] = ImVec4(0.2f, 0.205f, 0.21f, 1.f);
+		colors[ImGuiCol_FrameBgHovered] = ImVec4(0.3f, 0.305f, 0.31f, 1.f);
+		colors[ImGuiCol_FrameBgActive] = ImVec4(0.15f, 0.1505f, 0.151f, 1.f);
+		colors[ImGuiCol_Tab] = ImVec4(0.15f, 0.1505f, 0.151f, 1.f);
+		colors[ImGuiCol_TabHovered] = ImVec4(0.38f, 0.3805f, 0.381f, 1.f);
+		colors[ImGuiCol_TabActive] = ImVec4(0.28f, 0.2805f, 0.281f, 1.f);
+		colors[ImGuiCol_TabUnfocused] = ImVec4(0.15f, 0.1505f, 0.151f, 1.f);
+		colors[ImGuiCol_TabUnfocusedActive] = ImVec4(0.2f, 0.205f, 0.21f, 1.f);
+		colors[ImGuiCol_TitleBg] = ImVec4(0.15f, 0.1505f, 0.151f, 1.f);
+		colors[ImGuiCol_TitleBgActive] = ImVec4(0.15f, 0.1505f, 0.151f, 1.f);
+		colors[ImGuiCol_TitleBgCollapsed] = ImVec4(0.15f, 0.1505f, 0.151f, 1.f);
 	}
 }

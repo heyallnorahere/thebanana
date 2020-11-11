@@ -6,10 +6,10 @@
 namespace thebanana {
 	const float drag = 0.05f;
 	rigidbody::rigidbody(gameobject* obj) : component(obj) {
-		this->add_property(new property<bool>(false, "gravity"));
-		this->add_property(new property<float>(1.f, "gravity multiplier"));
-		this->add_property(new property<float>(1.f, "mass"));
-		this->add_property(new property<float>(drag, "drag"));
+		this->add_property(new property<bool>(false, "Gravity"));
+		this->add_property(new property<float>(1.f, "Gravity multiplier"));
+		this->add_property(new property<float>(1.f, "Mass"));
+		this->add_property(new property<float>(drag, "Drag"));
 		this->coll = NULL;
 		this->last_frame_model_name = "";
 		this->check_for_collisions = false;
@@ -28,9 +28,9 @@ namespace thebanana {
 		}
 	}
 	void rigidbody::post_update() {
-		property<bool>* _gravity = this->find_property<bool>("gravity");
-		property<float>* _multiplier = this->find_property<float>("gravity multiplier");
-		property<float>* _mass = this->find_property<float>("mass");
+		property<bool>* _gravity = this->find_property<bool>("Gravity");
+		property<float>* _multiplier = this->find_property<float>("Gravity multiplier");
+		property<float>* _mass = this->find_property<float>("Mass");
 		if (_gravity && _multiplier && _mass) {
 			float multiplier = *_multiplier->get_value();
 			if (*_gravity->get_value()) {
@@ -43,7 +43,7 @@ namespace thebanana {
 		}
 		this->parent->get_transform().move(this->velocity);
 		this->last_velocity_length = glm::length(this->velocity);
-		property<float>* _drag = this->find_property<float>("drag");
+		property<float>* _drag = this->find_property<float>("Drag");
 		this->velocity *= 1.f - (_drag ? *_drag->get_value() : drag);
 		this->acceleration = glm::vec3(0.f);
 		this->num_collisions = 0;
@@ -100,7 +100,7 @@ namespace thebanana {
 		return this->num_collisions;
 	}
 	void rigidbody::apply_force(const glm::vec3& force) {
-		property<float>* _mass = this->find_property<float>("mass");
+		property<float>* _mass = this->find_property<float>("Mass");
 		float mass = _mass ? *_mass->get_value() : 1.f;
 		this->acceleration += force / mass;
 	}

@@ -3,6 +3,7 @@
 namespace bananatree {
 	class scene_hierarchy_panel : public panel {
 	public:
+		scene_hierarchy_panel();
 		virtual void render() override;
 		virtual std::string get_menu_text() override;
 		thebanana::gameobject* get_selected_object();

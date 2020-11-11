@@ -96,7 +96,7 @@ namespace thebanana {
 			out << YAML::BeginMap;
 			out << YAML::Key << "type" << YAML::Value << "mesh_component";
 			out << YAML::Key << "uuid" << YAML::Value << c.get_uuid();
-			out << YAML::Key << "mesh name" << YAML::Value << *(c.get_property<std::string>("mesh name"));
+			out << YAML::Key << "mesh name" << YAML::Value << *(c.get_property<std::string>("Mesh name"));
 			out << YAML::EndMap;
 		}
 		for (size_t i = 0; i < object->get_number_components<animation_component>(); i++) {
@@ -111,10 +111,10 @@ namespace thebanana {
 			out << YAML::BeginMap;
 			out << YAML::Key << "type" << YAML::Value << "rigidbody";
 			out << YAML::Key << "uuid" << YAML::Value << rb.get_uuid();
-			out << YAML::Key << "gravity" << YAML::Value << *(rb.get_property<bool>("gravity"));
-			out << YAML::Key << "gravity multiplier" << YAML::Value << *(rb.get_property<float>("gravity multiplier"));
-			out << YAML::Key << "mass" << YAML::Value << *(rb.get_property<float>("mass"));
-			out << YAML::Key << "drag" << YAML::Value << *(rb.get_property<float>("drag"));
+			out << YAML::Key << "gravity" << YAML::Value << *(rb.get_property<bool>("Gravity"));
+			out << YAML::Key << "gravity multiplier" << YAML::Value << *(rb.get_property<float>("Gravity multiplier"));
+			out << YAML::Key << "mass" << YAML::Value << *(rb.get_property<float>("Mass"));
+			out << YAML::Key << "drag" << YAML::Value << *(rb.get_property<float>("Drag"));
 			out << YAML::Key << "collision_model_name" << YAML::Value << rb.get_collision_model_name();
 			out << YAML::Key << "check_for_collisions" << YAML::Value << rb.is_checking_for_collisions();
 			collider* c = rb.get_collider();
@@ -126,7 +126,7 @@ namespace thebanana {
 			out << YAML::BeginMap;
 			out << YAML::Key << "type" << YAML::Value << "native_script_component";
 			out << YAML::Key << "uuid" << YAML::Value << nsc.get_uuid();
-			out << YAML::Key << "script" << YAML::Value << nsc.get_property<component::property_base::read_only_text>("script")->get_text();
+			out << YAML::Key << "script" << YAML::Value << nsc.get_property<component::property_base::read_only_text>("Script")->get_text();
 			out << YAML::Key << "script_properties" << YAML::BeginSeq;
 			for (size_t i = 1; i < nsc.get_properties().size(); i++) {
 				auto& prop = nsc.get_properties()[i];
@@ -204,7 +204,7 @@ namespace thebanana {
 				mesh_component& mc = object->add_component<mesh_component>();
 				mc.set_uuid(uuid);
 				assert(n["mesh name"]);
-				mc.set_property<std::string>("mesh name", n["mesh name"].as<std::string>());
+				mc.set_property<std::string>("Mesh name", n["mesh name"].as<std::string>());
 			} else if (type == "animation_component") {
 				animation_component& ac = object->add_component<animation_component>();
 				ac.set_uuid(uuid);
@@ -213,10 +213,10 @@ namespace thebanana {
 				rb.initialize();
 				rb.set_uuid(uuid);
 				assert(n["gravity"]);
-				rb.set_property<bool>("gravity", n["gravity"].as<bool>());
-				rb.set_property<float>("gravity multiplier", n["gravity multiplier"].as<float>());
-				rb.set_property<float>("mass", n["mass"].as<float>());
-				rb.set_property<float>("drag", n["drag"].as<float>());
+				rb.set_property<bool>("Gravity", n["gravity"].as<bool>());
+				rb.set_property<float>("Gravity multiplier", n["gravity multiplier"].as<float>());
+				rb.set_property<float>("Mass", n["mass"].as<float>());
+				rb.set_property<float>("Drag", n["drag"].as<float>());
 				rb.set_collision_model_name(n["collision_model_name"].as<std::string>());
 				rb.set_check_for_collisions(n["check_for_collisions"].as<bool>());
 				if (n["collider"])
@@ -228,7 +228,7 @@ namespace thebanana {
 				assert(n["script"]);
 				std::string script_name = n["script"].as<std::string>();
 				nsc.bind(s->get_game()->get_script_registry()->create_script(script_name, object, &nsc));
-				nsc.set_property("script", script_name);
+				nsc.set_property("Script", script_name);
 				assert(n["script_properties"]);
 				for (auto p : n["script_properties"]) {
 					enum class property_type {

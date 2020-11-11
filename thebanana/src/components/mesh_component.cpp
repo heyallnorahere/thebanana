@@ -7,18 +7,18 @@
 namespace thebanana {
 	mesh_component::mesh_component(gameobject* obj) : component(obj) {
 		this->model_name = "none";
-		this->add_property(new property<std::string>(this->model_name, "mesh name"));
+		this->add_property(new property<std::string>(this->model_name, "Mesh name"));
 	}
 	mesh_component& mesh_component::set_mesh_name(const std::string& name) {
 		this->model_name = name;
-		this->set_property<std::string>("mesh name", name);
+		this->set_property<std::string>("Mesh name", name);
 		return *this;
 	}
 	std::string mesh_component::get_mesh_name() const {
 		return this->model_name;
 	}
 	void mesh_component::pre_render() {
-		property<std::string>* mn = this->find_property<std::string>("mesh name");
+		property<std::string>* mn = this->find_property<std::string>("Mesh name");
 		if (mn) {
 			if (this->model_name != *mn->get_value()) {
 				this->model_name = *mn->get_value();

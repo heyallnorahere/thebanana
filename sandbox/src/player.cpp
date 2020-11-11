@@ -13,7 +13,7 @@ void player_behavior::initialize() {
 	this->add_component<thebanana::animation_component>();
 	this->add_component<thebanana::mesh_component>().set_mesh_name("player");
 	this->add_component<thebanana::rigidbody>().set_check_for_collisions(true).set_speed_cap(0.5f).set_collider_type<thebanana::mlfarrel_model>().set_radius(0.4f).set_origin_offset(glm::vec3(0.f, 0.6f, 0.f));
-	this->get_component<thebanana::rigidbody>().set_property("mass", 2.5f);
+	this->get_component<thebanana::rigidbody>().set_property("Mass", 2.5f);
 	this->parent->add_tag("player");
 	this->parent->get_nickname() = "player";
 }

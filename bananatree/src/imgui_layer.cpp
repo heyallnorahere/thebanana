@@ -5,8 +5,9 @@
 #include <backends/imgui_impl_opengl3.h>
 #include <misc/cpp/imgui_stdlib.h>
 #include "panels/viewport_panel.h"
-#include "panels/scene_hierarchy_panel.h"
 #include "panels/log_panel.h"
+#include "panels/scene_hierarchy_panel.h"
+#include "panels/property_editor_panel.h"
 namespace bananatree {
 	imgui_layer::imgui_layer() {
 		IMGUI_CHECKVERSION();
@@ -24,8 +25,8 @@ namespace bananatree {
 		ImGui_ImplWin32_Init(thebanana::g_game->get_window(), wglGetCurrentContext());
 		ImGui_ImplOpenGL3_Init("#version 460");
 		this->add_panel<viewport_panel>();
-		this->add_panel<scene_hierarchy_panel>();
 		this->add_panel<log_panel>();
+		this->add_panel<property_editor_panel>()->set_hierarchy(this->add_panel<scene_hierarchy_panel>());
 	}
 	imgui_layer::~imgui_layer() {
 		ImGui_ImplOpenGL3_Shutdown();

@@ -24,7 +24,7 @@ namespace thebanana {
 	native_script_component::native_script_component(gameobject* object) : component(object) {
 		this->m_destroy_script = NULL;
 		this->m_script = NULL;
-		this->add_property(new property<property_base::read_only_text>(property_base::read_only_text("none"), "script"));
+		this->add_property(new property<property_base::read_only_text>(property_base::read_only_text("none"), "Script"));
 	}
 	void native_script_component::pre_update() {
 		if (this->m_script) this->m_script->pre_update();

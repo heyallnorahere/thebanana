@@ -88,6 +88,7 @@
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\panels\log_panel.cpp" />
     <ClCompile Include="src\panels\panel.cpp" />
+    <ClCompile Include="src\panels\property_editor_panel.cpp" />
     <ClCompile Include="src\panels\scene_hierarchy_panel.cpp" />
     <ClCompile Include="src\panels\viewport_panel.cpp" />
   </ItemGroup>
@@ -97,6 +98,7 @@
     <ClInclude Include="src\imgui_layer.h" />
     <ClInclude Include="src\panels\log_panel.h" />
     <ClInclude Include="src\panels\panel.h" />
+    <ClInclude Include="src\panels\property_editor_panel.h" />
     <ClInclude Include="src\panels\scene_hierarchy_panel.h" />
     <ClInclude Include="src\panels\viewport_panel.h" />
   </ItemGroup>

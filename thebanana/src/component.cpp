@@ -54,27 +54,16 @@ namespace thebanana {
 		return this->selection_window_open;
 	}
 	debug_component::debug_component(gameobject* obj) : component(obj), flash_start_time(0.0), flash_end_time(0.0) {
-		this->add_property(new property<double>(2.0, "flash rate"));
-		this->add_property(new property<double>(0.1, "flash length"));
-		this->add_property(new property<gameobject*>(NULL, "test pointer"));
+		this->add_property(new property<double>(2.0, "Flash rate"));
+		this->add_property(new property<double>(0.1, "Flash length"));
 	}
 	namespace debug {
 		extern gameobject* current_selected_gameobject;
 	}
 	void debug_component::pre_render() {
-		property<gameobject*>* _test_ptr = this->find_property<gameobject*>("test pointer");
-		gameobject* test_ptr = NULL;
-		if (_test_ptr) {
-			if (_test_ptr->get_value()) {
-				test_ptr = *_test_ptr->get_value();
-			}
-		}
-		if (test_ptr) {
-			test_ptr->get_transform().move(glm::vec3(0.f, 0.001f, 0.f));
-		}
 		this->parent->get_scene()->get_shader()->get_uniforms().vec3("fill_color", glm::vec3(1.f, 0.5f, 0.f));
-		property<double>* flash_rate = this->find_property<double>("flash rate");
-		property<double>* fl = this->find_property<double>("flash length");
+		property<double>* flash_rate = this->find_property<double>("Flash rate");
+		property<double>* fl = this->find_property<double>("Flash length");
 		double time = CURRENT_TIME(double);
 		double delay_length = flash_rate ? 1.0 / *flash_rate->get_value() : 0.5;
 		double flash_length = fl ? *fl->get_value() : 0.1;

@@ -17,6 +17,9 @@ namespace bananatree {
 		sprintf(id_str, "node%d", id++);
 		return id_str;
 	}
+	scene_hierarchy_panel::scene_hierarchy_panel() {
+		this->m_selected_object = NULL;
+	}
 	void scene_hierarchy_panel::render() {
 		id = 0xff;
 		ImGui::Begin("Scene Hierarchy", &this->m_open);

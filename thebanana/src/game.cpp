@@ -13,9 +13,7 @@
 #include "shader_registry.h"
 #include "script_registry.h"
 #include "util.h"
-#ifdef _DEBUG
 extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
-#endif
 namespace thebanana {
 	game* g_game = NULL;
 	game::game(const std::string& title) {
@@ -105,10 +103,8 @@ namespace thebanana {
 		return this->m_menu_manager;
 	}
 	long long __stdcall game::wndproc(HWND window, unsigned int msg, unsigned long long w_param, long long l_param) {
-#ifdef _DEBUG
-		if (ImGui_ImplWin32_WndProcHandler(window, msg, w_param, l_param))
+		if (g_game) if (g_game->m_debug_menus_initialized) if (ImGui_ImplWin32_WndProcHandler(window, msg, w_param, l_param))
 			return true;
-#endif
 		switch (msg) {
 		case WM_CREATE:
 			break;

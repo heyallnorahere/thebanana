@@ -32,8 +32,8 @@ int __stdcall WinMain(HINSTANCE instance, HINSTANCE prev, char* cmd_line, int cm
 		app_layer->gameloop();
 	}
 	app_layer->clean_up();
-	delete ::thebanana::g_game;
 	delete app_layer;
+	delete ::thebanana::g_game;
 	return static_cast<int>(msg.wParam);
 }
 #endif//BANANA_MAIN

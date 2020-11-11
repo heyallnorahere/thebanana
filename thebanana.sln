@@ -28,6 +28,7 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "bananatree", "bananatree\bananatree.vcxproj", "{F2F9A9E7-8488-415A-BF56-9A7EF37E4664}"
 	ProjectSection(ProjectDependencies) = postProject
 		{3FECBE35-6E24-468C-A08C-6C442A9CD08E} = {3FECBE35-6E24-468C-A08C-6C442A9CD08E}
+		{B361CAFF-89A0-43C7-8D3F-F79565ED12CF} = {B361CAFF-89A0-43C7-8D3F-F79565ED12CF}
 	EndProjectSection
 EndProject
 Global

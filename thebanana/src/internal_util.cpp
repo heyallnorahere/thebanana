@@ -18,6 +18,12 @@ unsigned long long generate_uuid() {
 	return uuid;
 }
 // so the linker doesnt freak out
-thebanana::component::property<double> p1(0.0, "");
-thebanana::component::property<glm::vec2> p2(glm::vec2(), "");
-thebanana::component::property<glm::vec3> p3(glm::vec3(), "");
+thebanana::component::property<int> p1(0, "");
+thebanana::component::property<bool> p2(false, "");
+thebanana::component::property<float> p3(0.f, "");
+thebanana::component::property<double> p4(0.0, "");
+thebanana::component::property<glm::vec2> p5(glm::vec2(), "");
+thebanana::component::property<glm::vec3> p6(glm::vec3(), "");
+thebanana::component::property<glm::vec4> p7(glm::vec4(), "");
+thebanana::component::property<thebanana::component::property_base::read_only_text> p8(thebanana::component::property_base::read_only_text(""), "");
+thebanana::component::property<thebanana::component::property_base::dropdown> p9(thebanana::component::property_base::dropdown(std::vector<std::string>()), "");

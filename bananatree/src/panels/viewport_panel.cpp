@@ -19,7 +19,7 @@ namespace bananatree {
 		auto att = this->m_framebuffer->get_attachments();
 		void* texture = att[this->m_framebuffer->get_attachment_map().color_index].value;
 		ImGui::Begin("Viewport", &this->m_open);
-		ImGui::Image(texture, ImVec2(ImGui::GetWindowWidth(), ImGui::GetWindowHeight()), ImVec2(0.f, 1.f), ImVec2(1.f, 0.f));
+		ImGui::Image(texture, ImGui::GetWindowSize(), ImVec2(0.f, 1.f), ImVec2(1.f, 0.f));
 		ImGui::End();
 	}
 	std::string viewport_panel::get_menu_text() {

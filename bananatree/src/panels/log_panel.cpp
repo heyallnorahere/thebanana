@@ -13,7 +13,7 @@ namespace bananatree {
 	void log_panel::render() {
 		ImGui::Begin("Log", &this->m_open);
 		std::string log = thebanana::debug::debug_log.str();
-		ImGui::InputTextMultiline("Log Text", &log, ImVec2(ImGui::GetWindowWidth(), ImGui::GetWindowHeight()), ImGuiInputTextFlags_ReadOnly);
+		ImGui::InputTextMultiline("Log Text", &log, ImGui::GetWindowSize(), ImGuiInputTextFlags_ReadOnly);
 		ImGui::BeginChild("Log Text");
 		ImGui::SetScrollY(ImGui::GetScrollMaxY());
 		ImGui::EndChild();

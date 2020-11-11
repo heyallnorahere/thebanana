@@ -13,6 +13,7 @@ namespace bananatree {
 	private:
 		void begin();
 		void end();
+		void start_dockspace();
 		std::vector<std::unique_ptr<panel>> m_panels;
 	};
 }

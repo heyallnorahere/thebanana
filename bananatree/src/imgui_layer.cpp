@@ -33,9 +33,11 @@ namespace bananatree {
 	}
 	void imgui_layer::render() {
 		this->begin();
+		this->start_dockspace();
 		for (auto& p : this->m_panels) {
 			p->render();
 		}
+		ImGui::End();
 		this->end();
 	}
 	void imgui_layer::add_panel(panel* p) {
@@ -66,6 +68,55 @@ namespace bananatree {
 			ImGui::UpdatePlatformWindows();
 			ImGui::RenderPlatformWindowsDefault();
 			thebanana::g_game->make_context_current();
+		}
+	}
+	void imgui_layer::start_dockspace() {
+		static bool dockspace_open = true;
+		static bool opt_fullscreen_persistant = true;
+		bool opt_fullscreen = opt_fullscreen_persistant;
+		static ImGuiDockNodeFlags dockspace_flags = ImGuiDockNodeFlags_None;
+		ImGuiWindowFlags window_flags = ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoDocking;
+		if (opt_fullscreen) {
+			ImGuiViewport* viewport = ImGui::GetMainViewport();
+			ImGui::SetNextWindowPos(viewport->Pos);
+			ImGui::SetNextWindowSize(viewport->Size);
+			ImGui::SetNextWindowViewport(viewport->ID);
+			ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 0.f);
+			ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.f);
+			window_flags |= ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove;
+			window_flags |= ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNavFocus;
+		}
+		if (dockspace_flags & ImGuiDockNodeFlags_PassthruCentralNode) {
+			window_flags |= ImGuiWindowFlags_NoBackground;
+		}
+		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.f, 0.f));
+		ImGui::Begin("banana tree editor", &dockspace_open, window_flags);
+		ImGui::PopStyleVar();
+		if (opt_fullscreen) ImGui::PopStyleVar(2);
+		ImGuiIO& io = ImGui::GetIO();
+		ImGuiStyle& style = ImGui::GetStyle();
+		float min_win_size_x = style.WindowMinSize.x;
+		style.WindowMinSize.x = 370.f;
+		if (io.ConfigFlags & ImGuiConfigFlags_DockingEnable) {
+			ImGuiID dockspace_id = ImGui::GetID("bananatreedockspace");
+			ImGui::DockSpace(dockspace_id, ImVec2(0.0f, 0.0f), dockspace_flags);
+		}
+		style.WindowMinSize.x = min_win_size_x;
+		if (ImGui::BeginMenuBar()) {
+			if (ImGui::BeginMenu("File")) {
+				if (ImGui::MenuItem("New", "Ctrl+N")) thebanana::g_game->get_scene()->clear();
+				std::string scenefile = "../sandbox/scenes/test.basket";
+				if (ImGui::MenuItem("Open...", "Ctrl+O")) {
+					thebanana::scene_serializer serializer(thebanana::g_game->get_scene());
+					serializer.deserialize(scenefile);
+				}
+				if (ImGui::MenuItem("Save As...", "Ctrl+Shift+S")) {
+					thebanana::scene_serializer serializer(thebanana::g_game->get_scene());
+					serializer.serialize(scenefile);
+				}
+				ImGui::EndMenu();
+			}
+			ImGui::EndMenuBar();
 		}
 	}
 }

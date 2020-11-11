@@ -4,6 +4,7 @@
 #include <backends/imgui_impl_win32.h>
 #include <backends/imgui_impl_opengl3.h>
 #include <misc/cpp/imgui_stdlib.h>
+#include "panels/viewport_panel.h"
 namespace bananatree {
 	imgui_layer::imgui_layer() {
 		IMGUI_CHECKVERSION();
@@ -20,6 +21,7 @@ namespace bananatree {
 		}
 		ImGui_ImplWin32_Init(thebanana::g_game->get_window(), wglGetCurrentContext());
 		ImGui_ImplOpenGL3_Init("#version 460");
+		this->add_panel(new viewport_panel);
 	}
 	imgui_layer::~imgui_layer() {
 		ImGui_ImplOpenGL3_Shutdown();
@@ -35,7 +37,7 @@ namespace bananatree {
 		this->begin();
 		this->start_dockspace();
 		for (auto& p : this->m_panels) {
-			p->render();
+			if (p->is_open()) p->render();
 		}
 		ImGui::End();
 		this->end();
@@ -117,6 +119,12 @@ namespace bananatree {
 				ImGui::Separator();
 				if (ImGui::MenuItem("Quit", "Ctrl+Q")) {
 					thebanana::g_game->destroy();
+				}
+				ImGui::EndMenu();
+			}
+			if (ImGui::BeginMenu("View")) {
+				for (auto& p : this->m_panels) {
+					ImGui::MenuItem(p->get_menu_text().c_str(), NULL, &p->is_open());
 				}
 				ImGui::EndMenu();
 			}

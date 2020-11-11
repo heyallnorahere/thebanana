@@ -5,7 +5,6 @@
 namespace thebanana {
 	class scene;
 	class input_manager;
-	class framebuffer;
 	class gameobject;
 	class lua_interpreter;
 	class shader_registry;

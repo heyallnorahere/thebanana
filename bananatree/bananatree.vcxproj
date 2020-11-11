@@ -85,12 +85,14 @@
     <ClCompile Include="src\imgui_layer.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\panels\panel.cpp" />
+    <ClCompile Include="src\panels\viewport_panel.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h" />
     <ClInclude Include="src\editor_layer.h" />
     <ClInclude Include="src\imgui_layer.h" />
     <ClInclude Include="src\panels\panel.h" />
+    <ClInclude Include="src\panels\viewport_panel.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Resource.rc" />

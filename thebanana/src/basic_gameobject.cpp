@@ -2,7 +2,7 @@
 #include "basic_gameobject.h"
 namespace thebanana {
 	basic_gameobject::basic_gameobject() {
-		this->m_nickname = "null object";
+		this->m_nickname = "gameobject";
 	}
 	void basic_gameobject::update() {
 		this->prepare_for_update();

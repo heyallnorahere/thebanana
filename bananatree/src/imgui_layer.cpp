@@ -114,6 +114,16 @@ namespace bananatree {
 					thebanana::scene_serializer serializer(thebanana::g_game->get_scene());
 					serializer.serialize(scenefile);
 				}
+				ImGui::Separator();
+				if (ImGui::MenuItem("Quit", "Ctrl+Q")) {
+					thebanana::g_game->destroy();
+				}
+				ImGui::EndMenu();
+			}
+			if (ImGui::BeginMenu("Gameobject")) {
+				if (ImGui::MenuItem("Empty")) {
+					thebanana::g_game->get_scene()->add_object(new thebanana::basic_gameobject);
+				}
 				ImGui::EndMenu();
 			}
 			ImGui::EndMenuBar();

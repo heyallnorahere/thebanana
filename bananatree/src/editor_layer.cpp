@@ -10,10 +10,10 @@ namespace bananatree {
 		thebanana::g_game->get_scene()->set_shader_name("basic");
 	}
 	void editor_layer::gameloop() {
-		thebanana::g_game->update();
 		this->m_imgui_layer->update();
-		thebanana::g_game->render();
+		thebanana::g_game->clear_screen();
 		this->m_imgui_layer->render();
+		thebanana::g_game->swap_buffers();
 	}
 	std::string editor_layer::window_title() {
 		return "the banana tree";

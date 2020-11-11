@@ -7,6 +7,7 @@ namespace thebanana {
 	void application_layer::gameloop() {
 		g_game->update();
 		g_game->render();
+		g_game->swap_buffers();
 	}
 	void application_layer::clean_up() { }
 	std::string application_layer::window_title() {

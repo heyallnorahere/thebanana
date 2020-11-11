@@ -15,7 +15,7 @@ namespace thebanana {
 			ImGui::CreateContext();
 			ImGuiIO& io = ImGui::GetIO(); (void)io;
 			ImGui::StyleColorsDark();
-			ImGui_ImplWin32_Init(window);
+			ImGui_ImplWin32_Init(window, wglGetCurrentContext());
 			ImGui_ImplOpenGL3_Init("#version 460");
 		}
 		void clean_up_imgui() {

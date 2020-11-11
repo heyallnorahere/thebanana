@@ -9,8 +9,16 @@ namespace bananatree {
 		IMGUI_CHECKVERSION();
 		ImGui::CreateContext();
 		ImGuiIO& io = ImGui::GetIO(); (void)io;
+		io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
+		io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
+		io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
 		ImGui::StyleColorsDark();
-		ImGui_ImplWin32_Init(thebanana::g_game->get_window());
+		ImGuiStyle& style = ImGui::GetStyle();
+		if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable) {
+			style.WindowRounding = 0.0f;
+			style.Colors[ImGuiCol_WindowBg].w = 1.0f;
+		}
+		ImGui_ImplWin32_Init(thebanana::g_game->get_window(), wglGetCurrentContext());
 		ImGui_ImplOpenGL3_Init("#version 460");
 	}
 	imgui_layer::~imgui_layer() {
@@ -25,6 +33,9 @@ namespace bananatree {
 	}
 	void imgui_layer::render() {
 		this->begin();
+		for (auto& p : this->m_panels) {
+			p->render();
+		}
 		this->end();
 	}
 	void imgui_layer::add_panel(panel* p) {
@@ -43,7 +54,18 @@ namespace bananatree {
 		ImGui::NewFrame();
 	}
 	void imgui_layer::end() {
+		ImGuiIO& io = ImGui::GetIO();
+		RECT r;
+		GetWindowRect(thebanana::g_game->get_window(), &r);
+		float width = static_cast<float>(r.right - r.left);
+		float height = static_cast<float>(r.bottom - r.top);
+		io.DisplaySize = ImVec2(width, height);
 		ImGui::Render();
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+		if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable) {
+			ImGui::UpdatePlatformWindows();
+			ImGui::RenderPlatformWindowsDefault();
+			thebanana::g_game->make_context_current();
+		}
 	}
 }

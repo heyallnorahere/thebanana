@@ -48,6 +48,9 @@ namespace thebanana {
 		void clip_cursor();
 		void unclip_cursor();
 		void toggle_cursor_clip();
+		void make_context_current();
+		void swap_buffers();
+		void clear_screen();
 	private:
 		void shutdown_steam();
 		unsigned int m_frame;

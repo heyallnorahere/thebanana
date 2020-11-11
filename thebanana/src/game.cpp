@@ -82,13 +82,12 @@ namespace thebanana {
 	void game::render() {
 		this->m_menu_manager->draw();
 		glClearColor(0.1f, 0.1f, 0.1f, 1.f);
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		this->clear_screen();
 		this->m_scene->render();
 		if (this->m_menu_manager->menus_open()) {
 			this->m_menu_quad->render();
 		}
 		if (this->m_debug_menus_initialized) debug::render_imgui(this);
-		this->m_viewport->swap_buffers();
 	}
 	unsigned int game::get_current_frame() {
 		return this->m_frame;
@@ -103,7 +102,7 @@ namespace thebanana {
 		return this->m_menu_manager;
 	}
 	long long __stdcall game::wndproc(HWND window, unsigned int msg, unsigned long long w_param, long long l_param) {
-		if (g_game) if (g_game->m_debug_menus_initialized) if (ImGui_ImplWin32_WndProcHandler(window, msg, w_param, l_param))
+		if (ImGui_ImplWin32_WndProcHandler(window, msg, w_param, l_param))
 			return true;
 		switch (msg) {
 		case WM_CREATE:
@@ -194,6 +193,15 @@ namespace thebanana {
 	}
 	void game::toggle_cursor_clip() {
 		this->m_clip_cursor = !this->m_clip_cursor;
+	}
+	void game::make_context_current() {
+		opengl_viewport::use(this->m_viewport);
+	}
+	void game::swap_buffers() {
+		this->m_viewport->swap_buffers();
+	}
+	void game::clear_screen() {
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	}
 	void game::shutdown_steam() {
 		SteamAPI_Shutdown();

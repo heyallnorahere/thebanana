@@ -40,6 +40,7 @@ void my_game_application_layer::gameloop() {
 	// it's advised that you either dont define this or use the following lines of code:
 	thebanana::g_game->update();
 	thebanana::g_game->render();
+	thebanana::g_game->swap_buffers();
 }
 void my_game_application_layer::clean_up() {
 	// clean up your game (free resources and memory)

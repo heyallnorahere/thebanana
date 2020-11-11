@@ -78,6 +78,7 @@ void sandbox_application_layer::init() {
 void sandbox_application_layer::gameloop() {
 	thebanana::g_game->update();
 	thebanana::g_game->render();
+	thebanana::g_game->swap_buffers();
 #ifdef _DEBUG
 	if (thebanana::g_game->get_input_manager()->get_device_type(0) == thebanana::input_manager::device_type::keyboard) {
 		std::vector<thebanana::input_manager::device::button> btns = thebanana::g_game->get_input_manager()->get_device_buttons(0);

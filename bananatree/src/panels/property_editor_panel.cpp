@@ -6,8 +6,43 @@
 #include <misc/cpp/imgui_stdlib.h>
 #include "scene_hierarchy_panel.h"
 namespace bananatree {
-	static void transform_menu(bool* open) {
+	static void transform_menu(thebanana::gameobject* object, bool* open) {
+		if (!object) return;
 		ImGui::Begin("Transform menu", open);
+		if (ImGui::CollapsingHeader("Move")) {
+			static glm::vec3 m = glm::vec3(0.f);
+			ImGui::InputFloat3("Motion values", &m.x);
+			if (ImGui::Button("Apply")) {
+				object->get_transform().move(m);
+				m = glm::vec3(0.f);
+			}
+		}
+		if (ImGui::CollapsingHeader("Translate")) {
+			static glm::vec3 t = glm::vec3(0.f);
+			ImGui::InputFloat3("Translation values", &t.x);
+			if (ImGui::Button("Apply")) {
+				object->get_transform().translate(t);
+				t = glm::vec3(0.f);
+			}
+		}
+		if (ImGui::CollapsingHeader("Rotate")) {
+			static glm::vec3 r = glm::vec3(0.f);
+			ImGui::InputFloat3("Rotation values", &r.x);
+			if (ImGui::Button("Apply")) {
+				if (fabs(r.x) > 0.001) object->get_transform().rotate(r.x, glm::vec3(1.f, 0.f, 0.f));
+				if (fabs(r.y) > 0.001) object->get_transform().rotate(r.y, glm::vec3(0.f, 1.f, 0.f));
+				if (fabs(r.z) > 0.001) object->get_transform().rotate(r.z, glm::vec3(0.f, 0.f, 1.f));
+				r = glm::vec3(0.f);
+			}
+		}
+		if (ImGui::CollapsingHeader("Scale")) {
+			static glm::vec3 s = glm::vec3(1.f);
+			ImGui::InputFloat3("Dilation values", &s.x);
+			if (ImGui::Button("Apply")) {
+				object->get_transform().scale(s);
+				s = glm::vec3(1.f);
+			}
+		}
 		ImGui::End();
 	}
 	property_editor_panel::property_editor_panel() {
@@ -16,10 +51,10 @@ namespace bananatree {
 		this->m_hierarchy = NULL;
 	}
 	void property_editor_panel::render() {
-		if (this->m_show_transform_menu) transform_menu(&this->m_show_transform_menu);
+		thebanana::gameobject* object = this->m_hierarchy->get_selected_object();
+		if (this->m_show_transform_menu) transform_menu(object, &this->m_show_transform_menu);
 		ImGui::Begin("Property Editor", &this->m_open);
 		assert(this->m_hierarchy);
-		thebanana::gameobject* object = this->m_hierarchy->get_selected_object();
 		if (object) {
 			ImGui::InputText("Gameobject Nickname", &object->get_nickname());
 			char buf[256];
@@ -40,7 +75,11 @@ namespace bananatree {
 				assert(label);
 				if (ImGui::CollapsingHeader(label)) {
 					for (auto& p : c.get_properties()) {
-						p->draw();
+						if (typeid(*p).hash_code() == typeid(thebanana::component::property<thebanana::gameobject*>).hash_code()) {
+							// todo: wacky drap and drop stuff
+						} else {
+							p->draw();
+						}
 					}
 				}
 			}
@@ -69,6 +108,7 @@ namespace bananatree {
 			}
 		} else {
 			ImGui::Text("There is no Gameobject selected. You can select one from the scene's hierarchy panel.");
+			if (this->m_show_transform_menu) this->m_show_transform_menu = false;
 		}
 		ImGui::End();
 	}

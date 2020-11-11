@@ -16,6 +16,6 @@ namespace bananatree {
 		thebanana::g_game->swap_buffers();
 	}
 	std::string editor_layer::window_title() {
-		return "the banana tree";
+		return "The Banana Tree";
 	}
 }

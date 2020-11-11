@@ -74,12 +74,33 @@ namespace bananatree {
 				else if (typeid(c).hash_code() == typeid(thebanana::debug_component).hash_code()) label = "Debug component";
 				assert(label);
 				if (ImGui::CollapsingHeader(label)) {
+					int index = 0;
 					for (auto& p : c.get_properties()) {
 						if (typeid(*p).hash_code() == typeid(thebanana::component::property<thebanana::gameobject*>).hash_code()) {
-							// todo: wacky drap and drop stuff
+							thebanana::component::property<thebanana::gameobject*>* prop = (thebanana::component::property<thebanana::gameobject*>*)p.get();
+							char buf[256];
+							_ui64toa(c.get_uuid(), buf, 10);
+							char id[256];
+							sprintf(id, "%s, %d", buf, index);
+							ImGui::PushID(id);
+							std::string text = (*prop->get_value()) ? (*prop->get_value())->get_nickname() : "None";
+							ImGui::InputText(prop->get_name().c_str(), &text, ImGuiInputTextFlags_ReadOnly);
+							if (ImGui::BeginDragDropTarget()) {
+								if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("GAMEOBJECT_PAYLOAD")) {
+									assert(payload->DataSize == sizeof(unsigned long long));
+									unsigned long long uuid = *(unsigned long long*)payload->Data;
+									*prop->get_value() = thebanana::g_game->get_scene()->find(uuid);
+								}
+								ImGui::EndDragDropTarget();
+							}
+							ImGui::PopID();
+							if (ImGui::Button("Clear property")) {
+								*prop->get_value() = NULL;
+							}
 						} else {
 							p->draw();
 						}
+						index++;
 					}
 				}
 			}
@@ -107,7 +128,7 @@ namespace bananatree {
 				}
 			}
 		} else {
-			ImGui::Text("There is no Gameobject selected. You can select one from the scene's hierarchy panel.");
+			ImGui::Text("There is no Gameobject selected.\nYou can select one from the scene's hierarchy panel.");
 			if (this->m_show_transform_menu) this->m_show_transform_menu = false;
 		}
 		ImGui::End();

@@ -39,6 +39,19 @@ namespace bananatree {
 	thebanana::gameobject* scene_hierarchy_panel::get_selected_object() {
 		return this->m_selected_object;
 	}
+	void make_dragdrop_source(thebanana::gameobject* object, const std::string& id) {
+		ImGui::SameLine();
+		std::string source_id = id + "dnds";
+		ImGui::PushID(source_id.c_str());
+		ImGui::ColorButton("Drag/Drop Source", ImVec4(0.5f, 0.5f, 0.5f, 1.f), ImGuiColorEditFlags_None, ImVec2(15.f, 15.f));
+		if (ImGui::BeginDragDropSource()) {
+			unsigned long long uuid = object->get_uuid();
+			ImGui::SetDragDropPayload("GAMEOBJECT_PAYLOAD", &uuid, sizeof(unsigned long long));
+			ImGui::Text(object->get_nickname().c_str());
+			ImGui::EndDragDropSource();
+		}
+		ImGui::PopID();
+	}
 	constexpr ImGuiTreeNodeFlags open_flags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_OpenOnDoubleClick;
 	void scene_hierarchy_panel::tree_helper(thebanana::gameobject* object) {
 		if (object->get_children_count() > 0) {
@@ -49,6 +62,7 @@ namespace bananatree {
 				set_gameobject(object, &this->m_selected_object);
 				ImGui::TreePop();
 			}
+			make_dragdrop_source(object, id_str);
 		}
 	}
 	void scene_hierarchy_panel::tree(thebanana::gameobject* object) {
@@ -61,5 +75,6 @@ namespace bananatree {
 			}
 			ImGui::TreePop();
 		}
+		make_dragdrop_source(object, id_str);
 	}
 }

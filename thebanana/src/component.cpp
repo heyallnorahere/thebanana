@@ -56,6 +56,7 @@ namespace thebanana {
 	debug_component::debug_component(gameobject* obj) : component(obj), flash_start_time(0.0), flash_end_time(0.0) {
 		this->add_property(new property<double>(2.0, "Flash rate"));
 		this->add_property(new property<double>(0.1, "Flash length"));
+		this->add_property(new property<gameobject*>(NULL, "Test object"));
 	}
 	namespace debug {
 		extern gameobject* current_selected_gameobject;

@@ -23,7 +23,7 @@ namespace bananatree {
 	void scene_hierarchy_panel::render() {
 		id = 0xff;
 		ImGui::Begin("Scene Hierarchy", &this->m_open);
-		if (ImGui::TreeNodeEx("root", ImGuiTreeNodeFlags_Leaf)) {
+		if (ImGui::TreeNodeEx("Root", ImGuiTreeNodeFlags_Leaf)) {
 			set_gameobject(NULL, &this->m_selected_object);
 			for (size_t i = 0; i < thebanana::g_game->get_scene()->get_children_count(); i++) {
 				thebanana::gameobject* object = thebanana::g_game->get_scene()->get_child(i);

@@ -11,5 +11,6 @@ namespace bananatree {
 	private:
 		scene_hierarchy_panel* m_hierarchy;
 		bool m_show_transform_menu;
+		int m_component_index;
 	};
 }

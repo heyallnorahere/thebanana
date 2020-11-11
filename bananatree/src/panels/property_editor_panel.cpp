@@ -12,6 +12,7 @@ namespace bananatree {
 	}
 	property_editor_panel::property_editor_panel() {
 		this->m_show_transform_menu = false;
+		this->m_component_index = 0;
 		this->m_hierarchy = NULL;
 	}
 	void property_editor_panel::render() {
@@ -25,6 +26,8 @@ namespace bananatree {
 			_ui64toa(object->get_uuid(), buf, 10);
 			ImGui::Text("Gameobject UUID: %s", buf);
 			if (ImGui::Button("Toggle transform menu")) this->m_show_transform_menu = !this->m_show_transform_menu;
+			ImGui::Separator();
+			ImGui::Text("Components:");
 			for (size_t i = 0; i < object->get_number_components<thebanana::component>(); i++) {
 				thebanana::component& c = object->get_component<thebanana::component>(i);
 				const char* label = NULL;
@@ -39,6 +42,29 @@ namespace bananatree {
 					for (auto& p : c.get_properties()) {
 						p->draw();
 					}
+				}
+			}
+			ImGui::Separator();
+			static std::vector<const char*> combo_items = { "Tag component", "Mesh component", "Animation component", "Rigidbody", "Native script component" };
+			ImGui::Combo("Type", &this->m_component_index, combo_items.data(), combo_items.size());
+			ImGui::SameLine();
+			if (ImGui::Button("Add component")) {
+				switch (this->m_component_index) {
+				case 0:
+					object->add_component<thebanana::tag_component>();
+					break;
+				case 1:
+					object->add_component<thebanana::mesh_component>();
+					break;
+				case 2:
+					object->add_component<thebanana::animation_component>();
+					break;
+				case 3:
+					object->add_component<thebanana::rigidbody>();
+					break;
+				case 4:
+					object->add_component<thebanana::native_script_component>();
+					break;
 				}
 			}
 		} else {

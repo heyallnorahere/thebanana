@@ -6,6 +6,7 @@
 #include <misc/cpp/imgui_stdlib.h>
 #include "panels/viewport_panel.h"
 #include "panels/scene_hierarchy_panel.h"
+#include "panels/log_panel.h"
 namespace bananatree {
 	imgui_layer::imgui_layer() {
 		IMGUI_CHECKVERSION();
@@ -24,6 +25,7 @@ namespace bananatree {
 		ImGui_ImplOpenGL3_Init("#version 460");
 		this->add_panel<viewport_panel>();
 		this->add_panel<scene_hierarchy_panel>();
+		this->add_panel<log_panel>();
 	}
 	imgui_layer::~imgui_layer() {
 		ImGui_ImplOpenGL3_Shutdown();

@@ -93,7 +93,7 @@ namespace bananatree {
 		thebanana::gameobject* camera = new thebanana::basic_gameobject;
 		camera->get_nickname() = "Camera";
 		camera->get_transform().move(glm::vec3(0.f, 0.f, 2.f));
-		camera->add_component<thebanana::camera_component>().set_property("Angle", glm::vec2(0.f, -90.f));
+		camera->add_component<thebanana::camera_component>();
 		thebanana::g_game->get_scene()->add_object(camera);
 	}
 	void imgui_layer::open_scene(const std::string& path) {
@@ -197,17 +197,21 @@ namespace bananatree {
 					thebanana::g_game->get_model_registry()->reload(std::vector<thebanana::model_registry::model_descriptor>());
 					this->m_editor_layer->get_project()->reset();
 				}
+				if (ImGui::MenuItem("Save Project")) {
+					if (this->m_editor_layer->get_project()->has_temp_path()) {
+						this->m_editor_layer->get_project()->save();
+					} else {
+						this->save_project_as();
+					}
+				}
+				if (ImGui::MenuItem("Save Project As...")) {
+					this->save_project_as();
+				}
 				if (ImGui::MenuItem("Open Project...")) {
 					std::string path = open_dialog("Banana Project (*.tree)\0*.tree");
 					if (!path.empty()) {
 						thebanana::g_game->get_model_registry()->reload(std::vector<thebanana::model_registry::model_descriptor>());
 						this->m_editor_layer->get_project()->load(path);
-					}
-				}
-				if (ImGui::MenuItem("Save Project As...")) {
-					std::string path = save_dialog("Banana Project (*.tree)\0*.tree");
-					if (!path.empty()) {
-						this->m_editor_layer->get_project()->save(path);
 					}
 				}
 				ImGui::Separator();
@@ -285,6 +289,12 @@ namespace bananatree {
 		} else if (buttons[DIK_S].down) {
 			if (control && shift) this->save_scene();
 			else if (control) this->save_scene_from_temp();
+		}
+	}
+	void imgui_layer::save_project_as() {
+		std::string path = save_dialog("Banana Project (*.tree)\0*.tree");
+		if (!path.empty()) {
+			this->m_editor_layer->get_project()->save(path);
 		}
 	}
 }

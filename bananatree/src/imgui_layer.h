@@ -24,6 +24,7 @@ namespace bananatree {
 		void start_dockspace();
 		void set_theme();
 		void parse_inputs();
+		void save_project_as();
 		std::vector<std::unique_ptr<panel>> m_panels;
 		bool m_static_mesh_creation_window_open;
 		editor_layer* m_editor_layer;

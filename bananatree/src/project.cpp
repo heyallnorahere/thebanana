@@ -17,10 +17,12 @@ namespace bananatree {
 		SetWindowTextA(thebanana::g_game->get_window(), window_text.c_str());
 	}
 	void project::reset() {
+		this->m_temp_path.clear();
 		this->rename("Untitled");
 		this->m_descriptors.clear();
 	}
 	void project::save(const std::string& path) {
+		this->m_temp_path = path;
 		YAML::Emitter out;
 		out << YAML::BeginMap;
 		out << YAML::Key << "name" << YAML::Value << this->m_name;
@@ -41,8 +43,12 @@ namespace bananatree {
 		fout << out.c_str();
 		fout.close();
 	}
+	void project::save() {
+		this->save(this->m_temp_path);
+	}
 	void project::load(const std::string& path) {
 		this->reset();
+		this->m_temp_path = path;
 		YAML::Node file = YAML::LoadFile(path);
 		assert(file["name"]);
 		this->rename(file["name"].as<std::string>());
@@ -66,6 +72,9 @@ namespace bananatree {
 	}
 	void project::register_model(const model_descriptor& md) {
 		this->m_descriptors.push_back(md);
+	}
+	bool project::has_temp_path() {
+		return !this->m_temp_path.empty();
 	}
 	const std::vector<project::model_descriptor>& project::get_descriptors() {
 		return this->m_descriptors;

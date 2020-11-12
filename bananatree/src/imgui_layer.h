@@ -17,6 +17,7 @@ namespace bananatree {
 		void start_dockspace();
 		void set_theme();
 		std::vector<std::unique_ptr<panel>> m_panels;
+		bool m_static_mesh_creation_window_open;
 	};
 	template<typename T> inline T* imgui_layer::add_panel() {
 		T* ptr = new T;

@@ -11,24 +11,24 @@ namespace bananatree {
 		ImGui::Begin("Transform menu", open, ImGuiWindowFlags_NoDocking);
 		if (ImGui::CollapsingHeader("Move")) {
 			static glm::vec3 m = glm::vec3(0.f);
-			ImGui::InputFloat3("Motion values", &m.x);
-			if (ImGui::Button("Apply")) {
+			ImGui::DragFloat3("Motion values", &m.x);
+			if (ImGui::Button("Apply motion")) {
 				object->get_transform().move(m);
 				m = glm::vec3(0.f);
 			}
 		}
 		if (ImGui::CollapsingHeader("Translate")) {
 			static glm::vec3 t = glm::vec3(0.f);
-			ImGui::InputFloat3("Translation values", &t.x);
-			if (ImGui::Button("Apply")) {
+			ImGui::DragFloat3("Translation values", &t.x);
+			if (ImGui::Button("Apply translation")) {
 				object->get_transform().translate(t);
 				t = glm::vec3(0.f);
 			}
 		}
 		if (ImGui::CollapsingHeader("Rotate")) {
 			static glm::vec3 r = glm::vec3(0.f);
-			ImGui::InputFloat3("Rotation values", &r.x);
-			if (ImGui::Button("Apply")) {
+			ImGui::DragFloat3("Rotation values", &r.x);
+			if (ImGui::Button("Apply rotation")) {
 				if (fabs(r.x) > 0.001) object->get_transform().rotate(r.x, glm::vec3(1.f, 0.f, 0.f));
 				if (fabs(r.y) > 0.001) object->get_transform().rotate(r.y, glm::vec3(0.f, 1.f, 0.f));
 				if (fabs(r.z) > 0.001) object->get_transform().rotate(r.z, glm::vec3(0.f, 0.f, 1.f));
@@ -37,8 +37,8 @@ namespace bananatree {
 		}
 		if (ImGui::CollapsingHeader("Scale")) {
 			static glm::vec3 s = glm::vec3(1.f);
-			ImGui::InputFloat3("Dilation values", &s.x);
-			if (ImGui::Button("Apply")) {
+			ImGui::InputFloat3("Scaling values", &s.x);
+			if (ImGui::Button("Apply scaling")) {
 				object->get_transform().scale(s);
 				s = glm::vec3(1.f);
 			}

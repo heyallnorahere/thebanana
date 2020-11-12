@@ -12,7 +12,24 @@
 #include "util.h"
 #include "../resource.h"
 namespace bananatree {
+	static void create_static_mesh(bool* open) {
+		ImGui::Begin("Create static mesh", open);
+		static std::string mesh_name = "";
+		ImGui::InputText("Mesh name", &mesh_name);
+		if (ImGui::Button("Cancel")) {
+			mesh_name = "";
+			*open = false;
+		}
+		ImGui::SameLine();
+		if (ImGui::Button("Confirm")) {
+			thebanana::g_game->get_scene()->add_object(new thebanana::static_mesh(mesh_name));
+			mesh_name = "";
+			*open = false;
+		}
+		ImGui::End();
+	}
 	imgui_layer::imgui_layer() {
+		this->m_static_mesh_creation_window_open = false;
 		IMGUI_CHECKVERSION();
 		ImGui::CreateContext();
 		ImGuiIO& io = ImGui::GetIO(); (void)io;
@@ -141,6 +158,9 @@ namespace bananatree {
 				if (ImGui::MenuItem("Empty")) {
 					thebanana::g_game->get_scene()->add_object(new thebanana::basic_gameobject);
 				}
+				if (ImGui::MenuItem("Static mesh")) {
+					this->m_static_mesh_creation_window_open = true;
+				}
 				ImGui::EndMenu();
 			}
 #ifdef _DEBUG
@@ -152,6 +172,7 @@ namespace bananatree {
 			}
 #endif
 			ImGui::EndMenuBar();
+			if (this->m_static_mesh_creation_window_open) create_static_mesh(&this->m_static_mesh_creation_window_open);
 		}
 	}
 	//https://github.com/TheCherno/Hazel/blob/master/Hazel/src/Hazel/ImGui/ImGuiLayer.cpp

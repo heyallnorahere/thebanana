@@ -12,11 +12,17 @@ namespace bananatree {
 		template<typename T> T* find_panel();
 		panel* get_panel(size_t index);
 		size_t get_panel_count() const;
+		void new_scene();
+		void open_scene(const std::string& path);
+		void save_scene(const std::string& path);
+		void open_scene();
+		void save_scene();
 	private:
 		void begin();
 		void end();
 		void start_dockspace();
 		void set_theme();
+		void parse_inputs();
 		std::vector<std::unique_ptr<panel>> m_panels;
 		bool m_static_mesh_creation_window_open;
 		editor_layer* m_editor_layer;

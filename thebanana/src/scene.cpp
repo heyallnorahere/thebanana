@@ -13,6 +13,12 @@ namespace thebanana {
 		this->m_shader = NULL;
 		this->m_game = g;
 	}
+	void scene::remove_object(size_t index) {
+		auto it = this->m_children.begin();
+		std::advance(it, index);
+		auto& obj = *it;
+		this->m_children.remove(obj);
+	}
 	void scene::clear() {
 		this->m_children.clear();
 		std::vector<rigidbody*>& rbs = (std::vector<rigidbody*>&)rigidbody::get_rigidbodies();

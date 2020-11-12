@@ -4,10 +4,45 @@
 #include <backends/imgui_impl_win32.h>
 #include <backends/imgui_impl_opengl3.h>
 #include <misc/cpp/imgui_stdlib.h>
+namespace thebanana {
+	namespace debug {
+		extern gameobject* current_selected_gameobject;
+	}
+}
 namespace bananatree {
+	void delete_object(thebanana::gameobject* child) {
+		thebanana::gameobject* parent = child->get_parent();
+		thebanana::scene* scene = child->get_scene();
+		size_t index = std::string::npos;
+		for (size_t i = 0; i < (parent ? parent->get_children_count() : scene->get_children_count()); i++) {
+			thebanana::gameobject* obj = (parent ? parent->get_child(i) : scene->get_child(i));
+			if (child == obj) {
+				index = i;
+				break;
+			}
+		}
+		assert(index != std::string::npos);
+		if (thebanana::debug::current_selected_gameobject == child)
+			thebanana::debug::current_selected_gameobject = NULL;
+		if (parent) {
+			parent->remove_object(index);
+		} else {
+			scene->remove_object(index);
+		}
+	}
+	static bool gameobject_context_menu(thebanana::gameobject* object) {
+		if (ImGui::BeginPopupContextItem()) {
+			if (ImGui::MenuItem("Remove object")) {
+				delete_object(object);
+			}
+			ImGui::EndPopup();
+			return true;
+		}
+		return false;
+	}
 	// the second parameter is for use later
 	void set_gameobject(thebanana::gameobject* object, thebanana::gameobject** object_ptr) {
-		if (ImGui::IsItemClicked()) {
+		if (ImGui::IsItemClicked(ImGuiMouseButton_Left)) {
 			*object_ptr = object;
 		}
 	}
@@ -17,14 +52,11 @@ namespace bananatree {
 		sprintf(id_str, "node%d", id++);
 		return id_str;
 	}
-	scene_hierarchy_panel::scene_hierarchy_panel() {
-		this->m_selected_object = NULL;
-	}
 	void scene_hierarchy_panel::render() {
 		id = 0xff;
 		ImGui::Begin("Scene Hierarchy", &this->m_open);
 		if (ImGui::TreeNodeEx("Root", ImGuiTreeNodeFlags_Leaf)) {
-			set_gameobject(NULL, &this->m_selected_object);
+			set_gameobject(NULL, &thebanana::debug::current_selected_gameobject);
 			for (size_t i = 0; i < thebanana::g_game->get_scene()->get_children_count(); i++) {
 				thebanana::gameobject* object = thebanana::g_game->get_scene()->get_child(i);
 				this->tree_helper(object);
@@ -37,10 +69,10 @@ namespace bananatree {
 		return "Scene Hierarchy";
 	}
 	thebanana::gameobject* scene_hierarchy_panel::get_selected_object() {
-		return this->m_selected_object;
+		return thebanana::debug::current_selected_gameobject;
 	}
 	void scene_hierarchy_panel::set_selected_object(thebanana::gameobject* object) {
-		this->m_selected_object = object;
+		thebanana::debug::current_selected_gameobject = object;
 	}
 	void make_dragdrop_source(thebanana::gameobject* object, const std::string& id) {
 		ImGui::SameLine();
@@ -62,7 +94,8 @@ namespace bananatree {
 		} else {
 			std::string id_str = make_id();
 			if (ImGui::TreeNodeEx(id_str.c_str(), ImGuiTreeNodeFlags_Leaf, "%s, no children", object->get_nickname().c_str())) {
-				set_gameobject(object, &this->m_selected_object);
+				gameobject_context_menu(object);
+				set_gameobject(object, &thebanana::debug::current_selected_gameobject);
 				ImGui::TreePop();
 			}
 			make_dragdrop_source(object, id_str);
@@ -71,8 +104,9 @@ namespace bananatree {
 	void scene_hierarchy_panel::tree(thebanana::gameobject* object) {
 		std::string id_str = make_id();
 		if (ImGui::TreeNodeEx(id_str.c_str(), open_flags, "%s, children: %d", object->get_nickname().c_str(), object->get_children_count())) {
-			set_gameobject(object, &this->m_selected_object);
+			set_gameobject(object, &thebanana::debug::current_selected_gameobject);
 			for (size_t i = 0; i < object->get_children_count(); i++) {
+				gameobject_context_menu(object);
 				thebanana::gameobject* child = object->get_child(i);
 				this->tree_helper(child);
 			}

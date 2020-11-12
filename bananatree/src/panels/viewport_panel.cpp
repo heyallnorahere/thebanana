@@ -13,13 +13,15 @@ namespace bananatree {
 		this->m_framebuffer = std::unique_ptr<thebanana::graphics::framebuffer>(thebanana::graphics::framebuffer::create(&desc));
 	}
 	void viewport_panel::render() {
+		ImGui::Begin("Viewport", &this->m_open);
+		ImVec2 content_region = ImGui::GetContentRegionAvail();
 		this->m_framebuffer->bind();
+		if (content_region.x > 0.f && content_region.y > 0.f) glViewport(0, 0, content_region.x, content_region.y);
 		thebanana::g_game->render();
 		this->m_framebuffer->unbind();
 		auto att = this->m_framebuffer->get_attachments();
 		void* texture = att[this->m_framebuffer->get_attachment_map().color_index].value;
-		ImGui::Begin("Viewport", &this->m_open);
-		ImGui::Image(texture, ImGui::GetWindowSize(), ImVec2(0.f, 1.f), ImVec2(1.f, 0.f));
+		ImGui::Image(texture, content_region, ImVec2(0.f, 1.f), ImVec2(1.f, 0.f));
 		ImGui::End();
 	}
 	std::string viewport_panel::get_menu_text() {

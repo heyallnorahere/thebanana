@@ -156,6 +156,9 @@ namespace thebanana {
 		}
 		out << YAML::EndSeq;
 		out << YAML::EndMap;
+		char uuidbuf[256];
+		_ui64toa(object->get_uuid(), uuidbuf, 10);
+		debug::log_print("serialized object\nnickname: " + object->get_nickname() + "\nUUID: " + uuidbuf);
 	}
 	void scene_serializer::serialize(const std::string& path) {
 		debug::log_print("saving scene to " + path);
@@ -171,6 +174,7 @@ namespace thebanana {
 		std::ofstream fout(path);
 		fout << out.c_str();
 		fout.close();
+		debug::log_print("saved scene to " + path);
 	}
 	static void deserialize_collider(const YAML::Node& node, rigidbody& rb) {
 		assert(node["type"]);
@@ -328,8 +332,12 @@ namespace thebanana {
 		assert(uuid_node);
 		unsigned long long uuid = uuid_node.as<unsigned long long>();
 		gameobject* o = s->find(uuid);
-		if (o)
+		if (o) {
+			char uuidbuf[256];
+			_ui64toa(uuid, uuidbuf, 10);
+			debug::log_print("failed to load object; an object with the uuid of " + std::string(uuidbuf) + " already exists");
 			return NULL;
+		}
 		object->set_uuid(uuid);
 		YAML::Node nickname_node = node["nickname"];
 		assert(nickname_node);
@@ -347,6 +355,9 @@ namespace thebanana {
 			gameobject* obj = deserialize_object(n, object, s);
 			if (obj) object->add_object(obj);
 		}
+		char uuidbuf[256];
+		_ui64toa(object->get_uuid(), uuidbuf, 10);
+		debug::log_print("deserialized object\nnickname: " + object->get_nickname() + "\nUUID: " + uuidbuf);
 		return object;
 	}
 	void scene_serializer::deserialize(const std::string& path) {
@@ -366,5 +377,6 @@ namespace thebanana {
 		for (auto fs : to_find) {
 			*fs.ptr = this->m_scene->find(fs.uuid);
 		}
+		debug::log_print("loaded scene " + name + " from " + path);
 	}
 }

@@ -1,6 +1,7 @@
 #include <thebanana.h>
 #include "property_editor_panel.h"
 #include <imgui.h>
+#include <imgui_internal.h>
 #include <backends/imgui_impl_win32.h>
 #include <backends/imgui_impl_opengl3.h>
 #include <misc/cpp/imgui_stdlib.h>
@@ -53,8 +54,56 @@ namespace bananatree {
 	void property_editor_panel::render() {
 		thebanana::gameobject* object = this->m_hierarchy->get_selected_object();
 		if (this->m_show_transform_menu) transform_menu(object, &this->m_show_transform_menu);
-		ImGui::Begin("Property Editor", &this->m_open);
+		ImGui::Begin("Property Editor", &this->m_open, ImGuiWindowFlags_MenuBar);
 		assert(this->m_hierarchy);
+		if (ImGui::BeginMenuBar()) {
+			if (ImGui::BeginMenu("Component")) {
+				if (ImGui::MenuItem("Tag component")) {
+					if (object) {
+						object->add_component<thebanana::tag_component>();
+					} else {
+						thebanana::debug::log_print("could not add tag component; no object selected");
+					}
+				}
+				if (ImGui::MenuItem("Mesh component")) {
+					if (object) {
+						object->add_component<thebanana::mesh_component>();
+					} else {
+						thebanana::debug::log_print("could not add mesh component; no object selected");
+					}
+				}
+				if (ImGui::MenuItem("Animation component")) {
+					if (object) {
+						object->add_component<thebanana::animation_component>();
+					} else {
+						thebanana::debug::log_print("could not add animation component; no object selected");
+					}
+				}
+				if (ImGui::MenuItem("Rigidbody")) {
+					if (object) {
+						object->add_component<thebanana::rigidbody>();
+					} else {
+						thebanana::debug::log_print("could not add rigidbody; no object selected");
+					}
+				}
+				if (ImGui::MenuItem("Camera component")) {
+					if (object) {
+						object->add_component<thebanana::camera_component>();
+					} else {
+						thebanana::debug::log_print("could not add camera component; no object selected");
+					}
+				}
+				if (ImGui::MenuItem("Native script component")) {
+					if (object) {
+						object->add_component<thebanana::native_script_component>();
+					} else {
+						thebanana::debug::log_print("could not add native script component; no object selected");
+					}
+				}
+				ImGui::EndMenu();
+			}
+			ImGui::EndMenuBar();
+		}
 		if (object) {
 			ImGui::InputText("Gameobject Nickname", &object->get_nickname());
 			char buf[256];
@@ -78,14 +127,30 @@ namespace bananatree {
 				_ui64toa(c.get_uuid(), buf, 10);
 				std::string label_text = label + std::string(", UUID: ") + buf;
 				if (ImGui::CollapsingHeader(label_text.c_str())) {
-					int index = 0;
-					for (auto& p : c.get_properties()) {
+					bool should_remove = false;
+					ImVec2 content_region_available = ImGui::GetContentRegionAvail();
+					float line_height = GImGui->Font->FontSize + GImGui->Style.FramePadding.y * 2.0f;
+					float indent = content_region_available.x - line_height;
+					ImGui::Indent(indent);
+					if (ImGui::Button("+", ImVec2(line_height, line_height))) {
+						ImGui::OpenPopup("component_settings");
+					}
+					ImGui::Unindent(indent);
+					if (ImGui::BeginPopup("component_settings")) {
+						if (ImGui::MenuItem("Remove component")) {
+							should_remove = true;
+						}
+						ImGui::EndPopup();
+					}
+					auto& properties = c.get_properties();
+					for (size_t i = 0; i < properties.size(); i++) {
+						auto& p = properties[i];
 						if (typeid(*p).hash_code() == typeid(thebanana::component::property<thebanana::gameobject*>).hash_code()) {
 							thebanana::component::property<thebanana::gameobject*>* prop = (thebanana::component::property<thebanana::gameobject*>*)p.get();
 							char buf[256];
 							_ui64toa(c.get_uuid(), buf, 10);
 							char id[256];
-							sprintf(id, "%s, %d", buf, index);
+							sprintf(id, "%s, %d", buf, i);
 							ImGui::PushID(id);
 							std::string text = (*prop->get_value()) ? (*prop->get_value())->get_nickname() : "None";
 							ImGui::InputText(prop->get_name().c_str(), &text, ImGuiInputTextFlags_ReadOnly);
@@ -104,34 +169,10 @@ namespace bananatree {
 						} else {
 							p->draw();
 						}
-						index++;
 					}
-				}
-			}
-			ImGui::Separator();
-			static std::vector<const char*> combo_items = { "Tag component", "Mesh component", "Animation component", "Rigidbody", "Camera component", "Native script component" };
-			ImGui::Combo("Type", &this->m_component_index, combo_items.data(), combo_items.size());
-			ImGui::SameLine();
-			if (ImGui::Button("Add component")) {
-				switch (this->m_component_index) {
-				case 0:
-					object->add_component<thebanana::tag_component>();
-					break;
-				case 1:
-					object->add_component<thebanana::mesh_component>();
-					break;
-				case 2:
-					object->add_component<thebanana::animation_component>();
-					break;
-				case 3:
-					object->add_component<thebanana::rigidbody>();
-					break;
-				case 4:
-					object->add_component<thebanana::camera_component>();
-					break;
-				case 5:
-					object->add_component<thebanana::native_script_component>();
-					break;
+					if (should_remove) {
+						object->remove_component<thebanana::component>(i);
+					}
 				}
 			}
 		} else {

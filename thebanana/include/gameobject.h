@@ -21,6 +21,7 @@ namespace thebanana {
 		const gameobject* get_child(size_t index) const;
 		gameobject* get_child(size_t index);
 		template<typename T> T* add_object(T* obj);
+		void remove_object(size_t index);
 		transform get_absolute_transform();
 		std::string& get_nickname();
 		scene* get_scene();

@@ -34,6 +34,7 @@ namespace bananatree {
 		ImGui::End();
 	}
 	imgui_layer::imgui_layer(editor_layer* el) : m_editor_layer(el) {
+		this->new_scene();
 		this->m_static_mesh_creation_window_open = false;
 		IMGUI_CHECKVERSION();
 		ImGui::CreateContext();
@@ -64,6 +65,7 @@ namespace bananatree {
 		ImGui::DestroyContext();
 	}
 	void imgui_layer::update() {
+		this->parse_inputs();
 		for (auto& p : this->m_panels) {
 			p->update();
 		}
@@ -83,6 +85,36 @@ namespace bananatree {
 	}
 	size_t imgui_layer::get_panel_count() const {
 		return this->m_panels.size();
+	}
+	void imgui_layer::new_scene() {
+		this->find_panel<scene_hierarchy_panel>()->set_selected_object(NULL);
+		thebanana::g_game->get_scene()->clear();
+		thebanana::gameobject* camera = new thebanana::basic_gameobject;
+		camera->get_nickname() = "Camera";
+		camera->get_transform().move(glm::vec3(0.f, 0.f, 2.f));
+		camera->add_component<thebanana::camera_component>().set_property("Angle", glm::vec2(0.f, -90.f));
+		thebanana::g_game->get_scene()->add_object(camera);
+	}
+	void imgui_layer::open_scene(const std::string& path) {
+		this->find_panel<scene_hierarchy_panel>()->set_selected_object(NULL);
+		thebanana::scene_serializer serializer(thebanana::g_game->get_scene());
+		serializer.deserialize(path);
+	}
+	void imgui_layer::save_scene(const std::string& path) {
+		thebanana::scene_serializer serializer(thebanana::g_game->get_scene());
+		serializer.serialize(path);
+	}
+	void imgui_layer::open_scene() {
+		std::string path = open_dialog("Banana Scene (*.basket)\0*.basket\0");
+		if (!path.empty()) {
+			this->open_scene(path);
+		}
+	}
+	void imgui_layer::save_scene() {
+		std::string path = save_dialog("Banana Scene (*.basket)\0*.basket\0");
+		if (!path.empty()) {
+			this->save_scene();
+		}
 	}
 	void imgui_layer::begin() {
 		ImGui_ImplOpenGL3_NewFrame();
@@ -139,23 +171,13 @@ namespace bananatree {
 		if (ImGui::BeginMenuBar()) {
 			if (ImGui::BeginMenu("File")) {
 				if (ImGui::MenuItem("New Scene", "Ctrl+N")) {
-					this->find_panel<scene_hierarchy_panel>()->set_selected_object(NULL);
-					thebanana::g_game->get_scene()->clear();
+					this->new_scene();
 				}
 				if (ImGui::MenuItem("Open Scene...", "Ctrl+O")) {
-					std::string path = open_dialog("Banana Scene (*.basket)\0*.basket\0");
-					if (!path.empty()) {
-						this->find_panel<scene_hierarchy_panel>()->set_selected_object(NULL);
-						thebanana::scene_serializer serializer(thebanana::g_game->get_scene());
-						serializer.deserialize(path);
-					}
+					this->open_scene();
 				}
 				if (ImGui::MenuItem("Save Scene As...", "Ctrl+Shift+S")) {
-					std::string path = save_dialog("Banana Scene (*.basket)\0*.basket\0");
-					if (!path.empty()) {
-						thebanana::scene_serializer serializer(thebanana::g_game->get_scene());
-						serializer.serialize(path);
-					}
+					this->save_scene();
 				}
 				ImGui::Separator();
 				if (ImGui::MenuItem("New Project")) {
@@ -232,5 +254,23 @@ namespace bananatree {
 		colors[ImGuiCol_TitleBg] = ImVec4(0.15f, 0.1505f, 0.151f, 1.f);
 		colors[ImGuiCol_TitleBgActive] = ImVec4(0.15f, 0.1505f, 0.151f, 1.f);
 		colors[ImGuiCol_TitleBgCollapsed] = ImVec4(0.15f, 0.1505f, 0.151f, 1.f);
+	}
+	void imgui_layer::parse_inputs() {
+		size_t keyboard_index = std::string::npos;
+		for (size_t i = 0; i < thebanana::g_game->get_input_manager()->get_num_devices(); i++) {
+			if (thebanana::g_game->get_input_manager()->get_device_type(i) == thebanana::input_manager::device_type::keyboard) keyboard_index = i;
+		}
+		assert(keyboard_index != std::string::npos);
+		thebanana::keyboard* kb = (thebanana::keyboard*)thebanana::g_game->get_input_manager()->get_device(keyboard_index);
+		auto buttons = kb->get_buttons();
+		bool control = buttons[DIK_LCONTROL].held;
+		bool shift = buttons[DIK_LSHIFT].held || buttons[DIK_RSHIFT].held;
+		if (buttons[DIK_N].down && control) {
+			this->new_scene();
+		} else if (buttons[DIK_O].down && control) {
+			this->open_scene();
+		} else if (buttons[DIK_S].down && control && shift) {
+			this->save_scene();
+		}
 	}
 }

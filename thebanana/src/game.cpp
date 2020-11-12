@@ -30,14 +30,9 @@ namespace thebanana {
 		this->m_shader_registry = new shader_registry;
 		this->m_script_registry = new script_registry;
 		this->m_model_registry = new model_registry;
-		if (this->m_input_manager->add_device(0) == input_manager::device_type::keyboard) {
-			std::vector<input_manager::dinput_device> enumerated_devices = this->m_input_manager->get_enumerated_devices();
-			for (size_t i = 0; i < enumerated_devices.size(); i++) {
-				if (input_manager::get_device_type(enumerated_devices[i]) == input_manager::device_type::mouse) {
-					this->m_input_manager->add_device(i);
-					break;
-				}
-			}
+		auto ed = this->m_input_manager->get_enumerated_devices();
+		for (size_t i = 0; i < ed.size(); i++) {
+			this->m_input_manager->add_device(i);
 		}
 		glEnable(GL_DEPTH_TEST);
 		glEnable(GL_BLEND);

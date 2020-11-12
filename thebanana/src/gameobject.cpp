@@ -80,6 +80,12 @@ namespace thebanana {
 		const auto& c = *it;
 		return c.get();
 	}
+	void gameobject::remove_object(size_t index) {
+		auto it = this->m_children.begin();
+		std::advance(it, index);
+		auto& obj = *it;
+		this->m_children.remove(obj);
+	}
 	transform gameobject::get_absolute_transform() {
 		if (this->m_parent == ROOT) {
 			return this->m_transform;

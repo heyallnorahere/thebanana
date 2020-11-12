@@ -49,7 +49,7 @@ namespace bananatree {
 		this->m_import_menu_open = false;
 		current.enabled = true;
 		current.find = "3dplatformer\\3dplatformer";
-		current.replace = "3dplatformer\\sandbox";
+		current.replace = "..\\sandbox";
 		this->import("../sandbox/models/cube.obj", "cube");
 	}
 	void model_registry_panel::render() {

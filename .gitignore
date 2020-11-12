@@ -395,6 +395,7 @@ MigrationBackup/
 placeholder/
 # imgui settings
 imgui.ini
+!bananatree/imgui.ini
 # project backups
 ~AutoRecover.*proj
 # scene files

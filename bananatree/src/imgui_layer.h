@@ -1,9 +1,10 @@
 #pragma once
 #include "panels/panel.h"
 namespace bananatree {
+	class editor_layer;
 	class imgui_layer {
 	public:
-		imgui_layer();
+		imgui_layer(editor_layer* el);
 		~imgui_layer();
 		void update();
 		void render();
@@ -18,6 +19,7 @@ namespace bananatree {
 		void set_theme();
 		std::vector<std::unique_ptr<panel>> m_panels;
 		bool m_static_mesh_creation_window_open;
+		editor_layer* m_editor_layer;
 	};
 	template<typename T> inline T* imgui_layer::add_panel() {
 		T* ptr = new T;

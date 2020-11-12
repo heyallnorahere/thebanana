@@ -54,6 +54,6 @@ std::string my_game_application_layer::window_title() {
 ## TO BUILD
 ### WINDOWS
 [Visual Studio 2019](https://visualstudio.microsoft.com/) solution/project included, with NuGet packages installed.
-The only thing you need to download is the [Steamworks SDK](https://partner.steamgames.com/) and copy the `sdk` folder into `C:/steamsdk`. Then, copy `redistributable_bin/win64/steam_api64.dll` to the sandbox project directory.
+The only thing you need to download is the [Steamworks SDK](https://partner.steamgames.com/) and copy the `sdk` folder into `C:/steamsdk`. Then, copy `redistributable_bin/win64/steam_api64.dll` to the sandbox and editor project directories.
 
 If you've done this, you're good to go!

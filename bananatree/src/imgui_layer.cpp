@@ -9,6 +9,7 @@
 #include "panels/scene_hierarchy_panel.h"
 #include "panels/property_editor_panel.h"
 #include "panels/model_registry_panel.h"
+#include "editor_layer.h"
 #include "util.h"
 #include "../resource.h"
 namespace bananatree {
@@ -28,7 +29,7 @@ namespace bananatree {
 		}
 		ImGui::End();
 	}
-	imgui_layer::imgui_layer() {
+	imgui_layer::imgui_layer(editor_layer* el) {
 		this->m_static_mesh_creation_window_open = false;
 		IMGUI_CHECKVERSION();
 		ImGui::CreateContext();
@@ -132,15 +133,15 @@ namespace bananatree {
 		style.WindowMinSize.x = min_win_size_x;
 		if (ImGui::BeginMenuBar()) {
 			if (ImGui::BeginMenu("File")) {
-				if (ImGui::MenuItem("New", "Ctrl+N")) thebanana::g_game->get_scene()->clear();
-				if (ImGui::MenuItem("Open...", "Ctrl+O")) {
+				if (ImGui::MenuItem("New Scene", "Ctrl+N")) thebanana::g_game->get_scene()->clear();
+				if (ImGui::MenuItem("Open Scene...", "Ctrl+O")) {
 					std::string path = open_dialog("Banana Scene (*.basket)\0*.basket\0");
 					if (!path.empty()) {
 						thebanana::scene_serializer serializer(thebanana::g_game->get_scene());
 						serializer.deserialize(path);
 					}
 				}
-				if (ImGui::MenuItem("Save As...", "Ctrl+Shift+S")) {
+				if (ImGui::MenuItem("Save Scene As...", "Ctrl+Shift+S")) {
 					std::string path = save_dialog("Banana Scene (*.basket)\0*.basket\0");
 					if (!path.empty()) {
 						thebanana::scene_serializer serializer(thebanana::g_game->get_scene());
@@ -148,6 +149,21 @@ namespace bananatree {
 					}
 				}
 				ImGui::Separator();
+				if (ImGui::MenuItem("New Project")) {
+					this->m_editor_layer->get_project()->reset();
+				}
+				if (ImGui::MenuItem("Open Project...")) {
+					std::string path = open_dialog("Banana Project (*.tree)\0*.tree");
+					if (!path.empty()) {
+						// todo: open project
+					}
+				}
+				if (ImGui::MenuItem("Save Project As...")) {
+					std::string path = save_dialog("Banana Project (*.tree)\0*.tree");
+					if (!path.empty()) {
+						// todo: save project
+					}
+				}
 				if (ImGui::MenuItem("Quit", "Ctrl+Q")) {
 					thebanana::g_game->destroy();
 				}

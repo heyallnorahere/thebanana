@@ -17,6 +17,7 @@ namespace bananatree {
 		void save_scene(const std::string& path);
 		void open_scene();
 		void save_scene();
+		void save_scene_from_temp();
 	private:
 		void begin();
 		void end();
@@ -26,6 +27,7 @@ namespace bananatree {
 		std::vector<std::unique_ptr<panel>> m_panels;
 		bool m_static_mesh_creation_window_open;
 		editor_layer* m_editor_layer;
+		std::string m_temp_scene_path;
 	};
 	template<typename T> inline T* imgui_layer::add_panel() {
 		T* ptr = new T;

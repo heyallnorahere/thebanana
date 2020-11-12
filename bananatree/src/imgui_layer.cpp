@@ -87,6 +87,7 @@ namespace bananatree {
 		return this->m_panels.size();
 	}
 	void imgui_layer::new_scene() {
+		this->m_temp_scene_path.clear();
 		this->find_panel<scene_hierarchy_panel>()->set_selected_object(NULL);
 		thebanana::g_game->get_scene()->clear();
 		thebanana::gameobject* camera = new thebanana::basic_gameobject;
@@ -107,13 +108,22 @@ namespace bananatree {
 	void imgui_layer::open_scene() {
 		std::string path = open_dialog("Banana Scene (*.basket)\0*.basket\0");
 		if (!path.empty()) {
+			this->m_temp_scene_path = path;
 			this->open_scene(path);
 		}
 	}
 	void imgui_layer::save_scene() {
 		std::string path = save_dialog("Banana Scene (*.basket)\0*.basket\0");
 		if (!path.empty()) {
+			this->m_temp_scene_path = path;
+			this->save_scene(path);
+		}
+	}
+	void imgui_layer::save_scene_from_temp() {
+		if (this->m_temp_scene_path.empty()) {
 			this->save_scene();
+		} else {
+			this->save_scene(this->m_temp_scene_path);
 		}
 	}
 	void imgui_layer::begin() {
@@ -173,11 +183,14 @@ namespace bananatree {
 				if (ImGui::MenuItem("New Scene", "Ctrl+N")) {
 					this->new_scene();
 				}
-				if (ImGui::MenuItem("Open Scene...", "Ctrl+O")) {
-					this->open_scene();
+				if (ImGui::MenuItem("Save Scene", "Ctrl+S")) {
+					this->save_scene_from_temp();
 				}
 				if (ImGui::MenuItem("Save Scene As...", "Ctrl+Shift+S")) {
 					this->save_scene();
+				}
+				if (ImGui::MenuItem("Open Scene...", "Ctrl+O")) {
+					this->open_scene();
 				}
 				ImGui::Separator();
 				if (ImGui::MenuItem("New Project")) {
@@ -269,8 +282,9 @@ namespace bananatree {
 			this->new_scene();
 		} else if (buttons[DIK_O].down && control) {
 			this->open_scene();
-		} else if (buttons[DIK_S].down && control && shift) {
-			this->save_scene();
+		} else if (buttons[DIK_S].down) {
+			if (control && shift) this->save_scene();
+			else if (control) this->save_scene_from_temp();
 		}
 	}
 }

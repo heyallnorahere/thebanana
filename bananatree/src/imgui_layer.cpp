@@ -133,14 +133,19 @@ namespace bananatree {
 		if (ImGui::BeginMenuBar()) {
 			if (ImGui::BeginMenu("File")) {
 				if (ImGui::MenuItem("New", "Ctrl+N")) thebanana::g_game->get_scene()->clear();
-				std::string scenefile = "../sandbox/scenes/test.basket";
 				if (ImGui::MenuItem("Open...", "Ctrl+O")) {
-					thebanana::scene_serializer serializer(thebanana::g_game->get_scene());
-					serializer.deserialize(scenefile);
+					std::string path = open_dialog("Banana Scene (*.basket)\0*.basket\0");
+					if (!path.empty()) {
+						thebanana::scene_serializer serializer(thebanana::g_game->get_scene());
+						serializer.deserialize(path);
+					}
 				}
 				if (ImGui::MenuItem("Save As...", "Ctrl+Shift+S")) {
-					thebanana::scene_serializer serializer(thebanana::g_game->get_scene());
-					serializer.serialize(scenefile);
+					std::string path = save_dialog("Banana Scene (*.basket)\0*.basket\0");
+					if (!path.empty()) {
+						thebanana::scene_serializer serializer(thebanana::g_game->get_scene());
+						serializer.serialize(path);
+					}
 				}
 				ImGui::Separator();
 				if (ImGui::MenuItem("Quit", "Ctrl+Q")) {

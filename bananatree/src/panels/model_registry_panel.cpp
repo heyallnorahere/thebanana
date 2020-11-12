@@ -4,6 +4,7 @@
 #include <backends/imgui_impl_win32.h>
 #include <backends/imgui_impl_opengl3.h>
 #include <misc/cpp/imgui_stdlib.h>
+#include "../util.h"
 namespace bananatree {
 	struct frs {
 		bool enabled;
@@ -18,6 +19,11 @@ namespace bananatree {
 		static std::string find = "";
 		static std::string replace_ = "";
 		ImGui::InputText("Path", &path);
+		ImGui::SameLine();
+		if (ImGui::Button("...")) {
+			std::string path_ = open_dialog("OBJ file (*.obj)\0*.obj\0FBX file (*.fbx)\0*.fbx\0");
+			if (!path_.empty()) path = path_;
+		}
 		ImGui::InputText("Name", &name);
 		ImGui::Checkbox("Replace texture paths", &replace);
 		if (replace) {

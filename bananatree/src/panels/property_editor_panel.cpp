@@ -74,7 +74,10 @@ namespace bananatree {
 				else if (typeid(c).hash_code() == typeid(thebanana::native_script_component).hash_code()) label = "Native script component";
 				else if (typeid(c).hash_code() == typeid(thebanana::debug_component).hash_code()) label = "Debug component";
 				assert(label);
-				if (ImGui::CollapsingHeader(label)) {
+				char buf[256];
+				_ui64toa(c.get_uuid(), buf, 10);
+				std::string label_text = label + std::string(", UUID: ") + buf;
+				if (ImGui::CollapsingHeader(label_text.c_str())) {
 					int index = 0;
 					for (auto& p : c.get_properties()) {
 						if (typeid(*p).hash_code() == typeid(thebanana::component::property<thebanana::gameobject*>).hash_code()) {

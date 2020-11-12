@@ -7,6 +7,7 @@ namespace bananatree {
 		void reset();
 		void save(const std::string& path);
 		void load(const std::string& path);
+		std::string get_name();
 	private:
 		std::string m_name;
 	};

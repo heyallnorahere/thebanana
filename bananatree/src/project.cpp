@@ -27,4 +27,7 @@ namespace bananatree {
 		assert(file["name"]);
 		this->rename(file["name"].as<std::string>());
 	}
+	std::string project::get_name() {
+		return this->m_name;
+	}
 }

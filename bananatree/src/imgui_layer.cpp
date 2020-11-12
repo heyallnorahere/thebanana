@@ -9,6 +9,7 @@
 #include "panels/scene_hierarchy_panel.h"
 #include "panels/property_editor_panel.h"
 #include "panels/model_registry_panel.h"
+#include "panels/project_editor_panel.h"
 #include "editor_layer.h"
 #include "util.h"
 #include "../resource.h"
@@ -29,7 +30,7 @@ namespace bananatree {
 		}
 		ImGui::End();
 	}
-	imgui_layer::imgui_layer(editor_layer* el) {
+	imgui_layer::imgui_layer(editor_layer* el) : m_editor_layer(el) {
 		this->m_static_mesh_creation_window_open = false;
 		IMGUI_CHECKVERSION();
 		ImGui::CreateContext();
@@ -52,6 +53,7 @@ namespace bananatree {
 		this->add_panel<log_panel>();
 		this->add_panel<property_editor_panel>()->set_hierarchy(this->add_panel<scene_hierarchy_panel>());
 		this->add_panel<model_registry_panel>();
+		this->add_panel<project_editor_panel>()->set_project(this->m_editor_layer->get_project());
 	}
 	imgui_layer::~imgui_layer() {
 		ImGui_ImplOpenGL3_Shutdown();
@@ -133,10 +135,14 @@ namespace bananatree {
 		style.WindowMinSize.x = min_win_size_x;
 		if (ImGui::BeginMenuBar()) {
 			if (ImGui::BeginMenu("File")) {
-				if (ImGui::MenuItem("New Scene", "Ctrl+N")) thebanana::g_game->get_scene()->clear();
+				if (ImGui::MenuItem("New Scene", "Ctrl+N")) {
+					this->find_panel<scene_hierarchy_panel>()->set_selected_object(NULL);
+					thebanana::g_game->get_scene()->clear();
+				}
 				if (ImGui::MenuItem("Open Scene...", "Ctrl+O")) {
 					std::string path = open_dialog("Banana Scene (*.basket)\0*.basket\0");
 					if (!path.empty()) {
+						this->find_panel<scene_hierarchy_panel>()->set_selected_object(NULL);
 						thebanana::scene_serializer serializer(thebanana::g_game->get_scene());
 						serializer.deserialize(path);
 					}
@@ -155,13 +161,13 @@ namespace bananatree {
 				if (ImGui::MenuItem("Open Project...")) {
 					std::string path = open_dialog("Banana Project (*.tree)\0*.tree");
 					if (!path.empty()) {
-						// todo: open project
+						this->m_editor_layer->get_project()->load(path);
 					}
 				}
 				if (ImGui::MenuItem("Save Project As...")) {
 					std::string path = save_dialog("Banana Project (*.tree)\0*.tree");
 					if (!path.empty()) {
-						// todo: save project
+						this->m_editor_layer->get_project()->save(path);
 					}
 				}
 				if (ImGui::MenuItem("Quit", "Ctrl+Q")) {

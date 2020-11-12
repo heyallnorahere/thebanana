@@ -400,3 +400,5 @@ imgui.ini
 ~AutoRecover.*proj
 # scene files
 *.basket
+# project files
+*.tree

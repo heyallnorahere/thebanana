@@ -39,6 +39,9 @@ namespace bananatree {
 	thebanana::gameobject* scene_hierarchy_panel::get_selected_object() {
 		return this->m_selected_object;
 	}
+	void scene_hierarchy_panel::set_selected_object(thebanana::gameobject* object) {
+		this->m_selected_object = object;
+	}
 	void make_dragdrop_source(thebanana::gameobject* object, const std::string& id) {
 		ImGui::SameLine();
 		std::string source_id = id + "dnds";

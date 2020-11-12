@@ -52,7 +52,7 @@ namespace bananatree {
 		this->add_panel<viewport_panel>();
 		this->add_panel<log_panel>();
 		this->add_panel<property_editor_panel>()->set_hierarchy(this->add_panel<scene_hierarchy_panel>());
-		this->add_panel<model_registry_panel>();
+		this->add_panel<model_registry_panel>()->set_project(this->m_editor_layer->get_project());
 		this->add_panel<project_editor_panel>()->set_project(this->m_editor_layer->get_project());
 	}
 	imgui_layer::~imgui_layer() {
@@ -156,11 +156,13 @@ namespace bananatree {
 				}
 				ImGui::Separator();
 				if (ImGui::MenuItem("New Project")) {
+					thebanana::g_game->get_model_registry()->reload(std::vector<thebanana::model_registry::model_descriptor>());
 					this->m_editor_layer->get_project()->reset();
 				}
 				if (ImGui::MenuItem("Open Project...")) {
 					std::string path = open_dialog("Banana Project (*.tree)\0*.tree");
 					if (!path.empty()) {
+						thebanana::g_game->get_model_registry()->reload(std::vector<thebanana::model_registry::model_descriptor>());
 						this->m_editor_layer->get_project()->load(path);
 					}
 				}

@@ -53,10 +53,6 @@ namespace bananatree {
 	}
 	model_registry_panel::model_registry_panel() {
 		this->m_import_menu_open = false;
-		current.enabled = true;
-		current.find = "3dplatformer\\3dplatformer";
-		current.replace = "..\\sandbox";
-		this->import("../sandbox/models/cube.obj", "cube");
 	}
 	void model_registry_panel::render() {
 		if (this->m_import_menu_open) import_menu(&this->m_import_menu_open, this);
@@ -84,6 +80,18 @@ namespace bananatree {
 		return thebanana::model_registry::path_helper(path, current.find, current.replace);
 	}
 	void model_registry_panel::import(const std::string& path, const std::string& name) {
+		this->m_project->register_model({ path, name, current.enabled, current.find, current.replace });
 		thebanana::g_game->get_model_registry()->load({ { name, path, (current.enabled ? find_replace_proc : NULL), thebanana::transform() } });
+	}
+	void model_registry_panel::import(const project::model_descriptor& md) {
+		current.enabled = md.should_replace;
+		if (current.enabled) {
+			current.find = md.find;
+			current.replace = md.replace;
+		}
+		thebanana::g_game->get_model_registry()->load({ { md.name, md.path, (current.enabled ? find_replace_proc : NULL), thebanana::transform() } });
+	}
+	void model_registry_panel::set_project(const std::shared_ptr<project>& p) {
+		this->m_project = p;
 	}
 }

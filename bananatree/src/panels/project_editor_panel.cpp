@@ -22,4 +22,7 @@ namespace bananatree {
 		this->m_project = p;
 		this->m_current_name = this->m_project->get_name();
 	}
+	void project_editor_panel::set_current_name(const std::string& name) {
+		this->m_current_name = name;
+	}
 }

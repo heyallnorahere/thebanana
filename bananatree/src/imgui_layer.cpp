@@ -24,7 +24,10 @@ namespace bananatree {
 		}
 		ImGui::SameLine();
 		if (ImGui::Button("Confirm")) {
-			thebanana::g_game->get_scene()->add_object(new thebanana::static_mesh(mesh_name));
+			thebanana::gameobject* object = thebanana::g_game->get_scene()->add_object(new thebanana::static_mesh(mesh_name));
+#ifndef _DEBUG
+			object->add_component<thebanana::debug_component>();
+#endif
 			mesh_name = "";
 			*open = false;
 		}
@@ -172,6 +175,7 @@ namespace bananatree {
 						this->m_editor_layer->get_project()->save(path);
 					}
 				}
+				ImGui::Separator();
 				if (ImGui::MenuItem("Quit", "Ctrl+Q")) {
 					thebanana::g_game->destroy();
 				}
@@ -185,7 +189,10 @@ namespace bananatree {
 			}
 			if (ImGui::BeginMenu("Gameobject")) {
 				if (ImGui::MenuItem("Empty")) {
-					thebanana::g_game->get_scene()->add_object(new thebanana::basic_gameobject);
+					thebanana::gameobject* object = thebanana::g_game->get_scene()->add_object(new thebanana::basic_gameobject);
+#ifndef _DEBUG
+					object->add_component<thebanana::debug_component>();
+#endif
 				}
 				if (ImGui::MenuItem("Static mesh")) {
 					this->m_static_mesh_creation_window_open = true;

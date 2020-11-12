@@ -92,7 +92,7 @@ namespace thebanana {
 	std::vector<std::string> model_registry::get_loaded_model_names() const {
 		std::vector<std::string> names;
 		for (auto& m : this->models) {
-			names.push_back(m.first);
+			if (m.second.get()) names.push_back(m.first);
 		}
 		return names;
 	}

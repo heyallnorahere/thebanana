@@ -138,7 +138,7 @@ namespace thebanana {
 		ImGui::Checkbox(this->name.c_str(), this->value);
 	}
 	inline void component::property<float>::draw() const {
-		ImGui::InputFloat(this->name.c_str(), this->value);
+		ImGui::DragFloat(this->name.c_str(), this->value);
 	}
 	inline void component::property<double>::draw() const {
 		ImGui::InputDouble(this->name.c_str(), this->value);
@@ -147,13 +147,13 @@ namespace thebanana {
 		ImGui::InputText(this->name.c_str(), this->value);
 	}
 	inline void component::property<glm::vec2>::draw() const {
-		ImGui::InputFloat2(this->name.c_str(), &this->value->x);
+		ImGui::DragFloat2(this->name.c_str(), &this->value->x);
 	}
 	inline void component::property<glm::vec3>::draw() const {
-		ImGui::InputFloat3(this->name.c_str(), &this->value->x);
+		ImGui::DragFloat3(this->name.c_str(), &this->value->x);
 	}
 	inline void component::property<glm::vec4>::draw() const {
-		ImGui::InputFloat4(this->name.c_str(), &this->value->x);
+		ImGui::DragFloat4(this->name.c_str(), &this->value->x);
 	}
 	inline void component::property<component::property_base::dropdown>::draw() const {
 		const std::vector<std::string>& std_items = this->value->get_items();

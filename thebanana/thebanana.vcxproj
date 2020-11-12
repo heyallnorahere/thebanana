@@ -107,6 +107,7 @@
     <ClCompile Include="src\application_layer.cpp" />
     <ClCompile Include="src\component.cpp" />
     <ClCompile Include="src\components\animation_component.cpp" />
+    <ClCompile Include="src\components\camera_component.cpp" />
     <ClCompile Include="src\components\mesh_component.cpp" />
     <ClCompile Include="src\components\native_script_component.cpp" />
     <ClCompile Include="src\components\tag_component.cpp" />
@@ -150,6 +151,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\application_layer.h" />
+    <ClInclude Include="include\components\camera_component.h" />
     <ClInclude Include="include\components\components.h" />
     <ClInclude Include="include\components\native_script_component.h" />
     <ClInclude Include="include\components\tag_component.h" />

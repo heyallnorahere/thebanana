@@ -70,6 +70,7 @@ namespace bananatree {
 				else if (typeid(c).hash_code() == typeid(thebanana::mesh_component).hash_code()) label = "Mesh component";
 				else if (typeid(c).hash_code() == typeid(thebanana::animation_component).hash_code()) label = "Animation component";
 				else if (typeid(c).hash_code() == typeid(thebanana::rigidbody).hash_code()) label = "Rigidbody";
+				else if (typeid(c).hash_code() == typeid(thebanana::camera_component).hash_code()) label = "Camera component";
 				else if (typeid(c).hash_code() == typeid(thebanana::native_script_component).hash_code()) label = "Native script component";
 				else if (typeid(c).hash_code() == typeid(thebanana::debug_component).hash_code()) label = "Debug component";
 				assert(label);
@@ -105,7 +106,7 @@ namespace bananatree {
 				}
 			}
 			ImGui::Separator();
-			static std::vector<const char*> combo_items = { "Tag component", "Mesh component", "Animation component", "Rigidbody", "Native script component" };
+			static std::vector<const char*> combo_items = { "Tag component", "Mesh component", "Animation component", "Rigidbody", "Camera component", "Native script component" };
 			ImGui::Combo("Type", &this->m_component_index, combo_items.data(), combo_items.size());
 			ImGui::SameLine();
 			if (ImGui::Button("Add component")) {
@@ -123,6 +124,9 @@ namespace bananatree {
 					object->add_component<thebanana::rigidbody>();
 					break;
 				case 4:
+					object->add_component<thebanana::camera_component>();
+					break;
+				case 5:
 					object->add_component<thebanana::native_script_component>();
 					break;
 				}

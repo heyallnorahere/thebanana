@@ -121,6 +121,15 @@ namespace thebanana {
 			if (c) serialize_collider(out, c);
 			out << YAML::EndMap;
 		}
+		for (size_t i = 0; i < object->get_number_components<camera_component>(); i++) {
+			camera_component& cc = object->get_component<camera_component>(i);
+			out << YAML::BeginMap;
+			out << YAML::Key << "type" << YAML::Value << "camera_component";
+			out << YAML::Key << "uuid" << YAML::Value << cc.get_uuid();
+			out << YAML::Key << "angle" << YAML::Value << *cc.get_property<glm::vec2>("Angle");
+			out << YAML::Key << "direction" << YAML::Value << *cc.get_property<glm::vec3>("Direction");
+			out << YAML::EndMap;
+		}
 		for (size_t i = 0; i < object->get_number_components<native_script_component>(); i++) {
 			native_script_component& nsc = object->get_component<native_script_component>(i);
 			out << YAML::BeginMap;
@@ -221,8 +230,12 @@ namespace thebanana {
 				rb.set_check_for_collisions(n["check_for_collisions"].as<bool>());
 				if (n["collider"])
 					deserialize_collider(n["collider"], rb);
-			}
-			else if (type == "native_script_component") {
+			} else if (type == "camera_component") {
+				camera_component& cc = object->add_component<camera_component>();
+				cc.set_uuid(uuid);
+				cc.set_property<glm::vec2>("Angle", n["angle"].as<glm::vec2>());
+				cc.set_property<glm::vec3>("Direction", n["direction"].as<glm::vec3>());
+			} else if (type == "native_script_component") {
 				native_script_component& nsc = object->add_component<native_script_component>();
 				nsc.set_uuid(uuid);
 				assert(n["script"]);

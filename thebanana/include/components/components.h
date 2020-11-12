@@ -3,3 +3,4 @@
 #include "mesh_component.h"
 #include "native_script_component.h"
 #include "tag_component.h"
+#include "camera_component.h"

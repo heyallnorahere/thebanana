@@ -8,7 +8,7 @@
 namespace bananatree {
 	static void transform_menu(thebanana::gameobject* object, bool* open) {
 		if (!object) return;
-		ImGui::Begin("Transform menu", open);
+		ImGui::Begin("Transform menu", open, ImGuiWindowFlags_NoDocking);
 		if (ImGui::CollapsingHeader("Move")) {
 			static glm::vec3 m = glm::vec3(0.f);
 			ImGui::InputFloat3("Motion values", &m.x);

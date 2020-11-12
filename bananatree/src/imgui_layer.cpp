@@ -8,6 +8,7 @@
 #include "panels/log_panel.h"
 #include "panels/scene_hierarchy_panel.h"
 #include "panels/property_editor_panel.h"
+#include "panels/model_registry_panel.h"
 #include "util.h"
 #include "../resource.h"
 namespace bananatree {
@@ -32,6 +33,7 @@ namespace bananatree {
 		this->add_panel<viewport_panel>();
 		this->add_panel<log_panel>();
 		this->add_panel<property_editor_panel>()->set_hierarchy(this->add_panel<scene_hierarchy_panel>());
+		this->add_panel<model_registry_panel>();
 	}
 	imgui_layer::~imgui_layer() {
 		ImGui_ImplOpenGL3_Shutdown();
@@ -141,6 +143,14 @@ namespace bananatree {
 				}
 				ImGui::EndMenu();
 			}
+#ifdef _DEBUG
+			if (ImGui::BeginMenu("Debug")) {
+				if (ImGui::MenuItem("Break")) {
+					__debugbreak();
+				}
+				ImGui::EndMenu();
+			}
+#endif
 			ImGui::EndMenuBar();
 		}
 	}

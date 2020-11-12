@@ -89,6 +89,13 @@ namespace thebanana {
 		this->descriptors = models;
 		this->has_loaded = true;
 	}
+	std::vector<std::string> model_registry::get_loaded_model_names() const {
+		std::vector<std::string> names;
+		for (auto& m : this->models) {
+			names.push_back(m.first);
+		}
+		return names;
+	}
 	void model_registry::unload() {
 		this->models.clear();
 		this->has_loaded = false;

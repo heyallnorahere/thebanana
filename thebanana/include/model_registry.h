@@ -25,6 +25,7 @@ namespace thebanana {
 		model_vertex_data get_vertex_data(const std::string& model_name);
 		static std::string path_helper(const std::string& original, const std::string& find, const std::string& replace);
 		void load(const std::vector<model_descriptor>& models);
+		std::vector<std::string> get_loaded_model_names() const;
 	private:
 		void unload();
 		std::map<std::string, model_vertex_data> vertex_data;

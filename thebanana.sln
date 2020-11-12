@@ -31,6 +31,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "bananatree", "bananatree\ba
 		{B361CAFF-89A0-43C7-8D3F-F79565ED12CF} = {B361CAFF-89A0-43C7-8D3F-F79565ED12CF}
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Dependencies", "Dependencies", "{FD885306-0B23-45CF-9D3D-F07881C77AE4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -60,6 +62,10 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{B361CAFF-89A0-43C7-8D3F-F79565ED12CF} = {FD885306-0B23-45CF-9D3D-F07881C77AE4}
+		{ED19DF79-068F-4F8A-9117-83038FA9522D} = {FD885306-0B23-45CF-9D3D-F07881C77AE4}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {3E9E6E84-6FBF-46F3-91A7-27BE42433F2F}

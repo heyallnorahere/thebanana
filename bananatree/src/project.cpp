@@ -17,7 +17,7 @@ namespace bananatree {
 		SetWindowTextA(thebanana::g_game->get_window(), window_text.c_str());
 	}
 	void project::reset() {
-		this->m_temp_path.clear();
+		if (!this->m_temp_path.empty()) this->m_temp_path.clear();
 		this->rename("Untitled");
 		this->m_descriptors.clear();
 	}

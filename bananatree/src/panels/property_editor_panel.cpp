@@ -112,6 +112,7 @@ namespace bananatree {
 			if (ImGui::Button("Toggle transform menu")) this->m_show_transform_menu = !this->m_show_transform_menu;
 			ImGui::Separator();
 			ImGui::Text("Components:");
+
 			for (size_t i = 0; i < object->get_number_components<thebanana::component>(); i++) {
 				thebanana::component& c = object->get_component<thebanana::component>(i);
 				const char* label = NULL;
@@ -172,6 +173,7 @@ namespace bananatree {
 					}
 					if (should_remove) {
 						object->remove_component<thebanana::component>(i);
+						i--;
 					}
 				}
 			}

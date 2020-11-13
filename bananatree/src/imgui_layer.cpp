@@ -14,7 +14,7 @@
 #include "util.h"
 #include "../resource.h"
 namespace bananatree {
-	static void create_static_mesh(bool* open) {
+	void create_static_mesh(bool* open, thebanana::gameobject* parent) {
 		ImGui::Begin("Create static mesh", open);
 		static std::string mesh_name = "";
 		ImGui::InputText("Mesh name", &mesh_name);
@@ -24,7 +24,9 @@ namespace bananatree {
 		}
 		ImGui::SameLine();
 		if (ImGui::Button("Confirm")) {
-			thebanana::gameobject* object = thebanana::g_game->get_scene()->add_object(new thebanana::static_mesh(mesh_name));
+			thebanana::gameobject* object;
+			if (parent) object = parent->add_object(new thebanana::static_mesh(mesh_name));
+			else object = thebanana::g_game->get_scene()->add_object(new thebanana::static_mesh(mesh_name));
 #ifndef _DEBUG
 			object->add_component<thebanana::debug_component>();
 #endif
@@ -247,7 +249,7 @@ namespace bananatree {
 			}
 #endif
 			ImGui::EndMenuBar();
-			if (this->m_static_mesh_creation_window_open) create_static_mesh(&this->m_static_mesh_creation_window_open);
+			if (this->m_static_mesh_creation_window_open) create_static_mesh(&this->m_static_mesh_creation_window_open, NULL);
 		}
 	}
 	//https://github.com/TheCherno/Hazel/blob/master/Hazel/src/Hazel/ImGui/ImGuiLayer.cpp

@@ -25,6 +25,9 @@ namespace thebanana {
 		this->m_children.remove(obj);
 	}
 	void scene::clear() {
+		char buf[256];
+		_ui64toa(this->m_children.size(), buf, 10);
+		debug::log_print("deleting " + std::string(buf) + (this->m_children.size() == 1 ? " object" : " objects"));
 		this->m_children.clear();
 		std::vector<rigidbody*>& rbs = (std::vector<rigidbody*>&)rigidbody::get_rigidbodies();
 		rbs.clear();

@@ -326,8 +326,17 @@ namespace thebanana {
 			}
 		}
 	}
+	struct add_object_struct {
+		gameobject* parent;
+		gameobject* child;
+	};
+	std::vector<add_object_struct> to_add;
 	static gameobject* deserialize_object(const YAML::Node& node, gameobject* parent, scene* s) {
 		gameobject* object = new basic_gameobject;
+		assert(object);
+		if (parent) {
+			to_add.push_back({ parent, object });
+		}
 		YAML::Node uuid_node = node["object"];
 		assert(uuid_node);
 		unsigned long long uuid = uuid_node.as<unsigned long long>();
@@ -336,6 +345,7 @@ namespace thebanana {
 			char uuidbuf[256];
 			_ui64toa(uuid, uuidbuf, 10);
 			debug::log_print("failed to load object; an object with the uuid of " + std::string(uuidbuf) + " already exists");
+			delete object;
 			return NULL;
 		}
 		object->set_uuid(uuid);
@@ -353,7 +363,6 @@ namespace thebanana {
 		assert(node["children"]);
 		for (auto n : node["children"]) {
 			gameobject* obj = deserialize_object(n, object, s);
-			if (obj) object->add_object(obj);
 		}
 		char uuidbuf[256];
 		_ui64toa(object->get_uuid(), uuidbuf, 10);
@@ -362,6 +371,7 @@ namespace thebanana {
 	}
 	void scene_serializer::deserialize(const std::string& path) {
 		to_find.clear();
+		to_add.clear();
 		this->m_scene->clear();
 		YAML::Node data = YAML::LoadFile(path);
 		assert(data["scene"]);
@@ -371,8 +381,12 @@ namespace thebanana {
 		if (objects) {
 			for (auto obj : objects) {
 				gameobject* object = deserialize_object(obj, NULL, this->m_scene);
-				if (object) this->m_scene->add_object(object);
+				if (object != NULL)
+					this->m_scene->add_object(object);
 			}
+		}
+		for (auto aos : to_add) {
+			aos.parent->add_object(aos.child);
 		}
 		for (auto fs : to_find) {
 			*fs.ptr = this->m_scene->find(fs.uuid);

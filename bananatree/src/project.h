@@ -16,11 +16,13 @@ namespace bananatree {
 		void save();
 		void load(const std::string& path);
 		std::string get_name();
+		std::string get_main_scene_path();
+		void set_main_scene_path(const std::string& path);
 		void register_model(const model_descriptor& md);
 		bool has_temp_path();
 		const std::vector<model_descriptor>& get_descriptors();
 	private:
-		std::string m_name;
+		std::string m_name, m_main_scene;
 		std::vector<model_descriptor> m_descriptors;
 		imgui_layer* m_imgui_layer;
 		std::string m_temp_path;

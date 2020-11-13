@@ -9,9 +9,10 @@ namespace bananatree {
 	void project_editor_panel::render() {
 		ImGui::Begin("Project editor", &this->m_open);
 		ImGui::InputText("Name", &this->m_current_name);
-		ImGui::SameLine();
+		ImGui::InputText("Main scene", &this->m_current_main_scene_path);
 		if (ImGui::Button("Save")) {
 			this->m_project->rename(this->m_current_name);
+			this->m_project->set_main_scene_path(this->m_current_main_scene_path);
 		}
 		ImGui::End();
 	}
@@ -21,8 +22,12 @@ namespace bananatree {
 	void project_editor_panel::set_project(const std::shared_ptr<project>& p) {
 		this->m_project = p;
 		this->m_current_name = this->m_project->get_name();
+		this->m_current_main_scene_path = this->m_project->get_main_scene_path();
 	}
 	void project_editor_panel::set_current_name(const std::string& name) {
 		this->m_current_name = name;
+	}
+	void project_editor_panel::set_current_main_scene(const std::string& path) {
+		this->m_current_main_scene_path = path;
 	}
 }

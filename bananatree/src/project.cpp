@@ -18,6 +18,7 @@ namespace bananatree {
 	}
 	void project::reset() {
 		if (!this->m_temp_path.empty()) this->m_temp_path.clear();
+		if (!this->m_main_scene.empty()) this->m_main_scene.clear();
 		this->rename("Untitled");
 		this->m_descriptors.clear();
 	}
@@ -26,6 +27,9 @@ namespace bananatree {
 		YAML::Emitter out;
 		out << YAML::BeginMap;
 		out << YAML::Key << "name" << YAML::Value << this->m_name;
+		if (!this->m_main_scene.empty()) {
+			out << YAML::Key << "main_scene_path" << YAML::Value << this->m_main_scene;
+		}
 		out << YAML::Key << "models" << YAML::Value << YAML::BeginSeq;
 		for (auto md : this->m_descriptors) {
 			out << YAML::BeginMap;
@@ -53,6 +57,27 @@ namespace bananatree {
 		assert(file["name"]);
 		this->rename(file["name"].as<std::string>());
 		this->m_imgui_layer->find_panel<project_editor_panel>()->set_current_name(this->m_name);
+		if (file["main_scene_path"]) {
+			std::string path = file["main_scene_path"].as<std::string>();
+			this->m_main_scene = path;
+			this->m_imgui_layer->find_panel<project_editor_panel>()->set_current_main_scene(this->m_main_scene);
+		}
+		if (!this->m_main_scene.empty()) {
+			std::string path = this->m_temp_path;
+			size_t pos = std::string::npos;
+			do {
+				pos = path.find_first_of('/');
+				if (pos != std::string::npos) {
+					this->m_temp_path.replace(pos, 1, "\\");
+				}
+			} while (pos != std::string::npos);
+			pos = path.find_last_of('\\');
+			std::string directory;
+			if (pos != std::string::npos) {
+				directory = path.substr(0, pos + 1);
+			}
+			this->m_imgui_layer->open_scene(directory + this->m_main_scene);
+		}
 		assert(file["models"]);
 		for (auto m : file["models"]) {
 			model_descriptor md;
@@ -69,6 +94,12 @@ namespace bananatree {
 	}
 	std::string project::get_name() {
 		return this->m_name;
+	}
+	std::string project::get_main_scene_path() {
+		return this->m_main_scene;
+	}
+	void project::set_main_scene_path(const std::string& path) {
+		this->m_main_scene = path;
 	}
 	void project::register_model(const model_descriptor& md) {
 		this->m_descriptors.push_back(md);

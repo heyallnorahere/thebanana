@@ -5,6 +5,7 @@ namespace thebanana {
 	class scene {
 	public:
 		scene(game* g);
+		~scene();
 		template<typename T> T* add_object(T* obj);
 		void remove_object(size_t index);
 		void clear();

@@ -94,7 +94,9 @@ namespace bananatree {
 	void scene_hierarchy_panel::set_selected_object(thebanana::gameobject* object) {
 		thebanana::debug::current_selected_gameobject = object;
 	}
-	void make_dragdrop_source(thebanana::gameobject* object) {
+	void make_dragdrop_source(thebanana::gameobject* object, const std::string& id) {
+		std::string id_str = id + "dndsource";
+		ImGui::PushID(id_str.c_str());
 		ImGui::SameLine();
 		ImGui::ColorButton("Drag/Drop Source", ImVec4(0.5f, 0.5f, 0.5f, 1.f), ImGuiColorEditFlags_None, ImVec2(15.f, 15.f));
 		if (ImGui::BeginDragDropSource()) {
@@ -103,6 +105,7 @@ namespace bananatree {
 			ImGui::Text(object->get_nickname().c_str());
 			ImGui::EndDragDropSource();
 		}
+		ImGui::PopID();
 	}
 	constexpr ImGuiTreeNodeFlags open_flags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_OpenOnDoubleClick;
 	void scene_hierarchy_panel::tree_helper(thebanana::gameobject* object) {
@@ -111,27 +114,30 @@ namespace bananatree {
 		} else {
 			std::string id_str = make_id();
 			if (ImGui::TreeNodeEx(id_str.c_str(), ImGuiTreeNodeFlags_Leaf, "%s, no children", object->get_nickname().c_str())) {
-				this->gameobject_context_menu(object);
-				make_dragdrop_source(object);
 				set_gameobject(object, &thebanana::debug::current_selected_gameobject);
-				ImGui::TreePop();
-			} else {
 				this->gameobject_context_menu(object);
-				make_dragdrop_source(object);
+				make_dragdrop_source(object, id_str);
+				ImGui::TreePop();
 			}
 		}
 	}
 	void scene_hierarchy_panel::tree(thebanana::gameobject* object) {
 		std::string id_str = make_id();
 		if (ImGui::TreeNodeEx(id_str.c_str(), open_flags, "%s, children: %d", object->get_nickname().c_str(), object->get_children_count())) {
-			this->gameobject_context_menu(object);
-			make_dragdrop_source(object);
 			set_gameobject(object, &thebanana::debug::current_selected_gameobject);
+			this->gameobject_context_menu(object);
+			make_dragdrop_source(object, id_str);
 			for (size_t i = 0; i < object->get_children_count(); i++) {
 				thebanana::gameobject* child = object->get_child(i);
 				this->tree_helper(child);
 			}
 			ImGui::TreePop();
+		} else {
+			ImGui::PushID(id_str.c_str());
+			set_gameobject(object, &thebanana::debug::current_selected_gameobject);
+			this->gameobject_context_menu(object);
+			make_dragdrop_source(object, id_str);
+			ImGui::PopID();
 		}
 	}
 }

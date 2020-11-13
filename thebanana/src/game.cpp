@@ -101,8 +101,10 @@ namespace thebanana {
 			return true;
 		switch (msg) {
 		case WM_CREATE:
+			debug::log_print("created window");
 			break;
 		case WM_DESTROY:
+			debug::log_print("destroyed window");
 			PostQuitMessage(0);
 			break;
 		case WM_SIZE:

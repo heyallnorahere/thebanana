@@ -252,7 +252,9 @@ namespace thebanana {
 			ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 		}
 		void log_print(const std::string& message) {
-			debug_log << message << "\n";
+			std::string msg = message + "\n";
+			debug_log << msg;
+			OutputDebugStringA(msg.c_str());
 		}
 	}
 }

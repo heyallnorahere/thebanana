@@ -15,7 +15,17 @@
 #include "../resource.h"
 namespace bananatree {
 	void create_static_mesh(bool* open, thebanana::gameobject* parent) {
-		ImGui::Begin("Create static mesh", open);
+		std::string add_to;
+		if (parent) {
+			char buf[256];
+			_ui64toa(parent->get_uuid(), buf, 10);
+			add_to = "gameobject " + std::string(buf);
+		} else {
+			add_to = "scene";
+		}
+		char window_name[256];
+		sprintf(window_name, "Add static mesh to %s", add_to.c_str());
+		ImGui::Begin(window_name, open);
 		static std::string mesh_name = "";
 		ImGui::InputText("Mesh name", &mesh_name);
 		if (ImGui::Button("Cancel")) {

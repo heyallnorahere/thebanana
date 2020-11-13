@@ -13,6 +13,11 @@ namespace thebanana {
 		this->m_shader = NULL;
 		this->m_game = g;
 	}
+	scene::~scene() {
+		char buf[256];
+		_ui64toa(this->m_children.size(), buf, 10);
+		debug::log_print("deleting " + std::string(buf) + (this->m_children.size() == 1 ? " object" : " objects"));
+	}
 	void scene::remove_object(size_t index) {
 		auto it = this->m_children.begin();
 		std::advance(it, index);

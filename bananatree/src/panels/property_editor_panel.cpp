@@ -112,7 +112,6 @@ namespace bananatree {
 			if (ImGui::Button("Toggle transform menu")) this->m_show_transform_menu = !this->m_show_transform_menu;
 			ImGui::Separator();
 			ImGui::Text("Components:");
-
 			for (size_t i = 0; i < object->get_number_components<thebanana::component>(); i++) {
 				thebanana::component& c = object->get_component<thebanana::component>(i);
 				const char* label = NULL;
@@ -150,8 +149,10 @@ namespace bananatree {
 							thebanana::component::property<thebanana::gameobject*>* prop = (thebanana::component::property<thebanana::gameobject*>*)p.get();
 							char buf[256];
 							_ui64toa(c.get_uuid(), buf, 10);
+							std::string uuidstring = buf;
+							_ui64toa(i, buf, 10);
 							char id[256];
-							sprintf(id, "%s, %d", buf, i);
+							sprintf(id, "%s, %s", uuidstring.c_str(), buf);
 							ImGui::PushID(id);
 							std::string text = (*prop->get_value()) ? (*prop->get_value())->get_nickname() : "None";
 							ImGui::InputText(prop->get_name().c_str(), &text, ImGuiInputTextFlags_ReadOnly);

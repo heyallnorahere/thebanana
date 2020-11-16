@@ -138,6 +138,12 @@
     <ClCompile Include="src\components\camera_component.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\particlesystem\particlesystem_component.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\particlesystem\particle_component.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -308,6 +314,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\components\camera_component.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\particlesystem\particlesystem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\particlesystem\particlesystem_component.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\particlesystem\particle_component.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

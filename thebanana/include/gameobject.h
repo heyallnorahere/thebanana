@@ -30,6 +30,7 @@ namespace thebanana {
 		template<typename _Ty> _Ty& get_component(size_t index = 0);
 		template<typename _Ty> void remove_component(size_t index = 0);
 		template<typename _Ty> size_t get_number_components();
+		template<typename _Ty> bool has_component();
 		const component::properties_t& get_properties();
 		void on_collision(gameobject* other);
 		std::vector<std::string> get_tags() const;
@@ -126,6 +127,9 @@ namespace thebanana {
 			}
 		}
 		return ptrs.size();
+	}
+	template<typename _Ty> inline bool gameobject::has_component() {
+		return this->get_number_components<_Ty>() > 0;
 	}
 	template<typename _Ty> inline component::property<_Ty>* gameobject::find_property(const std::string& name) {
 		component::property<_Ty>* result = NULL;

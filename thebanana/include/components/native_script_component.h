@@ -25,6 +25,7 @@ namespace thebanana {
 		transform& get_transform();
 		template<typename _Ty> _Ty& add_component();
 		template<typename _Ty> size_t get_number_components();
+		template<typename _Ty> bool has_component();
 		template<typename _Ty> _Ty& get_component(size_t index = 0);
 		template<typename _Ty> void remove_component(size_t index = 0);
 	};
@@ -76,6 +77,9 @@ namespace thebanana {
 	}
 	template<typename _Ty> inline size_t script::get_number_components() {
 		return this->parent->get_number_components<_Ty>();
+	}
+	template<typename _Ty> inline bool script::has_component() {
+		return this->parent->has_component<_Ty>();
 	}
 	template<typename _Ty> inline _Ty& script::get_component(size_t index) {
 		return this->parent->get_component<_Ty>(index);

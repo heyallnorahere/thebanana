@@ -28,3 +28,12 @@ thebanana::component::property<glm::vec4> p7(glm::vec4(), "");
 thebanana::component::property<thebanana::component::property_base::read_only_text> p8(thebanana::component::property_base::read_only_text(""), "");
 thebanana::component::property<thebanana::component::property_base::dropdown> p9(thebanana::component::property_base::dropdown(std::vector<std::string>()), "");
 thebanana::component::property<thebanana::gameobject*> p10(NULL, "");
+float get_current_time() {
+	static double start_time = 0;
+	double raw_time = std::chrono::duration_cast<std::chrono::duration<double, std::ratio<1, 1>>>(std::chrono::system_clock::now().time_since_epoch()).count();
+	if (start_time < 0.0001) {
+		start_time = raw_time;
+	}
+	float time = static_cast<float>(raw_time - start_time);
+	return time;
+}

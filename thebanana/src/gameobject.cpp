@@ -6,6 +6,7 @@
 #include "debug_tools.h"
 #include "components/tag_component.h"
 #include "internal_util.h"
+#include "particlesystem/particle_component.h"
 namespace thebanana {
 	gameobject::gameobject() : last_collided_frame(0) {
 #ifdef _DEBUG
@@ -30,7 +31,8 @@ namespace thebanana {
 		}
 		char buf[256];
 		_ui64toa(this->m_uuid, buf, 10);
-		debug::log_print("destroyed gameobject: " + std::string(buf));
+		if (!this->has_component<particlesystem::particle_component>())
+			debug::log_print("destroyed gameobject: " + std::string(buf));
 	}
 	const transform& gameobject::get_transform() const {
 		return this->m_transform;
@@ -94,7 +96,7 @@ namespace thebanana {
 			return this->m_transform;
 		}
 		else {
-			return this->m_transform * this->m_parent->get_absolute_transform();
+			return this->m_parent->get_absolute_transform() * this->m_transform;
 		}
 	}
 	std::string& gameobject::get_nickname() {

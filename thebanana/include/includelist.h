@@ -34,6 +34,7 @@
 #include <cassert>
 #include <typeinfo>
 #include <thread>
+#include <limits>
 #include <include/gpu/GrBackendSurface.h>
 #include <include/gpu/GrDirectContext.h>
 #include <include/core/SkCanvas.h>

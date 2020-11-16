@@ -129,6 +129,8 @@
     <ClCompile Include="src\model_registry.cpp" />
     <ClCompile Include="src\mouse.cpp" />
     <ClCompile Include="src\basic_gameobject.cpp" />
+    <ClCompile Include="src\particlesystem\particlesystem_component.cpp" />
+    <ClCompile Include="src\particlesystem\particle_component.cpp" />
     <ClCompile Include="src\pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
@@ -162,6 +164,9 @@
     <ClInclude Include="include\graphics\quad.h" />
     <ClInclude Include="include\graphics\texture.h" />
     <ClInclude Include="include\includelist.h" />
+    <ClInclude Include="include\particlesystem\particlesystem.h" />
+    <ClInclude Include="include\particlesystem\particlesystem_component.h" />
+    <ClInclude Include="include\particlesystem\particle_component.h" />
     <ClInclude Include="src\internal_only_includelist.h" />
     <ClInclude Include="include\lua_interpreter.h" />
     <ClInclude Include="include\main_module.h" />

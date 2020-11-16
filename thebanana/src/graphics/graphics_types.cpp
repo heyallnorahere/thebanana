@@ -9,5 +9,17 @@ namespace thebanana {
 		graphics_api get_default_graphics_api() {
 			return default_api;
 		}
+		std::string get_backend_version(graphics_api api_) {
+			graphics_api api = api_;
+			if (api == graphics_api::none) {
+				api = get_default_graphics_api();
+			}
+			switch (api) {
+			case graphics_api::opengl:
+				return (const char*)glGetString(GL_VERSION);
+				break;
+			}
+			return std::string();
+		}
 	}
 }

@@ -5,6 +5,7 @@
 #include "keyboard.h"
 #include "mouse.h"
 #include "game.h"
+#include "internal_util.h"
 namespace thebanana {
 	input_manager::input_manager(game* g_game) : m_game(g_game) {
 		HRESULT hr = DirectInput8Create(HINST_THISCOMPONENT, DIRECTINPUT_VERSION, IID_IDirectInput8, (void**)& this->m_context, NULL);

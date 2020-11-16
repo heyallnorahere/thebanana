@@ -4,6 +4,7 @@
 #include "util.h"
 #include "gameobject.h"
 #include "game.h"
+#include "internal_util.h"
 namespace thebanana {
 	animation_component::animation_component(gameobject* obj) : component(obj), animation_start_time(0.0), repeat(false), animation_id(-1) { }
 	void animation_component::post_update() {

@@ -13,17 +13,20 @@
 #include "shader_registry.h"
 #include "script_registry.h"
 #include "util.h"
+#include "internal_util.h"
 extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 namespace thebanana {
 	game* g_game = NULL;
 	game::game(const std::string& title) {
 		srand(CURRENT_TIME(unsigned int));
 		this->m_frame = 0;
-		this->m_window = CreateWindowA(BANANA_WINDOW_CLASS_NAME, title.c_str(), WS_VISIBLE | WS_SYSMENU | WS_MAXIMIZEBOX, CW_USEDEFAULT, CW_USEDEFAULT, 800, 600, NULL, NULL, HINST_THISCOMPONENT, this);
+		constexpr int width = 1600;
+		constexpr int height = 900;
+		this->m_window = CreateWindowA(BANANA_WINDOW_CLASS_NAME, title.c_str(), WS_VISIBLE | WS_SYSMENU | WS_MAXIMIZEBOX, CW_USEDEFAULT, CW_USEDEFAULT, width, height, NULL, NULL, HINST_THISCOMPONENT, this);
 		RECT r;
 		GetWindowRect(this->m_window, &r);
 		this->m_aspect_ratio = static_cast<float>(r.right - r.left) / static_cast<float>(r.bottom - r.top);
-		this->m_viewport = new opengl_viewport(opengl_viewport::viewport_attribs{ this->m_window, 0, 0, 800, 600, 3, 3, opengl_viewport::viewport_attribs::passed_window });
+		this->m_viewport = new opengl_viewport(opengl_viewport::viewport_attribs{ this->m_window, 0, 0, width, height, 4, 6, opengl_viewport::viewport_attribs::passed_window });
 		this->m_interpreter = new lua_interpreter;
 		this->m_scene = new scene(this);
 		this->m_input_manager = new input_manager(this);
@@ -49,6 +52,9 @@ namespace thebanana {
 		this->m_clip_cursor = true;
 		this->m_debug_menus_initialized = false;
 		this->m_steam_initialized = false;
+		char sizebuf[256];
+		sprintf(sizebuf, "width: %d, height: %d", width, height);
+		debug::log_print("successfully created graphics context:\n	backend: " + graphics::get_backend_version() + "\n	" + sizebuf);
 	}
 	game::~game() {
 		if (this->m_steam_initialized) this->shutdown_steam();

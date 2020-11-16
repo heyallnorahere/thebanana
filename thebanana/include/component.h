@@ -91,6 +91,7 @@ namespace thebanana {
 	protected:
 		void add_property(property_base* p);
 		transform& get_transform();
+		template<typename _Ty> bool has_component();
 		template<typename _Ty> size_t get_number_components();
 		template<typename _Ty> _Ty& get_component(size_t index = 0);
 		template<typename _Ty> property<_Ty>* find_property(const std::string& name);
@@ -237,6 +238,9 @@ namespace thebanana {
 			return prop->get_value();
 		}
 		return NULL;
+	}
+	template<typename _Ty> inline bool component::has_component() {
+		return this->parent->has_component<_Ty>();
 	}
 	template<typename _Ty> inline size_t component::get_number_components() {
 		return this->parent->get_number_components<_Ty>();

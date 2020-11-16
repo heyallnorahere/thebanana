@@ -132,9 +132,9 @@ namespace thebanana {
 	collider* rigidbody::get_collider() const {
 		return this->coll;
 	}
-	const std::vector<rigidbody*>& rigidbody::get_rigidbodies() {
+	const std::list<rigidbody*>& rigidbody::get_rigidbodies() {
 		return rigidbodies;
 	}
-	std::vector<rigidbody*> rigidbody::rigidbodies;
+	std::list<rigidbody*> rigidbody::rigidbodies;
 	glm::vec3 rigidbody::gravity = glm::vec3(0.f, -0.05f, 0.f);
 }

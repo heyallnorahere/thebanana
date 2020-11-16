@@ -93,6 +93,14 @@ namespace bananatree {
 						thebanana::debug::log_print("could not add camera component; no object selected");
 					}
 				}
+				if (ImGui::MenuItem("Particlesystem component")) {
+					if (object) {
+						object->add_component<thebanana::particlesystem::particlesystem_component>();
+					}
+					else {
+						thebanana::debug::log_print("could not add particlesystem component; no object selected");
+					}
+				}
 				if (ImGui::MenuItem("Native script component")) {
 					if (object) {
 						object->add_component<thebanana::native_script_component>();
@@ -120,6 +128,7 @@ namespace bananatree {
 				else if (typeid(c).hash_code() == typeid(thebanana::animation_component).hash_code()) label = "Animation component";
 				else if (typeid(c).hash_code() == typeid(thebanana::rigidbody).hash_code()) label = "Rigidbody";
 				else if (typeid(c).hash_code() == typeid(thebanana::camera_component).hash_code()) label = "Camera component";
+				else if (typeid(c).hash_code() == typeid(thebanana::particlesystem::particlesystem_component).hash_code()) label = "Particlesystem component";
 				else if (typeid(c).hash_code() == typeid(thebanana::native_script_component).hash_code()) label = "Native script component";
 				else if (typeid(c).hash_code() == typeid(thebanana::debug_component).hash_code()) label = "Debug component";
 				assert(label);

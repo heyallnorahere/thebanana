@@ -35,8 +35,17 @@ void sandbox_application_layer::init() {
 	thebanana::g_game->get_shader_registry()->register_shader("2d", new opengl_shader_library::win32_resource_shader(IDR_2D_VERTEX, IDR_2D_FRAGMENT));
 	thebanana::g_game->get_scene()->set_shader_name("basic");
 	thebanana::graphics::opengl::opengl_quad::init_shader("2d");
-	for (auto a : thebanana::g_game->get_command_line()) {
-		thebanana::debug::log_print(a);
+	// load models
+	thebanana::g_game->add_model_desc({ "player", "models/placeholder/waluigi.fbx", waluigi_paths, thebanana::transform().scale(0.0005f) });
+	thebanana::g_game->add_model_desc({ "test_cube", "models/cube.obj", test_texture_path, thebanana::transform() });
+	thebanana::g_game->add_model_desc({ "test_Lblock", "models/Lblock.obj", test_texture_path, thebanana::transform() });
+	thebanana::g_game->load_models();
+	// if a scene is specified, load it
+	std::vector<std::string> cmdline = thebanana::g_game->get_command_line();
+	if (cmdline.size() > 1) {
+		thebanana::scene_serializer serializer(thebanana::g_game->get_scene());
+		serializer.deserialize(cmdline[1]);
+		return;
 	}
 	// add gameobjects to the scene
 	thebanana::gameobject* player = new thebanana::basic_gameobject;
@@ -68,11 +77,6 @@ void sandbox_application_layer::init() {
 	p->get_transform().scale(100.f, 1.f, 100.f);
 	p->add_tag("ground");
 	thebanana::g_game->get_scene()->add_object(p);
-	// load models
-	thebanana::g_game->add_model_desc({ "player", "models/placeholder/waluigi.fbx", waluigi_paths, thebanana::transform().scale(0.0005f) });
-	thebanana::g_game->add_model_desc({ "test_cube", "models/cube.obj", test_texture_path, thebanana::transform() });
-	thebanana::g_game->add_model_desc({ "test_Lblock", "models/Lblock.obj", test_texture_path, thebanana::transform() });
-	thebanana::g_game->load_models();
 	// load sounds
 	thebanana::g_game->get_sound_manager()->load_sound("click", "sounds/click.ogg");
 	// load a menu

@@ -217,7 +217,14 @@ namespace thebanana {
 			size_t nextpos = cmdline.find("\" ", offset);
 			if (nextpos == std::string::npos) nextpos = cmdline.find(' ', offset);
 			else nextpos++;
-			std::string arg = cmdline.substr(offset, nextpos - offset);
+			std::string arg;
+			if (cmdline[offset] == '\"') {
+				size_t start = offset + 1;
+				size_t end;
+				if (nextpos != std::string::npos) end = nextpos - 1;
+				else end = cmdline.length() - 1;
+				arg = cmdline.substr(start, end - start);
+			} else arg = cmdline.substr(offset, nextpos - offset);
 			offset = (nextpos == std::string::npos ? nextpos : nextpos + 1);
 			arguments.push_back(arg);
 		} while (offset != std::string::npos);

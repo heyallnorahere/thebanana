@@ -206,6 +206,23 @@ namespace thebanana {
 	void game::clear_screen() {
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	}
+	float game::get_timestep() {
+		return ::get_current_time();
+	}
+	std::vector<std::string> game::get_command_line() {
+		std::vector<std::string> arguments;
+		std::string cmdline = GetCommandLineA();
+		size_t offset = 0;
+		do {
+			size_t nextpos = cmdline.find("\" ", offset);
+			if (nextpos == std::string::npos) nextpos = cmdline.find(' ', offset);
+			else nextpos++;
+			std::string arg = cmdline.substr(offset, nextpos - offset);
+			offset = (nextpos == std::string::npos ? nextpos : nextpos + 1);
+			arguments.push_back(arg);
+		} while (offset != std::string::npos);
+		return arguments;
+	}
 	void game::shutdown_steam() {
 		SteamAPI_Shutdown();
 	}

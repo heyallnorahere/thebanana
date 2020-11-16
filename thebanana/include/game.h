@@ -50,6 +50,8 @@ namespace thebanana {
 		void make_context_current();
 		void swap_buffers();
 		void clear_screen();
+		float get_timestep();
+		std::vector<std::string> get_command_line();
 	private:
 		void shutdown_steam();
 		unsigned int m_frame;

@@ -3,6 +3,7 @@
 #include "player.h"
 #include "camera.h"
 #include "../resource.h"
+#include <yaml-cpp/yaml.h>
 std::string waluigi_paths(const std::string& path, void*) {
 	return thebanana::model_registry::path_helper(path, "Waluigi\\Waluigi\\", "textures\\placeholder\\waluigi\\");
 }
@@ -25,6 +26,24 @@ void sandbox_application_layer::register_scripts() {
 	thebanana::g_game->get_script_registry()->register_script<player_behavior>();
 	thebanana::g_game->get_script_registry()->register_script<camera_behavior>();
 }
+struct { std::string find, replace; } findreplacestruct;
+std::string model_loader_proc(const std::string& path, void*) {
+	return thebanana::model_registry::path_helper(path, findreplacestruct.find, findreplacestruct.replace);
+}
+void load_project(const std::string& path) {
+	YAML::Node file = YAML::LoadFile(path);
+	assert(file["models"]);
+	for (YAML::Node m : file["models"]) {
+		std::string path = m["path"].as<std::string>();
+		std::string name = m["name"].as<std::string>();
+		bool should_replace = m["should_replace"].as<bool>();
+		if (should_replace) {
+			findreplacestruct.find = m["find"].as<std::string>();
+			findreplacestruct.replace = m["replace"].as<std::string>();
+		}
+		thebanana::g_game->get_model_registry()->load({ { name, path, should_replace ? model_loader_proc : NULL, thebanana::transform() } });
+	}
+}
 void sandbox_application_layer::init() {
 #ifdef _DEBUG
 	// initialize imgui debug menus
@@ -35,18 +54,21 @@ void sandbox_application_layer::init() {
 	thebanana::g_game->get_shader_registry()->register_shader("2d", new opengl_shader_library::win32_resource_shader(IDR_2D_VERTEX, IDR_2D_FRAGMENT));
 	thebanana::g_game->get_scene()->set_shader_name("basic");
 	thebanana::graphics::opengl::opengl_quad::init_shader("2d");
-	// load models
-	thebanana::g_game->add_model_desc({ "player", "models/placeholder/waluigi.fbx", waluigi_paths, thebanana::transform().scale(0.0005f) });
-	thebanana::g_game->add_model_desc({ "test_cube", "models/cube.obj", test_texture_path, thebanana::transform() });
-	thebanana::g_game->add_model_desc({ "test_Lblock", "models/Lblock.obj", test_texture_path, thebanana::transform() });
-	thebanana::g_game->load_models();
 	// if a scene is specified, load it
 	std::vector<std::string> cmdline = thebanana::g_game->get_command_line();
 	if (cmdline.size() > 1) {
 		thebanana::scene_serializer serializer(thebanana::g_game->get_scene());
 		serializer.deserialize(cmdline[1]);
+		if (cmdline.size() > 2) {
+			load_project(cmdline[2]);
+		}
 		return;
 	}
+	// load models
+	thebanana::g_game->add_model_desc({ "player", "models/placeholder/waluigi.fbx", waluigi_paths, thebanana::transform().scale(0.0005f) });
+	thebanana::g_game->add_model_desc({ "test_cube", "models/cube.obj", test_texture_path, thebanana::transform() });
+	thebanana::g_game->add_model_desc({ "test_Lblock", "models/Lblock.obj", test_texture_path, thebanana::transform() });
+	thebanana::g_game->load_models();
 	// add gameobjects to the scene
 	thebanana::gameobject* player = new thebanana::basic_gameobject;
 	player->add_component<thebanana::native_script_component>().bind<player_behavior>();

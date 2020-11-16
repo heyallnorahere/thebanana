@@ -5,6 +5,7 @@
 #include "component.h"
 #include "physics/physics.h"
 #include "components/components.h"
+#include "particlesystem/particlesystem.h"
 #include "debug_tools.h"
 #include "script_registry.h"
 #include "game.h"
@@ -130,6 +131,19 @@ namespace thebanana {
 			out << YAML::Key << "direction" << YAML::Value << *cc.get_property<glm::vec3>("Direction");
 			out << YAML::EndMap;
 		}
+		for (size_t i = 0; i < object->get_number_components<particlesystem::particlesystem_component>(); i++) {
+			particlesystem::particlesystem_component& psc = object->get_component<particlesystem::particlesystem_component>(i);
+			out << YAML::BeginMap;
+			out << YAML::Key << "type" << YAML::Value << "particlesystem_component";
+			out << YAML::Key << "uuid" << YAML::Value << psc.get_uuid();
+			out << YAML::Key << "spawn_interval" << YAML::Value << *(psc.get_property<float>("Spawn interval"));
+			out << YAML::Key << "lifespan" << YAML::Value << *(psc.get_property<float>("Particle lifespan"));
+			out << YAML::Key << "mesh_name" << YAML::Value << *(psc.get_property<std::string>("Particle model name"));
+			out << YAML::Key << "force" << YAML::Value << *(psc.get_property<glm::vec3>("Particle acceleration"));
+			out << YAML::Key << "min_size" << YAML::Value << *(psc.get_property<float>("Minimum particle size"));
+			out << YAML::Key << "max_size" << YAML::Value << *(psc.get_property<float>("Maximum particle size"));
+			out << YAML::EndMap;
+		}
 		for (size_t i = 0; i < object->get_number_components<native_script_component>(); i++) {
 			native_script_component& nsc = object->get_component<native_script_component>(i);
 			out << YAML::BeginMap;
@@ -239,6 +253,15 @@ namespace thebanana {
 				cc.set_uuid(uuid);
 				cc.set_property<glm::vec2>("Angle", n["angle"].as<glm::vec2>());
 				cc.set_property<glm::vec3>("Direction", n["direction"].as<glm::vec3>());
+			} else if (type == "particlesystem_component") {
+				particlesystem::particlesystem_component& psc = object->add_component<particlesystem::particlesystem_component>();
+				psc.set_uuid(uuid);
+				psc.set_property("Spawn interval", n["spawn_interval"].as<float>());
+				psc.set_property("Particle lifespan", n["lifespan"].as<float>());
+				psc.set_property("Particle model name", n["mesh_name"].as<std::string>());
+				psc.set_property("Particle acceleration", n["force"].as<glm::vec3>());
+				psc.set_property("Minimum particle size", n["min_size"].as<float>());
+				psc.set_property("Maximum particle size", n["max_size"].as<float>());
 			} else if (type == "native_script_component") {
 				native_script_component& nsc = object->add_component<native_script_component>();
 				nsc.set_uuid(uuid);

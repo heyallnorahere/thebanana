@@ -397,7 +397,6 @@ namespace thebanana {
 		to_add.clear();
 		this->m_scene->clear();
 		YAML::Node data = YAML::LoadFile(path);
-		MessageBoxA(NULL, path.c_str(), NULL, NULL);
 		assert(data["scene"]);
 		std::string name = data["scene"].as<std::string>();
 		debug::log_print("loading scene " + name + " from " + path);

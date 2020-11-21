@@ -83,6 +83,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\editorconfig.cpp" />
     <ClCompile Include="src\editor_layer.cpp" />
     <ClCompile Include="src\imgui_layer.cpp" />
     <ClCompile Include="src\main.cpp" />

@@ -21,7 +21,7 @@ namespace bananatree {
 		ImGui::InputText("Path", &path);
 		ImGui::SameLine();
 		if (ImGui::Button("...")) {
-			std::string path_ = open_dialog("OBJ file (*.obj)\0*.obj\0FBX file (*.fbx)\0*.fbx\0");
+			std::string path_ = util::open_dialog("OBJ file (*.obj)\0*.obj\0FBX file (*.fbx)\0*.fbx\0");
 			if (!path_.empty()) path = path_;
 		}
 		ImGui::InputText("Name", &name);

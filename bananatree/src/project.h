@@ -21,6 +21,7 @@ namespace bananatree {
 		void register_model(const model_descriptor& md);
 		bool has_temp_path();
 		const std::vector<model_descriptor>& get_descriptors();
+		std::string get_path();
 	private:
 		std::string m_name, m_main_scene;
 		std::vector<model_descriptor> m_descriptors;

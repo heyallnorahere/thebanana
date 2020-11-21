@@ -89,6 +89,9 @@
     <ClInclude Include="src\panels\project_editor_panel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\editorconfig.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Resource.rc">

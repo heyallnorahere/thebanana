@@ -129,6 +129,9 @@ namespace bananatree {
 			this->save_scene(this->m_temp_scene_path);
 		}
 	}
+	std::string imgui_layer::get_scene_path() {
+		return this->m_temp_scene_path;
+	}
 	void imgui_layer::begin() {
 		ImGui_ImplOpenGL3_NewFrame();
 		ImGui_ImplWin32_NewFrame();
@@ -238,6 +241,16 @@ namespace bananatree {
 				}
 				if (ImGui::MenuItem("Static mesh")) {
 					this->m_static_mesh_creation_window_open = true;
+				}
+				ImGui::EndMenu();
+			}
+			if (ImGui::BeginMenu("Test")) {
+				if (ImGui::MenuItem("Play")) {
+					this->m_editor_layer->compile_scripts();
+					this->m_editor_layer->launch_sandbox();
+				}
+				if (ImGui::MenuItem("Compile")) {
+					this->m_editor_layer->compile_scripts();
 				}
 				ImGui::EndMenu();
 			}

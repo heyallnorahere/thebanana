@@ -110,4 +110,7 @@ namespace bananatree {
 	const std::vector<project::model_descriptor>& project::get_descriptors() {
 		return this->m_descriptors;
 	}
+	std::string project::get_path() {
+		return this->m_temp_path;
+	}
 }

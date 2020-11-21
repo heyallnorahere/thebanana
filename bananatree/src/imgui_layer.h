@@ -18,6 +18,7 @@ namespace bananatree {
 		void open_scene();
 		void save_scene();
 		void save_scene_from_temp();
+		std::string get_scene_path();
 	private:
 		void begin();
 		void end();

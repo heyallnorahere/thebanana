@@ -1,5 +1,6 @@
 #include <thebanana.h>
 #include "viewport_panel.h"
+#include <gl/GL.h>
 #include <imgui.h>
 #include <backends/imgui_impl_win32.h>
 #include <backends/imgui_impl_opengl3.h>

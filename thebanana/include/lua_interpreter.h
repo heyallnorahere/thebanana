@@ -2,6 +2,9 @@
 namespace thebanana {
 	class lua_interpreter {
 	public:
+#ifndef BANANA_BUILD
+		struct lua_State;
+#endif
 		using func = int(*)(lua_State*);
 		enum class type {
 			_char,

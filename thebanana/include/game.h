@@ -56,6 +56,9 @@ namespace thebanana {
 		void shutdown_steam();
 		unsigned int m_frame;
 		HWND m_window;
+#ifndef BANANA_BUILD
+		using opengl_viewport = void;
+#endif
 		opengl_viewport* m_viewport;
 		scene* m_scene;
 		input_manager* m_input_manager;

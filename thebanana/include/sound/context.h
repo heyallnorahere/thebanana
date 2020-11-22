@@ -18,6 +18,10 @@ namespace thebanana {
 			virtual void initialize() override;
 			virtual void destroy() override;
 		private:
+#ifndef BANANA_BUILD
+			using ALCdevice = void;
+			using ALCcontext = void;
+#endif
 			ALCdevice* m_device;
 			ALCcontext* m_context;
 		};

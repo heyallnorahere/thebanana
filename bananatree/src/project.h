@@ -27,5 +27,6 @@ namespace bananatree {
 		std::vector<model_descriptor> m_descriptors;
 		imgui_layer* m_imgui_layer;
 		std::string m_temp_path;
+
 	};
 }

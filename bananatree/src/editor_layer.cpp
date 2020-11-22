@@ -54,6 +54,6 @@ namespace bananatree {
 		CreateProcessA(path.c_str(), (char*)args.c_str(), NULL, NULL, false, 0, NULL, NULL, &si, &pi);
 	}
 	void editor_layer::compile_scripts() {
-		thebanana::debug::log_print("not implemented yet, will get around to it later");
+		// todo: use compile_script and link
 	}
 }

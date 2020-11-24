@@ -14,7 +14,7 @@ namespace bananatree {
 			if (!size) return NULL;
 			return data;
 		}
-		std::string open_dialog(const char* filter) {
+		std::string open_dialog(const char* filter, int* index) {
 			OPENFILENAMEA ofn;
 			char file[256];
 			memset(file, 0, sizeof(file));
@@ -27,11 +27,14 @@ namespace bananatree {
 			ofn.nFilterIndex = 1;
 			ofn.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST | OFN_NOCHANGEDIR;
 			if (GetOpenFileNameA(&ofn)) {
+				if (index) {
+					*index = static_cast<int>(ofn.nFilterIndex);
+				}
 				return ofn.lpstrFile;
 			}
 			return "";
 		}
-		std::string save_dialog(const char* filter) {
+		std::string save_dialog(const char* filter, int* index) {
 			OPENFILENAMEA ofn;
 			char file[256];
 			memset(file, 0, sizeof(file));
@@ -45,6 +48,9 @@ namespace bananatree {
 			ofn.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST | OFN_NOCHANGEDIR;
 			ofn.lpstrDefExt = strchr(filter, '\0') + 1;
 			if (GetSaveFileNameA(&ofn)) {
+				if (index) {
+					*index = static_cast<int>(ofn.nFilterIndex);
+				}
 				return ofn.lpstrFile;
 			}
 			return "";

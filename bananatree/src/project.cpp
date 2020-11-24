@@ -19,7 +19,14 @@ namespace bananatree {
 	void project::reset() {
 		if (!this->m_temp_path.empty()) this->m_temp_path.clear();
 		if (!this->m_main_scene.empty()) this->m_main_scene.clear();
+		if (!this->m_code_project.empty()) this->m_code_project.clear();
 		this->rename("Untitled");
+		if (this->m_imgui_layer) {
+			project_editor_panel* pep = this->m_imgui_layer->find_panel<project_editor_panel>();
+			pep->set_current_name(this->m_name);
+			pep->set_current_main_scene(this->m_main_scene);
+			pep->set_current_code_project(this->m_code_project);
+		}
 		this->m_descriptors.clear();
 	}
 	void project::save(const std::string& path) {
@@ -29,6 +36,9 @@ namespace bananatree {
 		out << YAML::Key << "name" << YAML::Value << this->m_name;
 		if (!this->m_main_scene.empty()) {
 			out << YAML::Key << "main_scene_path" << YAML::Value << this->m_main_scene;
+		}
+		if (!this->m_code_project.empty()) {
+			out << YAML::Key << "code_project_path" << YAML::Value << this->m_code_project;
 		}
 		out << YAML::Key << "models" << YAML::Value << YAML::BeginSeq;
 		for (auto md : this->m_descriptors) {
@@ -61,6 +71,11 @@ namespace bananatree {
 			std::string path = file["main_scene_path"].as<std::string>();
 			this->m_main_scene = path;
 			this->m_imgui_layer->find_panel<project_editor_panel>()->set_current_main_scene(this->m_main_scene);
+		}
+		if (file["code_project_path"]) {
+			std::string path = file["code_project_path"].as<std::string>();
+			this->m_code_project = path;
+			this->m_imgui_layer->find_panel<project_editor_panel>()->set_current_code_project(this->m_code_project);
 		}
 		if (!this->m_main_scene.empty()) {
 			std::string path = this->m_temp_path;
@@ -98,8 +113,14 @@ namespace bananatree {
 	std::string project::get_main_scene_path() {
 		return this->m_main_scene;
 	}
+	std::string project::get_code_project_path() {
+		return this->m_code_project;
+	}
 	void project::set_main_scene_path(const std::string& path) {
 		this->m_main_scene = path;
+	}
+	void project::set_code_project_path(const std::string& path) {
+		this->m_code_project = path;
 	}
 	void project::register_model(const model_descriptor& md) {
 		this->m_descriptors.push_back(md);

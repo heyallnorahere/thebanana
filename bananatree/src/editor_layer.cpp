@@ -54,6 +54,11 @@ namespace bananatree {
 		CreateProcessA(path.c_str(), (char*)args.c_str(), NULL, NULL, false, 0, NULL, NULL, &si, &pi);
 	}
 	void editor_layer::compile_scripts() {
-		// todo: use compile_script and link
+		PROCESS_INFORMATION pi = { 0 };
+		STARTUPINFOA si = { 0 };
+		std::string code_project_path = this->m_project->get_code_project_path();
+		std::string msbuild_path = this->m_config->get<std::string>("msbuild");
+		std::string command = "msbuild .";
+		CreateProcessA(msbuild_path.c_str(), (char*)command.c_str(), NULL, NULL, NULL, NULL, NULL, code_project_path.c_str(), &si, &pi);
 	}
 }

@@ -14,7 +14,7 @@ namespace bananatree {
 		ImGui::InputText("C++ project folder", &this->m_current_code_project_path);
 		ImGui::SameLine();
 		if (ImGui::Button("...")) {
-			std::string path = util::open_dialog("Visual Studio Solution (*.sln)\0*.sln\0C++ project (*.vcxproj)\0*.vcxproj\0");
+			std::string path = util::open_dialog("Visual Studio Solution (*.sln)\0*.sln\0");
 			if (!path.empty()) {
 				size_t pos = path.find_last_of('\\');
 				if (pos == std::string::npos) {

@@ -9,6 +9,7 @@ namespace thebanana {
 	class lua_interpreter;
 	class shader_registry;
 	class script_registry;
+	class script_module;
 	namespace ui {
 		class menu_manager;
 	}
@@ -52,6 +53,7 @@ namespace thebanana {
 		void clear_screen();
 		float get_timestep();
 		std::vector<std::string> get_command_line();
+		void load_script_module(const std::string& dllpath);
 	private:
 		void shutdown_steam();
 		unsigned int m_frame;
@@ -75,6 +77,7 @@ namespace thebanana {
 		bool m_debug_menus_initialized;
 		bool m_steam_initialized;
 		bool m_clip_cursor;
+		script_module* m_module;
 	};
 	extern game* g_game;
 }

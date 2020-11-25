@@ -5,6 +5,7 @@ namespace thebanana {
 	public:
 		template<typename T> void register_script();
 		script* create_script(const std::string& type_name, gameobject* parent, native_script_component* nsc);
+		void clear_script_prototypes();
 	private:
 		std::map<std::string, script*(*)(gameobject*, native_script_component*)> m_script_prototypes;
 		template<typename T> static script* create(gameobject* parent, native_script_component* nsc);
@@ -17,5 +18,8 @@ namespace thebanana {
 	}
 	template<typename T> inline script* script_registry::create(gameobject* parent, native_script_component* nsc) {
 		return new T(parent, nsc);
+	}
+	inline void script_registry::clear_script_prototypes() {
+		this->m_script_prototypes.clear();
 	}
 }

@@ -60,5 +60,19 @@ namespace bananatree {
 		std::string msbuild_path = this->m_config->get<std::string>("msbuild");
 		std::string command = "msbuild .";
 		CreateProcessA(msbuild_path.c_str(), (char*)command.c_str(), NULL, NULL, NULL, NULL, NULL, code_project_path.c_str(), &si, &pi);
+		WaitForSingleObject(pi.hProcess, INFINITE);
+		this->attach_scripts();
+	}
+	void editor_layer::attach_scripts() {
+		std::string directory = this->m_project->get_code_project_path() + "x64\\Debug\\";
+		std::string path = directory + "*.dll";
+		WIN32_FIND_DATAA wfd;
+		ZeroMemory(&wfd, sizeof(WIN32_FIND_DATAA));
+		HANDLE h = FindFirstFileA(path.c_str(), &wfd);
+		assert(h != INVALID_HANDLE_VALUE);
+		do {
+			thebanana::g_game->load_script_module(directory + wfd.cFileName);
+			break;
+		} while (FindNextFileA(h, &wfd));
 	}
 }

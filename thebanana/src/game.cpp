@@ -14,6 +14,7 @@
 #include "script_registry.h"
 #include "util.h"
 #include "internal_util.h"
+#include "script_module.h"
 extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 namespace thebanana {
 	game* g_game = NULL;
@@ -52,6 +53,7 @@ namespace thebanana {
 		this->m_clip_cursor = true;
 		this->m_debug_menus_initialized = false;
 		this->m_steam_initialized = false;
+		this->m_module = NULL;
 		char sizebuf[256];
 		sprintf(sizebuf, "width: %d, height: %d", width, height);
 		debug::log_print("successfully created graphics context:\n	backend: " + graphics::get_backend_version() + "\n	" + sizebuf);
@@ -59,6 +61,7 @@ namespace thebanana {
 	game::~game() {
 		if (this->m_steam_initialized) this->shutdown_steam();
 		if (this->m_debug_menus_initialized) debug::clean_up_imgui();
+		delete this->m_module;
 		delete this->m_sound_manager;
 		delete this->m_menu_quad;
 		delete this->m_menu_manager;
@@ -229,6 +232,10 @@ namespace thebanana {
 			arguments.push_back(arg);
 		} while (offset != std::string::npos);
 		return arguments;
+	}
+	void game::load_script_module(const std::string& dllpath) {
+		delete this->m_module;
+		this->m_module = new script_module(this->m_script_registry, dllpath);
 	}
 	void game::shutdown_steam() {
 		SteamAPI_Shutdown();

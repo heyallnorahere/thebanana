@@ -12,7 +12,7 @@ namespace bananatree {
 		ImGui::Begin("Project editor", &this->m_open);
 		ImGui::InputText("Name", &this->m_current_name);
 		ImGui::InputText("Main scene", &this->m_current_main_scene_path);
-		ImGui::InputText("C++ project folder", &this->m_current_code_project_path);
+		ImGui::InputText("Project folder", &this->m_current_code_project_path);
 		ImGui::SameLine();
 		if (ImGui::Button("...")) {
 			std::string path = util::open_dialog("Visual Studio Solution (*.sln)\0*.sln\0");

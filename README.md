@@ -3,6 +3,7 @@ This is a 3D game engine I'm making. Many aspects of this engine are inspired by
 - Windows
 
 ## TO IMPLEMENT
+### ENTRYPOINT
 If you want to implement WinMain/main on your own, **do not** define `BANANA_MAIN` before including `thebanana.h` in your `main.cpp`. It is required to set up the window (`WNDCLASS`, etc.) and initialize `thebanana::g_game` if you choose this option.
 
 Otherwise, your `main.cpp` file should look something like this:
@@ -50,6 +51,39 @@ std::string my_game_application_layer::window_title() {
 	return "my game";
 }
 ```
+
+### EDITOR AND SCRIPT MODULES
+To use the Banana Tree with your project, you must use script modules.
+
+"Script modules" are standard shared libraries with one thing in common;
+
+they must have an exported (`__declspec(dllexport)`), C-interface function named `load_scripts`. For example:
+```cpp
+#include <thebanana.h>
+void load_scripts_cpp(void* r) {
+	auto registry = (thebanana::script_registry*)r;
+	// load scripts...
+}
+// set up the platform-specific symbol export...
+#ifdef _WIN32
+#define EXPORT __declspec(dllexport)
+#else
+#error no other platforms supported, unfortunately...
+#else
+extern "C" EXPORT void load_scripts(void* ptr) {
+	load_scripts_cpp(ptr);
+}
+```
+
+Now, to use your script module, open your project in the Banana Tree and navigate to the project editor.
+
+Once that is done, open your Visual Studio solution (or input the solution directory) and specify the output file name of your code project.
+
+Afterwards, it should look something like this:
+
+![The Banana Tree Project Editor](readmefiles/projecteditor_example.png)
+
+Then, click Save. This should build the project and attach it to the editor.
 
 ## TO BUILD
 ### WINDOWS

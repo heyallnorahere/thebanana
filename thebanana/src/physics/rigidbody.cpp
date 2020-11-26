@@ -7,7 +7,7 @@ namespace thebanana {
 	const float drag = 0.05f;
 	rigidbody::rigidbody(gameobject* obj) : component(obj) {
 		this->add_property(new property<bool>(false, "Gravity"));
-		this->add_property(new property<float>(1.f, "Gravity multiplier"));
+		this->add_property(new property<glm::vec3>(glm::vec3(0.f, -1.f, 0.f), "Gravity value"));
 		this->add_property(new property<float>(1.f, "Mass"));
 		this->add_property(new property<float>(drag, "Drag"));
 		this->coll = NULL;
@@ -19,7 +19,7 @@ namespace thebanana {
 		this->has_cap = false;
 	}
 	void rigidbody::initialize() {
-		rigidbodies.push_back(this);
+		this->parent->get_game()->get_rigidbody_list().push_back(this);
 	}
 	void rigidbody::pre_update() {
 		if (this->collision_model_name != this->last_frame_model_name) {
@@ -29,12 +29,12 @@ namespace thebanana {
 	}
 	void rigidbody::post_update() {
 		property<bool>* _gravity = this->find_property<bool>("Gravity");
-		property<float>* _multiplier = this->find_property<float>("Gravity multiplier");
+		property<glm::vec3>* _value = this->find_property<glm::vec3>("Gravity value");
 		property<float>* _mass = this->find_property<float>("Mass");
-		if (_gravity && _multiplier && _mass) {
-			float multiplier = *_multiplier->get_value();
+		if (_gravity && _value && _mass) {
+			glm::vec3 value = *_value->get_value();
 			if (*_gravity->get_value()) {
-				this->acceleration += gravity * multiplier * (*_mass->get_value());
+				this->acceleration += value * (*_mass->get_value());
 			}
 		}
 		this->velocity += this->acceleration;
@@ -49,7 +49,7 @@ namespace thebanana {
 		this->num_collisions = 0;
 		this->shift_delta = glm::vec3(0.f);
 		if (this->coll && this->check_for_collisions) {
-			for (auto ptr : rigidbodies) {
+			for (auto ptr : this->parent->get_game()->get_rigidbody_list()) {
 				if (ptr == this) continue;
 				if (this->collision_tags.size() > 0) {
 					bool has_tag = false;
@@ -132,9 +132,4 @@ namespace thebanana {
 	collider* rigidbody::get_collider() const {
 		return this->coll;
 	}
-	const std::list<rigidbody*>& rigidbody::get_rigidbodies() {
-		return rigidbodies;
-	}
-	std::list<rigidbody*> rigidbody::rigidbodies;
-	glm::vec3 rigidbody::gravity = glm::vec3(0.f, -0.05f, 0.f);
 }

@@ -28,8 +28,6 @@ namespace thebanana {
 		float get_speed_cap();
 		float get_last_move_speed();
 		collider* get_collider() const;
-		static const std::list<rigidbody*>& get_rigidbodies();
-		static glm::vec3 gravity;
 	private:
 		int num_collisions;
 		glm::vec3 shift_delta;
@@ -43,7 +41,6 @@ namespace thebanana {
 		float last_velocity_length;
 		float speed_cap;
 		bool has_cap;
-		static std::list<rigidbody*> rigidbodies;
 		friend class scene_serializer;
 	};
 	template<typename _Ty> inline _Ty& rigidbody::set_collider_type() {

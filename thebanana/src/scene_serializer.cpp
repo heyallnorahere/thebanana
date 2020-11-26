@@ -113,7 +113,7 @@ namespace thebanana {
 			out << YAML::Key << "type" << YAML::Value << "rigidbody";
 			out << YAML::Key << "uuid" << YAML::Value << rb.get_uuid();
 			out << YAML::Key << "gravity" << YAML::Value << *(rb.get_property<bool>("Gravity"));
-			out << YAML::Key << "gravity multiplier" << YAML::Value << *(rb.get_property<float>("Gravity multiplier"));
+			out << YAML::Key << "gravity value" << YAML::Value << *(rb.get_property<glm::vec3>("Gravity value"));
 			out << YAML::Key << "mass" << YAML::Value << *(rb.get_property<float>("Mass"));
 			out << YAML::Key << "drag" << YAML::Value << *(rb.get_property<float>("Drag"));
 			out << YAML::Key << "collision_model_name" << YAML::Value << rb.get_collision_model_name();
@@ -242,7 +242,7 @@ namespace thebanana {
 				rb.set_uuid(uuid);
 				assert(n["gravity"]);
 				rb.set_property<bool>("Gravity", n["gravity"].as<bool>());
-				rb.set_property<float>("Gravity multiplier", n["gravity multiplier"].as<float>());
+				rb.set_property<glm::vec3>("Gravity value", n["gravity value"].as<glm::vec3>());
 				rb.set_property<float>("Mass", n["mass"].as<float>());
 				rb.set_property<float>("Drag", n["drag"].as<float>());
 				rb.set_collision_model_name(n["collision_model_name"].as<std::string>());

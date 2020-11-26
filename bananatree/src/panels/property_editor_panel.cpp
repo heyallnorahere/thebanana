@@ -60,6 +60,19 @@ namespace bananatree {
 		ImGui::InputText(property->get_name().c_str(), &text, ImGuiInputTextFlags_ReadOnly);
 		if (ImGui::BeginDragDropTarget()) {
 			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("SCRIPT_PAYLOAD")) {
+				if (component.get_script<thebanana::script>()) {
+					auto& properties = component.get_properties();
+					std::vector<std::string> names;
+					for (size_t i = 1; i < properties.size(); i++) {
+						auto it = properties.begin();
+						std::advance(it, i);
+						auto& p = *it;
+						names.push_back(p->get_name());
+					}
+					for (const auto& name : names) {
+						component.remove_property(name);
+					}
+				}
 				std::string script_name = std::string((char*)payload->Data, payload->DataSize);
 				thebanana::script* script = thebanana::g_game->get_script_registry()->create_script(script_name, component.get_parent(), &component);
 				component.bind(script);

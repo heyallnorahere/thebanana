@@ -10,9 +10,11 @@ namespace thebanana {
 	namespace particlesystem {
 		particle_component::particle_component(gameobject* obj) : component(obj) {
 			this->start_time = CURRENT_TIME(float);
-			std::list<rigidbody*>& rbs = (std::list<rigidbody*>&)rigidbody::get_rigidbodies();
-			rbs.remove(&this->parent->add_component<rigidbody>());
+			this->parent->add_component<rigidbody>();
 			this->parent->add_component<mesh_component>();
+		}
+		void particle_component::initialize() {
+			this->parent->get_game()->get_rigidbody_list().remove(&this->get_component<rigidbody>());
 		}
 		void particle_component::update() {
 			std::string mesh_name = *this->psc->get_property<std::string>("Particle model name");

@@ -239,6 +239,9 @@ namespace thebanana {
 		this->debug_log << msg;
 		OutputDebugStringA(msg.c_str());
 	}
+	std::list<rigidbody*>& game::get_rigidbody_list() {
+		return this->m_rigidbodies;
+	}
 	std::string game::get_debug_log() {
 		return this->debug_log.str();
 	}

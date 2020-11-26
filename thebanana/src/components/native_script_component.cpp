@@ -16,7 +16,8 @@ namespace thebanana {
 	void script::on_collision(gameobject* other) { }
 	script::~script() { }
 	void script::add_property(component::property_base* p) {
-		((component*)this->interface)->add_property(p);
+		this->interface->add_property(p);
+		p->set_game(this->parent->get_game());
 	}
 	transform& script::get_transform() {
 		return this->parent->get_transform();

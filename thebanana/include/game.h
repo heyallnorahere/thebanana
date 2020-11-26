@@ -10,6 +10,7 @@ namespace thebanana {
 	class shader_registry;
 	class script_registry;
 	class script_module;
+	class rigidbody;
 	namespace ui {
 		class menu_manager;
 	}
@@ -55,6 +56,7 @@ namespace thebanana {
 		std::vector<std::string> get_command_line();
 		void load_script_module(const std::string& dllpath);
 		void debug_print(const std::string& message);
+		std::list<rigidbody*>& get_rigidbody_list();
 		std::string get_debug_log();
 		// very loose template stuff, but if you know what to do with it, it works
 		template<typename T> using imgui_ptr = void(*)(const char*, T*);
@@ -87,6 +89,7 @@ namespace thebanana {
 		script_module* m_module;
 		// so you can call imgui across modules (dlls, exes, etc.)
 		std::map<size_t, void*> m_imgui_input_functions;
+		std::list<rigidbody*> m_rigidbodies;
 	};
 	extern game* g_game;
 	template<typename T> inline game::imgui_ptr<T> game::get_imgui_pointer() {

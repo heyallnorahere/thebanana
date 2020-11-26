@@ -29,8 +29,7 @@ namespace thebanana {
 		_ui64toa(this->m_children.size(), buf, 10);
 		this->m_game->debug_print("deleting " + std::string(buf) + (this->m_children.size() == 1 ? " object" : " objects"));
 		this->m_children.clear();
-		std::list<rigidbody*>& rbs = (std::list<rigidbody*>&)rigidbody::get_rigidbodies();
-		rbs.clear();
+		this->m_game->get_rigidbody_list().clear();
 	}
 	void scene::update() {
 #ifdef _DEBUG

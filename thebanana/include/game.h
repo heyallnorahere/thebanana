@@ -56,8 +56,12 @@ namespace thebanana {
 		void load_script_module(const std::string& dllpath);
 		void debug_print(const std::string& message);
 		std::string get_debug_log();
+		// very loose template stuff, but if you know what to do with it, it works
+		template<typename T> using imgui_ptr = void(*)(const char*, T*);
+		template<typename T> imgui_ptr<T> get_imgui_pointer();
 	private:
 		void shutdown_steam();
+		void fill_imgui_input_pointers();
 		std::stringstream debug_log;
 		unsigned int m_frame;
 		HWND m_window;
@@ -81,6 +85,11 @@ namespace thebanana {
 		bool m_steam_initialized;
 		bool m_clip_cursor;
 		script_module* m_module;
+		// so you can call imgui across modules (dlls, exes, etc.)
+		std::map<size_t, void*> m_imgui_input_functions;
 	};
 	extern game* g_game;
+	template<typename T> inline game::imgui_ptr<T> game::get_imgui_pointer() {
+		return (imgui_ptr<T>)this->m_imgui_input_functions[typeid(T).hash_code()];
+	}
 }

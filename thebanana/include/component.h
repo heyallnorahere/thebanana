@@ -2,6 +2,7 @@
 #include "transform.h"
 #include "debug_tools.h"
 #include "scene_serializer.h"
+#include "game.h"
 namespace thebanana {
 	class gameobject;
 	class component {
@@ -27,6 +28,8 @@ namespace thebanana {
 				std::string text;
 			};
 			property_base(const std::string& name, size_t size);
+			void set_parent(component* parent);
+			void set_game(game* g_game);
 			const std::string& get_name();
 			virtual ~property_base();
 			void* get_ptr();
@@ -43,6 +46,8 @@ namespace thebanana {
 			void* ptr;
 			bool selection_window_open;
 			gameobject* selection_window_temp;
+			component* parent;
+			game* g_game;
 			friend class scene_serializer;
 		};
 		using properties_t = std::list<std::unique_ptr<property_base>>;
@@ -132,42 +137,37 @@ namespace thebanana {
 	template<typename T> inline gameobject** component::property<T>::get_selection_window_ptr() const {
 		return NULL;
 	}
-#ifdef BANANA_BUILD
 	inline void component::property<int>::draw() const {
-		ImGui::InputInt(this->name.c_str(), this->value);
+		this->g_game->get_imgui_pointer<int>()(this->name.c_str(), this->value);
 	}
 	inline void component::property<bool>::draw() const {
-		ImGui::Checkbox(this->name.c_str(), this->value);
+		this->g_game->get_imgui_pointer<bool>()(this->name.c_str(), this->value);
 	}
 	inline void component::property<float>::draw() const {
-		ImGui::DragFloat(this->name.c_str(), this->value);
+		this->g_game->get_imgui_pointer<float>()(this->name.c_str(), this->value);
 	}
 	inline void component::property<double>::draw() const {
-		ImGui::InputDouble(this->name.c_str(), this->value);
+		this->g_game->get_imgui_pointer<double>()(this->name.c_str(), this->value);
 	}
 	inline void component::property<std::string>::draw() const {
-		ImGui::InputText(this->name.c_str(), this->value);
+		this->g_game->get_imgui_pointer<std::string>()(this->name.c_str(), this->value);
 	}
 	inline void component::property<glm::vec2>::draw() const {
-		ImGui::DragFloat2(this->name.c_str(), &this->value->x);
+		this->g_game->get_imgui_pointer<glm::vec2>()(this->name.c_str(), this->value);
 	}
 	inline void component::property<glm::vec3>::draw() const {
-		ImGui::DragFloat3(this->name.c_str(), &this->value->x);
+		this->g_game->get_imgui_pointer<glm::vec3>()(this->name.c_str(), this->value);
 	}
 	inline void component::property<glm::vec4>::draw() const {
-		ImGui::DragFloat4(this->name.c_str(), &this->value->x);
+		this->g_game->get_imgui_pointer<glm::vec4>()(this->name.c_str(), this->value);
 	}
 	inline void component::property<component::property_base::dropdown>::draw() const {
-		const std::vector<std::string>& std_items = this->value->get_items();
-		std::vector<const char*> items;
-		for (auto& str : std_items) {
-			items.push_back(str.c_str());
-		}
-		ImGui::Combo(this->name.c_str(), this->value->get_index_ptr(), items.data(), items.size());
+		this->g_game->get_imgui_pointer<dropdown>()(this->name.c_str(), this->value);
 	}
 	inline void component::property<component::property_base::read_only_text>::draw() const {
-		ImGui::InputText(this->name.c_str(), &this->value->get_text(), ImGuiInputTextFlags_ReadOnly);
+		this->g_game->get_imgui_pointer<read_only_text>()(this->name.c_str(), this->value);
 	}
+#ifdef BANANA_BUILD
 	template<typename T> inline void component::property<T>::draw() const {
 		std::string name = typeid(T).name();
 		size_t pos = name.find_last_of('*');

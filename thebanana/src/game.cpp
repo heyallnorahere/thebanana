@@ -54,6 +54,7 @@ namespace thebanana {
 		this->m_debug_menus_initialized = false;
 		this->m_steam_initialized = false;
 		this->m_module = NULL;
+		this->fill_imgui_input_pointers();
 		char sizebuf[256];
 		sprintf(sizebuf, "width: %d, height: %d", width, height);
 		this->debug_print("successfully created graphics context:\n	backend: " + graphics::get_backend_version() + "\n	" + sizebuf);
@@ -243,5 +244,46 @@ namespace thebanana {
 	}
 	void game::shutdown_steam() {
 		SteamAPI_Shutdown();
+	}
+	static void int_input(const char* label, int* v) {
+		ImGui::InputInt(label, v);
+	}
+	static void float_input(const char* label, float* v) {
+		ImGui::DragFloat(label, v);
+	}
+	static void float2_input(const char* label, glm::vec2* v) {
+		ImGui::DragFloat2(label, &v->x);
+	}
+	static void float3_input(const char* label, glm::vec3* v) {
+		ImGui::DragFloat3(label, &v->x);
+	}
+	static void float4_input(const char* label, glm::vec4* v) {
+		ImGui::DragFloat4(label, &v->x);
+	}
+	static void text_input(const char* label, std::string* v) {
+		ImGui::InputText(label, v);
+	}
+	static void dropdown_input(const char* label, component::property_base::dropdown* value) {
+		const std::vector<std::string>& std_items = value->get_items();
+		std::vector<const char*> items;
+		for (auto& str : std_items) {
+			items.push_back(str.c_str());
+		}
+		ImGui::Combo(label, value->get_index_ptr(), items.data(), items.size());
+	}
+	static void readonly_input(const char* label, component::property_base::read_only_text* value) {
+		ImGui::InputText(label, &value->get_text(), ImGuiInputTextFlags_ReadOnly);
+	}
+	void game::fill_imgui_input_pointers() {
+		this->m_imgui_input_functions[typeid(int).hash_code()] = int_input;
+		this->m_imgui_input_functions[typeid(bool).hash_code()] = ImGui::Checkbox;
+		this->m_imgui_input_functions[typeid(float).hash_code()] = float_input;
+		this->m_imgui_input_functions[typeid(double).hash_code()] = ImGui::InputDouble;
+		this->m_imgui_input_functions[typeid(std::string).hash_code()] = text_input;
+		this->m_imgui_input_functions[typeid(glm::vec2).hash_code()] = float2_input;
+		this->m_imgui_input_functions[typeid(glm::vec3).hash_code()] = float3_input;
+		this->m_imgui_input_functions[typeid(glm::vec4).hash_code()] = float4_input;
+		this->m_imgui_input_functions[typeid(component::property_base::dropdown).hash_code()] = dropdown_input;
+		this->m_imgui_input_functions[typeid(component::property_base::read_only_text).hash_code()] = readonly_input;
 	}
 }

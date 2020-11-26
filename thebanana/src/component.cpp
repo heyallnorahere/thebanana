@@ -32,6 +32,8 @@ namespace thebanana {
 		this->uuid = uuid;
 	}
 	void component::add_property(property_base* p) {
+		p->set_parent(this);
+		p->set_game(this->parent->get_game());
 		this->properties.push_back(std::unique_ptr<property_base>(p));
 	}
 	void component::remove_property(const std::string& name) {
@@ -53,6 +55,12 @@ namespace thebanana {
 		this->name = name;
 		this->selection_window_open = false;
 		this->selection_window_temp = NULL;
+	}
+	void component::property_base::set_parent(component* parent) {
+		this->parent = parent;
+	}
+	void component::property_base::set_game(game* g_game) {
+		this->g_game = g_game;
 	}
 	const std::string& component::property_base::get_name() {
 		return this->name;

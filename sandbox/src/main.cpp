@@ -22,6 +22,12 @@ thebanana::application_layer* create_application_layer() {
 	return new sandbox_application_layer;
 }
 void sandbox_application_layer::register_scripts() {
+	// if a script module is specified, load it
+	std::vector<std::string> cmdline = thebanana::g_game->get_command_line();
+	if (cmdline.size() > 3) {
+		thebanana::g_game->load_script_module(cmdline[3]);
+		return;
+	}
 	// register scripts
 	thebanana::g_game->get_script_registry()->register_script<player_behavior>();
 	thebanana::g_game->get_script_registry()->register_script<camera_behavior>();

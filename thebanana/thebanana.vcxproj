@@ -68,10 +68,10 @@
       <AdditionalLibraryDirectories>$(OutDir);C:\steamsdk\sdk\redistributable_bin\win64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <Lib>
-      <AdditionalDependencies>dinput8.lib;imgui.lib;steam_api64.lib;yaml.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>dinput8.lib;imgui.lib;steam_api64.lib;yaml.lib;$(ModelLoaderLibraries);$(OpenGLViewportLibraries);$(ShaderLibraries);$(SkiaLibraries);%(AdditionalDependencies)</AdditionalDependencies>
     </Lib>
     <Lib>
-      <AdditionalLibraryDirectories>C:\steamsdk\sdk\redistributable_bin\win64;$(OutDir);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(MSBuildThisFileDirectory)\..\runtimes\win-$(PlatformTarget)\native\;C:\steamsdk\sdk\redistributable_bin\win64;$(OutDir);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -97,10 +97,10 @@
       <AdditionalLibraryDirectories>$(OutDir);C:\steamsdk\sdk\redistributable_bin\win64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <Lib>
-      <AdditionalDependencies>dinput8.lib;imgui.lib;steam_api64.lib;yaml.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>dinput8.lib;imgui.lib;steam_api64.lib;yaml.lib;$(ModelLoaderLibraries);$(OpenGLViewportLibraries);$(ShaderLibraries);$(SkiaLibraries);%(AdditionalDependencies)</AdditionalDependencies>
     </Lib>
     <Lib>
-      <AdditionalLibraryDirectories>C:\steamsdk\sdk\redistributable_bin\win64;$(OutDir);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(MSBuildThisFileDirectory)\..\runtimes\win-$(PlatformTarget)\native\;C:\steamsdk\sdk\redistributable_bin\win64;$(OutDir);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>

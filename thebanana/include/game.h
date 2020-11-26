@@ -54,6 +54,7 @@ namespace thebanana {
 		float get_timestep();
 		std::vector<std::string> get_command_line();
 		void load_script_module(const std::string& dllpath);
+		void debug_print(const std::string& message);
 	private:
 		void shutdown_steam();
 		unsigned int m_frame;

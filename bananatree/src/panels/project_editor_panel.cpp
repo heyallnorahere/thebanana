@@ -24,10 +24,12 @@ namespace bananatree {
 				}
 			}
 		}
+		ImGui::InputText("Output DLL name", &this->m_current_dll_name);
 		if (ImGui::Button("Save")) {
 			this->m_project->rename(this->m_current_name);
 			this->m_project->set_main_scene_path(this->m_current_main_scene_path);
 			this->m_project->set_code_project_path(this->m_current_code_project_path);
+			this->m_project->set_dll_name(this->m_current_dll_name);
 		}
 		ImGui::End();
 	}
@@ -48,5 +50,8 @@ namespace bananatree {
 	}
 	void project_editor_panel::set_current_code_project(const std::string& path) {
 		this->m_current_code_project_path = path;
+	}
+	void project_editor_panel::set_current_dll_name(const std::string& name) {
+		this->m_current_dll_name = name;
 	}
 }

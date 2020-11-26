@@ -40,6 +40,9 @@ namespace bananatree {
 		if (!this->m_code_project.empty()) {
 			out << YAML::Key << "code_project_path" << YAML::Value << this->m_code_project;
 		}
+		if (!this->m_dll_name.empty()) {
+			out << YAML::Key << "dll_name" << YAML::Value << this->m_dll_name;
+		}
 		out << YAML::Key << "models" << YAML::Value << YAML::BeginSeq;
 		for (auto md : this->m_descriptors) {
 			out << YAML::BeginMap;
@@ -71,11 +74,22 @@ namespace bananatree {
 			std::string path = file["main_scene_path"].as<std::string>();
 			this->m_main_scene = path;
 			this->m_imgui_layer->find_panel<project_editor_panel>()->set_current_main_scene(this->m_main_scene);
+		} else {
+			this->m_imgui_layer->find_panel<project_editor_panel>()->set_current_main_scene(std::string());
 		}
 		if (file["code_project_path"]) {
 			std::string path = file["code_project_path"].as<std::string>();
 			this->m_code_project = path;
 			this->m_imgui_layer->find_panel<project_editor_panel>()->set_current_code_project(this->m_code_project);
+		} else {
+			this->m_imgui_layer->find_panel<project_editor_panel>()->set_current_code_project(std::string());
+		}
+		if (file["dll_name"]) {
+			std::string path = file["dll_name"].as<std::string>();
+			this->m_dll_name = path;
+			this->m_imgui_layer->find_panel<project_editor_panel>()->set_current_dll_name(this->m_dll_name);
+		} else {
+			this->m_imgui_layer->find_panel<project_editor_panel>()->set_current_dll_name(std::string());
 		}
 		if (!this->m_main_scene.empty()) {
 			std::string path = this->m_temp_path;
@@ -116,11 +130,17 @@ namespace bananatree {
 	std::string project::get_code_project_path() {
 		return this->m_code_project;
 	}
+	std::string project::get_dll_name() {
+		return this->m_dll_name;
+	}
 	void project::set_main_scene_path(const std::string& path) {
 		this->m_main_scene = path;
 	}
 	void project::set_code_project_path(const std::string& path) {
 		this->m_code_project = path;
+	}
+	void project::set_dll_name(const std::string& name) {
+		this->m_dll_name = name;
 	}
 	void project::register_model(const model_descriptor& md) {
 		this->m_descriptors.push_back(md);

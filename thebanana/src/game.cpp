@@ -32,7 +32,7 @@ namespace thebanana {
 		this->m_scene = new scene(this);
 		this->m_input_manager = new input_manager(this);
 		this->m_shader_registry = new shader_registry;
-		this->m_script_registry = new script_registry;
+		this->m_script_registry = new script_registry(this);
 		this->m_model_registry = new model_registry;
 		auto ed = this->m_input_manager->get_enumerated_devices();
 		for (size_t i = 0; i < ed.size(); i++) {
@@ -236,6 +236,9 @@ namespace thebanana {
 	void game::load_script_module(const std::string& dllpath) {
 		delete this->m_module;
 		this->m_module = new script_module(this->m_script_registry, dllpath);
+	}
+	void game::debug_print(const std::string& message) {
+		thebanana::debug::log_print(message);
 	}
 	void game::shutdown_steam() {
 		SteamAPI_Shutdown();

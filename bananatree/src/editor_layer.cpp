@@ -52,7 +52,7 @@ namespace bananatree {
 			"\"" + path + "\" \"" + this->m_imgui_layer->get_scene_path() + "\" \"" + this->m_project->get_path() + "\"";
 		std::string code_project_path = this->m_project->get_code_project_path();
 		if (!code_project_path.empty()) {
-			args += " \"" + this->find_dll_path() + "\"";
+			args += " \"" + this->get_dll_path() + "\"";
 		}
 		thebanana::debug::log_print("launching sandbox with command: " + args);
 		CreateProcessA(path.c_str(), (char*)args.c_str(), NULL, NULL, false, 0, NULL, NULL, &si, &pi);
@@ -75,20 +75,12 @@ namespace bananatree {
 		if (code_project_path.empty()) {
 			return;
 		}
-		thebanana::g_game->load_script_module(this->find_dll_path());
+		thebanana::g_game->load_script_module(this->get_dll_path());
 	}
-	std::string editor_layer::find_dll_path() {
+	std::string editor_layer::get_dll_path() {
 		std::string project_path = this->m_project->get_code_project_path();
 		std::string directory = project_path + (project_path == "." ? "\\" : "") + "x64\\Debug\\";
-		std::string path = directory + "*.dll";
-		WIN32_FIND_DATAA wfd;
-		ZeroMemory(&wfd, sizeof(WIN32_FIND_DATAA));
-		HANDLE h = FindFirstFileA(path.c_str(), &wfd);
-		assert(h != INVALID_HANDLE_VALUE);
-		do {
-			return directory + wfd.cFileName;
-			break;
-		} while (FindNextFileA(h, &wfd));
-		return std::string();
+		std::string path = directory + this->m_project->get_dll_name();
+		return path;
 	}
 }

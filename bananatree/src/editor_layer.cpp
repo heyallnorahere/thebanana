@@ -84,7 +84,13 @@ namespace bananatree {
 	}
 	std::string editor_layer::get_dll_path() {
 		std::string project_path = this->m_project->get_code_project_path();
-		std::string directory = project_path + (project_path == "." ? "\\" : "") + "x64\\Debug\\";
+		std::string configuration =
+#ifdef _DEBUG
+			"Debug";
+#else
+			"Release";
+#endif
+		std::string directory = project_path + (project_path == "." ? "\\" : "") + "x64\\" + configuration + "\\";
 		std::string path = directory + this->m_project->get_dll_name();
 		return path;
 	}

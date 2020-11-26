@@ -17,7 +17,7 @@ namespace thebanana {
 		};
 #else
 		struct model_vertex_data {
-			int unused;
+			std::vector<int> unused[3];
 		};
 #endif
 		model_registry();

@@ -54,9 +54,12 @@ namespace bananatree {
 		CreateProcessA(path.c_str(), (char*)args.c_str(), NULL, NULL, false, 0, NULL, NULL, &si, &pi);
 	}
 	void editor_layer::compile_scripts() {
+		std::string code_project_path = this->m_project->get_code_project_path();
+		if (code_project_path.empty()) {
+			return;
+		}
 		PROCESS_INFORMATION pi = { 0 };
 		STARTUPINFOA si = { 0 };
-		std::string code_project_path = this->m_project->get_code_project_path();
 		std::string msbuild_path = this->m_config->get<std::string>("msbuild");
 		std::string command = "msbuild .";
 		CreateProcessA(msbuild_path.c_str(), (char*)command.c_str(), NULL, NULL, NULL, NULL, NULL, code_project_path.c_str(), &si, &pi);
@@ -64,7 +67,8 @@ namespace bananatree {
 		this->attach_scripts();
 	}
 	void editor_layer::attach_scripts() {
-		std::string directory = this->m_project->get_code_project_path() + "x64\\Debug\\";
+		std::string project_path = this->m_project->get_code_project_path();
+		std::string directory = project_path + (project_path == "." ? "\\" : "") + "x64\\Debug\\";
 		std::string path = directory + "*.dll";
 		WIN32_FIND_DATAA wfd;
 		ZeroMemory(&wfd, sizeof(WIN32_FIND_DATAA));

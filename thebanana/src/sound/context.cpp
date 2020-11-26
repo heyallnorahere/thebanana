@@ -26,7 +26,9 @@ namespace thebanana {
 		}
 		void openal_context::destroy() {
 			alcDestroyContext(this->m_context);
+			this->m_context = nullptr;
 			alcCloseDevice(this->m_device);
+			this->m_device = nullptr;
 		}
 	}
 }

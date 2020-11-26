@@ -22,8 +22,8 @@ namespace thebanana {
 			using ALCdevice = void;
 			using ALCcontext = void;
 #endif
-			ALCdevice* m_device;
-			ALCcontext* m_context;
+			ALCdevice* m_device = nullptr;
+			ALCcontext* m_context = nullptr;
 		};
 	}
 }

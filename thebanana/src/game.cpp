@@ -61,7 +61,7 @@ namespace thebanana {
 	game::~game() {
 		if (this->m_steam_initialized) this->shutdown_steam();
 		if (this->m_debug_menus_initialized) debug::clean_up_imgui();
-		delete this->m_module;
+		if (this->m_module) delete this->m_module;
 		delete this->m_sound_manager;
 		delete this->m_menu_quad;
 		delete this->m_menu_manager;

@@ -33,7 +33,6 @@ namespace thebanana {
 	}
 	void component::add_property(property_base* p) {
 		p->set_parent(this);
-		p->set_game(this->parent->get_game());
 		this->properties.push_back(std::unique_ptr<property_base>(p));
 	}
 	void component::remove_property(const std::string& name) {

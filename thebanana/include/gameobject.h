@@ -42,6 +42,7 @@ namespace thebanana {
 	protected:
 		component::properties_t m_properties;
 		void add_property(component::property_base* p);
+		void init_component(component* c);
 		template<typename _Ty> component::property<_Ty>* find_property(const std::string& name);
 		void prepare_for_update();
 		void prepare_for_render();
@@ -71,7 +72,7 @@ namespace thebanana {
 	}
 	template<typename _Ty> inline _Ty& gameobject::add_component() {
 		_Ty* c = new _Ty(this);
-		if (this->initialized) c->initialize();
+		if (this->initialized) this->init_component(c);
 		this->m_components.push_back(std::unique_ptr<component>(c));
 		return *c;
 	}

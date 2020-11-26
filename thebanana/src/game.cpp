@@ -248,8 +248,14 @@ namespace thebanana {
 	static void int_input(const char* label, int* v) {
 		ImGui::InputInt(label, v);
 	}
+	static void bool_input(const char* label, bool* v) {
+		ImGui::Checkbox(label, v);
+	}
 	static void float_input(const char* label, float* v) {
 		ImGui::DragFloat(label, v);
+	}
+	static void double_input(const char* label, double* v) {
+		ImGui::InputDouble(label, v);
 	}
 	static void float2_input(const char* label, glm::vec2* v) {
 		ImGui::DragFloat2(label, &v->x);
@@ -276,9 +282,9 @@ namespace thebanana {
 	}
 	void game::fill_imgui_input_pointers() {
 		this->m_imgui_input_functions[typeid(int).hash_code()] = int_input;
-		this->m_imgui_input_functions[typeid(bool).hash_code()] = ImGui::Checkbox;
+		this->m_imgui_input_functions[typeid(bool).hash_code()] = bool_input;
 		this->m_imgui_input_functions[typeid(float).hash_code()] = float_input;
-		this->m_imgui_input_functions[typeid(double).hash_code()] = ImGui::InputDouble;
+		this->m_imgui_input_functions[typeid(double).hash_code()] = double_input;
 		this->m_imgui_input_functions[typeid(std::string).hash_code()] = text_input;
 		this->m_imgui_input_functions[typeid(glm::vec2).hash_code()] = float2_input;
 		this->m_imgui_input_functions[typeid(glm::vec3).hash_code()] = float3_input;

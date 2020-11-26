@@ -21,7 +21,7 @@ namespace thebanana {
 		this->m_scene = sc;
 		this->m_game = g;
 		for (auto& c : this->m_components) {
-			c->initialize();
+			this->init_component(c.get());
 		}
 		this->initialized = true;
 	}
@@ -147,7 +147,14 @@ namespace thebanana {
 		}
 	}
 	void gameobject::add_property(component::property_base* p) {
+		p->set_parent(NULL);
 		this->m_properties.push_back(std::unique_ptr<component::property_base>(p));
+	}
+	void gameobject::init_component(component* c) {
+		for (auto& p : c->get_properties()) {
+			((std::unique_ptr<component::property_base>&)p)->set_game(this->m_game);
+		}
+		c->initialize();
 	}
 	void gameobject::prepare_for_update() {
 		this->update_children();

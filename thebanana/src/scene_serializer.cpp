@@ -152,7 +152,9 @@ namespace thebanana {
 			out << YAML::Key << "script" << YAML::Value << nsc.get_property<component::property_base::read_only_text>("Script")->get_text();
 			out << YAML::Key << "script_properties" << YAML::BeginSeq;
 			for (size_t i = 1; i < nsc.get_properties().size(); i++) {
-				auto& prop = nsc.get_properties()[i];
+				auto it = nsc.get_properties().begin();
+				std::advance(it, i);
+				auto& prop = *it;
 				out << YAML::BeginMap;
 				out << YAML::Key << "name" << YAML::Value << prop->get_name();
 				out << YAML::Key << "value" << YAML::Value;

@@ -61,7 +61,6 @@ namespace thebanana {
 	game::~game() {
 		if (this->m_steam_initialized) this->shutdown_steam();
 		if (this->m_debug_menus_initialized) debug::clean_up_imgui();
-		if (this->m_module) delete this->m_module;
 		delete this->m_sound_manager;
 		delete this->m_menu_quad;
 		delete this->m_menu_manager;
@@ -69,9 +68,10 @@ namespace thebanana {
 		delete this->m_interpreter;
 		delete this->m_model_registry;
 		delete this->m_viewport;
-		delete this->m_script_registry;
 		delete this->m_shader_registry;
 		delete this->m_input_manager;
+		if (this->m_module) delete this->m_module;
+		delete this->m_script_registry;
 	}
 	void game::destroy() {
 		DestroyWindow(this->m_window);

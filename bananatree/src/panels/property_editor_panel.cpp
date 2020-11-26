@@ -51,6 +51,25 @@ namespace bananatree {
 		this->m_component_index = 0;
 		this->m_hierarchy = NULL;
 	}
+	static void script_dragdrop_target(thebanana::native_script_component& component, thebanana::component::property_base* prop) {
+		auto property = (thebanana::component::property<thebanana::component::property_base::read_only_text>*)prop;
+		bool has_script = (property->get_value()->get_text() != "none");
+		std::string id_string = std::to_string(component.get_uuid()) + " dragdrop source";
+		ImGui::PushID(id_string.c_str());
+		std::string text = (has_script ? property->get_value()->get_text() : "None");
+		ImGui::InputText(property->get_name().c_str(), &text, ImGuiInputTextFlags_ReadOnly);
+		if (ImGui::BeginDragDropTarget()) {
+			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("SCRIPT_PAYLOAD")) {
+				std::string script_name = std::string((char*)payload->Data, payload->DataSize);
+				thebanana::script* script = thebanana::g_game->get_script_registry()->create_script(script_name, component.get_parent(), &component);
+				component.bind(script);
+				component.set_property("Script", script_name);
+				script->initialize();
+			}
+			ImGui::EndDragDropTarget();
+		}
+		ImGui::PopID();
+	}
 	void property_editor_panel::render() {
 		thebanana::gameobject* object = this->m_hierarchy->get_selected_object();
 		if (this->m_show_transform_menu) transform_menu(object, &this->m_show_transform_menu);
@@ -153,7 +172,9 @@ namespace bananatree {
 					}
 					auto& properties = c.get_properties();
 					for (size_t i = 0; i < properties.size(); i++) {
-						auto& p = properties[i];
+						auto it = properties.begin();
+						std::advance(it, i);
+						auto& p = *it;
 						if (typeid(*p).hash_code() == typeid(thebanana::component::property<thebanana::gameobject*>).hash_code()) {
 							thebanana::component::property<thebanana::gameobject*>* prop = (thebanana::component::property<thebanana::gameobject*>*)p.get();
 							char buf[256];
@@ -166,7 +187,7 @@ namespace bananatree {
 							std::string text = (*prop->get_value()) ? (*prop->get_value())->get_nickname() : "None";
 							ImGui::InputText(prop->get_name().c_str(), &text, ImGuiInputTextFlags_ReadOnly);
 							if (ImGui::BeginDragDropTarget()) {
-								if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("GAMEOBJECT_PAYLOAD")) {
+								if (const ImGuiPayload * payload = ImGui::AcceptDragDropPayload("GAMEOBJECT_PAYLOAD")) {
 									assert(payload->DataSize == sizeof(unsigned long long));
 									unsigned long long uuid = *(unsigned long long*)payload->Data;
 									*prop->get_value() = thebanana::g_game->get_scene()->find(uuid);
@@ -177,6 +198,8 @@ namespace bananatree {
 							if (ImGui::Button("Clear property")) {
 								*prop->get_value() = NULL;
 							}
+						} else if (p->get_name() == "Script") {
+							script_dragdrop_target((thebanana::native_script_component&)c, p.get());
 						} else {
 							p->draw();
 						}

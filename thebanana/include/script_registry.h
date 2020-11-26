@@ -9,6 +9,7 @@ namespace thebanana {
 		template<typename T> void register_script();
 		script* create_script(const std::string& type_name, gameobject* parent, native_script_component* nsc);
 		void clear_script_prototypes();
+		std::vector<std::string> get_script_names();
 	private:
 		std::map<std::string, script*(*)(gameobject*, native_script_component*)> m_script_prototypes;
 		game* m_game;
@@ -31,5 +32,12 @@ namespace thebanana {
 	}
 	inline void script_registry::clear_script_prototypes() {
 		this->m_script_prototypes.clear();
+	}
+	inline std::vector<std::string> script_registry::get_script_names() {
+		std::vector<std::string> names;
+		for (auto p : this->m_script_prototypes) {
+			names.push_back(p.first);
+		}
+		return names;
 	}
 }

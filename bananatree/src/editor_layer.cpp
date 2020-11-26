@@ -2,6 +2,7 @@
 #include "editor_layer.h"
 #include "../resource.h"
 #include "util.h"
+#include "panels/script_registry_panel.h"
 namespace bananatree {
 	void editor_layer::init() {
 		this->m_project = std::shared_ptr<project>(new project);
@@ -79,6 +80,7 @@ namespace bananatree {
 			return;
 		}
 		thebanana::g_game->load_script_module(this->get_dll_path());
+		this->m_imgui_layer->find_panel<script_registry_panel>()->refresh();
 	}
 	std::string editor_layer::get_dll_path() {
 		std::string project_path = this->m_project->get_code_project_path();

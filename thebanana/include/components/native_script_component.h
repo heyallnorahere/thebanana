@@ -14,7 +14,7 @@ namespace thebanana {
 		virtual void render();
 		virtual void post_render();
 		virtual void on_collision(gameobject* other);
-		virtual void clean_up();
+		virtual ~script();
 	protected:
 		gameobject* parent;
 		native_script_component* interface;

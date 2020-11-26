@@ -14,7 +14,7 @@ namespace thebanana {
 	void script::render() { }
 	void script::post_render() { }
 	void script::on_collision(gameobject* other) { }
-	void script::clean_up() { }
+	script::~script() { }
 	void script::add_property(component::property_base* p) {
 		((component*)this->interface)->add_property(p);
 	}
@@ -48,7 +48,6 @@ namespace thebanana {
 		if (this->m_script) this->m_script->on_collision(other);
 	}
 	void native_script_component::clean_up() {
-		if (this->m_script) this->m_script->clean_up();
 		if (this->m_destroy_script) this->m_destroy_script(this);
 	}
 }

@@ -45,7 +45,7 @@ namespace thebanana {
 			gameobject* selection_window_temp;
 			friend class scene_serializer;
 		};
-		using properties_t = std::vector<std::unique_ptr<property_base>>;
+		using properties_t = std::list<std::unique_ptr<property_base>>;
 		template<typename T> class property : public property_base {
 		public:
 			property(const T& value, const std::string& name);
@@ -88,8 +88,9 @@ namespace thebanana {
 		template<typename _Ty> _Ty* get_property(const std::string& name);
 		unsigned long long get_uuid() const;
 		void set_uuid(unsigned long long uuid);
-	protected:
 		void add_property(property_base* p);
+		void remove_property(const std::string& name);
+	protected:
 		transform& get_transform();
 		template<typename _Ty> bool has_component();
 		template<typename _Ty> size_t get_number_components();

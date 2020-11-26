@@ -34,6 +34,17 @@ namespace thebanana {
 	void component::add_property(property_base* p) {
 		this->properties.push_back(std::unique_ptr<property_base>(p));
 	}
+	void component::remove_property(const std::string& name) {
+		std::unique_ptr<property_base>* prop = NULL;
+		for (auto& p : this->properties) {
+			if (p->get_name() == name) {
+				prop = &p;
+				break;
+			}
+		}
+		assert(prop);
+		this->properties.remove(*prop);
+	}
 	transform& component::get_transform() {
 		return this->parent->get_transform();
 	}

@@ -17,7 +17,7 @@ namespace bananatree {
 		ImGui::Begin("Viewport", &this->m_open);
 		ImVec2 content_region = ImGui::GetContentRegionAvail();
 		this->m_framebuffer->bind();
-		if (content_region.x > 0.f && content_region.y > 0.f) glViewport(0, 0, content_region.x, content_region.y);
+		if (content_region.x > 0.f && content_region.y > 0.f) glViewport(0, 0, static_cast<int>(content_region.x), static_cast<int>(content_region.y));
 		thebanana::g_game->render();
 		this->m_framebuffer->unbind();
 		auto att = this->m_framebuffer->get_attachments();

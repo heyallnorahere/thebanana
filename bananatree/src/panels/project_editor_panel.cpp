@@ -6,6 +6,7 @@
 #include <misc/cpp/imgui_stdlib.h>
 #include "../project.h"
 #include "../util.h"
+#include "../editor_layer.h"
 namespace bananatree {
 	void project_editor_panel::render() {
 		ImGui::Begin("Project editor", &this->m_open);
@@ -28,8 +29,13 @@ namespace bananatree {
 		if (ImGui::Button("Save")) {
 			this->m_project->rename(this->m_current_name);
 			this->m_project->set_main_scene_path(this->m_current_main_scene_path);
+			bool same_path = (this->m_current_code_project_path == this->m_project->get_code_project_path());
+			bool same_name = (this->m_current_dll_name == this->m_project->get_dll_name());
 			this->m_project->set_code_project_path(this->m_current_code_project_path);
 			this->m_project->set_dll_name(this->m_current_dll_name);
+			if ((!same_path) && (!same_name)) {
+				this->m_project->get_editor_layer()->compile_scripts();
+			}
 		}
 		ImGui::End();
 	}

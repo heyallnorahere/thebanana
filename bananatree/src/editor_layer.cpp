@@ -6,7 +6,7 @@ namespace bananatree {
 	void editor_layer::init() {
 		this->m_project = std::shared_ptr<project>(new project);
 		this->m_imgui_layer = std::shared_ptr<imgui_layer>(new imgui_layer(this));
-		this->m_project->set_imgui_layer(&(*this->m_imgui_layer));
+		this->m_project->set_editor_layer(this);
 		this->m_config = std::shared_ptr<editorconfig>(new editorconfig);
 		std::string config_filename = "bananatreeconfig.yaml";
 		if (util::file_exists(config_filename)) {
@@ -32,6 +32,9 @@ namespace bananatree {
 	}
 	std::shared_ptr<project> editor_layer::get_project() {
 		return this->m_project;
+	}
+	std::shared_ptr<imgui_layer> editor_layer::get_imgui_layer() {
+		return this->m_imgui_layer;
 	}
 	void editor_layer::launch_sandbox() {
 		PROCESS_INFORMATION pi = { 0 };

@@ -1,6 +1,6 @@
 #pragma once
 namespace bananatree {
-	class imgui_layer;
+	class editor_layer;
 	class project {
 	public:
 		struct model_descriptor {
@@ -9,7 +9,8 @@ namespace bananatree {
 			std::string find, replace;
 		};
 		project();
-		void set_imgui_layer(imgui_layer* il);
+		void set_editor_layer(editor_layer* il);
+		editor_layer* get_editor_layer();
 		void rename(const std::string& name);
 		void reset();
 		void save(const std::string& path);
@@ -29,7 +30,7 @@ namespace bananatree {
 	private:
 		std::string m_name, m_main_scene, m_code_project, m_dll_name;
 		std::vector<model_descriptor> m_descriptors;
-		imgui_layer* m_imgui_layer;
+		editor_layer* m_editor_layer;
 		std::string m_temp_path;
 
 	};

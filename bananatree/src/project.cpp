@@ -1,15 +1,18 @@
 #include <thebanana.h>
 #include "project.h"
 #include <yaml-cpp/yaml.h>
-#include "imgui_layer.h"
+#include "editor_layer.h"
 #include "panels/model_registry_panel.h"
 #include "panels/project_editor_panel.h"
 namespace bananatree {
 	project::project() {
 		this->reset();
 	}
-	void project::set_imgui_layer(imgui_layer* il) {
-		this->m_imgui_layer = il;
+	void project::set_editor_layer(editor_layer* il) {
+		this->m_editor_layer = il;
+	}
+	editor_layer* project::get_editor_layer() {
+		return this->m_editor_layer;
 	}
 	void project::rename(const std::string& name) {
 		this->m_name = name;
@@ -21,8 +24,8 @@ namespace bananatree {
 		if (!this->m_main_scene.empty()) this->m_main_scene.clear();
 		if (!this->m_code_project.empty()) this->m_code_project.clear();
 		this->rename("Untitled");
-		if (this->m_imgui_layer) {
-			project_editor_panel* pep = this->m_imgui_layer->find_panel<project_editor_panel>();
+		if (this->m_editor_layer) {
+			project_editor_panel* pep = this->m_editor_layer->get_imgui_layer()->find_panel<project_editor_panel>();
 			pep->set_current_name(this->m_name);
 			pep->set_current_main_scene(this->m_main_scene);
 			pep->set_current_code_project(this->m_code_project);
@@ -69,27 +72,30 @@ namespace bananatree {
 		YAML::Node file = YAML::LoadFile(path);
 		assert(file["name"]);
 		this->rename(file["name"].as<std::string>());
-		this->m_imgui_layer->find_panel<project_editor_panel>()->set_current_name(this->m_name);
+		this->m_editor_layer->get_imgui_layer()->find_panel<project_editor_panel>()->set_current_name(this->m_name);
 		if (file["main_scene_path"]) {
 			std::string path = file["main_scene_path"].as<std::string>();
 			this->m_main_scene = path;
-			this->m_imgui_layer->find_panel<project_editor_panel>()->set_current_main_scene(this->m_main_scene);
+			this->m_editor_layer->get_imgui_layer()->find_panel<project_editor_panel>()->set_current_main_scene(this->m_main_scene);
 		} else {
-			this->m_imgui_layer->find_panel<project_editor_panel>()->set_current_main_scene(std::string());
+			this->m_editor_layer->get_imgui_layer()->find_panel<project_editor_panel>()->set_current_main_scene(std::string());
 		}
 		if (file["code_project_path"]) {
 			std::string path = file["code_project_path"].as<std::string>();
 			this->m_code_project = path;
-			this->m_imgui_layer->find_panel<project_editor_panel>()->set_current_code_project(this->m_code_project);
+			this->m_editor_layer->get_imgui_layer()->find_panel<project_editor_panel>()->set_current_code_project(this->m_code_project);
 		} else {
-			this->m_imgui_layer->find_panel<project_editor_panel>()->set_current_code_project(std::string());
+			this->m_editor_layer->get_imgui_layer()->find_panel<project_editor_panel>()->set_current_code_project(std::string());
 		}
 		if (file["dll_name"]) {
 			std::string path = file["dll_name"].as<std::string>();
 			this->m_dll_name = path;
-			this->m_imgui_layer->find_panel<project_editor_panel>()->set_current_dll_name(this->m_dll_name);
+			this->m_editor_layer->get_imgui_layer()->find_panel<project_editor_panel>()->set_current_dll_name(this->m_dll_name);
 		} else {
-			this->m_imgui_layer->find_panel<project_editor_panel>()->set_current_dll_name(std::string());
+			this->m_editor_layer->get_imgui_layer()->find_panel<project_editor_panel>()->set_current_dll_name(std::string());
+		}
+		if (file["code_project_path"] && file["dll_name"]) {
+			this->m_editor_layer->compile_scripts();
 		}
 		if (!this->m_main_scene.empty()) {
 			std::string path = this->m_temp_path;
@@ -105,7 +111,7 @@ namespace bananatree {
 			if (pos != std::string::npos) {
 				directory = path.substr(0, pos + 1);
 			}
-			this->m_imgui_layer->open_scene(directory + this->m_main_scene);
+			this->m_editor_layer->get_imgui_layer()->open_scene(directory + this->m_main_scene);
 		}
 		assert(file["models"]);
 		for (auto m : file["models"]) {
@@ -118,7 +124,7 @@ namespace bananatree {
 				md.replace = m["replace"].as<std::string>();
 			}
 			this->m_descriptors.push_back(md);
-			this->m_imgui_layer->find_panel<model_registry_panel>()->import(md);
+			this->m_editor_layer->get_imgui_layer()->find_panel<model_registry_panel>()->import(md);
 		}
 	}
 	std::string project::get_name() {

@@ -56,7 +56,7 @@ namespace thebanana {
 		this->m_module = NULL;
 		char sizebuf[256];
 		sprintf(sizebuf, "width: %d, height: %d", width, height);
-		debug::log_print("successfully created graphics context:\n	backend: " + graphics::get_backend_version() + "\n	" + sizebuf);
+		this->debug_print("successfully created graphics context:\n	backend: " + graphics::get_backend_version() + "\n	" + sizebuf);
 	}
 	game::~game() {
 		if (this->m_steam_initialized) this->shutdown_steam();
@@ -70,7 +70,7 @@ namespace thebanana {
 		delete this->m_viewport;
 		delete this->m_shader_registry;
 		delete this->m_input_manager;
-		if (this->m_module) delete this->m_module;
+		delete this->m_module;
 		delete this->m_script_registry;
 	}
 	void game::destroy() {
@@ -109,11 +109,7 @@ namespace thebanana {
 		if (ImGui_ImplWin32_WndProcHandler(window, msg, w_param, l_param))
 			return true;
 		switch (msg) {
-		case WM_CREATE:
-			debug::log_print("created window");
-			break;
 		case WM_DESTROY:
-			debug::log_print("destroyed window");
 			PostQuitMessage(0);
 			break;
 		case WM_SIZE:
@@ -238,7 +234,12 @@ namespace thebanana {
 		this->m_module = new script_module(this->m_script_registry, dllpath);
 	}
 	void game::debug_print(const std::string& message) {
-		thebanana::debug::log_print(message);
+		std::string msg = message + "\n";
+		this->debug_log << msg;
+		OutputDebugStringA(msg.c_str());
+	}
+	std::string game::get_debug_log() {
+		return this->debug_log.str();
 	}
 	void game::shutdown_steam() {
 		SteamAPI_Shutdown();

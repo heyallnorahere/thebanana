@@ -9,7 +9,6 @@
 #include "ui/ui.h"
 namespace thebanana {
 	namespace debug {
-		std::stringstream debug_log;
 		void init_imgui(HWND window) {
 			IMGUI_CHECKVERSION();
 			ImGui::CreateContext();
@@ -167,9 +166,9 @@ namespace thebanana {
 			}
 			ImGui::End();
 		}
-		void debug_console() {
+		void debug_console(game* g_game) {
 			ImGui::Begin("the banana: console");
-			std::string log = debug_log.str();
+			std::string log = g_game->get_debug_log();
 			ImGui::InputTextMultiline("console log", &log, ImVec2(1000, 1000), ImGuiInputTextFlags_ReadOnly);
 			ImGui::BeginChild("console log");
 			ImGui::SetScrollY(ImGui::GetScrollMaxY());
@@ -247,14 +246,9 @@ namespace thebanana {
 			for (int i = 0; i < objects.size(); i++) {
 				transform_menu(objects[i], i + 1);
 			}
-			debug_console();
+			debug_console(g_game);
 			ImGui::Render();
 			ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-		}
-		void log_print(const std::string& message) {
-			std::string msg = message + "\n";
-			debug_log << msg;
-			OutputDebugStringA(msg.c_str());
 		}
 	}
 }

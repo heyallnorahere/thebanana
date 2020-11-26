@@ -174,10 +174,10 @@ namespace thebanana {
 		out << YAML::EndMap;
 		char uuidbuf[256];
 		_ui64toa(object->get_uuid(), uuidbuf, 10);
-		debug::log_print("serialized object\nnickname: " + object->get_nickname() + "\nUUID: " + uuidbuf);
+		g_game->debug_print("serialized object\nnickname: " + object->get_nickname() + "\nUUID: " + uuidbuf);
 	}
 	void scene_serializer::serialize(const std::string& path) {
-		debug::log_print("saving scene to " + path);
+		this->m_scene->get_game()->debug_print("saving scene to " + path);
 		YAML::Emitter out;
 		out << YAML::BeginMap;
 		out << YAML::Key << "scene" << YAML::Value << "untitled";
@@ -190,7 +190,7 @@ namespace thebanana {
 		std::ofstream fout(path);
 		fout << out.c_str();
 		fout.close();
-		debug::log_print("saved scene to " + path);
+		this->m_scene->get_game()->debug_print("saved scene to " + path);
 	}
 	static void deserialize_collider(const YAML::Node& node, rigidbody& rb) {
 		assert(node["type"]);
@@ -239,7 +239,6 @@ namespace thebanana {
 				ac.set_uuid(uuid);
 			} else if (type == "rigidbody") {
 				rigidbody& rb = object->add_component<rigidbody>();
-				rb.initialize();
 				rb.set_uuid(uuid);
 				assert(n["gravity"]);
 				rb.set_property<bool>("Gravity", n["gravity"].as<bool>());
@@ -369,7 +368,7 @@ namespace thebanana {
 		if (o) {
 			char uuidbuf[256];
 			_ui64toa(uuid, uuidbuf, 10);
-			debug::log_print("failed to load object; an object with the uuid of " + std::string(uuidbuf) + " already exists");
+			g_game->debug_print("failed to load object; an object with the uuid of " + std::string(uuidbuf) + " already exists");
 			delete object;
 			return NULL;
 		}
@@ -391,7 +390,7 @@ namespace thebanana {
 		}
 		char uuidbuf[256];
 		_ui64toa(object->get_uuid(), uuidbuf, 10);
-		debug::log_print("deserialized object\nnickname: " + object->get_nickname() + "\nUUID: " + uuidbuf);
+		g_game->debug_print("deserialized object\nnickname: " + object->get_nickname() + "\nUUID: " + uuidbuf);
 		return object;
 	}
 	void scene_serializer::deserialize(const std::string& path) {
@@ -401,7 +400,7 @@ namespace thebanana {
 		YAML::Node data = YAML::LoadFile(path);
 		assert(data["scene"]);
 		std::string name = data["scene"].as<std::string>();
-		debug::log_print("loading scene " + name + " from " + path);
+		this->m_scene->get_game()->debug_print("loading scene " + name + " from " + path);
 		auto objects = data["objects"];
 		if (objects) {
 			for (auto obj : objects) {
@@ -416,6 +415,6 @@ namespace thebanana {
 		for (auto fs : to_find) {
 			*fs.ptr = this->m_scene->find(fs.uuid);
 		}
-		debug::log_print("loaded scene " + name + " from " + path);
+		this->m_scene->get_game()->debug_print("loaded scene " + name + " from " + path);
 	}
 }

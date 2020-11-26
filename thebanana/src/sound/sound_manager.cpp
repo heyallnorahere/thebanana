@@ -17,7 +17,7 @@ namespace thebanana {
 			unsigned int samples_per_second;
 			short* buffer = ::load_sound(path, samples, channels, samples_per_second);
 			if (!buffer) {
-				debug::log_print("failed to load sound, aborting");
+				this->m_game->debug_print("failed to load sound, aborting");
 				return NULL;
 			}
 			this->m_sounds[name] = sound_effect::create(buffer, samples, channels, samples_per_second);

@@ -58,7 +58,7 @@ namespace bananatree {
 		if (!code_project_path.empty()) {
 			args += " \"" + this->get_dll_path() + "\"";
 		}
-		thebanana::debug::log_print("launching sandbox with command: " + args);
+		thebanana::g_game->debug_print("launching sandbox with command: " + args);
 		CreateProcessA(path.c_str(), (char*)args.c_str(), NULL, NULL, false, 0, NULL, NULL, &si, &pi);
 	}
 	void editor_layer::compile_scripts() {

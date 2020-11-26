@@ -55,8 +55,10 @@ namespace thebanana {
 		std::vector<std::string> get_command_line();
 		void load_script_module(const std::string& dllpath);
 		void debug_print(const std::string& message);
+		std::string get_debug_log();
 	private:
 		void shutdown_steam();
+		std::stringstream debug_log;
 		unsigned int m_frame;
 		HWND m_window;
 #ifndef BANANA_BUILD

@@ -7,7 +7,7 @@
 namespace thebanana {
 	int debug_print(lua_State* state) {
 		std::string text = lua_tostring(state, 1);
-		debug::log_print(text);
+		g_game->debug_print(text);
 		return 0;
 	}
 	int load_menu(lua_State* state) {
@@ -37,7 +37,7 @@ namespace thebanana {
 	}
 	void lua_interpreter::open_file(const std::string& path) {
 		if (!check_lua(luaL_dofile(this->m_state, path.c_str()))) {
-			debug::log_print("could not load " + path + ": " + lua_tostring(this->m_state, -1));
+			g_game->debug_print("could not load " + path + ": " + lua_tostring(this->m_state, -1));
 		}
 	}
 	struct lua_param_base {
@@ -97,7 +97,7 @@ namespace thebanana {
 				param = new lua_param<size_t>(vl, this->m_state);
 				break;
 			default:
-				debug::log_print("unrecognized parameter format, aborting lua call: " + name + "()");
+				g_game->debug_print("unrecognized parameter format, aborting lua call: " + name + "()");
 				break;
 			}
 			assert(param);
@@ -106,7 +106,7 @@ namespace thebanana {
 		}
 		va_end(vl);
 		if (!check_lua(lua_pcall(this->m_state, types.size(), 1, 0))) {
-			debug::log_print("could not call " + name + "(): " + lua_tostring(this->m_state, -1));
+			g_game->debug_print("could not call " + name + "(): " + lua_tostring(this->m_state, -1));
 		}
 	}
 	void lua_interpreter::register_function(const std::string& name, func ptr) {

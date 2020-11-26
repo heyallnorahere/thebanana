@@ -29,10 +29,6 @@ namespace thebanana {
 		for (auto& c : this->m_components) {
 			c->clean_up();
 		}
-		char buf[256];
-		_ui64toa(this->m_uuid, buf, 10);
-		if (!this->has_component<particlesystem::particle_component>())
-			debug::log_print("destroyed gameobject: " + std::string(buf));
 	}
 	const transform& gameobject::get_transform() const {
 		return this->m_transform;

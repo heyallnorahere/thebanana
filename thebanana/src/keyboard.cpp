@@ -2,6 +2,7 @@
 #include "keyboard.h"
 #include "input_utils.h"
 #include "debug_tools.h"
+#include "game.h"
 namespace thebanana {
 	keyboard::keyboard() : is_connected(true) { }
 	keyboard::~keyboard() { }
@@ -35,6 +36,6 @@ namespace thebanana {
 		this->keys = capabilities.dwButtons;
 		this->current.resize(this->keys);
 		this->last.resize(this->keys);
-		debug::log_print("created keyboard");
+		this->parent->get_parent()->debug_print("created keyboard");
 	}
 }

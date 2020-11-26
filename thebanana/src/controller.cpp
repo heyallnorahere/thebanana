@@ -2,6 +2,7 @@
 #include "controller.h"
 #include "input_utils.h"
 #include "debug_tools.h"
+#include "game.h"
 namespace thebanana {
 	controller::controller() : is_connected(true) { }
 	controller::~controller() { }
@@ -53,6 +54,6 @@ namespace thebanana {
 			this->last[i] = false;
 		}
 		ZeroMemory(&this->state, sizeof(DIJOYSTATE));
-		debug::log_print("created controller");
+		this->parent->get_parent()->debug_print("created controller");
 	}
 }

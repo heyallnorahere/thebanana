@@ -3,7 +3,7 @@
 #include <yaml-cpp/yaml.h>
 namespace bananatree {
 	void editorconfig::load(const std::string& path) {
-		thebanana::debug::log_print("loading config from " + path);
+		thebanana::g_game->debug_print("loading config from " + path);
 		YAML::Node node = YAML::LoadFile(path);
 		for (auto n : node) {
 			std::string key = n["key"].as<std::string>();
@@ -34,7 +34,7 @@ namespace bananatree {
 		}
 	}
 	void editorconfig::save(const std::string& path) {
-		thebanana::debug::log_print("saving config to " + path);
+		thebanana::g_game->debug_print("saving config to " + path);
 		YAML::Emitter out;
 		out << YAML::BeginSeq;
 		for (auto& p : this->m_properties) {

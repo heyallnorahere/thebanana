@@ -3,13 +3,13 @@
 #include "camera.h"
 const float speed = 0.01f;
 player_behavior::player_behavior(thebanana::gameobject* object, thebanana::native_script_component* nsc) : script(object, nsc) {
-	thebanana::debug::log_print("created player");
 	this->add_property(new thebanana::component::property<float>(speed, "speed"));
 	this->add_property(new thebanana::component::property<thebanana::gameobject*>(NULL, "camera"));
 	this->add_property(new thebanana::component::property<glm::vec2>(glm::vec2(0.f, -90.f), "last_camera_angle"));
 	this->m_walking = false;
 }
 void player_behavior::initialize() {
+	this->parent->get_game()->debug_print("created player");
 	this->add_component<thebanana::animation_component>();
 	this->add_component<thebanana::mesh_component>().set_mesh_name("player");
 	this->add_component<thebanana::rigidbody>().set_check_for_collisions(true).set_speed_cap(0.5f).set_collider_type<thebanana::mlfarrel_model>().set_radius(0.4f).set_origin_offset(glm::vec3(0.f, 0.6f, 0.f));

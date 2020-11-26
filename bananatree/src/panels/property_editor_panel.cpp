@@ -81,35 +81,35 @@ namespace bananatree {
 					if (object) {
 						object->add_component<thebanana::tag_component>();
 					} else {
-						thebanana::debug::log_print("could not add tag component; no object selected");
+						thebanana::g_game->debug_print("could not add tag component; no object selected");
 					}
 				}
 				if (ImGui::MenuItem("Mesh component")) {
 					if (object) {
 						object->add_component<thebanana::mesh_component>();
 					} else {
-						thebanana::debug::log_print("could not add mesh component; no object selected");
+						thebanana::g_game->debug_print("could not add mesh component; no object selected");
 					}
 				}
 				if (ImGui::MenuItem("Animation component")) {
 					if (object) {
 						object->add_component<thebanana::animation_component>();
 					} else {
-						thebanana::debug::log_print("could not add animation component; no object selected");
+						thebanana::g_game->debug_print("could not add animation component; no object selected");
 					}
 				}
 				if (ImGui::MenuItem("Rigidbody")) {
 					if (object) {
 						object->add_component<thebanana::rigidbody>();
 					} else {
-						thebanana::debug::log_print("could not add rigidbody; no object selected");
+						thebanana::g_game->debug_print("could not add rigidbody; no object selected");
 					}
 				}
 				if (ImGui::MenuItem("Camera component")) {
 					if (object) {
 						object->add_component<thebanana::camera_component>();
 					} else {
-						thebanana::debug::log_print("could not add camera component; no object selected");
+						thebanana::g_game->debug_print("could not add camera component; no object selected");
 					}
 				}
 				if (ImGui::MenuItem("Particlesystem component")) {
@@ -117,14 +117,14 @@ namespace bananatree {
 						object->add_component<thebanana::particlesystem::particlesystem_component>();
 					}
 					else {
-						thebanana::debug::log_print("could not add particlesystem component; no object selected");
+						thebanana::g_game->debug_print("could not add particlesystem component; no object selected");
 					}
 				}
 				if (ImGui::MenuItem("Native script component")) {
 					if (object) {
 						object->add_component<thebanana::native_script_component>();
 					} else {
-						thebanana::debug::log_print("could not add native script component; no object selected");
+						thebanana::g_game->debug_print("could not add native script component; no object selected");
 					}
 				}
 				ImGui::EndMenu();

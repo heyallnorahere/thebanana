@@ -63,12 +63,16 @@ void sandbox_application_layer::init() {
 	// if a scene is specified, load it
 	std::vector<std::string> cmdline = thebanana::g_game->get_command_line();
 	if (cmdline.size() > 1) {
-		thebanana::scene_serializer serializer(thebanana::g_game->get_scene());
-		serializer.deserialize(cmdline[1]);
-		if (cmdline.size() > 2) {
-			load_project(cmdline[2]);
+		if (!cmdline[1].empty()) {
+			thebanana::scene_serializer serializer(thebanana::g_game->get_scene());
+			serializer.deserialize(cmdline[1]);
+			if (cmdline.size() > 2) {
+				if (!cmdline[2].empty()) {
+					load_project(cmdline[2]);
+				}
+			}
+			return;
 		}
-		return;
 	}
 	// load models
 	thebanana::g_game->add_model_desc({ "player", "models/placeholder/waluigi.fbx", waluigi_paths, thebanana::transform().scale(0.0005f) });
@@ -77,34 +81,34 @@ void sandbox_application_layer::init() {
 	thebanana::g_game->load_models();
 	// add gameobjects to the scene
 	thebanana::gameobject* player = new thebanana::basic_gameobject;
-	player->add_component<thebanana::native_script_component>().bind<player_behavior>();
 	thebanana::gameobject* camera = new thebanana::basic_gameobject;
+	thebanana::g_game->get_scene()->add_object(camera);
+	thebanana::g_game->get_scene()->add_object(player);
+	player->add_component<thebanana::native_script_component>().bind<player_behavior>();
 	camera->add_component<thebanana::native_script_component>().bind<camera_behavior>();
 	camera->get_component<thebanana::native_script_component>().set_property("player", player);
 	player->get_component<thebanana::native_script_component>().set_property("camera", camera);
-	thebanana::g_game->get_scene()->add_object(camera);
-	thebanana::g_game->get_scene()->add_object(player);
 	thebanana::gameobject* p = new thebanana::static_mesh("test_cube");
+	thebanana::g_game->get_scene()->add_object(p);
 	p->get_transform().translate(2.f, 0.75f, 2.f);
 	p->add_tag("test");
 	p->get_component<thebanana::rigidbody>().set_collision_tags({ "ground" }).set_collider_type<thebanana::mlfarrel_model>().set_radius(0.5f).set_origin_offset(glm::vec3(0.f, 0.5f, 0.f));
 	p->get_component<thebanana::rigidbody>().set_property("mass", 1.5f);
-	thebanana::g_game->get_scene()->add_object(p);
 	p = new thebanana::static_mesh("test_cube");
+	thebanana::g_game->get_scene()->add_object(p);
 	p->get_transform().scale(1.f, 1.f, 2.f);
 	p->get_transform().translate(-5.f, 0.75f, -5.f);
-	thebanana::g_game->get_scene()->add_object(p);
 	// this was commented out because of buggy collision
 	p = new thebanana::static_mesh("test_Lblock");
+	thebanana::g_game->get_scene()->add_object(p);
 	p->get_transform().translate(10.f, 0.f, 10.f);
 	p->get_transform().scale(0.5f);
 	p->add_tag("ground");
-	thebanana::g_game->get_scene()->add_object(p);
 	p = new thebanana::static_mesh("test_cube");
+	thebanana::g_game->get_scene()->add_object(p);
 	p->get_transform().translate(0.f, -1.f, 0.f);
 	p->get_transform().scale(100.f, 1.f, 100.f);
 	p->add_tag("ground");
-	thebanana::g_game->get_scene()->add_object(p);
 	// load sounds
 	thebanana::g_game->get_sound_manager()->load_sound("click", "sounds/click.ogg");
 	// load a menu

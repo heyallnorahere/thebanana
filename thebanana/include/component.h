@@ -35,8 +35,11 @@ namespace thebanana {
 			void* get_ptr();
 			virtual void draw() const = 0;
 #ifdef BANANA_BUILD
-			virtual void send_to_yaml(YAML::Emitter& out) const = 0;
+			using emitter = YAML::Emitter &;
+#else
+			using emitter = void*;
 #endif
+			virtual void send_to_yaml(emitter out) const = 0;
 			virtual std::string get_type_name() const = 0;
 			bool is_selection_window_open() const;
 			virtual void close_selection_window() = 0;
@@ -58,9 +61,7 @@ namespace thebanana {
 			const property<T>& operator=(const property<T>& other);
 			virtual ~property() override;
 			virtual void draw() const override;
-#ifdef BANANA_BUILD
-			virtual void send_to_yaml(YAML::Emitter& out) const override;
-#endif
+			virtual void send_to_yaml(emitter out) const override;
 			virtual std::string get_type_name() const override;
 			T* get_value();
 			virtual void close_selection_window() override;
@@ -213,12 +214,14 @@ namespace thebanana {
 		out << YAML::EndMap;
 	}
 	unsigned long long get_uuid(gameobject* obj);
-	inline void component::property<gameobject*>::send_to_yaml(YAML::Emitter& out) const {
+	inline void component::property<gameobject*>::send_to_yaml(emitter out) const {
 		out << ::thebanana::get_uuid(*this->value);
 	}
-	template<typename T> inline void component::property<T>::send_to_yaml(YAML::Emitter& out) const {
+	template<typename T> inline void component::property<T>::send_to_yaml(emitter out) const {
 		out << (*this->value);
 	}
+#else
+	template<typename T> inline void component::property<T>::send_to_yaml(emitter out) const { }
 #endif
 	template<typename T> inline void component::property<T>::close_selection_window() {
 		this->selection_window_open = false;

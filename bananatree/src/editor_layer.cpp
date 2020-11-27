@@ -69,7 +69,13 @@ namespace bananatree {
 		PROCESS_INFORMATION pi = { 0 };
 		STARTUPINFOA si = { 0 };
 		std::string msbuild_path = this->m_config->get<std::string>("msbuild");
-		std::string command = "msbuild .";
+		std::string config =
+#ifdef _DEBUG
+			"Debug";
+#else
+			"Release";
+#endif
+		std::string command = "msbuild /property:Configuration=" + config + " .";
 		CreateProcessA(msbuild_path.c_str(), (char*)command.c_str(), NULL, NULL, NULL, NULL, NULL, code_project_path.c_str(), &si, &pi);
 		WaitForSingleObject(pi.hProcess, INFINITE);
 		this->attach_scripts();

@@ -142,4 +142,13 @@ namespace thebanana {
 		}
 		return result;
 	}
+	template<typename _Ty> inline bool component::has_component() {
+		return this->parent->has_component<_Ty>();
+	}
+	template<typename _Ty> inline size_t component::get_number_components() {
+		return this->parent->get_number_components<_Ty>();
+	}
+	template<typename _Ty> inline _Ty& component::get_component(size_t index) {
+		return this->parent->get_component<_Ty>(index);
+	}
 }

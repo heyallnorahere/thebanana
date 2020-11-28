@@ -243,15 +243,6 @@ namespace thebanana {
 		}
 		return NULL;
 	}
-	template<typename _Ty> inline bool component::has_component() {
-		return this->parent->has_component<_Ty>();
-	}
-	template<typename _Ty> inline size_t component::get_number_components() {
-		return this->parent->get_number_components<_Ty>();
-	}
-	template<typename _Ty> inline _Ty& component::get_component(size_t index) {
-		return this->parent->get_component<_Ty>(index);
-	}
 	template<typename _Ty> inline component::property<_Ty>* component::find_property(const std::string& name) {
 		property<_Ty>* result = NULL;
 		for (auto& p : this->properties) {

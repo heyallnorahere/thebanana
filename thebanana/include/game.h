@@ -65,7 +65,8 @@ namespace thebanana {
 	private:
 		void shutdown_steam();
 		void fill_imgui_input_pointers();
-		std::stringstream debug_log;
+		std::stringstream m_debug_log;
+		std::ofstream m_file_log;
 		unsigned int m_frame;
 		HWND m_window;
 #ifndef BANANA_BUILD

@@ -55,6 +55,10 @@ namespace thebanana {
 		this->m_steam_initialized = false;
 		this->m_module = NULL;
 		this->fill_imgui_input_pointers();
+		char filename[256];
+		GetModuleFileNameA(NULL, filename, 256);
+		this->m_file_log = std::ofstream(std::string(filename) + ".log");
+		this->m_file_log << "[start of " + std::string(filename) + ".log]";
 		char sizebuf[256];
 		sprintf(sizebuf, "width: %d, height: %d", width, height);
 		this->debug_print("successfully created graphics context:\n	backend: " + graphics::get_backend_version() + "\n	" + sizebuf);
@@ -240,14 +244,15 @@ namespace thebanana {
 	}
 	void game::debug_print(const std::string& message) {
 		std::string msg = message + "\n";
-		this->debug_log << msg;
+		this->m_debug_log << msg;
+		this->m_file_log << msg;
 		OutputDebugStringA(msg.c_str());
 	}
 	std::list<rigidbody*>& game::get_rigidbody_list() {
 		return this->m_rigidbodies;
 	}
 	std::string game::get_debug_log() {
-		return this->debug_log.str();
+		return this->m_debug_log.str();
 	}
 	void game::shutdown_steam() {
 		SteamAPI_Shutdown();

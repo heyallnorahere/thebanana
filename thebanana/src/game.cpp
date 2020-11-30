@@ -234,6 +234,10 @@ namespace thebanana {
 		delete this->m_module;
 		this->m_module = new script_module(this->m_script_registry, dllpath);
 	}
+	void game::unload_script_module() {
+		delete this->m_module;
+		this->m_module = NULL;
+	}
 	void game::debug_print(const std::string& message) {
 		std::string msg = message + "\n";
 		this->debug_log << msg;

@@ -62,6 +62,7 @@ namespace bananatree {
 		CreateProcessA(path.c_str(), (char*)args.c_str(), NULL, NULL, false, 0, NULL, NULL, &si, &pi);
 	}
 	void editor_layer::compile_scripts() {
+		thebanana::g_game->unload_script_module();
 		std::string code_project_path = this->m_project->get_code_project_path();
 		if (code_project_path.empty()) {
 			return;

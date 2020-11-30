@@ -55,6 +55,7 @@ namespace thebanana {
 		float get_timestep();
 		std::vector<std::string> get_command_line();
 		void load_script_module(const std::string& dllpath);
+		void unload_script_module();
 		void debug_print(const std::string& message);
 		std::list<rigidbody*>& get_rigidbody_list();
 		std::string get_debug_log();

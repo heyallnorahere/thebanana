@@ -57,7 +57,7 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(ProjectDir)src;$(SolutionDir)yaml\yaml-cpp\include;C:\steamsdk\sdk\public;$(SolutionDir)third-party\minimp3;$(SolutionDir)third-party\stb;$(SolutionDir)third-party\json\single_include;$(SolutionDir)imgui\imgui;$(DXSDK_DIR)include;$(ProjectDir)include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)src;$(SolutionDir)yaml\yaml-cpp\include;$(SolutionDir)steam-sdk\public;$(SolutionDir)third-party\minimp3;$(SolutionDir)third-party\stb;$(SolutionDir)third-party\json\single_include;$(SolutionDir)imgui\imgui;$(DXSDK_DIR)include;$(ProjectDir)include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DisableSpecificWarnings>4996;%(DisableSpecificWarnings)</DisableSpecificWarnings>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <PreprocessorDefinitions>BANANA_BUILD;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -71,7 +71,7 @@
       <AdditionalDependencies>dinput8.lib;imgui.lib;steam_api64.lib;yaml.lib;$(ModelLoaderLibraries);$(OpenGLViewportLibraries);$(ShaderLibraries);$(SkiaLibraries);%(AdditionalDependencies)</AdditionalDependencies>
     </Lib>
     <Lib>
-      <AdditionalLibraryDirectories>$(MSBuildThisFileDirectory)\..\runtimes\win-$(PlatformTarget)\native\;C:\steamsdk\sdk\redistributable_bin\win64;$(OutDir);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(MSBuildThisFileDirectory)\..\runtimes\win-$(PlatformTarget)\native\;$(SolutionDir)steam-sdk\redistributable_bin\win64;$(OutDir);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -84,7 +84,7 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(ProjectDir)src;$(SolutionDir)yaml\yaml-cpp\include;C:\steamsdk\sdk\public;$(SolutionDir)third-party\minimp3;$(SolutionDir)third-party\stb;$(SolutionDir)third-party\json\single_include;$(SolutionDir)imgui\imgui;$(DXSDK_DIR)include;$(ProjectDir)include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)src;$(SolutionDir)yaml\yaml-cpp\include;$(SolutionDir)steam-sdk\public;$(SolutionDir)third-party\minimp3;$(SolutionDir)third-party\stb;$(SolutionDir)third-party\json\single_include;$(SolutionDir)imgui\imgui;$(DXSDK_DIR)include;$(ProjectDir)include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DisableSpecificWarnings>4996;%(DisableSpecificWarnings)</DisableSpecificWarnings>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <PreprocessorDefinitions>BANANA_BUILD;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -100,7 +100,7 @@
       <AdditionalDependencies>dinput8.lib;imgui.lib;steam_api64.lib;yaml.lib;$(ModelLoaderLibraries);$(OpenGLViewportLibraries);$(ShaderLibraries);$(SkiaLibraries);%(AdditionalDependencies)</AdditionalDependencies>
     </Lib>
     <Lib>
-      <AdditionalLibraryDirectories>$(MSBuildThisFileDirectory)\..\runtimes\win-$(PlatformTarget)\native\;C:\steamsdk\sdk\redistributable_bin\win64;$(OutDir);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(MSBuildThisFileDirectory)\..\runtimes\win-$(PlatformTarget)\native\;$(SolutionDir)steam-sdk\redistributable_bin\win64;$(OutDir);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <LinkTimeCodeGeneration>true</LinkTimeCodeGeneration>
     </Lib>
   </ItemDefinitionGroup>

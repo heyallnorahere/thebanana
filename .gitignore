@@ -404,3 +404,5 @@ imgui.ini
 *.tree
 # editor config file (environment-specific settings)
 bananatreeconfig.yaml
+# steam sdk
+steam-sdk/

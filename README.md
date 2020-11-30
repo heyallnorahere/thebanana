@@ -88,6 +88,6 @@ Then, click Save. This should build the project and attach it to the editor.
 ## TO BUILD
 ### WINDOWS
 [Visual Studio 2019](https://visualstudio.microsoft.com/) solution/project included, with NuGet packages installed.
-The only thing you need to download is the [Steamworks SDK](https://partner.steamgames.com/) and copy the `sdk` folder into `C:/steamsdk`. Then, copy `redistributable_bin/win64/steam_api64.dll` to the sandbox and editor project directories.
+The only thing you need to download is the [Steamworks SDK](https://partner.steamgames.com/) and copy the *contents* of the `sdk` folder into `(repository folder)/steam-sdk`. Then, copy `redistributable_bin/win64/steam_api64.dll` to the sandbox and editor project directories.
 
 If you've done this, you're good to go!

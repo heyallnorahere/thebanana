@@ -1,6 +1,6 @@
 #include "pch.h"
-#include "components/native_script_component.h"
 #include "gameobject.h"
+#include "components/native_script_component.h"
 namespace thebanana {
 	script::script(gameobject* object, native_script_component* nsc) {
 		this->parent = object;

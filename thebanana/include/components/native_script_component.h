@@ -1,7 +1,7 @@
 #pragma once
 #include "component.h"
+#include "gameobject.h"
 namespace thebanana {
-	class gameobject;
 	class native_script_component;
 	class script {
 	public:

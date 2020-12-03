@@ -199,15 +199,15 @@ namespace thebanana {
 			ImGui::InputFloat3("rotation values", &rotate.x);
 			if (ImGui::Button("rotate")) {
 				if (rotate_x) {
-					obj->get_transform().rotate(rotate.x, glm::vec3(1.f, 0.f, 0.f));
+					obj->get_transform().rotate(glm::vec3(rotate.x, 0.f, 0.f));
 					rotate_x = false;
 				}
 				if (rotate_y) {
-					obj->get_transform().rotate(rotate.y, glm::vec3(0.f, 1.f, 0.f));
+					obj->get_transform().rotate(glm::vec3(0.f, rotate.y, 0.f));
 					rotate_y = false;
 				}
 				if (rotate_z) {
-					obj->get_transform().rotate(rotate.z, glm::vec3(0.f, 0.f, 1.f));
+					obj->get_transform().rotate(glm::vec3(0.f, 0.f, rotate.z));
 					rotate_z = false;
 				}
 				rotate = glm::vec3(0.f);

@@ -39,6 +39,7 @@ namespace thebanana {
 		unsigned long long get_uuid() const;
 		void set_uuid(unsigned long long uuid);
 		void find(unsigned long long uuid, gameobject*& ptr);
+		bool is_initialized();
 	protected:
 		component::properties_t m_properties;
 		void add_property(component::property_base* p);
@@ -66,7 +67,7 @@ namespace thebanana {
 		friend class scene_serializer;
 	};
 	template<typename T> inline T* gameobject::add_object(T* obj) {
-		obj->init(this, this->m_scene, this->m_game);
+		if (!obj->is_initialized()) obj->init(this, this->m_scene, this->m_game);
 		this->m_children.push_back(std::unique_ptr<gameobject>(obj));
 		return obj;
 	}

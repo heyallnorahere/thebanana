@@ -140,6 +140,9 @@ namespace bananatree {
 		}
 			break;
 		}
+		bool check_for_collisions = rb.is_checking_for_collisions();
+		ImGui::Checkbox("Check for collisions", &check_for_collisions);
+		rb.set_check_for_collisions(check_for_collisions);
 		ImGui::Separator();
 	}
 	void property_editor_panel::render() {

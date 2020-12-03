@@ -39,7 +39,7 @@ namespace thebanana {
 #else
 			using emitter = void*;
 #endif
-			virtual void send_to_yaml(emitter out) const = 0;
+			virtual void send_to_yaml(void* out) const = 0;
 			virtual std::string get_type_name() const = 0;
 			bool is_selection_window_open() const;
 			virtual void close_selection_window() = 0;
@@ -61,7 +61,7 @@ namespace thebanana {
 			const property<T>& operator=(const property<T>& other);
 			virtual ~property() override;
 			virtual void draw() const override;
-			virtual void send_to_yaml(emitter out) const override;
+			virtual void send_to_yaml(void* out) const override;
 			virtual std::string get_type_name() const override;
 			T* get_value();
 			virtual void close_selection_window() override;
@@ -200,28 +200,27 @@ namespace thebanana {
 		ImGui::Text("sorry, no implementation for this type yet... heres the raw memory though");
 		ImGui::InputText(this->name.c_str(), (char*)this->ptr, sizeof(T));
 	}
-	inline void component::property<component::property_base::read_only_text>::send_to_yaml(YAML::Emitter& out) const {
-		out << this->value->get_text();
+	inline void component::property<component::property_base::read_only_text>::send_to_yaml(void* out) const {
+		(*(YAML::Emitter*)out) << this->value->get_text();
 	}
-	inline void component::property<component::property_base::dropdown>::send_to_yaml(YAML::Emitter& out) const {
-		out << YAML::BeginMap;
-		out << YAML::Key << "index" << YAML::Value << *this->value->get_index_ptr();
-		out << YAML::Key << "items" << YAML::Value << YAML::BeginSeq;
+	inline void component::property<component::property_base::dropdown>::send_to_yaml(void* out) const {
+		YAML::Emitter& _out = (*(YAML::Emitter*)out);
+		_out << YAML::BeginMap;
+		_out << YAML::Key << "index" << YAML::Value << *this->value->get_index_ptr();
+		_out << YAML::Key << "items" << YAML::Value << YAML::BeginSeq;
 		for (auto& item : this->value->get_items()) {
-			out << item;
+			_out << item;
 		}
-		out << YAML::EndSeq;
-		out << YAML::EndMap;
+		_out << YAML::EndSeq;
+		_out << YAML::EndMap;
 	}
 	unsigned long long get_uuid(gameobject* obj);
-	inline void component::property<gameobject*>::send_to_yaml(emitter out) const {
-		out << ::thebanana::get_uuid(*this->value);
+	inline void component::property<gameobject*>::send_to_yaml(void* out) const {
+		(*(YAML::Emitter*)out) << ::thebanana::get_uuid(*this->value);
 	}
-	template<typename T> inline void component::property<T>::send_to_yaml(emitter out) const {
-		out << (*this->value);
+	template<typename T> inline void component::property<T>::send_to_yaml(void* out) const {
+		(*(YAML::Emitter*)out) << (*this->value);
 	}
-#else
-	template<typename T> inline void component::property<T>::send_to_yaml(emitter out) const { }
 #endif
 	template<typename T> inline void component::property<T>::close_selection_window() {
 		this->selection_window_open = false;

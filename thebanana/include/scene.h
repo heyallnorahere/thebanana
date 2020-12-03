@@ -25,7 +25,7 @@ namespace thebanana {
 		friend class scene_serializer;
 	};
 	template<typename T> inline T* scene::add_object(T* obj) {
-		obj->init(ROOT, this, this->m_game);
+		if (!obj->is_initialized()) obj->init(ROOT, this, this->m_game);
 		this->m_children.push_back(std::unique_ptr<gameobject>(obj));
 		return obj;
 	}

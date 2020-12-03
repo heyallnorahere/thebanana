@@ -146,6 +146,9 @@ namespace thebanana {
 			}
 		}
 	}
+	bool gameobject::is_initialized() {
+		return this->initialized;
+	}
 	void gameobject::add_property(component::property_base* p) {
 		p->set_parent(NULL);
 		this->m_properties.push_back(std::unique_ptr<component::property_base>(p));

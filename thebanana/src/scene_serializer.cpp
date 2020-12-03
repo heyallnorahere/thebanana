@@ -1,8 +1,8 @@
 #include "pch.h"
 #include "scene_serializer.h"
+#include "component.h"
 #include "scene.h"
 #include "basic_gameobject.h"
-#include "component.h"
 #include "physics/physics.h"
 #include "components/components.h"
 #include "particlesystem/particlesystem.h"
@@ -158,7 +158,7 @@ namespace thebanana {
 				out << YAML::BeginMap;
 				out << YAML::Key << "name" << YAML::Value << prop->get_name();
 				out << YAML::Key << "value" << YAML::Value;
-				prop->send_to_yaml(out);
+				prop->send_to_yaml(&out);
 				out << YAML::Key << "type" << YAML::Value << prop->get_type_name();
 				out << YAML::EndMap;
 			}
@@ -383,6 +383,7 @@ namespace thebanana {
 			t[i] = transform_node[i].as<glm::vec4>();
 		}
 		object->get_transform() = transform(t);
+		object->init(parent, s, s->get_game());
 		deserialize_components(node["components"], object, s);
 		assert(node["children"]);
 		for (auto n : node["children"]) {

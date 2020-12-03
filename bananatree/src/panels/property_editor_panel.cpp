@@ -7,47 +7,7 @@
 #include <misc/cpp/imgui_stdlib.h>
 #include "scene_hierarchy_panel.h"
 namespace bananatree {
-	static void transform_menu(thebanana::gameobject* object, bool* open) {
-		if (!object) return;
-		ImGui::Begin("Transform menu", open, ImGuiWindowFlags_NoDocking);
-		if (ImGui::CollapsingHeader("Move")) {
-			static glm::vec3 m = glm::vec3(0.f);
-			ImGui::DragFloat3("Motion values", &m.x);
-			if (ImGui::Button("Apply motion")) {
-				object->get_transform().move(m);
-				m = glm::vec3(0.f);
-			}
-		}
-		if (ImGui::CollapsingHeader("Translate")) {
-			static glm::vec3 t = glm::vec3(0.f);
-			ImGui::DragFloat3("Translation values", &t.x);
-			if (ImGui::Button("Apply translation")) {
-				object->get_transform().translate(t);
-				t = glm::vec3(0.f);
-			}
-		}
-		if (ImGui::CollapsingHeader("Rotate")) {
-			static glm::vec3 r = glm::vec3(0.f);
-			ImGui::DragFloat3("Rotation values", &r.x);
-			if (ImGui::Button("Apply rotation")) {
-				if (fabs(r.x) > 0.001) object->get_transform().rotate(r.x, glm::vec3(1.f, 0.f, 0.f));
-				if (fabs(r.y) > 0.001) object->get_transform().rotate(r.y, glm::vec3(0.f, 1.f, 0.f));
-				if (fabs(r.z) > 0.001) object->get_transform().rotate(r.z, glm::vec3(0.f, 0.f, 1.f));
-				r = glm::vec3(0.f);
-			}
-		}
-		if (ImGui::CollapsingHeader("Scale")) {
-			static glm::vec3 s = glm::vec3(1.f);
-			ImGui::InputFloat3("Scaling values", &s.x);
-			if (ImGui::Button("Apply scaling")) {
-				object->get_transform().scale(s);
-				s = glm::vec3(1.f);
-			}
-		}
-		ImGui::End();
-	}
 	property_editor_panel::property_editor_panel() {
-		this->m_show_transform_menu = false;
 		this->m_component_index = 0;
 		this->m_hierarchy = NULL;
 	}
@@ -83,9 +43,62 @@ namespace bananatree {
 		}
 		ImGui::PopID();
 	}
+	static void vec3_control(const std::string& label, glm::vec3& vector, float reset_value = 0.f, float column_width = 100.f) {
+		ImGuiIO& io = ImGui::GetIO();
+		auto bold_font = io.Fonts->Fonts[0];
+		ImGui::PushID(label.c_str());
+		ImGui::Columns(2);
+		ImGui::SetColumnWidth(0, column_width);
+		ImGui::Text(label.c_str());
+		ImGui::NextColumn();
+		ImGui::PushMultiItemsWidths(3, ImGui::CalcItemWidth());
+		ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(0.f, 0.f));
+		float line_height = GImGui->Font->FontSize + GImGui->Style.FramePadding.y * 2.f;
+		ImVec2 button_size = ImVec2(line_height + 3.f, line_height);
+		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.8f, 0.1f, 0.15f, 1.0f));
+		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.9f, 0.2f, 0.2f, 1.0f));
+		ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(0.8f, 0.1f, 0.15f, 1.0f));
+		ImGui::PushFont(bold_font);
+		if (ImGui::Button("X", button_size)) {
+			vector.x = reset_value;
+		}
+		ImGui::PopFont();
+		ImGui::PopStyleColor(3);
+		ImGui::SameLine();
+		ImGui::DragFloat("##X", &vector.x, 0.1f);
+		ImGui::PopItemWidth();
+		ImGui::SameLine();
+		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.2f, 0.7f, 0.2f, 1.0f));
+		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.3f, 0.8f, 0.3f, 1.0f));
+		ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(0.2f, 0.7f, 0.2f, 1.0f));
+		ImGui::PushFont(bold_font);
+		if (ImGui::Button("Y", button_size)) {
+			vector.y = reset_value;
+		}
+		ImGui::PopFont();
+		ImGui::PopStyleColor(3);
+		ImGui::SameLine();
+		ImGui::DragFloat("##Y", &vector.y, 0.1f);
+		ImGui::PopItemWidth();
+		ImGui::SameLine();
+		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.1f, 0.25f, 0.8f, 1.0f));
+		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.2f, 0.35f, 0.9f, 1.0f));
+		ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(0.1f, 0.25f, 0.8f, 1.0f));
+		ImGui::PushFont(bold_font);
+		if (ImGui::Button("Z", button_size)) {
+			vector.z = reset_value;
+		}
+		ImGui::PopFont();
+		ImGui::PopStyleColor(3);
+		ImGui::SameLine();
+		ImGui::DragFloat("##Z", &vector.z, 0.1f);
+		ImGui::PopItemWidth();
+		ImGui::PopStyleVar();
+		ImGui::Columns(1);
+		ImGui::PopID();
+	}
 	void property_editor_panel::render() {
 		thebanana::gameobject* object = this->m_hierarchy->get_selected_object();
-		if (this->m_show_transform_menu) transform_menu(object, &this->m_show_transform_menu);
 		ImGui::Begin("Property Editor", &this->m_open, ImGuiWindowFlags_MenuBar);
 		assert(this->m_hierarchy);
 		if (ImGui::BeginMenuBar()) {
@@ -149,7 +162,17 @@ namespace bananatree {
 			char buf[256];
 			_ui64toa(object->get_uuid(), buf, 10);
 			ImGui::Text("Gameobject UUID: %s", buf);
-			if (ImGui::Button("Toggle transform menu")) this->m_show_transform_menu = !this->m_show_transform_menu;
+			ImGui::Separator();
+			ImGui::Text("Transform");
+			glm::vec3 temp_translation = object->get_transform().get_translation();
+			vec3_control("Translation", temp_translation);
+			object->get_transform().set_translation(temp_translation);
+			glm::vec3 temp_rotation = object->get_transform().get_rotation();
+			vec3_control("Rotation", temp_rotation);
+			object->get_transform().set_rotation(temp_rotation);
+			glm::vec3 temp_scale = object->get_transform().get_scale();
+			vec3_control("Scale", temp_scale);
+			object->get_transform().set_scale(temp_scale);
 			ImGui::Separator();
 			ImGui::Text("Components:");
 			for (size_t i = 0; i < object->get_number_components<thebanana::component>(); i++) {
@@ -225,7 +248,6 @@ namespace bananatree {
 			}
 		} else {
 			ImGui::Text("There is no Gameobject selected.\nYou can select one from the scene's hierarchy panel.");
-			if (this->m_show_transform_menu) this->m_show_transform_menu = false;
 		}
 		ImGui::End();
 	}

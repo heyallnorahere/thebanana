@@ -59,6 +59,7 @@ namespace thebanana {
 		void debug_print(const std::string& message);
 		std::list<rigidbody*>& get_rigidbody_list();
 		std::string get_debug_log();
+		template<typename T> void calculate_aspect_ratio(T width, T height);
 		// very loose template stuff, but if you know what to do with it, it works
 		template<typename T> using imgui_ptr = void(*)(const char*, T*);
 		template<typename T> imgui_ptr<T> get_imgui_pointer();
@@ -94,6 +95,9 @@ namespace thebanana {
 		std::list<rigidbody*> m_rigidbodies;
 	};
 	extern game* g_game;
+	template<typename T> inline void game::calculate_aspect_ratio(T width, T height) {
+		this->m_aspect_ratio = static_cast<float>(width) / static_cast<float>(height);
+	}
 	template<typename T> inline game::imgui_ptr<T> game::get_imgui_pointer() {
 		return (imgui_ptr<T>)this->m_imgui_input_functions[typeid(T).hash_code()];
 	}

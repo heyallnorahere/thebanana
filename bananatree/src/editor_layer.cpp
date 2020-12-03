@@ -6,7 +6,7 @@
 namespace bananatree {
 	void editor_layer::init() {
 		this->m_project = std::shared_ptr<project>(new project);
-		this->m_imgui_layer = std::shared_ptr<imgui_layer>(new imgui_layer(this));
+		this->m_imgui_layer = new imgui_layer(this);
 		this->m_project->set_editor_layer(this);
 		this->m_config = std::shared_ptr<editorconfig>(new editorconfig);
 		std::string config_filename = "bananatreeconfig.yaml";
@@ -28,13 +28,16 @@ namespace bananatree {
 		this->m_imgui_layer->render();
 		thebanana::g_game->swap_buffers();
 	}
+	void editor_layer::clean_up() {
+		delete this->m_imgui_layer;
+	}
 	std::string editor_layer::window_title() {
 		return "The Banana Tree";
 	}
 	std::shared_ptr<project> editor_layer::get_project() {
 		return this->m_project;
 	}
-	std::shared_ptr<imgui_layer> editor_layer::get_imgui_layer() {
+	imgui_layer* editor_layer::get_imgui_layer() {
 		return this->m_imgui_layer;
 	}
 	void editor_layer::launch_sandbox() {

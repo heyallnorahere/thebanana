@@ -63,5 +63,12 @@ namespace bananatree {
 			}
 			else return false;
 		}
+		std::string make_temp_path(const std::string& prefix) {
+			char temp_path_buf[256];
+			char filename[260];
+			GetTempPathA(256, temp_path_buf);
+			GetTempFileNameA(temp_path_buf, prefix.c_str(), 0, filename);
+			return filename;
+		}
 	}
 }

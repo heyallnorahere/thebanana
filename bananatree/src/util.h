@@ -5,5 +5,6 @@ namespace bananatree {
 		std::string open_dialog(const char* filter, int* index = NULL);
 		std::string save_dialog(const char* filter, int* index = NULL);
 		bool file_exists(const std::string& path);
+		std::string make_temp_path(const std::string& prefix);
 	}
 }

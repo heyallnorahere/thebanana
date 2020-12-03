@@ -65,6 +65,10 @@ namespace bananatree {
 		CreateProcessA(path.c_str(), (char*)args.c_str(), NULL, NULL, false, 0, NULL, NULL, &si, &pi);
 	}
 	void editor_layer::compile_scripts() {
+		std::string temp_scene_path = util::make_temp_path("bananatree_temp_scene");
+		thebanana::scene_serializer serializer(thebanana::g_game->get_scene());
+		serializer.serialize(temp_scene_path);
+		thebanana::g_game->get_scene()->clear();
 		thebanana::g_game->unload_script_module();
 		std::string code_project_path = this->m_project->get_code_project_path();
 		if (code_project_path.empty()) {
@@ -83,6 +87,7 @@ namespace bananatree {
 		CreateProcessA(msbuild_path.c_str(), (char*)command.c_str(), NULL, NULL, NULL, NULL, NULL, code_project_path.c_str(), &si, &pi);
 		WaitForSingleObject(pi.hProcess, INFINITE);
 		this->attach_scripts();
+		serializer.deserialize(temp_scene_path);
 	}
 	void editor_layer::attach_scripts() {
 		std::string code_project_path = this->m_project->get_code_project_path();

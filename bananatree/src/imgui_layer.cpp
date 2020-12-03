@@ -248,7 +248,6 @@ namespace bananatree {
 			}
 			if (ImGui::BeginMenu("Test")) {
 				if (ImGui::MenuItem("Play")) {
-					this->m_editor_layer->compile_scripts();
 					this->m_editor_layer->launch_sandbox();
 				}
 				if (ImGui::MenuItem("Compile")) {

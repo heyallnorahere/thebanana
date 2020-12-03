@@ -85,4 +85,29 @@ namespace thebanana {
 		*this = *this * other;
 		return *this;
 	}
+	void transform::decompose_matrix(const glm::mat4& matrix, glm::vec3& translation, glm::vec3& rotation, glm::vec3& scale) {
+		translation = matrix[3];
+		for (int i = 0; i < 3; i++) scale[i] = glm::length(glm::vec3(matrix[i]));
+		// rotation matrix to quaternion to euler angles
+		glm::mat4 rotation_matrix(1.f);
+		for (int i = 0; i < 3; i++) rotation_matrix[i] = glm::vec4(glm::vec3(matrix[i]) / scale[i], 0.f);
+		glm::quat q(rotation_matrix);
+		float sinr_cosp = 2.f * (q.w * q.x + q.y * q.z);
+		float cosr_cosp = 1.f - 2.f * (q.x * q.x + q.y * q.y);
+		rotation.x = glm::degrees(std::atan2(sinr_cosp, cosr_cosp));
+		float sinp = 2.f * (q.w * q.y - q.z * q.x);
+		if (fabs(sinp) >= 1.f) rotation.y = copysign(static_cast<float>(M_PI) / 2.f, sinp);
+		else rotation.y = asin(sinp);
+		rotation.y = glm::degrees(rotation.y);
+		float siny_cosp = 2.f * (q.w * q.z + q.x * q.y);
+		float cosy_cosp = 1.f - 2.f * (q.y * q.y + q.z * q.z);
+		rotation.z = glm::degrees(atan2(siny_cosp, cosy_cosp));
+	}
+	glm::mat4 transform::to_matrix(const glm::vec3& translation, const glm::vec3& rotation, const glm::vec3& scale) {
+		glm::mat4 rotation_matrix
+			= glm::rotate(glm::mat4(1.f), glm::radians(rotation.x), glm::vec3(1.f, 0.f, 0.f))
+			* glm::rotate(glm::mat4(1.f), glm::radians(rotation.y), glm::vec3(0.f, 1.f, 0.f))
+			* glm::rotate(glm::mat4(1.f), glm::radians(rotation.z), glm::vec3(0.f, 0.f, 1.f));
+		return glm::translate(glm::mat4(1.f), translation) * rotation_matrix * glm::scale(glm::mat4(1.f), scale);
+	}
 }

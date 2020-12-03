@@ -34,6 +34,8 @@ namespace thebanana {
 #ifdef BANANA_BUILD
 		const transform& operator*=(const aiMatrix4x4& other);
 #endif
+		static void decompose_matrix(const glm::mat4& matrix, glm::vec3& translation, glm::vec3& rotation, glm::vec3& scale);
+		static glm::mat4 to_matrix(const glm::vec3& translation, const glm::vec3& rotation, const glm::vec3& scale);
 	private:
 		glm::mat4 m;
 	};

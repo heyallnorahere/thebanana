@@ -61,6 +61,24 @@ namespace thebanana {
 	glm::mat4 transform::get_matrix() const {
 		return to_matrix(this->m_translation, this->m_rotation, this->m_scale);
 	}
+	glm::vec3 transform::get_translation() const {
+		return this->m_translation;
+	}
+	glm::vec3 transform::get_rotation() const {
+		return this->m_rotation;
+	}
+	glm::vec3 transform::get_scale() const {
+		return this->m_scale;
+	}
+	void transform::set_translation(glm::vec3 translation) {
+		this->m_translation = translation;
+	}
+	void transform::set_rotation(glm::vec3 rotation) {
+		this->m_rotation = rotation;
+	}
+	void transform::set_scale(glm::vec3 scale) {
+		this->m_scale = scale;
+	}
 	transform::operator glm::mat4() {
 		return this->get_matrix();
 	}
@@ -102,20 +120,19 @@ namespace thebanana {
 		glm::quat q(rotation_matrix);
 		double sinr_cosp = 2.0 * static_cast<double>(q.w * q.x + q.y * q.z);
 		double cosr_cosp = 1.0 - 2.0 * static_cast<double>(q.x * q.x + q.y * q.y);
-		rotation.x = glm::degrees(static_cast<float>(std::atan2(sinr_cosp, cosr_cosp)));
+		rotation.x = static_cast<float>(std::atan2(sinr_cosp, cosr_cosp));
 		double sinp = 2.0 * static_cast<double>(q.w * q.y - q.z * q.x);
 		if (abs(sinp) >= 1) rotation.y = static_cast<float>(copysign(M_PI / 2, sinp));
 		else rotation.y = static_cast<float>(asin(sinp));
-		rotation.y = glm::degrees(rotation.y);
 		double siny_cosp = 2.0 * static_cast<double>(q.w * q.z + q.x * q.y);
 		double cosy_cosp = 1.0 - 2.0 * static_cast<double>(q.y * q.y + q.z * q.z);
-		rotation.z = glm::degrees(static_cast<float>(atan2(siny_cosp, cosy_cosp)));
+		rotation.z = static_cast<float>(atan2(siny_cosp, cosy_cosp));
 	}
 	glm::mat4 transform::to_matrix(const glm::vec3& translation, const glm::vec3& rotation, const glm::vec3& scale) {
 		glm::mat4 rotation_matrix
-			= glm::rotate(glm::mat4(1.f), glm::radians(rotation.x), glm::vec3(1.f, 0.f, 0.f))
-			* glm::rotate(glm::mat4(1.f), glm::radians(rotation.y), glm::vec3(0.f, 1.f, 0.f))
-			* glm::rotate(glm::mat4(1.f), glm::radians(rotation.z), glm::vec3(0.f, 0.f, 1.f));
+			= glm::rotate(glm::mat4(1.f), rotation.x, glm::vec3(1.f, 0.f, 0.f))
+			* glm::rotate(glm::mat4(1.f), rotation.y, glm::vec3(0.f, 1.f, 0.f))
+			* glm::rotate(glm::mat4(1.f), rotation.z, glm::vec3(0.f, 0.f, 1.f));
 		return glm::translate(glm::mat4(1.f), translation) * rotation_matrix * glm::scale(glm::mat4(1.f), scale);
 	}
 }

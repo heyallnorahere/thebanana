@@ -109,6 +109,6 @@ void player_behavior::move(float yaw_offset, glm::vec3& translate, const float s
 	thebanana::gameobject* camera = *this->get_property<thebanana::gameobject*>("camera");
 	glm::vec2 current_angle = last_angle - (camera->get_component<thebanana::native_script_component>().get_script<camera_behavior>()->get_angle() + glm::vec2(0.f, yaw_offset));
 	last_angle = camera->get_component<thebanana::native_script_component>().get_script<camera_behavior>()->get_angle() + glm::vec2(0.f, yaw_offset);
-	this->get_transform().rotate(glm::vec3(0.f, current_angle.y, 0.f));
+	this->get_transform().rotate(glm::vec3(0.f, glm::radians(current_angle.y), 0.f));
 	translate.z += speed;
 }

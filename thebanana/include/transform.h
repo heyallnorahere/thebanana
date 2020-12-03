@@ -9,7 +9,9 @@ namespace thebanana {
 #endif
 		transform& translate(glm::vec3 t);
 		transform& translate(float x, float y, float z);
+		// remember: this is in radians
 		transform& rotate(glm::vec3 values);
+		// remember: this is in radians
 		transform& rotate(float x, float y, float z);
 		transform& scale(glm::vec3 s);
 		transform& scale(float x, float y, float z);
@@ -20,6 +22,14 @@ namespace thebanana {
 		const transform& operator=(const aiMatrix4x4& m);
 #endif
 		glm::mat4 get_matrix() const;
+		glm::vec3 get_translation() const;
+		// remember: this is in radians
+		glm::vec3 get_rotation() const;
+		glm::vec3 get_scale() const;
+		void set_translation(glm::vec3 translation);
+		// remember: this is in radians
+		void set_rotation(glm::vec3 rotation);
+		void set_scale(glm::vec3 scale);
 		operator glm::mat4();
 		operator glm::vec3();
 		operator glm::vec4();
@@ -36,6 +46,8 @@ namespace thebanana {
 		static void decompose_matrix(const glm::mat4& matrix, glm::vec3& translation, glm::vec3& rotation, glm::vec3& scale);
 		static glm::mat4 to_matrix(const glm::vec3& translation, const glm::vec3& rotation, const glm::vec3& scale);
 	private:
-		glm::vec3 m_translation, m_rotation, m_scale;
+		glm::vec3 m_translation;
+		glm::vec3 m_rotation;
+		glm::vec3 m_scale;
 	};
 }

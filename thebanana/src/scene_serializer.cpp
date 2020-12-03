@@ -196,11 +196,11 @@ namespace thebanana {
 		assert(node["type"]);
 		std::string type = node["type"].as<std::string>();
 		if (type == "mlfarrel_model") {
-			mlfarrel_model& c = rb.set_collider_type<mlfarrel_model>();
+			mlfarrel_model* c = rb.set_collider_type<mlfarrel_model>();
 			assert(node["radius"]);
-			c.set_radius(node["radius"].as<float>());
+			c->set_radius(node["radius"].as<float>());
 			assert(node["origin_offset"]);
-			c.set_origin_offset(node["origin_offset"].as<glm::vec3>());
+			c->set_origin_offset(node["origin_offset"].as<glm::vec3>());
 		}
 	}
 	struct find_struct {

@@ -3,6 +3,7 @@
 #include "../resource.h"
 #include "util.h"
 #include "panels/script_registry_panel.h"
+#include "panels/scene_hierarchy_panel.h"
 namespace bananatree {
 	void editor_layer::init() {
 		this->m_project = std::shared_ptr<project>(new project);
@@ -87,6 +88,7 @@ namespace bananatree {
 		CreateProcessA(msbuild_path.c_str(), (char*)command.c_str(), NULL, NULL, NULL, NULL, NULL, code_project_path.c_str(), &si, &pi);
 		WaitForSingleObject(pi.hProcess, INFINITE);
 		this->attach_scripts();
+		this->m_imgui_layer->find_panel<scene_hierarchy_panel>()->set_selected_object(NULL);
 		serializer.deserialize(temp_scene_path);
 	}
 	void editor_layer::attach_scripts() {

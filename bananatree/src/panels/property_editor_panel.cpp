@@ -6,6 +6,7 @@
 #include <backends/imgui_impl_opengl3.h>
 #include <misc/cpp/imgui_stdlib.h>
 #include "scene_hierarchy_panel.h"
+#include <unordered_map>
 namespace bananatree {
 	property_editor_panel::property_editor_panel() {
 		this->m_component_index = 0;
@@ -96,6 +97,50 @@ namespace bananatree {
 		ImGui::PopStyleVar();
 		ImGui::Columns(1);
 		ImGui::PopID();
+	}
+	static void collider_control(thebanana::rigidbody& rb) {
+		ImGui::Text("Collider settings");
+		std::vector<const char*> strings;
+		strings.push_back("None");
+		strings.push_back("Sphere");
+		int current, index;
+		if (rb.get_collider()) {
+			size_t hash_code = typeid(*rb.get_collider()).hash_code();
+			if (hash_code == typeid(thebanana::mlfarrel_model).hash_code()) {
+				current = 1;
+			} else {
+				assert(false);
+			}
+		} else {
+			current = 0;
+		}
+		index = current;
+		ImGui::Combo("Type", &index, strings.data(), strings.size());
+		if (index != current) {
+			switch (index) {
+			case 0:
+				rb.set_collider_type<thebanana::collider>();
+				break;
+			case 1:
+				rb.set_collider_type<thebanana::mlfarrel_model>();
+				break;
+			}
+			current = index;
+		}
+		switch (current) {
+		case 1:
+		{
+			thebanana::mlfarrel_model* c = (thebanana::mlfarrel_model*)rb.get_collider();
+			glm::vec3 offset = c->get_origin_offset();
+			ImGui::DragFloat3("Origin offset", &offset.x);
+			c->set_origin_offset(offset);
+			float radius = c->get_radius();
+			ImGui::DragFloat("Radius", &radius);
+			c->set_radius(radius);
+		}
+			break;
+		}
+		ImGui::Separator();
 	}
 	void property_editor_panel::render() {
 		thebanana::gameobject* object = this->m_hierarchy->get_selected_object();
@@ -191,6 +236,7 @@ namespace bananatree {
 				_ui64toa(c.get_uuid(), buf, 10);
 				std::string label_text = label + std::string(", UUID: ") + buf;
 				if (ImGui::CollapsingHeader(label_text.c_str())) {
+					ImGui::PushID(label_text.c_str());
 					bool should_remove = false;
 					ImVec2 content_region_available = ImGui::GetContentRegionAvail();
 					float line_height = GImGui->Font->FontSize + GImGui->Style.FramePadding.y * 2.0f;
@@ -205,6 +251,9 @@ namespace bananatree {
 							should_remove = true;
 						}
 						ImGui::EndPopup();
+					}
+					if (typeid(c).hash_code() == typeid(thebanana::rigidbody).hash_code()) {
+						collider_control((thebanana::rigidbody&)c);
 					}
 					auto& properties = c.get_properties();
 					for (size_t i = 0; i < properties.size(); i++) {
@@ -244,6 +293,7 @@ namespace bananatree {
 						object->remove_component<thebanana::component>(i);
 						i--;
 					}
+					ImGui::PopID();
 				}
 			}
 		} else {

@@ -12,7 +12,7 @@ namespace thebanana {
 		virtual void post_update() override;
 		virtual void on_collision(gameobject* other) override;
 		virtual void clean_up() override;
-		template<typename _Ty> _Ty& set_collider_type();
+		template<typename _Ty> _Ty* set_collider_type();
 		rigidbody& set_check_for_collisions(bool check);
 		bool is_checking_for_collisions();
 		gameobject* get_parent();
@@ -43,9 +43,14 @@ namespace thebanana {
 		bool has_cap;
 		friend class scene_serializer;
 	};
-	template<typename _Ty> inline _Ty& rigidbody::set_collider_type() {
+	template<> inline collider* rigidbody::set_collider_type<collider>() {
+		delete this->coll;
+		this->coll = NULL;
+		return this->coll;
+	}
+	template<typename _Ty> inline _Ty* rigidbody::set_collider_type() {
 		delete this->coll;
 		this->coll = new _Ty(this);
-		return (_Ty&)* this->coll;
+		return (_Ty*)this->coll;
 	}
 }

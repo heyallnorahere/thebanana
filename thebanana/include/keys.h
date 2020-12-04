@@ -54,6 +54,7 @@ namespace thebanana {
 		key_shift = DIK_LSHIFT,
 		key_space = DIK_SPACE,
 		key_enter = DIK_RETURN,
+		key_tab = DIK_TAB,
 	};
 	enum mouse_button {
 		left_click = 0,

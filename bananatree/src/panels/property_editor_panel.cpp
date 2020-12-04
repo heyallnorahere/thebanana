@@ -44,7 +44,7 @@ namespace bananatree {
 		}
 		ImGui::PopID();
 	}
-	static void vec3_control(const std::string& label, glm::vec3& vector, float reset_value = 0.f, float column_width = 100.f) {
+	static void vec3_control(const std::string& label, glm::vec3& vector, float reset_value = 0.f, float speed = 0.1f, float column_width = 100.f) {
 		ImGuiIO& io = ImGui::GetIO();
 		auto bold_font = io.Fonts->Fonts[0];
 		ImGui::PushID(label.c_str());
@@ -66,7 +66,7 @@ namespace bananatree {
 		ImGui::PopFont();
 		ImGui::PopStyleColor(3);
 		ImGui::SameLine();
-		ImGui::DragFloat("##X", &vector.x, 0.1f);
+		ImGui::DragFloat("##X", &vector.x, speed);
 		ImGui::PopItemWidth();
 		ImGui::SameLine();
 		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.2f, 0.7f, 0.2f, 1.0f));
@@ -79,7 +79,7 @@ namespace bananatree {
 		ImGui::PopFont();
 		ImGui::PopStyleColor(3);
 		ImGui::SameLine();
-		ImGui::DragFloat("##Y", &vector.y, 0.1f);
+		ImGui::DragFloat("##Y", &vector.y, speed);
 		ImGui::PopItemWidth();
 		ImGui::SameLine();
 		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.1f, 0.25f, 0.8f, 1.0f));
@@ -92,7 +92,7 @@ namespace bananatree {
 		ImGui::PopFont();
 		ImGui::PopStyleColor(3);
 		ImGui::SameLine();
-		ImGui::DragFloat("##Z", &vector.z, 0.1f);
+		ImGui::DragFloat("##Z", &vector.z, speed);
 		ImGui::PopItemWidth();
 		ImGui::PopStyleVar();
 		ImGui::Columns(1);
@@ -216,10 +216,12 @@ namespace bananatree {
 			vec3_control("Translation", temp_translation);
 			object->get_transform().set_translation(temp_translation);
 			glm::vec3 temp_rotation = object->get_transform().get_rotation();
-			vec3_control("Rotation", temp_rotation);
+			for (int i = 0; i < 3; i++) temp_rotation[i] = glm::degrees(temp_rotation[i]);
+			vec3_control("Rotation", temp_rotation, 0.f, 1.f);
+			for (int i = 0; i < 3; i++) temp_rotation[i] = glm::radians(temp_rotation[i]);
 			object->get_transform().set_rotation(temp_rotation);
 			glm::vec3 temp_scale = object->get_transform().get_scale();
-			vec3_control("Scale", temp_scale);
+			vec3_control("Scale", temp_scale, 1.f);
 			if (temp_scale.x < 0.0001f) temp_scale.x = 0.001f;
 			if (temp_scale.y < 0.0001f) temp_scale.y = 0.001f;
 			if (temp_scale.z < 0.0001f) temp_scale.z = 0.001f;

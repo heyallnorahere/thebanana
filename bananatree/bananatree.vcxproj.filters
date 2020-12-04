@@ -111,6 +111,8 @@
     <None Include="..\sandbox\shaders\basic\vertex.shader" />
     <None Include="..\sandbox\shaders\basic\fragment.shader" />
     <None Include="packages.config" />
+    <None Include="imgui.ini" />
+    <None Include="steam_api64.dll" />
   </ItemGroup>
   <ItemGroup>
     <Font Include="fonts\OpenSans-Regular.ttf" />

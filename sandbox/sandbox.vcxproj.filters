@@ -47,6 +47,12 @@
     <None Include="test_menu.json" />
     <None Include="test_script.lua" />
     <None Include="test_sub_menu.json" />
+    <None Include="models\cube.obj" />
+    <None Include="models\cube.mtl" />
+    <None Include="models\Lblock.mtl" />
+    <None Include="models\Lblock.obj" />
+    <None Include="models\placeholder\waluigi.fbx" />
+    <None Include="steam_api64.dll" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Resource.rc">
@@ -58,6 +64,117 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="textures\test_texture.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="textures\placeholder\waluigi\bake_waluigi_g00_b00_f00.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="textures\placeholder\waluigi\waluigi_alb.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="textures\placeholder\waluigi\waluigi_nrm.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="textures\placeholder\waluigi\waluigi_spm.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="textures\placeholder\waluigi\waluigieye_alb.0.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="textures\placeholder\waluigi\waluigieye_alb.1.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="textures\placeholder\waluigi\waluigieye_alb.2.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="textures\placeholder\waluigi\waluigieye_alb.3.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="textures\placeholder\waluigi\waluigieye_alb.4.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="textures\placeholder\waluigi\waluigieye_alb.5.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="textures\placeholder\waluigi\waluigieye_alb.6.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="textures\placeholder\waluigi\waluigieye_alb.7.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="textures\placeholder\waluigi\waluigieye_alb.8.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="textures\placeholder\waluigi\waluigieye_alb.9.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="textures\placeholder\waluigi\waluigieye_nrm.0.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="textures\placeholder\waluigi\waluigieye_nrm.1.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="textures\placeholder\waluigi\waluigieye_nrm.2.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="textures\placeholder\waluigi\waluigieye_nrm.3.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="textures\placeholder\waluigi\waluigieye_nrm.4.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="textures\placeholder\waluigi\waluigieye_nrm.5.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="textures\placeholder\waluigi\waluigieye_nrm.6.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="textures\placeholder\waluigi\waluigieye_nrm.7.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="textures\placeholder\waluigi\waluigieye_nrm.8.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="textures\placeholder\waluigi\waluigieye_nrm.9.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="textures\placeholder\waluigi\waluigieye_spm.0.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="textures\placeholder\waluigi\waluigieye_spm.1.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="textures\placeholder\waluigi\waluigieye_spm.2.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="textures\placeholder\waluigi\waluigieye_spm.3.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="textures\placeholder\waluigi\waluigieye_spm.4.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="textures\placeholder\waluigi\waluigieye_spm.5.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="textures\placeholder\waluigi\waluigieye_spm.6.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="textures\placeholder\waluigi\waluigieye_spm.7.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="textures\placeholder\waluigi\waluigieye_spm.8.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="textures\placeholder\waluigi\waluigieye_spm.9.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="textures\placeholder\waluigi\waluigipupil_alb.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="textures\placeholder\waluigi\waluigipupil_nrm.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="textures\placeholder\waluigi\waluigipupil_spm.png">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

@@ -255,6 +255,24 @@ namespace bananatree {
 				}
 				ImGui::EndMenu();
 			}
+			if (ImGui::BeginMenu("Gizmos")) {
+				if (ImGui::BeginMenu("Transformation Gizmo...")) {
+					if (ImGui::MenuItem("Translate")) {
+						this->find_panel<viewport_panel>()->set_gizmo_operation(viewport_panel::gizmo_operation::translate);
+					}
+					if (ImGui::MenuItem("Rotate")) {
+						this->find_panel<viewport_panel>()->set_gizmo_operation(viewport_panel::gizmo_operation::rotate);
+					}
+					if (ImGui::MenuItem("Scale")) {
+						this->find_panel<viewport_panel>()->set_gizmo_operation(viewport_panel::gizmo_operation::scale);
+					}
+					if (ImGui::MenuItem("None")) {
+						this->find_panel<viewport_panel>()->set_gizmo_operation(viewport_panel::gizmo_operation::none);
+					}
+					ImGui::EndMenu();
+				}
+				ImGui::EndMenu();
+			}
 #ifdef _DEBUG
 			if (ImGui::BeginMenu("Debug")) {
 				if (ImGui::MenuItem("Break")) {

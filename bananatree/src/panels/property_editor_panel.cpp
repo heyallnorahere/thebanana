@@ -220,6 +220,9 @@ namespace bananatree {
 			object->get_transform().set_rotation(temp_rotation);
 			glm::vec3 temp_scale = object->get_transform().get_scale();
 			vec3_control("Scale", temp_scale);
+			if (temp_scale.x < 0.0001f) temp_scale.x = 0.001f;
+			if (temp_scale.y < 0.0001f) temp_scale.y = 0.001f;
+			if (temp_scale.z < 0.0001f) temp_scale.z = 0.001f;
 			object->get_transform().set_scale(temp_scale);
 			ImGui::Separator();
 			ImGui::Text("Components:");

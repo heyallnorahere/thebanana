@@ -5,6 +5,7 @@
 #include "scene.h"
 namespace thebanana {
 	camera_component::camera_component(gameobject* object) : component(object) {
+		this->direction = glm::vec3(0.f, 0.f, 1.f);
 		this->add_property(new property<glm::vec2>(glm::vec2(0.f, -90.f), "Angle"));
 		this->add_property(new property<bool>(false, "Primary"));
 	}
@@ -18,11 +19,17 @@ namespace thebanana {
 	}
 	void camera_component::render() {
 		if (*this->get_property<bool>("Primary")) {
-			glm::mat4 projection = glm::perspective(glm::radians(45.f), this->parent->get_game()->get_aspect_ratio(), 0.1f, 100.f);
-			this->parent->get_scene()->get_shader()->get_uniforms().mat4("projection", projection);
-			glm::vec3 pos = this->get_transform();
-			glm::mat4 view = glm::lookAt(pos, pos + this->direction, glm::vec3(0.f, 1.f, 0.f));
-			this->parent->get_scene()->get_shader()->get_uniforms().mat4("view", view);
+			this->parent->get_scene()->get_shader()->get_uniforms().mat4("projection", this->calculate_projection());
+			this->parent->get_scene()->get_shader()->get_uniforms().mat4("view", this->calculate_view());
 		}
+	}
+	glm::mat4 camera_component::calculate_projection() {
+		glm::mat4 projection = glm::perspective(glm::radians(45.f), this->parent->get_game()->get_aspect_ratio(), 0.1f, 100.f);
+		return projection;
+	}
+	glm::mat4 camera_component::calculate_view() {
+		glm::vec3 pos = this->get_transform();
+		glm::mat4 view = glm::lookAt(pos, pos + this->direction, glm::vec3(0.f, 1.f, 0.f));
+		return view;
 	}
 }

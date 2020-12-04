@@ -18,6 +18,7 @@ namespace thebanana {
 		void set_shader_name(const std::string& shader_name);
 		game* get_game();
 		gameobject* find(unsigned long long uuid);
+		gameobject* find_main_camera();
 	private:
 		game* m_game;
 		std::list<std::unique_ptr<gameobject>> m_children;

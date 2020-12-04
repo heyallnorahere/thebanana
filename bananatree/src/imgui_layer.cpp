@@ -57,7 +57,7 @@ namespace bananatree {
 		this->set_theme();
 		ImGui_ImplWin32_Init(thebanana::g_game->get_window(), wglGetCurrentContext());
 		ImGui_ImplOpenGL3_Init("#version 460");
-		this->add_panel<viewport_panel>();
+		this->add_panel<viewport_panel>()->set_imgui_layer(this);
 		this->add_panel<log_panel>();
 		this->add_panel<property_editor_panel>()->set_hierarchy(this->add_panel<scene_hierarchy_panel>());
 		this->add_panel<model_registry_panel>()->set_project(this->m_editor_layer->get_project());

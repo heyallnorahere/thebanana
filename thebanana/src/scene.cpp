@@ -8,6 +8,7 @@
 #include "debug_tools.h"
 #include "shader_registry.h"
 #include "physics/rigidbody.h"
+#include "components/camera_component.h"
 namespace thebanana {
 	scene::scene(game* g) {
 		this->m_shader = NULL;
@@ -89,6 +90,26 @@ namespace thebanana {
 		gameobject* object = NULL;
 		for (auto& c : this->m_children) {
 			c->find(uuid, object);
+			if (object) break;
+		}
+		return object;
+	}
+	static void _find_main_camera(scene* s, gameobject* object, gameobject*& pointer) {
+		if (object->has_component<camera_component>()) {
+			if (*object->get_component<camera_component>().get_property<bool>("Primary")) {
+				pointer = object;
+				return;
+			}
+		}
+		for (size_t i = 0; i < object->get_children_count(); i++) {
+			_find_main_camera(s, object->get_child(i), pointer);
+			if (pointer) return;
+		}
+	}
+	gameobject* scene::find_main_camera() {
+		gameobject* object = NULL;
+		for (auto& obj : this->m_children) {
+			_find_main_camera(this, obj.get(), object);
 			if (object) break;
 		}
 		return object;

@@ -7,6 +7,8 @@ namespace thebanana {
 		camera_component(gameobject* object);
 		virtual void update() override;
 		virtual void render() override;
+		glm::mat4 calculate_projection();
+		glm::mat4 calculate_view();
 	private:
 		glm::vec3 direction;
 	};

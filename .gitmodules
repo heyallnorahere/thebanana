@@ -7,3 +7,6 @@
 [submodule "yaml/yaml-cpp"]
 	path = yaml/yaml-cpp
 	url = https://github.com/jbeder/yaml-cpp
+[submodule "imguizmo/ImGuizmo"]
+	path = imguizmo/ImGuizmo
+	url = https://github.com/TheCherno/ImGuizmo

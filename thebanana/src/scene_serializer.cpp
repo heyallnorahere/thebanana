@@ -128,7 +128,7 @@ namespace thebanana {
 			out << YAML::Key << "type" << YAML::Value << "camera_component";
 			out << YAML::Key << "uuid" << YAML::Value << cc.get_uuid();
 			out << YAML::Key << "angle" << YAML::Value << *cc.get_property<glm::vec2>("Angle");
-			out << YAML::Key << "direction" << YAML::Value << *cc.get_property<glm::vec3>("Direction");
+			out << YAML::Key << "primary" << YAML::Value << *cc.get_property<bool>("Primary");
 			out << YAML::EndMap;
 		}
 		for (size_t i = 0; i < object->get_number_components<particlesystem::particlesystem_component>(); i++) {
@@ -253,7 +253,7 @@ namespace thebanana {
 				camera_component& cc = object->add_component<camera_component>();
 				cc.set_uuid(uuid);
 				cc.set_property<glm::vec2>("Angle", n["angle"].as<glm::vec2>());
-				cc.set_property<glm::vec3>("Direction", n["direction"].as<glm::vec3>());
+				cc.set_property<bool>("Primary", n["primary"].as<bool>());
 			} else if (type == "particlesystem_component") {
 				particlesystem::particlesystem_component& psc = object->add_component<particlesystem::particlesystem_component>();
 				psc.set_uuid(uuid);

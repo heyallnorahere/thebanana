@@ -98,7 +98,7 @@ namespace bananatree {
 		thebanana::gameobject* camera = new thebanana::basic_gameobject;
 		camera->get_nickname() = "Camera";
 		camera->get_transform().move(glm::vec3(0.f, 0.f, 2.f));
-		camera->add_component<thebanana::camera_component>();
+		camera->add_component<thebanana::camera_component>().set_property<bool>("Primary", true);
 		thebanana::g_game->get_scene()->add_object(camera);
 	}
 	void imgui_layer::open_scene(const std::string& path) {

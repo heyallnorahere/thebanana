@@ -57,6 +57,7 @@ namespace thebanana {
 		device* get_device(size_t index);
 		game* get_parent();
 		device::button get_key(key k);
+		device::button get_mouse_button(mouse_button mb);
 		size_t find_device(device_type type);
 	private:
 		game* m_game;

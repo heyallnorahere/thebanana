@@ -106,6 +106,14 @@ namespace thebanana {
 		auto btns = this->get_device_buttons(pos);
 		return btns[(int)k];
 	}
+	input_manager::device::button input_manager::get_mouse_button(mouse_button mb) {
+		size_t pos = this->find_device(device_type::mouse);
+		if (pos == std::string::npos) {
+			return { false, false, false };
+		}
+		auto btns = this->get_device_buttons(pos);
+		return btns[(int)mb];
+	}
 	size_t input_manager::find_device(device_type type) {
 		size_t pos = std::string::npos;
 		for (size_t i = 0; i < this->get_num_devices(); i++) {

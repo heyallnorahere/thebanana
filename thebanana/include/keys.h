@@ -53,6 +53,7 @@ namespace thebanana {
 		key_ctrl = DIK_LCONTROL,
 		key_shift = DIK_LSHIFT,
 		key_space = DIK_SPACE,
+		key_enter = DIK_RETURN,
 	};
 	enum mouse_button {
 		left_click = 0,

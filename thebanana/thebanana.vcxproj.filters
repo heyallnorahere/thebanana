@@ -331,5 +331,8 @@
     <ClInclude Include="include\script_module.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\keys.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

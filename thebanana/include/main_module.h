@@ -17,3 +17,4 @@
 #include "shader_registry.h"
 #include "script_registry.h"
 #include "script_module.h"
+#include "keys.h"

@@ -1,5 +1,6 @@
 #pragma once
 #include "util.h"
+#include "keys.h"
 namespace thebanana {
 	class game;
 	class input_manager {
@@ -55,6 +56,8 @@ namespace thebanana {
 		device_type get_device_type(size_t index);
 		device* get_device(size_t index);
 		game* get_parent();
+		device::button get_key(key k);
+		size_t find_device(device_type type);
 	private:
 		game* m_game;
 		IDirectInput8* m_context;

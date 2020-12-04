@@ -166,6 +166,7 @@
     <ClInclude Include="include\graphics\quad.h" />
     <ClInclude Include="include\graphics\texture.h" />
     <ClInclude Include="include\includelist.h" />
+    <ClInclude Include="include\keys.h" />
     <ClInclude Include="include\particlesystem\particlesystem.h" />
     <ClInclude Include="include\particlesystem\particlesystem_component.h" />
     <ClInclude Include="include\particlesystem\particle_component.h" />

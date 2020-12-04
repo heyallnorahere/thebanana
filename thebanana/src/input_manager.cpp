@@ -100,6 +100,22 @@ namespace thebanana {
 	game* input_manager::get_parent() {
 		return this->m_game;
 	}
+	input_manager::device::button input_manager::get_key(key k) {
+		size_t pos = this->find_device(device_type::keyboard);
+		assert(pos != std::string::npos);
+		auto btns = this->get_device_buttons(pos);
+		return btns[(int)k];
+	}
+	size_t input_manager::find_device(device_type type) {
+		size_t pos = std::string::npos;
+		for (size_t i = 0; i < this->get_num_devices(); i++) {
+			if (this->get_device_type(i) == type) {
+				pos = i;
+				break;
+			}
+		}
+		return pos;
+	}
 	int __stdcall input_manager::enum_callback(const DIDEVICEINSTANCE* inst, dinput_callback_env* passed_env) {
 		dinput_callback_env env = *passed_env;
 		env.im->enumerated_devices.push_back({ *inst, env });

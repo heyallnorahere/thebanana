@@ -223,7 +223,7 @@ namespace bananatree {
 					}
 				}
 				ImGui::Separator();
-				if (ImGui::MenuItem("Quit", "Ctrl+Q")) {
+				if (ImGui::MenuItem("Quit", "Alt+F4")) {
 					thebanana::g_game->destroy();
 				}
 				ImGui::EndMenu();
@@ -308,20 +308,14 @@ namespace bananatree {
 		colors[ImGuiCol_TitleBgCollapsed] = ImVec4(0.15f, 0.1505f, 0.151f, 1.f);
 	}
 	void imgui_layer::parse_inputs() {
-		size_t keyboard_index = std::string::npos;
-		for (size_t i = 0; i < thebanana::g_game->get_input_manager()->get_num_devices(); i++) {
-			if (thebanana::g_game->get_input_manager()->get_device_type(i) == thebanana::input_manager::device_type::keyboard) keyboard_index = i;
-		}
-		assert(keyboard_index != std::string::npos);
-		thebanana::keyboard* kb = (thebanana::keyboard*)thebanana::g_game->get_input_manager()->get_device(keyboard_index);
-		auto buttons = kb->get_buttons();
-		bool control = buttons[DIK_LCONTROL].held;
-		bool shift = buttons[DIK_LSHIFT].held || buttons[DIK_RSHIFT].held;
-		if (buttons[DIK_N].down && control) {
+		auto input_manager = thebanana::g_game->get_input_manager();
+		bool control = input_manager->get_key(thebanana::key_ctrl).held;
+		bool shift = input_manager->get_key(thebanana::key_shift).held;
+		if (input_manager->get_key(thebanana::key_n).down && control) {
 			this->new_scene();
-		} else if (buttons[DIK_O].down && control) {
+		} else if (input_manager->get_key(thebanana::key_o).down && control) {
 			this->open_scene();
-		} else if (buttons[DIK_S].down) {
+		} else if (input_manager->get_key(thebanana::key_s).down) {
 			if (control && shift) this->save_scene();
 			else if (control) this->save_scene_from_temp();
 		}

@@ -53,11 +53,7 @@ std::string my_game_application_layer::window_title() {
 ```
 
 ### EDITOR AND SCRIPT MODULES
-To use the Banana Tree with your project, you must use script modules.
-
-"Script modules" are standard shared libraries with one thing in common;
-
-they must have an exported (`__declspec(dllexport)`), C-interface function named `load_scripts`. For example:
+To use the Banana Tree with your project, you must use script modules. "Script modules" are standard shared libraries with one thing in common; they must have an exported (`__declspec(dllexport)`), C-interface function named `load_scripts`. For example:
 ```cpp
 #include <thebanana.h>
 void load_scripts_cpp(void* r) {
@@ -75,11 +71,9 @@ extern "C" EXPORT void load_scripts(void* ptr) {
 }
 ```
 
-Now, to use your script module, open your project in the Banana Tree and navigate to the project editor.
+**Important:** you must add [these NuGet packages](readmefiles/packages.config) to compile and link your module correctly.
 
-Once that is done, open your Visual Studio solution (or input the solution directory) and specify the output file name of your code project.
-
-Afterwards, it should look something like this:
+Now, to use your script module, open your project in the Banana Tree and navigate to the project editor. Once that is done, open your Visual Studio solution (or input the solution directory) and specify the output file name of your code project. Afterwards, it should look something like this:
 
 ![The Banana Tree Project Editor](readmefiles/projecteditor_example.png)
 

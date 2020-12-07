@@ -104,6 +104,9 @@ namespace thebanana {
 		size_t pos = this->find_device(device_type::keyboard);
 		assert(pos != std::string::npos);
 		auto btns = this->get_device_buttons(pos);
+		if ((int)k >= btns.size()) {
+			return { false, false, false };
+		}
 		return btns[(int)k];
 	}
 	input_manager::device::button input_manager::get_mouse_button(mouse_button mb) {
@@ -112,6 +115,9 @@ namespace thebanana {
 			return { false, false, false };
 		}
 		auto btns = this->get_device_buttons(pos);
+		if ((int)mb >= btns.size()) {
+			return { false, false, false };
+		}
 		return btns[(int)mb];
 	}
 	size_t input_manager::find_device(device_type type) {

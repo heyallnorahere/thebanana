@@ -8,7 +8,7 @@ namespace thebanana {
 		this->m_nickname = "Static mesh";
 		this->add_tag("staticmesh");
 		this->add_component<mesh_component>().set_mesh_name(model_name);
-		this->add_component<rigidbody>().set_collision_model_name(model_name);
+		this->add_component<rigidbody>().set_collision_model_name(model_name).get_property<component::property_base::dropdown>("Collision type")->set_item("Collide");
 	}
 	static_mesh::~static_mesh() { }
 }

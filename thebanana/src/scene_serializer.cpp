@@ -116,6 +116,20 @@ namespace thebanana {
 			out << YAML::Key << "gravity value" << YAML::Value << *(rb.get_property<glm::vec3>("Gravity value"));
 			out << YAML::Key << "mass" << YAML::Value << *(rb.get_property<float>("Mass"));
 			out << YAML::Key << "drag" << YAML::Value << *(rb.get_property<float>("Drag"));
+			const auto& properties = rb.get_properties();
+			component::property_base* p = NULL;
+			for (auto& prop : properties) {
+				if (prop->get_name() == "Collision type") {
+					p = prop.get();
+					break;
+				}
+			}
+			assert(p);
+			auto prop = (component::property<component::property_base::dropdown>*)p;
+			if (*prop->get_value()->get_index_ptr() > 0) {
+				out << YAML::Key << "collision type" << YAML::Value;
+				prop->send_to_yaml(&out);
+			}
 			out << YAML::Key << "collision_model_name" << YAML::Value << rb.get_collision_model_name();
 			out << YAML::Key << "check_for_collisions" << YAML::Value << rb.is_checking_for_collisions();
 			collider* c = rb.get_collider();
@@ -245,6 +259,17 @@ namespace thebanana {
 				rb.set_property<glm::vec3>("Gravity value", n["gravity value"].as<glm::vec3>());
 				rb.set_property<float>("Mass", n["mass"].as<float>());
 				rb.set_property<float>("Drag", n["drag"].as<float>());
+				YAML::Node ct = n["collision type"];
+				if (ct) {
+					int index = ct["index"].as<int>();
+					std::vector<std::string> items;
+					for (auto item : ct["items"]) {
+						items.push_back(item.as<std::string>());
+					}
+					rb.set_property("Collision type", component::property_base::dropdown(items, index));
+				} else {
+					rb.get_property<component::property_base::dropdown>("Collision type")->set_item("None");
+				}
 				rb.set_collision_model_name(n["collision_model_name"].as<std::string>());
 				rb.set_check_for_collisions(n["check_for_collisions"].as<bool>());
 				if (n["collider"])

@@ -14,6 +14,8 @@ namespace thebanana {
 				dropdown(const std::vector<std::string>& items, int initial_index = 0);
 				dropdown(const std::vector<const char*>& items, int initial_index = 0);
 				int* get_index_ptr();
+				void set_item(int index);
+				void set_item(const std::string& value);
 				const std::vector<std::string>& get_items() const;
 				void set_items(const std::vector<std::string>& items);
 			private:

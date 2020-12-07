@@ -111,6 +111,17 @@ namespace thebanana {
 	int* component::property_base::dropdown::get_index_ptr() {
 		return &this->m_index;
 	}
+	void component::property_base::dropdown::set_item(int index) {
+		this->m_index = index;
+	}
+	void component::property_base::dropdown::set_item(const std::string& value) {
+		for (int i = 0; i < this->m_items.size(); i++) {
+			if (this->m_items[i] == value) {
+				this->m_index = i;
+				return;
+			}
+		}
+	}
 	const std::vector<std::string>& component::property_base::dropdown::get_items() const {
 		return this->m_items;
 	}

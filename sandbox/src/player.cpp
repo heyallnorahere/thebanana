@@ -13,6 +13,7 @@ void player_behavior::initialize() {
 	this->add_component<thebanana::animation_component>();
 	this->add_component<thebanana::mesh_component>().set_mesh_name("player");
 	this->add_component<thebanana::rigidbody>().set_check_for_collisions(true).set_speed_cap(0.5f).set_collider_type<thebanana::mlfarrel_model>()->set_radius(0.4f).set_origin_offset(glm::vec3(0.f, 0.6f, 0.f));
+	this->get_component<thebanana::rigidbody>().get_property<thebanana::component::property_base::dropdown>("Collision type")->set_item("Collide");
 	this->add_component<thebanana::particlesystem::particlesystem_component>().set_property<std::string>("Particle model name", "test_cube");
 	this->get_component<thebanana::particlesystem::particlesystem_component>().set_property<glm::vec3>("Particle acceleration", glm::vec3(0.f, 0.f, 0.f));
 	this->get_component<thebanana::particlesystem::particlesystem_component>().set_property<float>("Maximum particle size", 0.5f);

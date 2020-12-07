@@ -10,6 +10,7 @@ namespace thebanana {
 		this->add_property(new property<glm::vec3>(glm::vec3(0.f, -1.f, 0.f), "Gravity value"));
 		this->add_property(new property<float>(1.f, "Mass"));
 		this->add_property(new property<float>(drag, "Drag"));
+		this->add_property(new property<property_base::dropdown>(property_base::dropdown(std::vector<std::string>({ "None", "Collide" })), "Collision type"));
 		this->coll = NULL;
 		this->last_frame_model_name = "";
 		this->check_for_collisions = false;
@@ -73,7 +74,8 @@ namespace thebanana {
 		}
 	}
 	void rigidbody::on_collision(gameobject* other) {
-		if (this->num_collisions != 0 && this->check_for_collisions) {
+		property_base::dropdown* collision_type = this->get_property<property_base::dropdown>("Collision type");
+		if (this->num_collisions != 0 && this->check_for_collisions && (*collision_type->get_index_ptr() == 1)) {
 			this->coll->on_collision(other);
 		}
 	}

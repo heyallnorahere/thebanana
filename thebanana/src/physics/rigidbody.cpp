@@ -16,7 +16,7 @@ namespace thebanana {
 		this->check_for_collisions = false;
 		this->velocity = glm::vec3(0.f);
 		this->acceleration = glm::vec3(0.f);
-		this->last_velocity_length = 0.f;
+		this->last_frame_pos = glm::vec3(0.f);
 		this->has_cap = false;
 	}
 	void rigidbody::initialize() {
@@ -43,7 +43,6 @@ namespace thebanana {
 			this->velocity = glm::normalize(this->velocity) * this->speed_cap;
 		}
 		this->parent->get_transform().move(this->velocity);
-		this->last_velocity_length = glm::length(this->velocity);
 		property<float>* _drag = this->find_property<float>("Drag");
 		this->velocity *= 1.f - (_drag ? *_drag->get_value() : drag);
 		this->acceleration = glm::vec3(0.f);
@@ -72,6 +71,7 @@ namespace thebanana {
 				}
 			}
 		}
+		this->last_frame_pos = this->get_transform();
 	}
 	void rigidbody::on_collision(gameobject* other) {
 		property_base::dropdown* collision_type = this->get_property<property_base::dropdown>("Collision type");
@@ -129,7 +129,7 @@ namespace thebanana {
 		return this->has_cap ? this->speed_cap : 0.f;
 	}
 	float rigidbody::get_last_move_speed() {
-		return this->last_velocity_length;
+		return glm::length((glm::vec3)this->get_transform() - this->last_frame_pos);
 	}
 	collider* rigidbody::get_collider() const {
 		return this->coll;

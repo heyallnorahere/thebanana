@@ -38,7 +38,7 @@ namespace thebanana {
 		glm::vec3 velocity, acceleration;
 		std::string collision_model_name;
 		std::vector<std::string> collision_tags;
-		float last_velocity_length;
+		glm::vec3 last_frame_pos;
 		float speed_cap;
 		bool has_cap;
 		friend class scene_serializer;

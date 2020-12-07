@@ -48,23 +48,18 @@ namespace bananatree {
 			auto& camera = main_camera->get_component<thebanana::camera_component>();
 			glm::mat4 projection = camera.calculate_projection();
 			glm::mat4 view = camera.calculate_view();
-			glm::mat4 absolute_transform = selected_object->get_absolute_transform();
 			glm::mat4 transform = selected_object->get_absolute_transform();
-			bool snap = false;
-			{
-				thebanana::input_manager* input_manager = thebanana::g_game->get_input_manager();
-				auto btns = input_manager->get_device_buttons(this->m_keyboard_index);
-				snap = btns[DIK_LCONTROL].held;
-			}
+			bool snap = thebanana::g_game->get_input_manager()->get_key(thebanana::key_ctrl).held;
 			float snap_value = 0.5f;
 			if (this->m_gizmo_operation == gizmo_operation::rotate) {
 				snap_value = 45.f;
 			}
 			float snap_values[3] = { snap_value, snap_value, snap_value };
 			if (this->m_gizmo_operation != gizmo_operation::none) {
-				ImGuizmo::Manipulate(glm::value_ptr(view), glm::value_ptr(projection), (ImGuizmo::OPERATION)this->m_gizmo_operation, ImGuizmo::WORLD, glm::value_ptr(transform), NULL, snap ? snap_values : NULL);
+				glm::mat4 delta;
+				ImGuizmo::Manipulate(glm::value_ptr(view), glm::value_ptr(projection), (ImGuizmo::OPERATION)this->m_gizmo_operation, ImGuizmo::WORLD, glm::value_ptr(transform), glm::value_ptr(delta), snap ? snap_values : NULL);
 				if (ImGuizmo::IsUsing()) {
-					selected_object->get_transform() *= transform / (glm::mat4)selected_object->get_absolute_transform();
+					selected_object->get_transform() *= delta;
 				}
 			}
 		}

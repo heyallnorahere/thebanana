@@ -26,4 +26,17 @@ namespace thebanana {
 		glm::vec3 last_frame_position;
 		float radius;
 	};
+	// my own implementation
+	class rectangular_prism_collider : public collider {
+	public:
+		rectangular_prism_collider(rigidbody* rb);
+		virtual bool detect_collision(rigidbody* other) override;
+		virtual void on_collision(gameobject* other) override;
+		rectangular_prism_collider& set_dimensions(glm::vec3 dimensions);
+		rectangular_prism_collider& set_origin_offset(glm::vec3 offset);
+		glm::vec3 get_dimensions() const;
+		glm::vec3 get_origin_offset() const;
+	private:
+		glm::vec3 dimensions, origin_offset;
+	};
 }

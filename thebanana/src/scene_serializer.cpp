@@ -74,6 +74,12 @@ namespace thebanana {
 			out << YAML::Key << "radius" << YAML::Value << c_->get_radius();
 			out << YAML::Key << "origin_offset" << YAML::Value << c_->get_origin_offset();
 		}
+		else if (hash == typeid(rectangular_prism_collider).hash_code()) {
+			rectangular_prism_collider* c_ = (rectangular_prism_collider*)c;
+			out << YAML::Key << "type" << YAML::Value << "rectangular_prism_collider";
+			out << YAML::Key << "dimensions" << YAML::Value << c_->get_dimensions();
+			out << YAML::Key << "origin_offset" << YAML::Value << c_->get_origin_offset();
+		}
 		out << YAML::EndMap;
 	}
 	static void serialize_object(YAML::Emitter& out, gameobject* object) {
@@ -213,6 +219,13 @@ namespace thebanana {
 			mlfarrel_model* c = rb.set_collider_type<mlfarrel_model>();
 			assert(node["radius"]);
 			c->set_radius(node["radius"].as<float>());
+			assert(node["origin_offset"]);
+			c->set_origin_offset(node["origin_offset"].as<glm::vec3>());
+		}
+		else if (type == "rectangular_prism_collider") {
+			rectangular_prism_collider* c = rb.set_collider_type<rectangular_prism_collider>();
+			assert(node["dimensions"]);
+			c->set_dimensions(node["dimensions"].as<glm::vec3>());
 			assert(node["origin_offset"]);
 			c->set_origin_offset(node["origin_offset"].as<glm::vec3>());
 		}

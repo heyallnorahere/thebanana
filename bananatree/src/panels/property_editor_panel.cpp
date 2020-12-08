@@ -103,6 +103,7 @@ namespace bananatree {
 		std::vector<const char*> strings;
 		strings.push_back("None");
 		strings.push_back("Sphere");
+		strings.push_back("Rectangular prism");
 		int current, index;
 		if (rb.get_collider()) {
 			size_t hash_code = typeid(*rb.get_collider()).hash_code();
@@ -124,6 +125,9 @@ namespace bananatree {
 			case 1:
 				rb.set_collider_type<thebanana::mlfarrel_model>();
 				break;
+			case 2:
+				rb.set_collider_type<thebanana::rectangular_prism_collider>();
+				break;
 			}
 			current = index;
 		}
@@ -137,6 +141,17 @@ namespace bananatree {
 			float radius = c->get_radius();
 			ImGui::DragFloat("Radius", &radius);
 			c->set_radius(radius);
+		}
+			break;
+		case 2:
+		{
+			thebanana::rectangular_prism_collider* c = (thebanana::rectangular_prism_collider*)rb.get_collider();
+			glm::vec3 offset = c->get_origin_offset();
+			ImGui::DragFloat3("Origin offset", &offset.x);
+			c->set_origin_offset(offset);
+			glm::vec3 dimensions = c->get_dimensions();
+			ImGui::DragFloat3("Dimensions", &dimensions.x);
+			c->set_dimensions(dimensions);
 		}
 			break;
 		}

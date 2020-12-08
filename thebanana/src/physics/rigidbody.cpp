@@ -11,6 +11,7 @@ namespace thebanana {
 		this->add_property(new property<float>(1.f, "Mass"));
 		this->add_property(new property<float>(drag, "Drag"));
 		this->add_property(new property<property_base::dropdown>(property_base::dropdown(std::vector<std::string>({ "None", "Collide" })), "Collision type"));
+		this->add_property(new property<std::string>("", "Collision mesh name"));
 		this->coll = NULL;
 		this->last_frame_model_name = "";
 		this->check_for_collisions = false;
@@ -23,9 +24,9 @@ namespace thebanana {
 		this->parent->get_game()->get_rigidbody_list().push_back(this);
 	}
 	void rigidbody::pre_update() {
-		if (this->collision_model_name != this->last_frame_model_name) {
-			this->vertex_data = this->parent->get_game()->get_model_registry()->get_vertex_data(this->collision_model_name);
-			this->last_frame_model_name = this->collision_model_name;
+		if (this->get_collision_model_name() != this->last_frame_model_name) {
+			this->vertex_data = this->parent->get_game()->get_model_registry()->get_vertex_data(this->get_collision_model_name());
+			this->last_frame_model_name = this->get_collision_model_name();
 		}
 	}
 	void rigidbody::post_update() {
@@ -107,11 +108,11 @@ namespace thebanana {
 		this->acceleration += force / mass;
 	}
 	rigidbody& rigidbody::set_collision_model_name(const std::string& model_name) {
-		this->collision_model_name = model_name;
+		this->set_property("Collision mesh name", model_name);
 		return *this;
 	}
 	std::string rigidbody::get_collision_model_name() {
-		return this->collision_model_name;
+		return *this->get_property<std::string>("Collision mesh name");
 	}
 	rigidbody& rigidbody::set_collision_tags(const std::vector<std::string>& tags) {
 		this->collision_tags = tags;

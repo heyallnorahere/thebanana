@@ -36,7 +36,6 @@ namespace thebanana {
 		collider* coll;
 		std::string last_frame_model_name;
 		glm::vec3 velocity, acceleration;
-		std::string collision_model_name;
 		std::vector<std::string> collision_tags;
 		glm::vec3 last_frame_pos;
 		float speed_cap;

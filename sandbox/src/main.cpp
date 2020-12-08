@@ -92,7 +92,6 @@ void sandbox_application_layer::init() {
 	thebanana::g_game->get_scene()->add_object(p);
 	p->get_transform().translate(2.f, 0.75f, 2.f);
 	p->add_tag("test");
-	p->get_component<thebanana::rigidbody>().set_collision_tags({ "ground" }).set_collider_type<thebanana::mlfarrel_model>()->set_radius(0.5f).set_origin_offset(glm::vec3(0.f, 0.5f, 0.f));
 	p->get_component<thebanana::rigidbody>().set_property("mass", 1.5f);
 	p = new thebanana::static_mesh("test_cube");
 	thebanana::g_game->get_scene()->add_object(p);

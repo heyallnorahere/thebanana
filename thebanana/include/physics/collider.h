@@ -7,7 +7,6 @@ namespace thebanana {
 		collider(rigidbody* rb);
 		virtual ~collider();
 		virtual bool detect_collision(rigidbody* other) = 0;
-		virtual void on_collision(gameobject* other) = 0;
 	protected:
 		rigidbody* parent;
 	};
@@ -16,7 +15,6 @@ namespace thebanana {
 	public:
 		mlfarrel_model(rigidbody* rb);
 		virtual bool detect_collision(rigidbody* other) override;
-		virtual void on_collision(gameobject* other) override;
 		mlfarrel_model& set_radius(float radius);
 		mlfarrel_model& set_origin_offset(glm::vec3 offset);
 		float get_radius() const;
@@ -31,7 +29,6 @@ namespace thebanana {
 	public:
 		rectangular_prism_collider(rigidbody* rb);
 		virtual bool detect_collision(rigidbody* other) override;
-		virtual void on_collision(gameobject* other) override;
 		rectangular_prism_collider& set_dimensions(glm::vec3 dimensions);
 		rectangular_prism_collider& set_origin_offset(glm::vec3 offset);
 		glm::vec3 get_dimensions() const;

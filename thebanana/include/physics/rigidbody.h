@@ -22,8 +22,6 @@ namespace thebanana {
 		void apply_force(const glm::vec3& force);
 		rigidbody& set_collision_model_name(const std::string& model_name);
 		std::string get_collision_model_name();
-		rigidbody& set_collision_tags(const std::vector<std::string>& tags);
-		std::vector<std::string> get_collision_tags();
 		rigidbody& set_speed_cap(float cap);
 		float get_speed_cap();
 		float get_last_move_speed();
@@ -36,7 +34,6 @@ namespace thebanana {
 		collider* coll;
 		std::string last_frame_model_name;
 		glm::vec3 velocity, acceleration;
-		std::vector<std::string> collision_tags;
 		glm::vec3 last_frame_pos;
 		float speed_cap;
 		bool has_cap;

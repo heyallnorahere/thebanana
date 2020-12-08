@@ -52,16 +52,6 @@ namespace thebanana {
 		if (this->coll && this->check_for_collisions) {
 			for (auto ptr : this->parent->get_game()->get_rigidbody_list()) {
 				if (ptr == this) continue;
-				if (this->collision_tags.size() > 0) {
-					bool has_tag = false;
-					for (std::string tag : this->collision_tags) {
-						if (ptr->parent->has_tag(tag)) {
-							has_tag = true;
-							break;
-						}
-					}
-					if (!has_tag) continue;
-				}
 				glm::vec4 my_pos = this->parent->get_transform();
 				glm::vec4 other_pos = ptr->parent->get_transform();
 				glm::vec4 difference = my_pos - other_pos;
@@ -76,8 +66,15 @@ namespace thebanana {
 	}
 	void rigidbody::on_collision(gameobject* other) {
 		property_base::dropdown* collision_type = this->get_property<property_base::dropdown>("Collision type");
-		if (this->num_collisions != 0 && this->check_for_collisions && (*collision_type->get_index_ptr() == 1)) {
-			this->coll->on_collision(other);
+		assert(other->has_component<rigidbody>());
+		property_base::dropdown* other_ct = other->get_component<rigidbody>().get_property<property_base::dropdown>("Collision type");
+		if (this->num_collisions != 0 && this->check_for_collisions && (*collision_type->get_index_ptr() == 1) && (*other_ct->get_index_ptr() == 1)) {
+			if (glm::length(this->shift_delta) > this->get_last_move_speed()) {
+				this->shift_delta = glm::normalize(this->shift_delta);
+				this->shift_delta *= this->get_last_move_speed() * 1.1f;
+			}
+			this->parent->get_transform().move(this->shift_delta);
+			this->apply_force(this->shift_delta);
 		}
 	}
 	void rigidbody::clean_up() {
@@ -113,13 +110,6 @@ namespace thebanana {
 	}
 	std::string rigidbody::get_collision_model_name() {
 		return *this->get_property<std::string>("Collision mesh name");
-	}
-	rigidbody& rigidbody::set_collision_tags(const std::vector<std::string>& tags) {
-		this->collision_tags = tags;
-		return *this;
-	}
-	std::vector<std::string> rigidbody::get_collision_tags() {
-		return this->collision_tags;
 	}
 	rigidbody& rigidbody::set_speed_cap(float cap) {
 		this->speed_cap = cap;

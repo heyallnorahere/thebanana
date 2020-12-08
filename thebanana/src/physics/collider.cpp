@@ -116,16 +116,6 @@ namespace thebanana {
 		}
 		return collided;
 	}
-	void mlfarrel_model::on_collision(gameobject* other) {
-		glm::vec3 shift_delta = this->parent->get_shift_delta();
-		float last_move_speed = this->parent->get_last_move_speed();
-		if (glm::length(shift_delta) > last_move_speed) {
-			shift_delta = glm::normalize(shift_delta);
-			shift_delta *= last_move_speed * 1.1f;
-		}
-		this->parent->get_parent()->get_transform().move(shift_delta);
-		this->parent->apply_force(shift_delta);
-	}
 	mlfarrel_model& mlfarrel_model::set_radius(float radius) {
 		this->radius = radius;
 		return *this;
@@ -145,16 +135,6 @@ namespace thebanana {
 		glm::vec3 origin = (glm::vec3)this->parent->get_parent()->get_transform() + this->origin_offset;
 		// todo: detect collision i guess, should be easier to debug than the sphere
 		return false;
-	}
-	void rectangular_prism_collider::on_collision(gameobject* other) {
-		glm::vec3 shift_delta = this->parent->get_shift_delta();
-		float last_move_speed = this->parent->get_last_move_speed();
-		if (glm::length(shift_delta) > last_move_speed) {
-			shift_delta = glm::normalize(shift_delta);
-			shift_delta *= last_move_speed * 1.1f;
-		}
-		this->parent->get_parent()->get_transform().move(shift_delta);
-		this->parent->apply_force(shift_delta);
 	}
 	rectangular_prism_collider& rectangular_prism_collider::set_dimensions(glm::vec3 dimensions) {
 		this->dimensions = dimensions;

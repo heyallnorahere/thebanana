@@ -63,9 +63,9 @@ namespace thebanana {
 		std::string result = original;
 		do {
 			if (pos != std::string::npos) {
-				result = replace + original.substr(pos + find.length());
+				result = replace + result.substr(pos + find.length());
 			}
-			pos = original.find(find, pos + 1);
+			pos = result.find(find, pos + 1);
 		} while (pos != std::string::npos);
 		return result;
 	}

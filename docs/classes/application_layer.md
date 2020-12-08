@@ -14,7 +14,7 @@ private:
 }
 ```
 ## Functions
-- void register_scripts()
+- `void register_scripts()`
 
 This function should be used to register scripts, either from a [Script Module](script_module.md), or from the executable itself. For example:
 ```cpp
@@ -31,7 +31,7 @@ void my_application_layer::register_scripts() {
 }
 ```
 
-- void init()
+- `void init()`
 
 This function should load models and shaders, add [Gameobjects](gameobject.md) to the scene, and load sound effects. Ex:
 ```cpp
@@ -50,7 +50,7 @@ void my_application_layer::init() {
 }
 ```
 
-- void gameloop()
+- `void gameloop()`
 
 This function decides what order things happen in during each frame. Ex:
 ```cpp
@@ -62,7 +62,7 @@ void my_application_layer::gameloop() {
 }
 ```
 
-- void clean_up()
+- `void clean_up()`
 
 This function frees memory and resources that have been allocated. Ex:
 ```cpp
@@ -72,7 +72,7 @@ void my_application_layer::clean_up() {
 }
 ```
 
-- std::string window_title()
+- `std::string window_title()`
 
 This one is simple. It tells the engine what to assign the windows title to. Ex:
 ```cpp

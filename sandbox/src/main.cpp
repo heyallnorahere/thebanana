@@ -86,8 +86,8 @@ void sandbox_application_layer::init() {
 	thebanana::g_game->get_scene()->add_object(player);
 	player->add_component<thebanana::native_script_component>().bind<player_behavior>();
 	camera->add_component<thebanana::native_script_component>().bind<camera_behavior>();
-	camera->get_component<thebanana::native_script_component>().set_property("player", player);
-	player->get_component<thebanana::native_script_component>().set_property("camera", camera);
+	camera->find_script<camera_behavior>()->get_interface()->set_property("player", player);
+	player->find_script<player_behavior>()->get_interface()->set_property("camera", camera);
 	thebanana::gameobject* p = new thebanana::static_mesh("test_cube");
 	thebanana::g_game->get_scene()->add_object(p);
 	p->get_transform().translate(2.f, 0.75f, 2.f);

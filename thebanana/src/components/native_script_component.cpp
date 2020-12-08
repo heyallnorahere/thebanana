@@ -15,6 +15,9 @@ namespace thebanana {
 	void script::post_render() { }
 	void script::on_collision(gameobject* other) { }
 	script::~script() { }
+	native_script_component* script::get_interface() {
+		return this->interface;
+	}
 	void script::add_property(component::property_base* p) {
 		this->interface->add_property(p);
 		p->set_game(this->parent->get_game());

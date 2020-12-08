@@ -28,6 +28,7 @@ namespace thebanana {
 		game* get_game();
 		template<typename _Ty> _Ty& add_component();
 		template<typename _Ty> _Ty& get_component(size_t index = 0);
+		template<typename _Ty> _Ty* find_script();
 		template<typename _Ty> void remove_component(size_t index = 0);
 		template<typename _Ty> size_t get_number_components();
 		template<typename _Ty> bool has_component();
@@ -60,6 +61,9 @@ namespace thebanana {
 		std::list<std::unique_ptr<component>> m_components;
 		unsigned long long m_uuid;
 	private:
+		bool is_script(component* c);
+		size_t script_hash(component* c);
+		void* get_script_from_component(component* c);
 		unsigned int last_collided_frame;
 		bool initialized;
 		void update_children();
@@ -96,6 +100,18 @@ namespace thebanana {
 		else {
 			return *ptrs[index % ptrs.size()];
 		}
+	}
+	template<typename _Ty> inline _Ty* gameobject::find_script() {
+		_Ty* script = NULL;
+		for (auto& c : this->m_components) {
+			if (this->is_script(c.get())) {
+				if (typeid(_Ty).hash_code() == this->script_hash(c.get())) {
+					script = (_Ty*)this->get_script_from_component(c.get());
+					break;
+				}
+			}
+		}
+		return script;
 	}
 	template<typename _Ty> inline void gameobject::remove_component(size_t index) {
 		if (typeid(_Ty).hash_code() == typeid(component).hash_code()) {

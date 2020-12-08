@@ -5,6 +5,7 @@
 #include "model_registry.h"
 #include "debug_tools.h"
 #include "components/tag_component.h"
+#include "components/native_script_component.h"
 #include "internal_util.h"
 #include "particlesystem/particle_component.h"
 namespace thebanana {
@@ -191,6 +192,17 @@ namespace thebanana {
 		for (auto& c : this->m_components) {
 			c->post_render();
 		}
+	}
+	bool gameobject::is_script(component* c) {
+		return (typeid(*c).hash_code() == typeid(native_script_component).hash_code());
+	}
+	size_t gameobject::script_hash(component* c) {
+		native_script_component* nsc = (native_script_component*)c;
+		return typeid(*nsc->get_script<script>()).hash_code();
+	}
+	void* gameobject::get_script_from_component(component* c) {
+		native_script_component* nsc = (native_script_component*)c;
+		return nsc->get_script<void>();
 	}
 	void gameobject::update_children() {
 		for (auto& c : this->m_children) {

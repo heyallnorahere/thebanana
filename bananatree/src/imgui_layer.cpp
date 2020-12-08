@@ -271,6 +271,15 @@ namespace bananatree {
 					}
 					ImGui::EndMenu();
 				}
+				if (ImGui::BeginMenu("Transformation mode...")) {
+					if (ImGui::MenuItem("Local")) {
+						this->find_panel<viewport_panel>()->set_transformation_mode(viewport_panel::transformation_mode::local);
+					}
+					if (ImGui::MenuItem("World")) {
+						this->find_panel<viewport_panel>()->set_transformation_mode(viewport_panel::transformation_mode::world);
+					}
+					ImGui::EndMenu();
+				}
 				ImGui::EndMenu();
 			}
 #ifdef _DEBUG

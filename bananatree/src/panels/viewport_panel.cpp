@@ -11,6 +11,7 @@
 namespace bananatree {
 	viewport_panel::viewport_panel() {
 		this->m_gizmo_operation = gizmo_operation::translate;
+		this->m_transformation_mode = transformation_mode::local;
 		thebanana::graphics::opengl::opengl_framebuffer::desc desc;
 		desc.width = 800;
 		desc.height = 600;
@@ -57,7 +58,7 @@ namespace bananatree {
 			float snap_values[3] = { snap_value, snap_value, snap_value };
 			if (this->m_gizmo_operation != gizmo_operation::none) {
 				glm::mat4 delta;
-				ImGuizmo::Manipulate(glm::value_ptr(view), glm::value_ptr(projection), (ImGuizmo::OPERATION)this->m_gizmo_operation, ImGuizmo::WORLD, glm::value_ptr(transform), glm::value_ptr(delta), snap ? snap_values : NULL);
+				ImGuizmo::Manipulate(glm::value_ptr(view), glm::value_ptr(projection), (ImGuizmo::OPERATION)this->m_gizmo_operation, (ImGuizmo::MODE)this->m_transformation_mode, glm::value_ptr(transform), glm::value_ptr(delta), snap ? snap_values : NULL);
 				if (ImGuizmo::IsUsing()) {
 					selected_object->get_transform() *= delta;
 				}
@@ -76,5 +77,11 @@ namespace bananatree {
 	}
 	viewport_panel::gizmo_operation viewport_panel::get_gizmo_operation() {
 		return this->m_gizmo_operation;
+	}
+	void viewport_panel::set_transformation_mode(transformation_mode mode) {
+		this->m_transformation_mode = mode;
+	}
+	viewport_panel::transformation_mode viewport_panel::get_transformation_mode() {
+		return this->m_transformation_mode;
 	}
 }

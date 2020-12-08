@@ -1,8 +1,22 @@
 # Application Layer
-
+## Basic use
+```cpp
+class my_application_layer : public thebanana::application_layer {
+public:
+	virtual void register_scripts() override;
+	virtual void init() override;
+	virtual void gameloop() override;
+	virtual void clean_up() override;
+	virtual std::string window_title() override;
+private:
+	// for an example later
+	thebanana::script_module* m_module;
+}
+```
+## Functions
 - void register_scripts()
 
-This function should be used to register scripts, either from a [Script Module](README.md), or from the executable itself. For example:
+This function should be used to register scripts, either from a [Script Module](script_module.md), or from the executable itself. For example:
 ```cpp
 void my_application_layer::register_scripts() {
 	// from the executable
@@ -19,7 +33,7 @@ void my_application_layer::register_scripts() {
 
 - void init()
 
-This function should load models and shaders, add [Gameobject](README.md)s to the scene, and load sound effects. Ex:
+This function should load models and shaders, add [Gameobjects](gameobject.md) to the scene, and load sound effects. Ex:
 ```cpp
 void my_application_layer::init() {
 	// for (working directory)/shaders/basic/(type of shader).shader
@@ -66,5 +80,6 @@ std::string my_application_layer::window_title() {
 	return "Documentation example app";
 }
 ```
+[Next ->](basic_gameobject.md)
 
-[<- Back to index](README.md)
+[<- Back to index](../README.md)

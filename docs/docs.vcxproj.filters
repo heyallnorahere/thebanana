@@ -15,7 +15,9 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <None Include="application_layer.md" />
     <None Include="README.md" />
+    <None Include="classes\application_layer.md" />
+    <None Include="classes\basic_gameobject.md" />
+    <None Include="classes\component.md" />
   </ItemGroup>
 </Project>

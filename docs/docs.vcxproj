@@ -139,7 +139,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <None Include="application_layer.md" />
+    <None Include="classes\application_layer.md" />
+    <None Include="classes\basic_gameobject.md" />
+    <None Include="classes\component.md" />
     <None Include="README.md" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

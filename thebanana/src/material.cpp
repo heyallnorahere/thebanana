@@ -54,14 +54,17 @@ namespace thebanana {
 		return this->m_shininess;
 	}
 	void material::send_to_shader(unsigned int shader_id, const std::string& uniform_name) {
-		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, this->m_albedo->get_id());
+		this->m_albedo->bind(10);
 		auto get_uniform_name = [&](const std::string& name) {
 			return uniform_name + "." + name;
 		};
-		glUniform1i(glGetUniformLocation(shader_id, get_uniform_name("albedo").c_str()), 0);
-		glUniform3fv(glGetUniformLocation(shader_id, get_uniform_name("color").c_str()), 1, glm::value_ptr(this->m_color));
-		glUniform1f(glGetUniformLocation(shader_id, get_uniform_name("shininess").c_str()), this->m_shininess);
+		opengl_shader_library::uni u(shader_id);
+		u._int(get_uniform_name("albedo"), 10);
+		//glUniform1i(glGetUniformLocation(shader_id, get_uniform_name("albedo").c_str()), 0);
+		u.vec3(get_uniform_name("color"), this->m_color);
+		//glUniform3fv(glGetUniformLocation(shader_id, get_uniform_name("color").c_str()), 1, glm::value_ptr(this->m_color));
+		u._float(get_uniform_name("shininess"), this->m_shininess);
+		//glUniform1f(glGetUniformLocation(shader_id, get_uniform_name("shininess").c_str()), this->m_shininess);
 	}
 	void material::set_uuid(unsigned long long uuid) {
 		this->m_uuid = uuid;

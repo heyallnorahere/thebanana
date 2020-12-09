@@ -31,7 +31,7 @@ namespace thebanana {
 		if (this->model_name != "none") {
 			material* mat = *this->get_property<material*>("Material");
 			if (mat) {
-				mat->send_to_shader(this->parent->get_scene()->get_shader()->get_id(), "material");
+				mat->send_to_shader(this->parent->get_scene()->get_shader()->get_id(), "shader_material");
 			}
 			// model_transform is the transform passed in to the model registry, transformed by the root transform of the aiScene
 			transform model_transform = this->parent->get_game()->get_model_registry()->get_transform(this->model_name);

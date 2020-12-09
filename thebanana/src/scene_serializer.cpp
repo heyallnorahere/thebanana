@@ -105,6 +105,7 @@ namespace thebanana {
 			out << YAML::Key << "type" << YAML::Value << "mesh_component";
 			out << YAML::Key << "uuid" << YAML::Value << c.get_uuid();
 			out << YAML::Key << "mesh name" << YAML::Value << *(c.get_property<std::string>("Mesh name"));
+			out << YAML::Key << "material" << YAML::Value << (*c.get_property<material*>("Material"))->get_uuid();
 			out << YAML::EndMap;
 		}
 		for (size_t i = 0; i < object->get_number_components<animation_component>(); i++) {
@@ -231,11 +232,12 @@ namespace thebanana {
 			c->set_origin_offset(node["origin_offset"].as<glm::vec3>());
 		}
 	}
-	struct object_find_struct {
+	template<typename T> struct find_struct {
 		unsigned long long uuid;
-		gameobject** ptr;
+		T** ptr;
 	};
-	std::vector<object_find_struct> objects_to_find;
+	std::vector<find_struct<gameobject>> objects_to_find;
+	std::vector<find_struct<material>> materials_to_find;
 	static void deserialize_components(const YAML::Node& node, gameobject* object, scene* s) {
 		assert(node);
 		for (auto n : node) {
@@ -262,6 +264,7 @@ namespace thebanana {
 				mc.set_uuid(uuid);
 				assert(n["mesh name"]);
 				mc.set_property<std::string>("Mesh name", n["mesh name"].as<std::string>());
+				materials_to_find.push_back({ n["material"].as<unsigned long long>(), mc.get_property<material*>("Material") });
 			} else if (type == "animation_component") {
 				animation_component& ac = object->add_component<animation_component>();
 				ac.set_uuid(uuid);
@@ -387,6 +390,7 @@ namespace thebanana {
 						objects_to_find.push_back({ value_node.as<unsigned long long>(), nsc.get_property<gameobject*>(name) });
 						break;
 					case property_type::material:
+						materials_to_find.push_back({ value_node.as<unsigned long long>(), nsc.get_property<material*>(name) });
 						break;
 					}
 				}
@@ -458,6 +462,9 @@ namespace thebanana {
 		}
 		for (auto fs : objects_to_find) {
 			*fs.ptr = this->m_scene->find(fs.uuid);
+		}
+		for (auto fs : materials_to_find) {
+			*fs.ptr = this->m_scene->get_game()->get_material_registry()->find(fs.uuid);
 		}
 		this->m_scene->get_game()->debug_print("loaded scene " + name + " from " + path);
 	}

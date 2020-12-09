@@ -9,12 +9,7 @@ struct material_t {
 	vec3 color;
 	float shininess;
 };
-uniform material_t material;
+uniform material_t shader_material;
 void main() {
-	if (solid_color) {
-		fragment_color = vec4(fill_color, 1.0);
-	} else {
-		vec4 tex = texture(material.albedo, uv);
-		fragment_color = vec4(vec3(tex) * material.color, tex.a);
-	}
+	fragment_color = texture(shader_material.albedo, uv) * vec4(shader_material.color, 1.0);
 }

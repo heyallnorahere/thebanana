@@ -10,12 +10,14 @@ namespace bananatree {
 		void set_project(const std::shared_ptr<project>& p);
 		void add_material(const project::material_descriptor& md);
 	private:
-		void commit();
 		std::vector<thebanana::material*> m_materials;
 		struct matdesc {
 			matdesc(project::material_descriptor* ptr) {
 				this->ptr = ptr;
 				this->copy = *this->ptr;
+			}
+			void commit() {
+				*this->ptr = this->copy;
 			}
 			project::material_descriptor* ptr, copy;
 		};

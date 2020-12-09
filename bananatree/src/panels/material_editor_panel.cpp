@@ -48,12 +48,22 @@ namespace bananatree {
 			this->m_descriptors[(size_t)this->m_index - 1].copy.color = mat->get_color();
 			this->m_descriptors[(size_t)this->m_index - 1].copy.shininess = mat->get_shininess();
 			this->m_descriptors[(size_t)this->m_index - 1].copy.uuid = mat->get_uuid();
-			this->commit();
+			this->m_descriptors[(size_t)this->m_index - 1].commit();
 		}
 		size_t index = (size_t)this->m_index;
 		if (index > 0) {
 			index--;
 			thebanana::material* mat = thebanana::g_game->get_material_registry()->get(index);
+			ImGui::PushID("dragdropsource");
+			ImGui::ColorButton("Drag/Drop Source", ImVec4(0.5f, 0.5f, 0.5f, 1.f));
+			if (ImGui::BeginDragDropSource()) {
+				unsigned long long uuid = mat->get_uuid();
+				std::string text = "Material, UUID: " + std::to_string(uuid);
+				ImGui::SetDragDropPayload("MATERIAL_PAYLOAD", &uuid, sizeof(unsigned long long));
+				ImGui::Text(text.c_str());
+				ImGui::EndDragDropSource();
+			}
+			ImGui::PopID();
 			if (ImGui::CollapsingHeader("Albedo")) {
 				ImGui::Image((ImTextureID)mat->get_albedo()->get_id(), ImVec2(100.f, 100.f), ImVec2(0.f, 1.f), ImVec2(1.f, 0.f));
 				ImGui::SameLine();
@@ -61,9 +71,7 @@ namespace bananatree {
 					std::string path = util::open_dialog("PNG Image (*.png)\0*.png\0JPEG Image (*.jpeg,*.jpg)\0*.jpeg,*.jpg\0");
 					if (!path.empty()) {
 						this->m_material_albedo_ptr = mat->get_albedo();
-						mat->set_albedo(path);
 						this->m_descriptors[index].copy.image_path = path;
-						this->commit();
 					}
 				}
 				ImGui::SameLine();
@@ -73,16 +81,22 @@ namespace bananatree {
 					memset(albedo_color, 0xff, 3);
 					mat->set_albedo(albedo_color, 1, 1, 3);
 					this->m_descriptors[index].copy.image_path = mat->get_albedo_path();
-					this->commit();
 				}
 			}
 			if (ImGui::CollapsingHeader("Settings")) {
 				ImGui::ColorEdit3("Color", &this->m_descriptors[index].copy.color.x);
 				ImGui::DragFloat("Shininess", &this->m_descriptors[index].copy.shininess, 0.001f, 0.f, 1.f);
-				this->commit();
 			}
 		} else {
 			ImGui::Text("No material selected");
+		}
+		for (size_t i = 0; i < thebanana::g_game->get_material_registry()->get_count(); i++) {
+			thebanana::material* mat = thebanana::g_game->get_material_registry()->get(i);
+			if (this->m_descriptors[i].copy.image_path != mat->get_albedo_path())
+				mat->set_albedo(this->m_descriptors[i].copy.image_path);
+			mat->set_color(this->m_descriptors[i].copy.color);
+			mat->set_shininess(this->m_descriptors[i].copy.shininess);
+			this->m_descriptors[i].commit();
 		}
 		ImGui::End();
 	}
@@ -100,9 +114,5 @@ namespace bananatree {
 		mat->set_color(md.color);
 		mat->set_shininess(md.shininess);
 		mat->set_uuid(md.uuid);
-	}
-	void material_editor_panel::commit() {
-		size_t index = (size_t)this->m_index - 1;
-		*this->m_descriptors[index].ptr = this->m_descriptors[index].copy;
 	}
 }

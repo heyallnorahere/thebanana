@@ -292,13 +292,41 @@ namespace bananatree {
 							char id[256];
 							sprintf(id, "%s, %s", uuidstring.c_str(), buf);
 							ImGui::PushID(id);
-							std::string text = (*prop->get_value()) ? (*prop->get_value())->get_nickname() : "None";
+							std::string text = (*prop->get_value()) ? (*prop->get_value())->get_nickname() : "None (Gameobject)";
 							ImGui::InputText(prop->get_name().c_str(), &text, ImGuiInputTextFlags_ReadOnly);
 							if (ImGui::BeginDragDropTarget()) {
-								if (const ImGuiPayload * payload = ImGui::AcceptDragDropPayload("GAMEOBJECT_PAYLOAD")) {
+								if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("GAMEOBJECT_PAYLOAD")) {
 									assert(payload->DataSize == sizeof(unsigned long long));
 									unsigned long long uuid = *(unsigned long long*)payload->Data;
 									*prop->get_value() = thebanana::g_game->get_scene()->find(uuid);
+								}
+								ImGui::EndDragDropTarget();
+							}
+							ImGui::PopID();
+							if (ImGui::Button("Clear property")) {
+								*prop->get_value() = NULL;
+							}
+						} else if (typeid(*p).hash_code() == typeid(thebanana::component::property<thebanana::material*>).hash_code()) {
+							thebanana::component::property<thebanana::material*>* prop = (thebanana::component::property<thebanana::material*>*)p.get();
+							char buf[256];
+							_ui64toa(c.get_uuid(), buf, 10);
+							std::string uuidstring = buf;
+							_ui64toa(i, buf, 10);
+							char id[256];
+							sprintf(id, "%s, %s", uuidstring.c_str(), buf);
+							ImGui::PushID(id);
+							std::string text;
+							if (*prop->get_value()) {
+								text = "Material, UUID: " + std::to_string((*prop->get_value())->get_uuid());
+							} else {
+								text = "None (Material)";
+							}
+							ImGui::InputText(prop->get_name().c_str(), &text, ImGuiInputTextFlags_ReadOnly);
+							if (ImGui::BeginDragDropTarget()) {
+								if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("MATERIAL_PAYLOAD")) {
+									assert(payload->DataSize == sizeof(unsigned long long));
+									unsigned long long uuid = *(unsigned long long*)payload->Data;
+									*prop->get_value() = thebanana::g_game->get_material_registry()->find(uuid);
 								}
 								ImGui::EndDragDropTarget();
 							}

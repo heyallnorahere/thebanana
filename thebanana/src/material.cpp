@@ -10,28 +10,36 @@ namespace thebanana {
 			color[i] = 0xff;
 		}
 		this->set_albedo(color, 1, 1, 3);
+		this->m_color = glm::vec3(1.f);
 	}
 	void material::set_albedo(const std::string& image_path) {
 		int width, height, channels;
 		unsigned char* data = stbi_load(image_path.c_str(), &width, &height, &channels, NULL);
 		if (data) {
-			this->set_albedo(data, width, height, channels);
+			this->m_albedo_path = image_path;
+			this->set_albedo(data, width, height, channels, false);
 			stbi_image_free(data);
 		}
 	}
-	void material::set_albedo(void* data, int width, int height, int channels) {
+	void material::set_albedo(void* data, int width, int height, int channels, bool clear_path) {
+		if (clear_path) {
+			this->m_albedo_path.clear();
+		}
 		graphics::texture::data d;
 		d.pixels = data;
 		d.width = width;
 		d.height = height;
 		d.channels = channels;
-		this->m_albedo = std::unique_ptr<graphics::texture>(graphics::texture::create(d));
+		this->m_albedo = std::shared_ptr<graphics::texture>(graphics::texture::create(d));
 	}
 	void material::set_albedo(graphics::texture* texture) {
-		this->m_albedo = std::unique_ptr<graphics::texture>(texture);
+		this->m_albedo = std::shared_ptr<graphics::texture>(texture);
 	}
-	graphics::texture* material::get_albedo() {
-		return this->m_albedo.get();
+	const std::shared_ptr<graphics::texture>& material::get_albedo() {
+		return this->m_albedo;
+	}
+	std::string material::get_albedo_path() {
+		return this->m_albedo_path;
 	}
 	void material::set_color(glm::vec3 color) {
 		this->m_color = color;
@@ -75,7 +83,7 @@ namespace thebanana {
 		return NULL;
 	}
 	void material_registry::clear() {
-		this->m_materials;
+		this->m_materials.clear();
 	}
 	size_t material_registry::get_count() {
 		return this->m_materials.size();

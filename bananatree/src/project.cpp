@@ -4,7 +4,76 @@
 #include "editor_layer.h"
 #include "panels/model_registry_panel.h"
 #include "panels/project_editor_panel.h"
+#include "panels/material_editor_panel.h"
+namespace YAML {
+	template<> struct convert<glm::vec2> {
+		static Node encode(const glm::vec2& rhs) {
+			Node node;
+			node.push_back(rhs.x);
+			node.push_back(rhs.y);
+			node.SetStyle(EmitterStyle::Flow);
+			return node;
+		}
+		static bool decode(const Node& node, glm::vec2& rhs) {
+			if (!node.IsSequence() || node.size() != 2) return false;
+			rhs.x = node[0].as<float>();
+			rhs.y = node[1].as<float>();
+			return true;
+		}
+	};
+	template<> struct convert<glm::vec3> {
+		static Node encode(const glm::vec3& rhs) {
+			Node node;
+			node.push_back(rhs.x);
+			node.push_back(rhs.y);
+			node.push_back(rhs.z);
+			node.SetStyle(EmitterStyle::Flow);
+			return node;
+		}
+		static bool decode(const Node& node, glm::vec3& rhs) {
+			if (!node.IsSequence() || node.size() != 3) return false;
+			rhs.x = node[0].as<float>();
+			rhs.y = node[1].as<float>();
+			rhs.z = node[2].as<float>();
+			return true;
+		}
+	};
+	template<> struct convert<glm::vec4> {
+		static Node encode(const glm::vec4& rhs) {
+			Node node;
+			node.push_back(rhs.x);
+			node.push_back(rhs.y);
+			node.push_back(rhs.z);
+			node.push_back(rhs.w);
+			node.SetStyle(EmitterStyle::Flow);
+			return node;
+		}
+		static bool decode(const Node& node, glm::vec4& rhs) {
+			if (!node.IsSequence() || node.size() != 4) return false;
+			rhs.x = node[0].as<float>();
+			rhs.y = node[1].as<float>();
+			rhs.z = node[2].as<float>();
+			rhs.w = node[3].as<float>();
+			return true;
+		}
+	};
+}
 namespace bananatree {
+	YAML::Emitter& operator<<(YAML::Emitter& out, const glm::vec2& v) {
+		out << YAML::Flow;
+		out << YAML::BeginSeq << v.x << v.y << YAML::EndSeq;
+		return out;
+	}
+	YAML::Emitter& operator<<(YAML::Emitter& out, const glm::vec3& v) {
+		out << YAML::Flow;
+		out << YAML::BeginSeq << v.x << v.y << v.z << YAML::EndSeq;
+		return out;
+	}
+	YAML::Emitter& operator<<(YAML::Emitter& out, const glm::vec4& v) {
+		out << YAML::Flow;
+		out << YAML::BeginSeq << v.x << v.y << v.z << v.w << YAML::EndSeq;
+		return out;
+	}
 	project::project() {
 		this->reset();
 	}
@@ -24,13 +93,17 @@ namespace bananatree {
 		if (!this->m_main_scene.empty()) this->m_main_scene.clear();
 		if (!this->m_code_project.empty()) this->m_code_project.clear();
 		this->rename("Untitled");
+		thebanana::g_game->get_material_registry()->clear();
 		if (this->m_editor_layer) {
 			project_editor_panel* pep = this->m_editor_layer->get_imgui_layer()->find_panel<project_editor_panel>();
 			pep->set_current_name(this->m_name);
 			pep->set_current_main_scene(this->m_main_scene);
 			pep->set_current_code_project(this->m_code_project);
+			material_editor_panel* mep = this->m_editor_layer->get_imgui_layer()->find_panel<material_editor_panel>();
+			mep->refresh();
 		}
 		this->m_descriptors.clear();
+		this->m_materials.clear();
 	}
 	void project::save(const std::string& path) {
 		this->m_temp_path = path;
@@ -58,6 +131,17 @@ namespace bananatree {
 			}
 			out << YAML::EndMap;
 		}
+		out << YAML::EndSeq;
+		out << YAML::Key << "materials" << YAML::Value << YAML::BeginSeq;
+		for (auto md : this->m_materials) {
+			out << YAML::BeginMap;
+			out << YAML::Key << "albedo" << YAML::Value << md.image_path;
+			out << YAML::Key << "color" << YAML::Value << md.color;
+			out << YAML::Key << "shininess" << YAML::Value << md.shininess;
+			out << YAML::Key << "uuid" << YAML::Value << md.uuid;
+			out << YAML::EndMap;
+		}
+		out << YAML::EndSeq;
 		out << YAML::EndMap;
 		std::ofstream fout(path);
 		fout << out.c_str();
@@ -126,6 +210,17 @@ namespace bananatree {
 			this->m_descriptors.push_back(md);
 			this->m_editor_layer->get_imgui_layer()->find_panel<model_registry_panel>()->import(md);
 		}
+		assert(file["materials"]);
+		for (auto m : file["materials"]) {
+			material_descriptor md;
+			md.image_path = m["albedo"].as<std::string>();
+			md.color = m["color"].as<glm::vec3>();
+			md.shininess = m["shininess"].as<float>();
+			md.uuid = m["uuid"].as<unsigned long long>();
+			this->m_materials.push_back(md);
+			this->m_editor_layer->get_imgui_layer()->find_panel<material_editor_panel>()->add_material(md);
+		}
+		this->m_editor_layer->get_imgui_layer()->find_panel<material_editor_panel>()->refresh();
 	}
 	std::string project::get_name() {
 		return this->m_name;
@@ -159,5 +254,12 @@ namespace bananatree {
 	}
 	std::string project::get_path() {
 		return this->m_temp_path;
+	}
+	project::material_descriptor* project::add_material() {
+		this->m_materials.push_back(material_descriptor());
+		return &this->m_materials[this->m_materials.size() - 1];
+	}
+	const std::vector<project::material_descriptor>& project::get_materials() {
+		return this->m_materials;
 	}
 }

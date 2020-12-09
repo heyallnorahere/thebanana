@@ -18,6 +18,12 @@
 #include "material.h"
 extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 namespace thebanana {
+	void opengl_debug_function(unsigned int source, unsigned int type, unsigned int id, unsigned int severity, int length, const char* message, const void* user_param) {
+		if (id == 131169 || id == 131185 || id == 131218 || id == 131204) return;
+		game* g = (game*)(void*)user_param;
+		g->debug_print(message);
+		__debugbreak();
+	}
 	game* g_game = NULL;
 	game::game(const std::string& title) {
 		srand(CURRENT_TIME(unsigned int));
@@ -45,6 +51,12 @@ namespace thebanana {
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		glEnable(GL_CULL_FACE);
 		glCullFace(GL_BACK);
+#ifdef _DEBUG
+		glEnable(GL_DEBUG_OUTPUT);
+		glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
+		glDebugMessageCallback(opengl_debug_function, this);
+		glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DONT_CARE, NULL, NULL, true);
+#endif
 		sound::sound_manager::init_decoders();
 		sound::set_default_sound_api(sound::sound_api::openal);
 		graphics::set_default_graphics_api(graphics::graphics_api::opengl);
@@ -66,6 +78,7 @@ namespace thebanana {
 		this->debug_print("successfully created graphics context:\n	backend: " + graphics::get_backend_version() + "\n	" + sizebuf);
 	}
 	game::~game() {
+		glDisable(GL_DEBUG_OUTPUT);
 		if (this->m_steam_initialized) this->shutdown_steam();
 		if (this->m_debug_menus_initialized) debug::clean_up_imgui();
 		delete this->m_sound_manager;

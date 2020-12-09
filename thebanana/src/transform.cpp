@@ -76,6 +76,15 @@ namespace thebanana {
 	void transform::set_scale(glm::vec3 scale) {
 		this->m_scale = scale;
 	}
+	glm::vec3& transform::translation() {
+		return this->m_translation;
+	}
+	glm::vec3& transform::rotation() {
+		return this->m_rotation;
+	}
+	glm::vec3& transform::scale() {
+		return this->m_scale;
+	}
 	transform::operator glm::mat4() {
 		return this->get_matrix();
 	}

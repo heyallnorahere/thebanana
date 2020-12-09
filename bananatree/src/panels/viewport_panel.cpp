@@ -60,7 +60,18 @@ namespace bananatree {
 				glm::mat4 delta;
 				ImGuizmo::Manipulate(glm::value_ptr(view), glm::value_ptr(projection), (ImGuizmo::OPERATION)this->m_gizmo_operation, (ImGuizmo::MODE)this->m_transformation_mode, glm::value_ptr(transform), glm::value_ptr(delta), snap ? snap_values : NULL);
 				if (ImGuizmo::IsUsing()) {
-					selected_object->get_transform() *= delta;
+					auto& object_transform = selected_object->get_transform();
+					glm::vec3 translation, rotation, scale;
+					glm::mat4 transform_matrix(1.f);
+					if (!selected_object->get_parent()) {
+						transform_matrix = transform;
+					} else {
+						transform_matrix = object_transform.get_matrix() * (transform / selected_object->get_parent()->get_absolute_transform().get_matrix());
+					}
+					thebanana::transform::decompose_matrix(transform_matrix, translation, rotation, scale);
+					object_transform.translation() = translation;
+					object_transform.rotation() += rotation;
+					object_transform.scale() = scale;
 				}
 			}
 		}

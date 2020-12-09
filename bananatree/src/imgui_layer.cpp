@@ -257,17 +257,17 @@ namespace bananatree {
 			}
 			if (ImGui::BeginMenu("Gizmos")) {
 				if (ImGui::BeginMenu("Transformation Gizmo...")) {
-					if (ImGui::MenuItem("Translate")) {
+					if (ImGui::MenuItem("None", "W")) {
+						this->find_panel<viewport_panel>()->set_gizmo_operation(viewport_panel::gizmo_operation::none);
+					}
+					if (ImGui::MenuItem("Translate", "E")) {
 						this->find_panel<viewport_panel>()->set_gizmo_operation(viewport_panel::gizmo_operation::translate);
 					}
-					if (ImGui::MenuItem("Rotate")) {
+					if (ImGui::MenuItem("Rotate", "R")) {
 						this->find_panel<viewport_panel>()->set_gizmo_operation(viewport_panel::gizmo_operation::rotate);
 					}
-					if (ImGui::MenuItem("Scale")) {
+					if (ImGui::MenuItem("Scale", "T")) {
 						this->find_panel<viewport_panel>()->set_gizmo_operation(viewport_panel::gizmo_operation::scale);
-					}
-					if (ImGui::MenuItem("None")) {
-						this->find_panel<viewport_panel>()->set_gizmo_operation(viewport_panel::gizmo_operation::none);
 					}
 					ImGui::EndMenu();
 				}
@@ -322,11 +322,25 @@ namespace bananatree {
 		bool shift = input_manager->get_key(thebanana::key_shift).held;
 		if (input_manager->get_key(thebanana::key_n).down && control) {
 			this->new_scene();
-		} else if (input_manager->get_key(thebanana::key_o).down && control) {
+		}
+		if (input_manager->get_key(thebanana::key_o).down && control) {
 			this->open_scene();
-		} else if (input_manager->get_key(thebanana::key_s).down) {
+		}
+		if (input_manager->get_key(thebanana::key_s).down) {
 			if (control && shift) this->save_scene();
 			else if (control) this->save_scene_from_temp();
+		}
+		if (input_manager->get_key(thebanana::key_w).down) {
+			this->find_panel<viewport_panel>()->set_gizmo_operation(viewport_panel::gizmo_operation::none);
+		}
+		if (input_manager->get_key(thebanana::key_e).down) {
+			this->find_panel<viewport_panel>()->set_gizmo_operation(viewport_panel::gizmo_operation::translate);
+		}
+		if (input_manager->get_key(thebanana::key_r).down) {
+			this->find_panel<viewport_panel>()->set_gizmo_operation(viewport_panel::gizmo_operation::rotate);
+		}
+		if (input_manager->get_key(thebanana::key_t).down) {
+			this->find_panel<viewport_panel>()->set_gizmo_operation(viewport_panel::gizmo_operation::scale);
 		}
 	}
 	void imgui_layer::save_project_as() {

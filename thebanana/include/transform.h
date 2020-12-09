@@ -30,6 +30,9 @@ namespace thebanana {
 		// remember: this is in radians
 		void set_rotation(glm::vec3 rotation);
 		void set_scale(glm::vec3 scale);
+		glm::vec3& translation();
+		glm::vec3& rotation();
+		glm::vec3& scale();
 		operator glm::mat4();
 		operator glm::vec3();
 		operator glm::vec4();

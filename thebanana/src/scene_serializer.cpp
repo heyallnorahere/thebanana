@@ -9,6 +9,7 @@
 #include "debug_tools.h"
 #include "script_registry.h"
 #include "game.h"
+#include "material.h"
 namespace YAML {
 	template<> struct convert<glm::vec2> {
 		static Node encode(const glm::vec2& rhs) {
@@ -230,11 +231,11 @@ namespace thebanana {
 			c->set_origin_offset(node["origin_offset"].as<glm::vec3>());
 		}
 	}
-	struct find_struct {
+	struct object_find_struct {
 		unsigned long long uuid;
 		gameobject** ptr;
 	};
-	std::vector<find_struct> to_find;
+	std::vector<object_find_struct> objects_to_find;
 	static void deserialize_components(const YAML::Node& node, gameobject* object, scene* s) {
 		assert(node);
 		for (auto n : node) {
@@ -321,7 +322,8 @@ namespace thebanana {
 						v4,
 						read_only,
 						dropdown,
-						object
+						object,
+						material,
 					};
 					property_type pt;
 					assert(p["type"]);
@@ -337,6 +339,7 @@ namespace thebanana {
 					else if (type == typeid(component::property_base::read_only_text).name()) pt = property_type::read_only;
 					else if (type == typeid(component::property_base::dropdown).name()) pt = property_type::dropdown;
 					else if (type == typeid(gameobject*).name()) pt = property_type::object;
+					else if (type == typeid(material*).name()) pt = property_type::material;
 					else assert(false);
 					assert(p["name"]);
 					std::string name = p["name"].as<std::string>();
@@ -381,7 +384,9 @@ namespace thebanana {
 					}
 						break;
 					case property_type::object:
-						to_find.push_back({ value_node.as<unsigned long long>(), nsc.get_property<gameobject*>(name) });
+						objects_to_find.push_back({ value_node.as<unsigned long long>(), nsc.get_property<gameobject*>(name) });
+						break;
+					case property_type::material:
 						break;
 					}
 				}
@@ -433,7 +438,7 @@ namespace thebanana {
 		return object;
 	}
 	void scene_serializer::deserialize(const std::string& path) {
-		to_find.clear();
+		objects_to_find.clear();
 		to_add.clear();
 		this->m_scene->clear();
 		YAML::Node data = YAML::LoadFile(path);
@@ -451,7 +456,7 @@ namespace thebanana {
 		for (auto aos : to_add) {
 			aos.parent->add_object(aos.child);
 		}
-		for (auto fs : to_find) {
+		for (auto fs : objects_to_find) {
 			*fs.ptr = this->m_scene->find(fs.uuid);
 		}
 		this->m_scene->get_game()->debug_print("loaded scene " + name + " from " + path);

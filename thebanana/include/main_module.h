@@ -18,3 +18,4 @@
 #include "script_registry.h"
 #include "script_module.h"
 #include "keys.h"
+#include "material.h"

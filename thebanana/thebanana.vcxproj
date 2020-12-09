@@ -127,6 +127,7 @@
     <ClCompile Include="src\internal_util.cpp" />
     <ClCompile Include="src\keyboard.cpp" />
     <ClCompile Include="src\lua_interpreter.cpp" />
+    <ClCompile Include="src\material.cpp" />
     <ClCompile Include="src\model_registry.cpp" />
     <ClCompile Include="src\mouse.cpp" />
     <ClCompile Include="src\basic_gameobject.cpp" />
@@ -167,6 +168,7 @@
     <ClInclude Include="include\graphics\texture.h" />
     <ClInclude Include="include\includelist.h" />
     <ClInclude Include="include\keys.h" />
+    <ClInclude Include="include\material.h" />
     <ClInclude Include="include\particlesystem\particlesystem.h" />
     <ClInclude Include="include\particlesystem\particlesystem_component.h" />
     <ClInclude Include="include\particlesystem\particle_component.h" />

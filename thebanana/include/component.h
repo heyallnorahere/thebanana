@@ -5,6 +5,7 @@
 #include "game.h"
 namespace thebanana {
 	class gameobject;
+	class material;
 	class component {
 	public:
 		class property_base {
@@ -217,8 +218,12 @@ namespace thebanana {
 		_out << YAML::EndMap;
 	}
 	unsigned long long get_uuid(gameobject* obj);
+	unsigned long long get_uuid(material* mat);
 	inline void component::property<gameobject*>::send_to_yaml(void* out) const {
-		(*(YAML::Emitter*)out) << ::thebanana::get_uuid(*this->value);
+		(*(YAML::Emitter*)out) << ((*this->value) ? ::thebanana::get_uuid(*this->value) : 0);
+	}
+	inline void component::property<material*>::send_to_yaml(void* out) const {
+		(*(YAML::Emitter*)out) << ((*this->value) ? ::thebanana::get_uuid(*this->value) : 0);
 	}
 	template<typename T> inline void component::property<T>::send_to_yaml(void* out) const {
 		(*(YAML::Emitter*)out) << (*this->value);

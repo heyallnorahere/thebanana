@@ -15,6 +15,7 @@
 #include "util.h"
 #include "internal_util.h"
 #include "script_module.h"
+#include "material.h"
 extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 namespace thebanana {
 	game* g_game = NULL;
@@ -34,6 +35,7 @@ namespace thebanana {
 		this->m_shader_registry = new shader_registry;
 		this->m_script_registry = new script_registry(this);
 		this->m_model_registry = new model_registry;
+		this->m_material_registry = new material_registry;
 		auto ed = this->m_input_manager->get_enumerated_devices();
 		for (size_t i = 0; i < ed.size(); i++) {
 			this->m_input_manager->add_device(i);
@@ -71,6 +73,7 @@ namespace thebanana {
 		delete this->m_menu_manager;
 		delete this->m_scene;
 		delete this->m_interpreter;
+		delete this->m_material_registry;
 		delete this->m_model_registry;
 		delete this->m_viewport;
 		delete this->m_shader_registry;
@@ -180,6 +183,9 @@ namespace thebanana {
 	}
 	script_registry* game::get_script_registry() {
 		return this->m_script_registry;
+	}
+	material_registry* game::get_material_registry() {
+		return this->m_material_registry;
 	}
 	void game::init_debug_menus() {
 		debug::init_imgui(this->m_window);

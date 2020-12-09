@@ -147,6 +147,9 @@
     <ClCompile Include="src\script_module.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\material.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -332,6 +335,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\keys.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\material.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

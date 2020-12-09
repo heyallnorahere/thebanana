@@ -4,10 +4,12 @@
 #include "gameobject.h"
 #include "game.h"
 #include "scene.h"
+#include "material.h"
 namespace thebanana {
 	mesh_component::mesh_component(gameobject* obj) : component(obj) {
 		this->model_name = "none";
 		this->add_property(new property<std::string>(this->model_name, "Mesh name"));
+		this->add_property(new property<material*>(NULL, "Material"));
 	}
 	mesh_component& mesh_component::set_mesh_name(const std::string& name) {
 		this->model_name = name;
@@ -27,6 +29,10 @@ namespace thebanana {
 	}
 	void mesh_component::render() {
 		if (this->model_name != "none") {
+			material* mat = *this->get_property<material*>("Material");
+			if (mat) {
+				mat->send_to_shader(this->parent->get_scene()->get_shader()->get_id(), "material");
+			}
 			// model_transform is the transform passed in to the model registry, transformed by the root transform of the aiScene
 			transform model_transform = this->parent->get_game()->get_model_registry()->get_transform(this->model_name);
 			// pass it in to the shader

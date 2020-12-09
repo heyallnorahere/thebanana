@@ -9,6 +9,7 @@ namespace thebanana {
 	class lua_interpreter;
 	class shader_registry;
 	class script_registry;
+	class material_registry;
 	class script_module;
 	class rigidbody;
 	namespace ui {
@@ -43,6 +44,7 @@ namespace thebanana {
 		std::string get_steam_name();
 		shader_registry* get_shader_registry();
 		script_registry* get_script_registry();
+		material_registry* get_material_registry();
 		void init_debug_menus();
 		void init_steam();
 		bool should_clip_cursor();
@@ -79,6 +81,7 @@ namespace thebanana {
 		model_registry* m_model_registry;
 		shader_registry* m_shader_registry;
 		script_registry* m_script_registry;
+		material_registry* m_material_registry;
 		ui::menu_manager* m_menu_manager;
 		sound::sound_manager* m_sound_manager;
 		gameobject* m_menu_quad;

@@ -6,6 +6,7 @@
 #include "util.h"
 #include "debug_tools.h"
 #include "internal_util.h"
+#include "material.h"
 namespace thebanana {
 	component::component(gameobject* obj) : parent(obj) {
 		this->uuid = generate_uuid();
@@ -132,5 +133,8 @@ namespace thebanana {
 	std::string& component::property_base::read_only_text::get_text() { return this->text; }
 	unsigned long long get_uuid(gameobject* obj) {
 		return obj->get_uuid();
+	}
+	unsigned long long get_uuid(material* mat) {
+		return mat->get_uuid();
 	}
 }

@@ -4,6 +4,59 @@
 #include "camera.h"
 #include "../resource.h"
 #include <yaml-cpp/yaml.h>
+namespace YAML {
+	template<> struct convert<glm::vec2> {
+		static Node encode(const glm::vec2& rhs) {
+			Node node;
+			node.push_back(rhs.x);
+			node.push_back(rhs.y);
+			node.SetStyle(EmitterStyle::Flow);
+			return node;
+		}
+		static bool decode(const Node& node, glm::vec2& rhs) {
+			if (!node.IsSequence() || node.size() != 2) return false;
+			rhs.x = node[0].as<float>();
+			rhs.y = node[1].as<float>();
+			return true;
+		}
+	};
+	template<> struct convert<glm::vec3> {
+		static Node encode(const glm::vec3& rhs) {
+			Node node;
+			node.push_back(rhs.x);
+			node.push_back(rhs.y);
+			node.push_back(rhs.z);
+			node.SetStyle(EmitterStyle::Flow);
+			return node;
+		}
+		static bool decode(const Node& node, glm::vec3& rhs) {
+			if (!node.IsSequence() || node.size() != 3) return false;
+			rhs.x = node[0].as<float>();
+			rhs.y = node[1].as<float>();
+			rhs.z = node[2].as<float>();
+			return true;
+		}
+	};
+	template<> struct convert<glm::vec4> {
+		static Node encode(const glm::vec4& rhs) {
+			Node node;
+			node.push_back(rhs.x);
+			node.push_back(rhs.y);
+			node.push_back(rhs.z);
+			node.push_back(rhs.w);
+			node.SetStyle(EmitterStyle::Flow);
+			return node;
+		}
+		static bool decode(const Node& node, glm::vec4& rhs) {
+			if (!node.IsSequence() || node.size() != 4) return false;
+			rhs.x = node[0].as<float>();
+			rhs.y = node[1].as<float>();
+			rhs.z = node[2].as<float>();
+			rhs.w = node[3].as<float>();
+			return true;
+		}
+	};
+}
 std::string waluigi_paths(const std::string& path, void*) {
 	return thebanana::model_registry::path_helper(path, "Waluigi\\Waluigi\\", "textures\\placeholder\\waluigi\\");
 }
@@ -49,6 +102,15 @@ void load_project(const std::string& path) {
 		}
 		thebanana::g_game->get_model_registry()->load({ { name, path, should_replace ? model_loader_proc : NULL, thebanana::transform() } });
 	}
+	assert(file["materials"]);
+	for (YAML::Node m : file["materials"]) {
+		auto registry = thebanana::g_game->get_material_registry();
+		thebanana::material* mat = registry->find(registry->new_material());
+		mat->set_albedo(m["albedo"].as<std::string>());
+		mat->set_color(m["color"].as<glm::vec3>());
+		mat->set_shininess(m["shininess"].as<float>());
+		mat->set_uuid(m["uuid"].as<unsigned long long>());
+	}
 }
 void sandbox_application_layer::init() {
 #ifdef _DEBUG
@@ -62,18 +124,21 @@ void sandbox_application_layer::init() {
 	thebanana::graphics::opengl::opengl_quad::init_shader("2d");
 	// if a scene is specified, load it
 	std::vector<std::string> cmdline = thebanana::g_game->get_command_line();
+	bool r = false;
+	if (cmdline.size() > 2) {
+		if (!cmdline[2].empty()) {
+			load_project(cmdline[2]);
+			r = true;
+		}
+	}
 	if (cmdline.size() > 1) {
 		if (!cmdline[1].empty()) {
 			thebanana::scene_serializer serializer(thebanana::g_game->get_scene());
 			serializer.deserialize(cmdline[1]);
-			if (cmdline.size() > 2) {
-				if (!cmdline[2].empty()) {
-					load_project(cmdline[2]);
-				}
-			}
-			return;
+			r = true;
 		}
 	}
+	if (r) return;
 	// load models
 	thebanana::g_game->add_model_desc({ "player", "models/placeholder/waluigi.fbx", waluigi_paths, thebanana::transform().scale(0.0005f) });
 	thebanana::g_game->add_model_desc({ "test_cube", "models/cube.obj", test_texture_path, thebanana::transform() });

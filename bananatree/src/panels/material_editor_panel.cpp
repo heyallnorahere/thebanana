@@ -23,7 +23,7 @@ namespace bananatree {
 		std::vector<const char*> cstrings;
 		strings.push_back("None");
 		for (thebanana::material* mat : this->m_materials) {
-			strings.push_back("Material, UUID: " + std::to_string(mat->get_uuid()));
+			strings.push_back(mat->get_friendly_name());
 		}
 		for (const auto& str : strings) {
 			cstrings.push_back(str.c_str());
@@ -45,6 +45,7 @@ namespace bananatree {
 				}
 			}
 			thebanana::material* mat = thebanana::g_game->get_material_registry()->get((size_t)this->m_index - 1);
+			this->m_descriptors[(size_t)this->m_index - 1].copy.friendly_name = mat->get_friendly_name();
 			this->m_descriptors[(size_t)this->m_index - 1].copy.color = mat->get_color();
 			this->m_descriptors[(size_t)this->m_index - 1].copy.shininess = mat->get_shininess();
 			this->m_descriptors[(size_t)this->m_index - 1].copy.uuid = mat->get_uuid();
@@ -55,15 +56,15 @@ namespace bananatree {
 			index--;
 			thebanana::material* mat = thebanana::g_game->get_material_registry()->get(index);
 			ImGui::PushID("dragdropsource");
-			ImGui::ColorButton("Drag/Drop Source", ImVec4(0.5f, 0.5f, 0.5f, 1.f));
+			ImGui::ColorButton("Drag/Drop Source", ImVec4(0.5f, 0.5f, 0.5f, 1.f), ImGuiColorEditFlags_None, ImVec2(ImGui::GetContentRegionAvail().x, 0.f));
 			if (ImGui::BeginDragDropSource()) {
 				unsigned long long uuid = mat->get_uuid();
-				std::string text = "Material, UUID: " + std::to_string(uuid);
 				ImGui::SetDragDropPayload("MATERIAL_PAYLOAD", &uuid, sizeof(unsigned long long));
-				ImGui::Text(text.c_str());
+				ImGui::Text(mat->get_friendly_name().c_str());
 				ImGui::EndDragDropSource();
 			}
 			ImGui::PopID();
+			ImGui::InputText("Name", &this->m_descriptors[index].copy.friendly_name);
 			if (ImGui::CollapsingHeader("Albedo")) {
 				ImGui::Image((ImTextureID)mat->get_albedo()->get_id(), ImVec2(100.f, 100.f), ImVec2(0.f, 1.f), ImVec2(1.f, 0.f));
 				ImGui::SameLine();
@@ -94,6 +95,7 @@ namespace bananatree {
 			thebanana::material* mat = thebanana::g_game->get_material_registry()->get(i);
 			if (this->m_descriptors[i].copy.image_path != mat->get_albedo_path())
 				mat->set_albedo(this->m_descriptors[i].copy.image_path);
+			mat->set_friendly_name(this->m_descriptors[i].copy.friendly_name);
 			mat->set_color(this->m_descriptors[i].copy.color);
 			mat->set_shininess(this->m_descriptors[i].copy.shininess);
 			this->m_descriptors[i].commit();
@@ -110,6 +112,7 @@ namespace bananatree {
 	void material_editor_panel::add_material(const project::material_descriptor& md) {
 		thebanana::material_registry* registry = thebanana::g_game->get_material_registry();
 		thebanana::material* mat = registry->find(registry->new_material());
+		mat->set_friendly_name(md.friendly_name);
 		mat->set_albedo(md.image_path);
 		mat->set_color(md.color);
 		mat->set_shininess(md.shininess);

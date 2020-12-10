@@ -9,6 +9,7 @@ namespace bananatree {
 			std::string find, replace;
 		};
 		struct material_descriptor {
+			std::string friendly_name;
 			std::string image_path;
 			glm::vec3 color;
 			float shininess;

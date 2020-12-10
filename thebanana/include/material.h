@@ -17,12 +17,15 @@ namespace thebanana {
 		BANANA_API void send_to_shader(unsigned int shader_id, const std::string& uniform_name);
 		BANANA_API void set_uuid(unsigned long long uuid);
 		BANANA_API unsigned long long get_uuid();
+		BANANA_API std::string get_friendly_name();
+		BANANA_API void set_friendly_name(const std::string& name);
 	private:
 		std::shared_ptr<graphics::texture> m_albedo;
 		glm::vec3 m_color;
 		float m_shininess;
 		unsigned long long m_uuid;
 		std::string m_albedo_path;
+		std::string m_friendly_name;
 	};
 	class material_registry {
 	public:

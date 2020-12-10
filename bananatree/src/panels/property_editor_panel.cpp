@@ -317,7 +317,7 @@ namespace bananatree {
 							ImGui::PushID(id);
 							std::string text;
 							if (*prop->get_value()) {
-								text = "Material, UUID: " + std::to_string((*prop->get_value())->get_uuid());
+								text = (*prop->get_value())->get_friendly_name();
 							} else {
 								text = "None (Material)";
 							}

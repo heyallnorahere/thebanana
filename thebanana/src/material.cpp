@@ -11,6 +11,7 @@ namespace thebanana {
 		}
 		this->set_albedo(color, 1, 1, 3);
 		this->m_color = glm::vec3(1.f);
+		this->m_friendly_name = "New material";
 	}
 	void material::set_albedo(const std::string& image_path) {
 		int width, height, channels;
@@ -60,17 +61,20 @@ namespace thebanana {
 		};
 		opengl_shader_library::uni u(shader_id);
 		u._int(get_uniform_name("albedo"), 10);
-		//glUniform1i(glGetUniformLocation(shader_id, get_uniform_name("albedo").c_str()), 0);
 		u.vec3(get_uniform_name("color"), this->m_color);
-		//glUniform3fv(glGetUniformLocation(shader_id, get_uniform_name("color").c_str()), 1, glm::value_ptr(this->m_color));
 		u._float(get_uniform_name("shininess"), this->m_shininess);
-		//glUniform1f(glGetUniformLocation(shader_id, get_uniform_name("shininess").c_str()), this->m_shininess);
 	}
 	void material::set_uuid(unsigned long long uuid) {
 		this->m_uuid = uuid;
 	}
 	unsigned long long material::get_uuid() {
 		return this->m_uuid;
+	}
+	std::string material::get_friendly_name() {
+		return this->m_friendly_name;
+	}
+	void material::set_friendly_name(const std::string& name) {
+		this->m_friendly_name = name;
 	}
 	unsigned long long material_registry::new_material()  {
 		material* m = new material;

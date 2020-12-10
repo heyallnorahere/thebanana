@@ -135,6 +135,7 @@ namespace bananatree {
 		out << YAML::Key << "materials" << YAML::Value << YAML::BeginSeq;
 		for (auto md : this->m_materials) {
 			out << YAML::BeginMap;
+			out << YAML::Key << "friendly name" << YAML::Value << md.friendly_name;
 			out << YAML::Key << "albedo" << YAML::Value << md.image_path;
 			out << YAML::Key << "color" << YAML::Value << md.color;
 			out << YAML::Key << "shininess" << YAML::Value << md.shininess;
@@ -213,6 +214,7 @@ namespace bananatree {
 		assert(file["materials"]);
 		for (auto m : file["materials"]) {
 			material_descriptor md;
+			md.friendly_name = m["friendly name"].as<std::string>();
 			md.image_path = m["albedo"].as<std::string>();
 			md.color = m["color"].as<glm::vec3>();
 			md.shininess = m["shininess"].as<float>();

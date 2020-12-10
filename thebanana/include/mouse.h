@@ -1,18 +1,19 @@
 #pragma once
 #include "input_manager.h"
+#include "banana_api.h"
 namespace thebanana {
 	class mouse : public input_manager::device {
 	public:
-		mouse();
-		~mouse();
-		virtual std::vector<button> get_buttons() override;
-		virtual void update() override;
-		virtual bool connected() override;
-		virtual input_manager::device_type get_type() override;
-		glm::vec2 get_pos();
+		BANANA_API mouse();
+		BANANA_API ~mouse();
+		BANANA_API virtual std::vector<button> get_buttons() override;
+		BANANA_API virtual void update() override;
+		BANANA_API virtual bool connected() override;
+		BANANA_API virtual input_manager::device_type get_type() override;
+		BANANA_API glm::vec2 get_pos();
 	protected:
-		virtual const DIDATAFORMAT* get_format() override;
-		virtual void device_specific_init() override;
+		BANANA_API virtual const DIDATAFORMAT* get_format() override;
+		BANANA_API virtual void device_specific_init() override;
 	private:
 		bool is_connected;
 		std::vector<button> current;

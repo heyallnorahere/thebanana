@@ -5,11 +5,7 @@ namespace thebanana {
 		namespace opengl {
 			class opengl_framebuffer : public framebuffer {
 			public:
-				struct desc {
-					static constexpr int color = 0b1, depth = 0b10;
-					int width, height, buffers;
-				};
-				opengl_framebuffer(desc* d);
+				opengl_framebuffer(specification* s);
 				virtual void bind() override;
 				virtual void unbind() override;
 				virtual void set_size(int width, int height) override;
@@ -18,7 +14,7 @@ namespace thebanana {
 				virtual std::vector<attachment> get_attachments() override;
 				virtual ~opengl_framebuffer() override;
 			private:
-				desc m_description;
+				specification m_specification;
 				std::vector<attachment> m_attachments;
 				unsigned int m_id;
 				void setup();

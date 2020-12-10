@@ -1,22 +1,23 @@
 #pragma once
 #include "misc.h"
+#include "banana_api.h"
 namespace thebanana {
 	namespace sound {
 		class context {
 		public:
 			virtual void initialize() = 0;
 			virtual void destroy() = 0;
-			static context* create(sound_api api = sound_api::none);
+			BANANA_API static context* create(sound_api api = sound_api::none);
 		};
 		class dummy_context : public context {
 		public:
-			virtual void initialize() override;
-			virtual void destroy() override;
+			BANANA_API virtual void initialize() override;
+			BANANA_API virtual void destroy() override;
 		};
 		class openal_context : public context {
 		public:
-			virtual void initialize() override;
-			virtual void destroy() override;
+			BANANA_API virtual void initialize() override;
+			BANANA_API virtual void destroy() override;
 		private:
 #ifndef BANANA_BUILD
 			using ALCdevice = void;

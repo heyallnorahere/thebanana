@@ -1,57 +1,58 @@
 #pragma once
 #include "transform.h"
 #include "component.h"
+#include "banana_api.h"
 namespace thebanana {
 #define ROOT ((::thebanana::gameobject*)NULL)
 	class scene;
 	class game;
 	class gameobject {
 	public:
-		gameobject();
-		void init(gameobject* parent, scene* sc, game* g);
-		virtual void update() = 0;
-		virtual void render() = 0;
-		virtual ~gameobject();
-		const transform& get_transform() const;
-		transform& get_transform();
-		gameobject* get_parent() const;
-		size_t get_relative_index() const;
-		size_t get_absolute_index() const;
-		size_t get_children_count() const;
-		const gameobject* get_child(size_t index) const;
-		gameobject* get_child(size_t index);
+		BANANA_API gameobject();
+		BANANA_API void init(gameobject* parent, scene* sc, game* g);
+		BANANA_API virtual void update() = 0;
+		BANANA_API virtual void render() = 0;
+		BANANA_API virtual ~gameobject();
+		BANANA_API const transform& get_transform() const;
+		BANANA_API transform& get_transform();
+		BANANA_API gameobject* get_parent() const;
+		BANANA_API size_t get_relative_index() const;
+		BANANA_API size_t get_absolute_index() const;
+		BANANA_API size_t get_children_count() const;
+		BANANA_API const gameobject* get_child(size_t index) const;
+		BANANA_API gameobject* get_child(size_t index);
 		template<typename T> T* add_object(T* obj);
-		void remove_object(size_t index);
-		transform get_absolute_transform();
-		std::string& get_nickname();
-		scene* get_scene();
-		game* get_game();
+		BANANA_API void remove_object(size_t index);
+		BANANA_API transform get_absolute_transform();
+		BANANA_API std::string& get_nickname();
+		BANANA_API scene* get_scene();
+		BANANA_API game* get_game();
 		template<typename _Ty> _Ty& add_component();
 		template<typename _Ty> _Ty& get_component(size_t index = 0);
 		template<typename _Ty> _Ty* find_script();
 		template<typename _Ty> void remove_component(size_t index = 0);
 		template<typename _Ty> size_t get_number_components();
 		template<typename _Ty> bool has_component();
-		const component::properties_t& get_properties();
-		void on_collision(gameobject* other);
-		std::vector<std::string> get_tags() const;
-		void add_tag(const std::string& tag);
-		bool has_tag(const std::string& tag) const;
-		unsigned long long get_uuid() const;
-		void set_uuid(unsigned long long uuid);
-		void find(unsigned long long uuid, gameobject*& ptr);
-		bool is_initialized();
+		BANANA_API const component::properties_t& get_properties();
+		BANANA_API void on_collision(gameobject* other);
+		BANANA_API std::vector<std::string> get_tags() const;
+		BANANA_API void add_tag(const std::string& tag);
+		BANANA_API bool has_tag(const std::string& tag) const;
+		BANANA_API unsigned long long get_uuid() const;
+		BANANA_API void set_uuid(unsigned long long uuid);
+		BANANA_API void find(unsigned long long uuid, gameobject*& ptr);
+		BANANA_API bool is_initialized();
 	protected:
 		component::properties_t m_properties;
-		void add_property(component::property_base* p);
-		void init_component(component* c);
+		BANANA_API void add_property(component::property_base* p);
+		BANANA_API void init_component(component* c);
 		template<typename _Ty> component::property<_Ty>* find_property(const std::string& name);
-		void prepare_for_update();
-		void prepare_for_render();
-		void update_components();
-		void render_components();
-		void post_update();
-		void post_render();
+		BANANA_API void prepare_for_update();
+		BANANA_API void prepare_for_render();
+		BANANA_API void update_components();
+		BANANA_API void render_components();
+		BANANA_API void post_update();
+		BANANA_API void post_render();
 		std::string m_nickname;
 		gameobject* m_parent;
 		scene* m_scene;
@@ -61,13 +62,13 @@ namespace thebanana {
 		std::list<std::unique_ptr<component>> m_components;
 		unsigned long long m_uuid;
 	private:
-		bool is_script(component* c);
-		size_t script_hash(component* c);
-		void* get_script_from_component(component* c);
+		BANANA_API bool is_script(component* c);
+		BANANA_API size_t script_hash(component* c);
+		BANANA_API void* get_script_from_component(component* c);
 		unsigned int last_collided_frame;
 		bool initialized;
-		void update_children();
-		void render_children();
+		BANANA_API void update_children();
+		BANANA_API void render_children();
 		friend class scene_serializer;
 	};
 	template<typename T> inline T* gameobject::add_object(T* obj) {

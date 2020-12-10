@@ -1,10 +1,11 @@
 #pragma once
 #include "gameobject.h"
+#include "banana_api.h"
 namespace thebanana {
 	class basic_gameobject : public gameobject {
 	public:
-		basic_gameobject();
-		virtual void update() override;
-		virtual void render() override;
+		BANANA_API basic_gameobject();
+		BANANA_API virtual void update() override;
+		BANANA_API virtual void render() override;
 	};
 }

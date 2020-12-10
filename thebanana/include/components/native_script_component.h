@@ -1,29 +1,30 @@
 #pragma once
 #include "component.h"
 #include "gameobject.h"
+#include "banana_api.h"
 namespace thebanana {
 	class native_script_component;
 	class script {
 	public:
-		script(gameobject* object, native_script_component* nsc);
-		virtual void initialize();
-		virtual void pre_update();
-		virtual void update();
-		virtual void post_update();
-		virtual void pre_render();
-		virtual void render();
-		virtual void post_render();
-		virtual void on_collision(gameobject* other);
-		virtual ~script();
-		native_script_component* get_interface();
+		BANANA_API script(gameobject* object, native_script_component* nsc);
+		BANANA_API virtual void initialize();
+		BANANA_API virtual void pre_update();
+		BANANA_API virtual void update();
+		BANANA_API virtual void post_update();
+		BANANA_API virtual void pre_render();
+		BANANA_API virtual void render();
+		BANANA_API virtual void post_render();
+		BANANA_API virtual void on_collision(gameobject* other);
+		BANANA_API virtual ~script();
+		BANANA_API native_script_component* get_interface();
 	protected:
 		gameobject* parent;
 		native_script_component* interface;
 		template<typename _Ty> void set_property(const std::string& name, const _Ty& value);
 		template<typename _Ty> _Ty* get_property(const std::string& name);
 		template<typename _Ty> component::property<_Ty>* find_property(const std::string& name);
-		void add_property(component::property_base* p);
-		transform& get_transform();
+		BANANA_API void add_property(component::property_base* p);
+		BANANA_API transform& get_transform();
 		template<typename _Ty> _Ty& add_component();
 		template<typename _Ty> size_t get_number_components();
 		template<typename _Ty> bool has_component();
@@ -32,18 +33,18 @@ namespace thebanana {
 	};
 	class native_script_component : public component {
 	public:
-		native_script_component(gameobject* object);
+		BANANA_API native_script_component(gameobject* object);
 		template<typename T> void bind();
 		template<typename T> void bind(T* s);
 		template<typename T> T* get_script();
-		virtual void pre_update() override;
-		virtual void update() override;
-		virtual void post_update() override;
-		virtual void pre_render() override;
-		virtual void render() override;
-		virtual void post_render() override;
-		virtual void on_collision(gameobject* other) override;
-		virtual void clean_up() override;
+		BANANA_API virtual void pre_update() override;
+		BANANA_API virtual void update() override;
+		BANANA_API virtual void post_update() override;
+		BANANA_API virtual void pre_render() override;
+		BANANA_API virtual void render() override;
+		BANANA_API virtual void post_render() override;
+		BANANA_API virtual void on_collision(gameobject* other) override;
+		BANANA_API virtual void clean_up() override;
 	private:
 		void(*m_destroy_script)(native_script_component*);
 		script* m_script;

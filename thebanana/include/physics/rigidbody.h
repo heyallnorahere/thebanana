@@ -3,29 +3,30 @@
 #include "model_registry.h"
 #include "collider.h"
 #include "scene_serializer.h"
+#include "banana_api.h"
 namespace thebanana {
 	class rigidbody : public component {
 	public:
-		rigidbody(gameobject* obj);
-		virtual void initialize() override;
-		virtual void pre_update() override;
-		virtual void post_update() override;
-		virtual void on_collision(gameobject* other) override;
-		virtual void clean_up() override;
+		BANANA_API rigidbody(gameobject* obj);
+		BANANA_API virtual void initialize() override;
+		BANANA_API virtual void pre_update() override;
+		BANANA_API virtual void post_update() override;
+		BANANA_API virtual void on_collision(gameobject* other) override;
+		BANANA_API virtual void clean_up() override;
 		template<typename _Ty> _Ty* set_collider_type();
-		rigidbody& set_check_for_collisions(bool check);
-		bool is_checking_for_collisions();
-		gameobject* get_parent();
-		model_registry::model_vertex_data get_vertex_data();
-		glm::vec3& get_shift_delta();
-		int& get_num_collisions();
-		void apply_force(const glm::vec3& force);
-		rigidbody& set_collision_model_name(const std::string& model_name);
-		std::string get_collision_model_name();
-		rigidbody& set_speed_cap(float cap);
-		float get_speed_cap();
-		float get_last_move_speed();
-		collider* get_collider() const;
+		BANANA_API rigidbody& set_check_for_collisions(bool check);
+		BANANA_API bool is_checking_for_collisions();
+		BANANA_API gameobject* get_parent();
+		BANANA_API model_registry::model_vertex_data get_vertex_data();
+		BANANA_API glm::vec3& get_shift_delta();
+		BANANA_API int& get_num_collisions();
+		BANANA_API void apply_force(const glm::vec3& force);
+		BANANA_API rigidbody& set_collision_model_name(const std::string& model_name);
+		BANANA_API std::string get_collision_model_name();
+		BANANA_API rigidbody& set_speed_cap(float cap);
+		BANANA_API float get_speed_cap();
+		BANANA_API float get_last_move_speed();
+		BANANA_API collider* get_collider() const;
 	private:
 		int num_collisions;
 		glm::vec3 shift_delta;

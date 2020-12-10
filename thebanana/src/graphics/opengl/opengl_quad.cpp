@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "graphics/opengl/opengl_quad.h"
+#include "opengl_quad.h"
 #include "game.h"
 #include "shader_registry.h"
 struct vertex {

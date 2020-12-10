@@ -1,10 +1,10 @@
 #include "pch.h"
-#include "graphics/opengl/opengl_framebuffer.h"
+#include "opengl_framebuffer.h"
 namespace thebanana {
 	namespace graphics {
 		namespace opengl {
-			opengl_framebuffer::opengl_framebuffer(desc* d) : framebuffer(d) {
-				this->m_description = *d;
+			opengl_framebuffer::opengl_framebuffer(specification* s) : framebuffer(s) {
+				this->m_specification = *s;
 				this->setup();
 			}
 			void opengl_framebuffer::bind() {
@@ -14,8 +14,8 @@ namespace thebanana {
 				glBindFramebuffer(GL_FRAMEBUFFER, NULL);
 			}
 			void opengl_framebuffer::set_size(int width, int height) {
-				this->m_description.width = width;
-				this->m_description.height = height;
+				this->m_specification.width = width;
+				this->m_specification.height = height;
 				this->reload();
 			}
 			void opengl_framebuffer::reload() {
@@ -35,22 +35,22 @@ namespace thebanana {
 				this->m_attachments.clear();
 				glCreateFramebuffers(1, &this->m_id);
 				glBindFramebuffer(GL_FRAMEBUFFER, this->m_id);
-				if (this->m_description.buffers & desc::color) {
+				if (this->m_specification.buffers & specification::color) {
 					unsigned int color;
 					glCreateTextures(GL_TEXTURE_2D, 1, &color);
 					glBindTexture(GL_TEXTURE_2D, color);
-					glTexImage2D(GL_TEXTURE_2D, NULL, GL_RGBA8, this->m_description.width, this->m_description.height, NULL, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
+					glTexImage2D(GL_TEXTURE_2D, NULL, GL_RGBA8, this->m_specification.width, this->m_specification.height, NULL, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
 					glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 					glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 					glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + this->m_attachments.size(), GL_TEXTURE_2D, color, NULL);
 					this->m_attachment_map.color_index = this->m_attachments.size();
 					this->m_attachments.push_back({ attachment::color, (void*)color });
 				}
-				if (this->m_description.buffers & desc::depth) {
+				if (this->m_specification.buffers & specification::depth) {
 					unsigned int depth;
 					glCreateTextures(GL_TEXTURE_2D, 1, &depth);
 					glBindTexture(GL_TEXTURE_2D, depth);
-					glTexStorage2D(GL_TEXTURE_2D, 1, GL_DEPTH24_STENCIL8, this->m_description.width, this->m_description.height);
+					glTexStorage2D(GL_TEXTURE_2D, 1, GL_DEPTH24_STENCIL8, this->m_specification.width, this->m_specification.height);
 					glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 					glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 					glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
@@ -62,11 +62,11 @@ namespace thebanana {
 				glBindFramebuffer(GL_FRAMEBUFFER, NULL);
 			}
 			void opengl_framebuffer::clean_up() {
-				if (this->m_description.buffers & desc::color) {
+				if (this->m_specification.buffers & specification::color) {
 					unsigned int color = (unsigned int)this->m_attachments[this->m_attachment_map.color_index].value;
 					glDeleteTextures(1, &color);
 				}
-				if (this->m_description.buffers & desc::depth) {
+				if (this->m_specification.buffers & specification::depth) {
 					unsigned int depth = (unsigned int)this->m_attachments[this->m_attachment_map.depth_index].value;
 					glDeleteTextures(1, &depth);
 				}

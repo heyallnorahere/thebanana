@@ -1,4 +1,5 @@
 #pragma once
+#include "banana_api.h"
 namespace thebanana {
 	class game;
 	class lua_interpreter;
@@ -49,19 +50,19 @@ namespace thebanana {
 				std::string text, onclick;
 				std::vector<node> children;
 				node_type type;
-				void get_top_node_at_pos(node*& ptr, glm::vec2 cursor_pos);
-				void on_unload();
+				BANANA_API void get_top_node_at_pos(node*& ptr, glm::vec2 cursor_pos);
+				BANANA_API void on_unload();
 			};
-			menu(const std::string& json_file);
-			~menu();
-			void load_from_json_file(const std::string& json_file);
-			void update();
+			BANANA_API menu(const std::string& json_file);
+			BANANA_API ~menu();
+			BANANA_API void load_from_json_file(const std::string& json_file);
+			BANANA_API void update();
 #ifdef BANANA_BUILD
 			void draw(SkCanvas* canvas);
 			void draw_node(SkCanvas* canvas, node& n);
 #endif
-			void set_ptrs(game* g_game);
-			bool script_loaded();
+			BANANA_API void set_ptrs(game* g_game);
+			BANANA_API bool script_loaded();
 		private:
 			void on_click();
 			menu();

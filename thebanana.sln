@@ -16,6 +16,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "imgui", "imgui\imgui.vcxproj", "{B361CAFF-89A0-43C7-8D3F-F79565ED12CF}"
+	ProjectSection(ProjectDependencies) = postProject
+		{BCC2E645-3A95-42C4-B59C-BA35E8D126FB} = {BCC2E645-3A95-42C4-B59C-BA35E8D126FB}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "sandbox", "sandbox\sandbox.vcxproj", "{22FF39A1-5239-404E-AC77-B5AC0A6B0FEC}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -38,9 +41,6 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Dependencies", "Dependencies", "{FD885306-0B23-45CF-9D3D-F07881C77AE4}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "imguizmo", "imguizmo\imguizmo.vcxproj", "{BCC2E645-3A95-42C4-B59C-BA35E8D126FB}"
-	ProjectSection(ProjectDependencies) = postProject
-		{B361CAFF-89A0-43C7-8D3F-F79565ED12CF} = {B361CAFF-89A0-43C7-8D3F-F79565ED12CF}
-	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "docs", "docs\docs.vcxproj", "{5663D134-D0DE-4545-BB5C-AD4A3D6E0A9E}"
 EndProject

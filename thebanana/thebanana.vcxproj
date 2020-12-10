@@ -24,13 +24,13 @@
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <WholeProgramOptimization>false</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
@@ -60,12 +60,12 @@
       <AdditionalIncludeDirectories>$(ProjectDir)src;$(SolutionDir)yaml\yaml-cpp\include;$(SolutionDir)steam-sdk\public;$(SolutionDir)third-party\minimp3;$(SolutionDir)third-party\stb;$(SolutionDir)third-party\json\single_include;$(SolutionDir)imgui\imgui;$(DXSDK_DIR)include;$(ProjectDir)include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DisableSpecificWarnings>4996;%(DisableSpecificWarnings)</DisableSpecificWarnings>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <PreprocessorDefinitions>BANANA_BUILD;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>BANANA_BUILD;_IMGUI_BUILD_DLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
-      <AdditionalDependencies>opengl32.lib;dinput8.lib;imgui.lib;steam_api64.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(OutDir);C:\steamsdk\sdk\redistributable_bin\win64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>opengl32.lib;dinput8.lib;imgui.lib;steam_api64.lib;yaml.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(OutDir);$(SolutionDir)steam-sdk\redistributable_bin\win64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <Lib>
       <AdditionalDependencies>dinput8.lib;imgui.lib;steam_api64.lib;yaml.lib;$(ModelLoaderLibraries);$(OpenGLViewportLibraries);$(ShaderLibraries);$(SkiaLibraries);%(AdditionalDependencies)</AdditionalDependencies>
@@ -87,14 +87,14 @@
       <AdditionalIncludeDirectories>$(ProjectDir)src;$(SolutionDir)yaml\yaml-cpp\include;$(SolutionDir)steam-sdk\public;$(SolutionDir)third-party\minimp3;$(SolutionDir)third-party\stb;$(SolutionDir)third-party\json\single_include;$(SolutionDir)imgui\imgui;$(DXSDK_DIR)include;$(ProjectDir)include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DisableSpecificWarnings>4996;%(DisableSpecificWarnings)</DisableSpecificWarnings>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <PreprocessorDefinitions>BANANA_BUILD;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>BANANA_BUILD;_IMGUI_BUILD_DLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>opengl32.lib;dinput8.lib;imgui.lib;steam_api64.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(OutDir);C:\steamsdk\sdk\redistributable_bin\win64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>opengl32.lib;dinput8.lib;imgui.lib;steam_api64.lib;yaml.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(OutDir);$(SolutionDir)steam-sdk\redistributable_bin\win64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <Lib>
       <AdditionalDependencies>dinput8.lib;imgui.lib;steam_api64.lib;yaml.lib;$(ModelLoaderLibraries);$(OpenGLViewportLibraries);$(ShaderLibraries);$(SkiaLibraries);%(AdditionalDependencies)</AdditionalDependencies>
@@ -155,15 +155,16 @@
     <ClCompile Include="src\ui\menu_manager.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="include\banana_api.h" />
     <ClInclude Include="include\application_layer.h" />
     <ClInclude Include="include\components\camera_component.h" />
     <ClInclude Include="include\components\components.h" />
     <ClInclude Include="include\components\native_script_component.h" />
     <ClInclude Include="include\components\tag_component.h" />
     <ClInclude Include="include\graphics\graphics.h" />
-    <ClInclude Include="include\graphics\opengl\opengl.h" />
-    <ClInclude Include="include\graphics\opengl\opengl_quad.h" />
-    <ClInclude Include="include\graphics\opengl\opengl_texture.h" />
+    <ClInclude Include="src\graphics\opengl\opengl\opengl.h" />
+    <ClInclude Include="src\graphics\opengl\opengl\opengl_quad.h" />
+    <ClInclude Include="src\graphics\opengl\opengl\opengl_texture.h" />
     <ClInclude Include="include\graphics\quad.h" />
     <ClInclude Include="include\graphics\texture.h" />
     <ClInclude Include="include\includelist.h" />
@@ -173,6 +174,9 @@
     <ClInclude Include="include\particlesystem\particlesystem_component.h" />
     <ClInclude Include="include\particlesystem\particle_component.h" />
     <ClInclude Include="include\script_module.h" />
+    <ClInclude Include="src\graphics\opengl\opengl_framebuffer.h" />
+    <ClInclude Include="src\graphics\opengl\opengl_quad.h" />
+    <ClInclude Include="src\graphics\opengl\opengl_texture.h" />
     <ClInclude Include="src\internal_only_includelist.h" />
     <ClInclude Include="include\lua_interpreter.h" />
     <ClInclude Include="include\main_module.h" />
@@ -199,7 +203,7 @@
     <ClInclude Include="include\gameobject.h" />
     <ClInclude Include="include\graphics\framebuffer.h" />
     <ClInclude Include="include\graphics\graphics_types.h" />
-    <ClInclude Include="include\graphics\opengl\opengl_framebuffer.h" />
+    <ClInclude Include="src\graphics\opengl\opengl\opengl_framebuffer.h" />
     <ClInclude Include="include\input_manager.h" />
     <ClInclude Include="include\input_utils.h" />
     <ClInclude Include="include\keyboard.h" />

@@ -6,7 +6,7 @@
 #include <misc/cpp/imgui_stdlib.h>
 namespace thebanana {
 	namespace debug {
-		extern gameobject* current_selected_gameobject;
+		__declspec(dllimport) extern gameobject* current_selected_gameobject;
 	}
 }
 namespace bananatree {

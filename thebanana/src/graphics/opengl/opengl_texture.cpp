@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "graphics/opengl/opengl_texture.h"
+#include "opengl_texture.h"
 namespace thebanana {
 	namespace graphics {
 		namespace opengl {

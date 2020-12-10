@@ -1,6 +1,7 @@
 #pragma once
+#include "banana_api.h"
 namespace thebanana {
-	class application_layer {
+	class BANANA_API application_layer {
 	public:
 		virtual void register_scripts();
 		virtual void init();

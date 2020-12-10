@@ -1,4 +1,5 @@
 #pragma once
+#include "banana_api.h"
 namespace thebanana {
 	class game;
 	class lua_interpreter;
@@ -9,21 +10,21 @@ namespace thebanana {
 		class menu;
 		class menu_manager {
 		public:
-			menu_manager(game* g_game);
-			void load_menu(menu* m);
-			void update();
-			void draw();
-			graphics::texture* get_texture();
-			~menu_manager();
-			void update_texture_pixels();
-			void open_menus();
-			void close_menus();
-			void toggle_menus();
-			bool menus_open();
+			BANANA_API menu_manager(game* g_game);
+			BANANA_API void load_menu(menu* m);
+			BANANA_API void update();
+			BANANA_API void draw();
+			BANANA_API graphics::texture* get_texture();
+			BANANA_API ~menu_manager();
+			BANANA_API void update_texture_pixels();
+			BANANA_API void open_menus();
+			BANANA_API void close_menus();
+			BANANA_API void toggle_menus();
+			BANANA_API bool menus_open();
 		private:
-			void setup_canvas();
-			void setup_texture();
-			void destroy_texture();
+			BANANA_API void setup_canvas();
+			BANANA_API void setup_texture();
+			BANANA_API void destroy_texture();
 			graphics::texture* m_texture;
 			game* m_game;
 			menu* m_current_menu;

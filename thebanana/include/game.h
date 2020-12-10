@@ -1,6 +1,8 @@
 #pragma once
 #include "util.h"
 #include "model_registry.h"
+#include "script_module.h"
+#include "banana_api.h"
 #define BANANA_WINDOW_CLASS_NAME "banana_ui"
 namespace thebanana {
 	class scene;
@@ -10,7 +12,6 @@ namespace thebanana {
 	class shader_registry;
 	class script_registry;
 	class material_registry;
-	class script_module;
 	class rigidbody;
 	namespace ui {
 		class menu_manager;
@@ -20,47 +21,47 @@ namespace thebanana {
 	}
 	class game {
 	public:
-		game(const std::string& title);
-		~game();
-		void destroy();
-		void update();
-		void render();
-		unsigned int get_current_frame();
-		input_manager* get_input_manager();
-		model_registry* get_model_registry();
-		ui::menu_manager* get_menu_manager();
-		static long long __stdcall wndproc(HWND window, unsigned int msg, unsigned long long w_param, long long l_param);
-		float get_aspect_ratio();
-		scene* get_scene();
-		void add_model_desc(const model_registry::model_descriptor& desc);
-		void load_models();
-		HWND get_window();
-		sound::sound_manager* get_sound_manager();
-		lua_interpreter* get_lua_interpreter();
-		bool& showing_cursor();
-		void show_cursor();
-		void hide_cursor();
-		void toggle_cursor();
-		std::string get_steam_name();
-		shader_registry* get_shader_registry();
-		script_registry* get_script_registry();
-		material_registry* get_material_registry();
-		void init_debug_menus();
-		void init_steam();
-		bool should_clip_cursor();
-		void clip_cursor();
-		void unclip_cursor();
-		void toggle_cursor_clip();
-		void make_context_current();
-		void swap_buffers();
-		void clear_screen();
-		float get_timestep();
-		std::vector<std::string> get_command_line();
-		void load_script_module(const std::string& dllpath);
-		void unload_script_module();
-		void debug_print(const std::string& message);
-		std::list<rigidbody*>& get_rigidbody_list();
-		std::string get_debug_log();
+		BANANA_API game(const std::string& title, script_module::module_t module);
+		BANANA_API ~game();
+		BANANA_API void destroy();
+		BANANA_API void update();
+		BANANA_API void render();
+		BANANA_API unsigned int get_current_frame();
+		BANANA_API input_manager* get_input_manager();
+		BANANA_API model_registry* get_model_registry();
+		BANANA_API ui::menu_manager* get_menu_manager();
+		BANANA_API static long long __stdcall wndproc(HWND window, unsigned int msg, unsigned long long w_param, long long l_param);
+		BANANA_API float get_aspect_ratio();
+		BANANA_API scene* get_scene();
+		BANANA_API void add_model_desc(const model_registry::model_descriptor& desc);
+		BANANA_API void load_models();
+		BANANA_API HWND get_window();
+		BANANA_API sound::sound_manager* get_sound_manager();
+		BANANA_API lua_interpreter* get_lua_interpreter();
+		BANANA_API bool& showing_cursor();
+		BANANA_API void show_cursor();
+		BANANA_API void hide_cursor();
+		BANANA_API void toggle_cursor();
+		BANANA_API std::string get_steam_name();
+		BANANA_API shader_registry* get_shader_registry();
+		BANANA_API script_registry* get_script_registry();
+		BANANA_API material_registry* get_material_registry();
+		BANANA_API void init_debug_menus();
+		BANANA_API void init_steam();
+		BANANA_API bool should_clip_cursor();
+		BANANA_API void clip_cursor();
+		BANANA_API void unclip_cursor();
+		BANANA_API void toggle_cursor_clip();
+		BANANA_API void make_context_current();
+		BANANA_API void swap_buffers();
+		BANANA_API void clear_screen();
+		BANANA_API float get_timestep();
+		BANANA_API std::vector<std::string> get_command_line();
+		BANANA_API void load_script_module(const std::string& dllpath);
+		BANANA_API void unload_script_module();
+		BANANA_API void debug_print(const std::string& message);
+		BANANA_API std::list<rigidbody*>& get_rigidbody_list();
+		BANANA_API std::string get_debug_log();
 		template<typename T> void calculate_aspect_ratio(T width, T height);
 		// very loose template stuff, but if you know what to do with it, it works
 		template<typename T> using imgui_ptr = void(*)(const char*, T*);
@@ -97,7 +98,7 @@ namespace thebanana {
 		std::map<size_t, void*> m_imgui_input_functions;
 		std::list<rigidbody*> m_rigidbodies;
 	};
-	extern game* g_game;
+	BANANA_API extern game* g_game;
 	template<typename T> inline void game::calculate_aspect_ratio(T width, T height) {
 		this->m_aspect_ratio = static_cast<float>(width) / static_cast<float>(height);
 	}

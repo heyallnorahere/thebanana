@@ -1,6 +1,7 @@
 #pragma once
 #include "util.h"
 #include "keys.h"
+#include "banana_api.h"
 namespace thebanana {
 	class game;
 	class input_manager {
@@ -31,8 +32,8 @@ namespace thebanana {
 				T val;
 				unsigned char operator[](size_t index) const;
 			};
-			bool init(const dinput_device& device, IDirectInput8* context, input_manager* parent);
-			virtual ~device();
+			BANANA_API bool init(const dinput_device& device, IDirectInput8* context, input_manager* parent);
+			BANANA_API virtual ~device();
 			virtual std::vector<button> get_buttons() = 0;
 			virtual void update() = 0;
 			virtual bool connected() = 0;
@@ -43,27 +44,27 @@ namespace thebanana {
 			IDirectInputDevice8* device;
 			input_manager* parent;
 		};
-		input_manager(game* g_game);
-		void enum_devices();
-		std::vector<dinput_device> get_enumerated_devices();
-		~input_manager();
-		device_type add_device(size_t index);
-		device_type add_device(const win32_string& name);
-		void update_devices();
-		size_t get_num_devices();
-		std::vector<device::button> get_device_buttons(size_t index);
-		static device_type get_device_type(const dinput_device& dev);
-		device_type get_device_type(size_t index);
-		device* get_device(size_t index);
-		game* get_parent();
-		device::button get_key(key k);
-		device::button get_mouse_button(mouse_button mb);
-		size_t find_device(device_type type);
+		BANANA_API input_manager(game* g_game);
+		BANANA_API void enum_devices();
+		BANANA_API std::vector<dinput_device> get_enumerated_devices();
+		BANANA_API ~input_manager();
+		BANANA_API device_type add_device(size_t index);
+		BANANA_API device_type add_device(const win32_string& name);
+		BANANA_API void update_devices();
+		BANANA_API size_t get_num_devices();
+		BANANA_API std::vector<device::button> get_device_buttons(size_t index);
+		BANANA_API static device_type get_device_type(const dinput_device& dev);
+		BANANA_API device_type get_device_type(size_t index);
+		BANANA_API device* get_device(size_t index);
+		BANANA_API game* get_parent();
+		BANANA_API device::button get_key(key k);
+		BANANA_API device::button get_mouse_button(mouse_button mb);
+		BANANA_API size_t find_device(device_type type);
 	private:
 		game* m_game;
 		IDirectInput8* m_context;
 		dinput_callback_env* m_env;
-		static int __stdcall enum_callback(const DIDEVICEINSTANCE* inst, dinput_callback_env* passed_env);
+		BANANA_API static int __stdcall enum_callback(const DIDEVICEINSTANCE* inst, dinput_callback_env* passed_env);
 		std::vector<dinput_device> enumerated_devices;
 		std::list<std::unique_ptr<device>> devices;
 	};

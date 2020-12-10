@@ -1,11 +1,12 @@
 #pragma once
+#include "banana_api.h"
 namespace thebanana {
 	class rigidbody;
 	class gameobject;
 	class collider {
 	public:
-		collider(rigidbody* rb);
-		virtual ~collider();
+		BANANA_API collider(rigidbody* rb);
+		BANANA_API virtual ~collider();
 		virtual bool detect_collision(rigidbody* other) = 0;
 	protected:
 		rigidbody* parent;
@@ -13,12 +14,12 @@ namespace thebanana {
 	//https://gist.github.com/mlfarrell/5b1d77326fb6f95c4fa7d9cf8622e992
 	class mlfarrel_model : public collider {
 	public:
-		mlfarrel_model(rigidbody* rb);
-		virtual bool detect_collision(rigidbody* other) override;
-		mlfarrel_model& set_radius(float radius);
-		mlfarrel_model& set_origin_offset(glm::vec3 offset);
-		float get_radius() const;
-		glm::vec3 get_origin_offset() const;
+		BANANA_API mlfarrel_model(rigidbody* rb);
+		BANANA_API virtual bool detect_collision(rigidbody* other) override;
+		BANANA_API mlfarrel_model& set_radius(float radius);
+		BANANA_API mlfarrel_model& set_origin_offset(glm::vec3 offset);
+		BANANA_API float get_radius() const;
+		BANANA_API glm::vec3 get_origin_offset() const;
 	private:
 		glm::vec3 origin_offset;
 		glm::vec3 last_frame_position;
@@ -27,12 +28,12 @@ namespace thebanana {
 	// my own implementation
 	class rectangular_prism_collider : public collider {
 	public:
-		rectangular_prism_collider(rigidbody* rb);
-		virtual bool detect_collision(rigidbody* other) override;
-		rectangular_prism_collider& set_dimensions(glm::vec3 dimensions);
-		rectangular_prism_collider& set_origin_offset(glm::vec3 offset);
-		glm::vec3 get_dimensions() const;
-		glm::vec3 get_origin_offset() const;
+		BANANA_API rectangular_prism_collider(rigidbody* rb);
+		BANANA_API virtual bool detect_collision(rigidbody* other) override;
+		BANANA_API rectangular_prism_collider& set_dimensions(glm::vec3 dimensions);
+		BANANA_API rectangular_prism_collider& set_origin_offset(glm::vec3 offset);
+		BANANA_API glm::vec3 get_dimensions() const;
+		BANANA_API glm::vec3 get_origin_offset() const;
 	private:
 		glm::vec3 dimensions, origin_offset;
 	};

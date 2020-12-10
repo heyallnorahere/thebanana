@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "graphics/framebuffer.h"
-#include "graphics/opengl/opengl_framebuffer.h"
+#include "opengl/opengl_framebuffer.h"
 namespace thebanana {
 	namespace graphics {
 		framebuffer::framebuffer(void* data) { }
@@ -8,17 +8,17 @@ namespace thebanana {
 		framebuffer::attachment_map framebuffer::get_attachment_map() const {
 			return this->m_attachment_map;
 		}
-		framebuffer* framebuffer::create(void* data, graphics_api api_) {
+		framebuffer* framebuffer::create(specification* spec, graphics_api api_) {
 			graphics_api api = api_;
 			if (api == graphics_api::none) {
 				api = get_default_graphics_api();
 			}
 			switch (api) {
 			case graphics_api::none:
-				return new dummy_framebuffer(data);
+				return new dummy_framebuffer(spec);
 				break;
 			case graphics_api::opengl:
-				return new opengl::opengl_framebuffer((opengl::opengl_framebuffer::desc*)data);
+				return new opengl::opengl_framebuffer(spec);
 				break;
 			}
 			return NULL;

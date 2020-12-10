@@ -2,7 +2,7 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb_image.h>
 #include "graphics/texture.h"
-#include "graphics/opengl/opengl_texture.h"
+#include "opengl/opengl_texture.h"
 namespace thebanana {
 	namespace graphics {
 		texture::texture(const data& d) : m_width(d.width), m_height(d.height), m_channels(d.channels) { }

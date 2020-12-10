@@ -1,5 +1,6 @@
 #pragma once
 #include "transform.h"
+#include "banana_api.h"
 namespace thebanana {
 	class model_registry {
 	public:
@@ -20,21 +21,21 @@ namespace thebanana {
 			std::vector<int> unused[3];
 		};
 #endif
-		model_registry();
-		model_registry(const std::vector<model_descriptor>& models);
-		~model_registry();
-		bool loaded();
-		void reload(const std::vector<model_descriptor>& models);
-		void draw(const std::string& name, double time, int m_animation_index, opengl_shader_library::shader* shader);
-		transform get_transform(const std::string& name);
+		BANANA_API model_registry();
+		BANANA_API model_registry(const std::vector<model_descriptor>& models);
+		BANANA_API ~model_registry();
+		BANANA_API bool loaded();
+		BANANA_API void reload(const std::vector<model_descriptor>& models);
+		BANANA_API void draw(const std::string& name, double time, int m_animation_index, opengl_shader_library::shader* shader);
+		BANANA_API transform get_transform(const std::string& name);
 #ifdef BANANA_BUILD
 		const aiScene* get_scene(const std::string& name);
 		void add_vertex_data(const std::string& model_name, model_vertex_data data);
 		model_vertex_data get_vertex_data(const std::string& model_name);
 #endif
-		static std::string path_helper(const std::string& original, const std::string& find, const std::string& replace);
-		void load(const std::vector<model_descriptor>& models);
-		std::vector<std::string> get_loaded_model_names() const;
+		BANANA_API static std::string path_helper(const std::string& original, const std::string& find, const std::string& replace);
+		BANANA_API void load(const std::vector<model_descriptor>& models);
+		BANANA_API std::vector<std::string> get_loaded_model_names() const;
 	private:
 		void unload();
 #ifdef BANANA_BUILD

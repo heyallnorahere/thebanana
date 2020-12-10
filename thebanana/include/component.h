@@ -3,6 +3,7 @@
 #include "debug_tools.h"
 #include "scene_serializer.h"
 #include "game.h"
+#include "banana_api.h"
 namespace thebanana {
 	class gameobject;
 	class material;
@@ -12,41 +13,41 @@ namespace thebanana {
 		public:
 			class dropdown {
 			public:
-				dropdown(const std::vector<std::string>& items, int initial_index = 0);
-				dropdown(const std::vector<const char*>& items, int initial_index = 0);
-				int* get_index_ptr();
-				void set_item(int index);
-				void set_item(const std::string& value);
-				const std::vector<std::string>& get_items() const;
-				void set_items(const std::vector<std::string>& items);
+				BANANA_API dropdown(const std::vector<std::string>& items, int initial_index = 0);
+				BANANA_API dropdown(const std::vector<const char*>& items, int initial_index = 0);
+				BANANA_API int* get_index_ptr();
+				BANANA_API void set_item(int index);
+				BANANA_API void set_item(const std::string& value);
+				BANANA_API const std::vector<std::string>& get_items() const;
+				BANANA_API void set_items(const std::vector<std::string>& items);
 			private:
 				std::vector<std::string> m_items;
 				int m_index;
 			};
 			class read_only_text {
 			public:
-				read_only_text(const std::string& text);
-				std::string& get_text();
+				BANANA_API read_only_text(const std::string& text);
+				BANANA_API std::string& get_text();
 			private:
 				std::string text;
 			};
-			property_base(const std::string& name, size_t size);
-			void set_parent(component* parent);
-			void set_game(game* g_game);
-			const std::string& get_name();
-			virtual ~property_base();
-			void* get_ptr();
-			virtual void draw() const = 0;
+			BANANA_API property_base(const std::string& name, size_t size);
+			BANANA_API void set_parent(component* parent);
+			BANANA_API void set_game(game* g_game);
+			BANANA_API const std::string& get_name();
+			BANANA_API virtual ~property_base();
+			BANANA_API void* get_ptr();
+			BANANA_API virtual void draw() const = 0;
 #ifdef BANANA_BUILD
 			using emitter = YAML::Emitter &;
 #else
 			using emitter = void*;
 #endif
-			virtual void send_to_yaml(void* out) const = 0;
-			virtual std::string get_type_name() const = 0;
-			bool is_selection_window_open() const;
-			virtual void close_selection_window() = 0;
-			virtual gameobject** get_selection_window_ptr() const = 0;
+			BANANA_API virtual void send_to_yaml(void* out) const = 0;
+			BANANA_API virtual std::string get_type_name() const = 0;
+			BANANA_API bool is_selection_window_open() const;
+			BANANA_API virtual void close_selection_window() = 0;
+			BANANA_API virtual gameobject** get_selection_window_ptr() const = 0;
 		protected:
 			std::string name;
 			void* ptr;
@@ -63,8 +64,8 @@ namespace thebanana {
 			property(const property<T>& other);
 			const property<T>& operator=(const property<T>& other);
 			virtual ~property() override;
-			virtual void draw() const override;
-			virtual void send_to_yaml(void* out) const override;
+			BANANA_API virtual void draw() const override;
+			BANANA_API virtual void send_to_yaml(void* out) const override;
 			virtual std::string get_type_name() const override;
 			T* get_value();
 			virtual void close_selection_window() override;
@@ -72,35 +73,35 @@ namespace thebanana {
 		private:
 			T* value;
 		};
-		component(gameobject* obj);
+		BANANA_API component(gameobject* obj);
 		// runs either when the parent gameobject is added to a scene/another gameobject or when the component is added to a gameobject; do not add other components during this stage, do it in constructor instead
-		virtual void initialize();
+		BANANA_API virtual void initialize();
 		// runs before update
-		virtual void pre_update();
+		BANANA_API virtual void pre_update();
 		// runs as part of the update
-		virtual void update();
+		BANANA_API virtual void update();
 		// runs after update
-		virtual void post_update();
+		BANANA_API virtual void post_update();
 		// runs before render
-		virtual void pre_render();
+		BANANA_API virtual void pre_render();
 		// runs as part of the parent gameobject's render
-		virtual void render();
+		BANANA_API virtual void render();
 		// runs after render
-		virtual void post_render();
+		BANANA_API virtual void post_render();
 		// runs when gameobject collides with another
-		virtual void on_collision(gameobject* other);
+		BANANA_API virtual void on_collision(gameobject* other);
 		// runs on gameobject destruction
-		virtual void clean_up();
-		const properties_t& get_properties() const;
-		gameobject* get_parent();
+		BANANA_API virtual void clean_up();
+		BANANA_API const properties_t& get_properties() const;
+		BANANA_API gameobject* get_parent();
 		template<typename _Ty> void set_property(const std::string& name, const _Ty& value);
 		template<typename _Ty> _Ty* get_property(const std::string& name);
-		unsigned long long get_uuid() const;
-		void set_uuid(unsigned long long uuid);
-		void add_property(property_base* p);
-		void remove_property(const std::string& name);
+		BANANA_API unsigned long long get_uuid() const;
+		BANANA_API void set_uuid(unsigned long long uuid);
+		BANANA_API void add_property(property_base* p);
+		BANANA_API void remove_property(const std::string& name);
 	protected:
-		transform& get_transform();
+		BANANA_API transform& get_transform();
 		template<typename _Ty> bool has_component();
 		template<typename _Ty> size_t get_number_components();
 		template<typename _Ty> _Ty& get_component(size_t index = 0);
@@ -112,8 +113,8 @@ namespace thebanana {
 	};
 	class debug_component : public component {
 	public:
-		debug_component(gameobject* obj);
-		virtual void pre_render() override;
+		BANANA_API debug_component(gameobject* obj);
+		BANANA_API virtual void pre_render() override;
 	private:
 		double flash_start_time, flash_end_time;
 	};
@@ -141,6 +142,7 @@ namespace thebanana {
 	template<typename T> inline gameobject** component::property<T>::get_selection_window_ptr() const {
 		return NULL;
 	}
+#ifdef BANANA_BUILD
 	inline void component::property<int>::draw() const {
 		this->g_game->get_imgui_pointer<int>()(this->name.c_str(), this->value);
 	}
@@ -171,7 +173,6 @@ namespace thebanana {
 	inline void component::property<component::property_base::read_only_text>::draw() const {
 		this->g_game->get_imgui_pointer<read_only_text>()(this->name.c_str(), this->value);
 	}
-#ifdef BANANA_BUILD
 	template<typename T> inline void component::property<T>::draw() const {
 		std::string name = typeid(T).name();
 		size_t pos = name.find_last_of('*');

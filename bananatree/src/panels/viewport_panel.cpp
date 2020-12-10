@@ -12,11 +12,11 @@ namespace bananatree {
 	viewport_panel::viewport_panel() {
 		this->m_gizmo_operation = gizmo_operation::translate;
 		this->m_transformation_mode = transformation_mode::local;
-		thebanana::graphics::opengl::opengl_framebuffer::desc desc;
-		desc.width = 800;
-		desc.height = 600;
-		desc.buffers = thebanana::graphics::opengl::opengl_framebuffer::desc::color | thebanana::graphics::opengl::opengl_framebuffer::desc::depth;
-		this->m_framebuffer = std::unique_ptr<thebanana::graphics::framebuffer>(thebanana::graphics::framebuffer::create(&desc));
+		thebanana::graphics::framebuffer::specification spec;
+		spec.width = 800;
+		spec.height = 600;
+		spec.buffers = thebanana::graphics::framebuffer::specification::color | thebanana::graphics::framebuffer::specification::depth;
+		this->m_framebuffer = std::unique_ptr<thebanana::graphics::framebuffer>(thebanana::graphics::framebuffer::create(&spec));
 		this->m_keyboard_index = std::string::npos;
 		thebanana::input_manager* input_manager = thebanana::g_game->get_input_manager();
 		for (size_t i = 0; i < input_manager->get_num_devices(); i++) {

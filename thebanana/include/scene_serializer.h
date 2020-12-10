@@ -1,4 +1,5 @@
 #pragma once
+#include "banana_api.h"
 namespace thebanana {
 #ifdef BANANA_BUILD
 	inline YAML::Emitter& operator<<(YAML::Emitter& out, const glm::vec2& v) {
@@ -20,9 +21,9 @@ namespace thebanana {
 	class scene;
 	class scene_serializer {
 	public:
-		scene_serializer(scene* scene);
-		void serialize(const std::string& path);
-		void deserialize(const std::string& path);
+		BANANA_API scene_serializer(scene* scene);
+		BANANA_API void serialize(const std::string& path);
+		BANANA_API void deserialize(const std::string& path);
 	private:
 		scene* m_scene;
 	};

@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "graphics/quad.h"
 #include "graphics/texture.h"
-#include "graphics/opengl/opengl_quad.h"
+#include "opengl/opengl_quad.h"
 namespace thebanana {
 	namespace graphics {
 		quad::quad(float width, float height, texture* tex, bool invert_uv) : m_width(width), m_height(height), m_texture(tex) { }
@@ -25,6 +25,9 @@ namespace thebanana {
 				break;
 			}
 			return NULL;
+		}
+		void quad::init_opengl_shader(const std::string& name) {
+			return opengl::opengl_quad::init_shader(name);
 		}
 		dummy_quad::dummy_quad(float width, float height, texture* tex, bool invert_uv) : quad(width, height, tex, invert_uv) { }
 		void dummy_quad::api_render() { }

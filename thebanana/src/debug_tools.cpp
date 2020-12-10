@@ -25,7 +25,7 @@ namespace thebanana {
 		constexpr ImGuiTreeNodeFlags open_flags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_OpenOnDoubleClick;
 		static int id;
 #define ID() char id_str[256]; sprintf(id_str, "node%d", id++)
-		gameobject* current_selected_gameobject = NULL;
+		__declspec(dllexport) gameobject* current_selected_gameobject = NULL;
 		static void set_current_gameobject(gameobject* obj, gameobject** object_ptr) {
 			if (ImGui::IsItemClicked()) {
 				*object_ptr = obj;

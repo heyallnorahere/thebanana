@@ -14,7 +14,6 @@
 #include "script_registry.h"
 #include "util.h"
 #include "internal_util.h"
-#include "script_module.h"
 #include "material.h"
 extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 namespace thebanana {
@@ -25,12 +24,16 @@ namespace thebanana {
 		__debugbreak();
 	}
 	game* g_game = NULL;
-	game::game(const std::string& title) {
+	game::game(const std::string& title, script_module::module_t module) {
 		srand(CURRENT_TIME(unsigned int));
 		this->m_frame = 0;
 		constexpr int width = 1600;
 		constexpr int height = 900;
-		this->m_window = CreateWindowA(BANANA_WINDOW_CLASS_NAME, title.c_str(), WS_VISIBLE | WS_SYSMENU | WS_MAXIMIZEBOX, CW_USEDEFAULT, CW_USEDEFAULT, width, height, NULL, NULL, HINST_THISCOMPONENT, this);
+		this->m_window = CreateWindowA(BANANA_WINDOW_CLASS_NAME, title.c_str(), WS_VISIBLE | WS_SYSMENU | WS_MAXIMIZEBOX, CW_USEDEFAULT, CW_USEDEFAULT, width, height, NULL, NULL, module, this);
+		if (!this->m_window) {
+			this->debug_print("last error: " + std::to_string(GetLastError()));
+			__debugbreak();
+		}
 		RECT r;
 		GetWindowRect(this->m_window, &r);
 		this->m_aspect_ratio = static_cast<float>(r.right - r.left) / static_cast<float>(r.bottom - r.top);

@@ -2,7 +2,6 @@
 #include <thebanana.h>
 #include "player.h"
 #include "camera.h"
-#include "../resource.h"
 #include <yaml-cpp/yaml.h>
 namespace YAML {
 	template<> struct convert<glm::vec2> {
@@ -118,8 +117,8 @@ void sandbox_application_layer::init() {
 	thebanana::g_game->init_debug_menus();
 #endif
 	// load shaders
-	thebanana::g_game->get_shader_registry()->register_shader("basic", new opengl_shader_library::win32_resource_shader(IDR_BASIC_VERTEX, IDR_BASIC_FRAGMENT));
-	thebanana::g_game->get_shader_registry()->register_shader("2d", new opengl_shader_library::win32_resource_shader(IDR_2D_VERTEX, IDR_2D_FRAGMENT));
+	thebanana::g_game->get_shader_registry()->register_shader("basic", "basic");
+	thebanana::g_game->get_shader_registry()->register_shader("2d", "2d");
 	thebanana::g_game->get_scene()->set_shader_name("basic");
 	thebanana::graphics::quad::init_opengl_shader("2d");
 	// if a scene is specified, load it

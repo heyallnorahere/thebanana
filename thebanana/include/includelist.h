@@ -16,7 +16,6 @@
 #ifdef interface
 #undef interface
 #endif
-#include <opengl_shader.h>
 #include <string>
 #include <iostream>
 #include <fstream>

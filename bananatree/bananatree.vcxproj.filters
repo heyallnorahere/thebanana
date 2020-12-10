@@ -62,9 +62,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="resource.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\editor_layer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -109,16 +106,13 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="Resource.rc">
-      <Filter>Resource Files</Filter>
-    </ResourceCompile>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="..\sandbox\shaders\basic\vertex.shader" />
     <None Include="..\sandbox\shaders\basic\fragment.shader" />
     <None Include="packages.config" />
     <None Include="imgui.ini" />
     <None Include="steam_api64.dll" />
+    <None Include="shaders\viewport\vertex.shader" />
+    <None Include="shaders\viewport\fragment.shader" />
   </ItemGroup>
   <ItemGroup>
     <Font Include="fonts\OpenSans-Regular.ttf" />

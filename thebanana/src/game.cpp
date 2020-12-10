@@ -24,7 +24,7 @@ namespace thebanana {
 		__debugbreak();
 	}
 	game* g_game = NULL;
-	game::game(const std::string& title, script_module::module_t module) {
+	game::game(const std::string& title, script_module::module_t module) : m_executable(module) {
 		srand(CURRENT_TIME(unsigned int));
 		this->m_frame = 0;
 		constexpr int width = 1600;
@@ -41,7 +41,7 @@ namespace thebanana {
 		this->m_interpreter = new lua_interpreter;
 		this->m_scene = new scene(this);
 		this->m_input_manager = new input_manager(this);
-		this->m_shader_registry = new shader_registry;
+		this->m_shader_registry = new shader_registry(this);
 		this->m_script_registry = new script_registry(this);
 		this->m_model_registry = new model_registry;
 		this->m_material_registry = new material_registry;

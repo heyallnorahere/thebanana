@@ -101,6 +101,7 @@ namespace bananatree {
 		// restore the default config properties
 		this->set<std::string>("sandboxexe", "..\\x64\\$(Configuration)\\sandbox.exe");
 		this->set<std::string>("msbuild", "C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\Community\\MSBuild\\Current\\Bin\\msbuild.exe");
+		this->set<std::string>("sandboxworkdir", "..\\sandbox");
 	}
 	editorconfig::~editorconfig() {
 		this->clear_map();

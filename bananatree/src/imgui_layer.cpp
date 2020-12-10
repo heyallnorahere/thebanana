@@ -14,7 +14,6 @@
 #include "panels/material_editor_panel.h"
 #include "editor_layer.h"
 #include "util.h"
-#include "../resource.h"
 namespace bananatree {
 	void create_static_mesh(bool* open, thebanana::gameobject* parent) {
 		std::string window_name = "Add static mesh to " + std::string(parent ? "gameobject" : "scene");

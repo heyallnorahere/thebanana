@@ -1,6 +1,9 @@
 #pragma once
 #include "transform.h"
 #include "banana_api.h"
+namespace opengl_shader_library {
+	class shader;
+}
 namespace thebanana {
 	class model_registry {
 	public:

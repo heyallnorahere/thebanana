@@ -1,6 +1,5 @@
 #include <thebanana.h>
 #include "editor_layer.h"
-#include "../resource.h"
 #include "util.h"
 #include "panels/script_registry_panel.h"
 #include "panels/scene_hierarchy_panel.h"
@@ -19,8 +18,8 @@ namespace bananatree {
 		}
 		thebanana::g_game->show_cursor();
 		thebanana::g_game->unclip_cursor();
-		thebanana::g_game->get_shader_registry()->register_shader("basic", new opengl_shader_library::win32_resource_shader(IDR_BASIC_VERTEX, IDR_BASIC_FRAGMENT));
-		thebanana::g_game->get_scene()->set_shader_name("basic");
+		thebanana::g_game->get_shader_registry()->register_shader("viewport", "viewport");
+		thebanana::g_game->get_scene()->set_shader_name("viewport");
 	}
 	void editor_layer::gameloop() {
 		thebanana::g_game->update();
@@ -62,8 +61,9 @@ namespace bananatree {
 		if (!code_project_path.empty()) {
 			args += " \"" + this->get_dll_path() + "\"";
 		}
-		thebanana::g_game->debug_print("launching sandbox with command: " + args);
-		CreateProcessA(path.c_str(), (char*)args.c_str(), NULL, NULL, false, 0, NULL, NULL, &si, &pi);
+		std::string workdir = this->m_config->get<std::string>("sandboxworkdir");
+		thebanana::g_game->debug_print("launching sandbox with command: " + args + " in " + workdir);
+		CreateProcessA(path.c_str(), (char*)args.c_str(), NULL, NULL, false, 0, NULL, workdir.c_str(), &si, &pi);
 	}
 	void editor_layer::compile_scripts() {
 		std::string temp_scene_path = util::make_temp_path("bananatree_temp_scene");

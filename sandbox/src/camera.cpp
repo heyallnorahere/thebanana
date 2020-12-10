@@ -1,5 +1,6 @@
 #include <thebanana.h>
 #include "camera.h"
+#include <opengl_shader.h>
 camera_behavior::camera_behavior(thebanana::gameobject* object, thebanana::native_script_component* nsc) : script(object, nsc) {
 	this->parent->get_nickname() = "camera";
 	this->add_property(new thebanana::component::property<float>(2.f, "distance"));

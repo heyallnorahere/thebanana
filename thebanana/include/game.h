@@ -97,6 +97,7 @@ namespace thebanana {
 		// so you can call imgui across modules (dlls, exes, etc.)
 		std::map<size_t, void*> m_imgui_input_functions;
 		std::list<rigidbody*> m_rigidbodies;
+		script_module::module_t m_executable;
 	};
 	BANANA_API extern game* g_game;
 	template<typename T> inline void game::calculate_aspect_ratio(T width, T height) {

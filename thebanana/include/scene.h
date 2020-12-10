@@ -1,6 +1,9 @@
 #pragma once
 #include "gameobject.h"
 #include "banana_api.h"
+namespace opengl_shader_library {
+	class shader;
+}
 namespace thebanana {
 	class game;
 	class scene {

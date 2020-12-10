@@ -19,6 +19,9 @@ namespace thebanana {
 	std::string mesh_component::get_mesh_name() const {
 		return this->model_name;
 	}
+	material* mesh_component::get_material() {
+		return *this->get_property<material*>("Material");
+	}
 	void mesh_component::pre_render() {
 		property<std::string>* mn = this->find_property<std::string>("Mesh name");
 		if (mn) {

@@ -10,8 +10,12 @@ namespace thebanana {
 		BANANA_API void set_albedo(graphics::texture* texture);
 		BANANA_API const std::shared_ptr<graphics::texture>& get_albedo();
 		BANANA_API std::string get_albedo_path();
-		BANANA_API void set_color(glm::vec3 color);
-		BANANA_API glm::vec3 get_color();
+		BANANA_API void set_diffuse(glm::vec3 color);
+		BANANA_API void set_specular(glm::vec3 color);
+		BANANA_API void set_ambient(glm::vec3 color);
+		BANANA_API glm::vec3 get_diffuse();
+		BANANA_API glm::vec3 get_specular();
+		BANANA_API glm::vec3 get_ambient();
 		BANANA_API void set_shininess(float shininess);
 		BANANA_API float get_shininess();
 		BANANA_API void send_to_shader(unsigned int shader_id, const std::string& uniform_name);
@@ -21,7 +25,7 @@ namespace thebanana {
 		BANANA_API void set_friendly_name(const std::string& name);
 	private:
 		std::shared_ptr<graphics::texture> m_albedo;
-		glm::vec3 m_color;
+		glm::vec3 m_diffuse, m_specular, m_ambient;
 		float m_shininess;
 		unsigned long long m_uuid;
 		std::string m_albedo_path;

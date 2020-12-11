@@ -10,7 +10,7 @@ namespace thebanana {
 			color[i] = 0xff;
 		}
 		this->set_albedo(color, 1, 1, 3);
-		this->m_color = glm::vec3(1.f);
+		this->m_diffuse = this->m_specular = this->m_ambient = glm::vec3(1.f);
 		this->m_friendly_name = "New material";
 	}
 	void material::set_albedo(const std::string& image_path) {
@@ -42,11 +42,23 @@ namespace thebanana {
 	std::string material::get_albedo_path() {
 		return this->m_albedo_path;
 	}
-	void material::set_color(glm::vec3 color) {
-		this->m_color = color;
+	void material::set_diffuse(glm::vec3 color) {
+		this->m_diffuse = color;
 	}
-	glm::vec3 material::get_color() {
-		return this->m_color;
+	void material::set_specular(glm::vec3 color) {
+		this->m_specular = color;
+	}
+	void material::set_ambient(glm::vec3 color) {
+		this->m_ambient = color;
+	}
+	glm::vec3 material::get_diffuse() {
+		return this->m_diffuse;
+	}
+	glm::vec3 material::get_specular() {
+		return this->m_specular;
+	}
+	glm::vec3 material::get_ambient() {
+		return this->m_ambient;
 	}
 	void material::set_shininess(float shininess) {
 		this->m_shininess = shininess;
@@ -61,7 +73,9 @@ namespace thebanana {
 		};
 		opengl_shader_library::uni u(shader_id);
 		u._int(get_uniform_name("albedo"), 10);
-		u.vec3(get_uniform_name("color"), this->m_color);
+		u.vec3(get_uniform_name("diffuse"), this->m_diffuse);
+		u.vec3(get_uniform_name("specular"), this->m_specular);
+		u.vec3(get_uniform_name("ambient"), this->m_ambient);
 		u._float(get_uniform_name("shininess"), this->m_shininess);
 	}
 	void material::set_uuid(unsigned long long uuid) {

@@ -106,7 +106,9 @@ void load_project(const std::string& path) {
 		auto registry = thebanana::g_game->get_material_registry();
 		thebanana::material* mat = registry->find(registry->new_material());
 		mat->set_albedo(m["albedo"].as<std::string>());
-		mat->set_color(m["color"].as<glm::vec3>());
+		mat->set_diffuse(m["diffuse"].as<glm::vec3>());
+		mat->set_specular(m["specular"].as<glm::vec3>());
+		mat->set_ambient(m["ambient"].as<glm::vec3>());
 		mat->set_shininess(m["shininess"].as<float>());
 		mat->set_uuid(m["uuid"].as<unsigned long long>());
 	}

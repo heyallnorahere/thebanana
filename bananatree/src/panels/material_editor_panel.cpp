@@ -46,7 +46,9 @@ namespace bananatree {
 			}
 			thebanana::material* mat = thebanana::g_game->get_material_registry()->get((size_t)this->m_index - 1);
 			this->m_descriptors[(size_t)this->m_index - 1].copy.friendly_name = mat->get_friendly_name();
-			this->m_descriptors[(size_t)this->m_index - 1].copy.color = mat->get_color();
+			this->m_descriptors[(size_t)this->m_index - 1].copy.diffuse = mat->get_diffuse();
+			this->m_descriptors[(size_t)this->m_index - 1].copy.specular = mat->get_specular();
+			this->m_descriptors[(size_t)this->m_index - 1].copy.ambient = mat->get_ambient();
 			this->m_descriptors[(size_t)this->m_index - 1].copy.shininess = mat->get_shininess();
 			this->m_descriptors[(size_t)this->m_index - 1].copy.uuid = mat->get_uuid();
 			this->m_descriptors[(size_t)this->m_index - 1].commit();
@@ -85,7 +87,9 @@ namespace bananatree {
 				}
 			}
 			if (ImGui::CollapsingHeader("Settings")) {
-				ImGui::ColorEdit3("Color", &this->m_descriptors[index].copy.color.x);
+				ImGui::ColorEdit3("Diffuse color", &this->m_descriptors[index].copy.diffuse.x);
+				ImGui::ColorEdit3("Specular color", &this->m_descriptors[index].copy.specular.x);
+				ImGui::ColorEdit3("Ambient color", &this->m_descriptors[index].copy.ambient.x);
 				ImGui::DragFloat("Shininess", &this->m_descriptors[index].copy.shininess, 0.001f, 0.f, 1.f);
 			}
 		} else {
@@ -96,7 +100,9 @@ namespace bananatree {
 			if (this->m_descriptors[i].copy.image_path != mat->get_albedo_path())
 				mat->set_albedo(this->m_descriptors[i].copy.image_path);
 			mat->set_friendly_name(this->m_descriptors[i].copy.friendly_name);
-			mat->set_color(this->m_descriptors[i].copy.color);
+			mat->set_diffuse(this->m_descriptors[i].copy.diffuse);
+			mat->set_specular(this->m_descriptors[i].copy.specular);
+			mat->set_ambient(this->m_descriptors[i].copy.ambient);
 			mat->set_shininess(this->m_descriptors[i].copy.shininess);
 			this->m_descriptors[i].commit();
 		}
@@ -114,7 +120,9 @@ namespace bananatree {
 		thebanana::material* mat = registry->find(registry->new_material());
 		mat->set_friendly_name(md.friendly_name);
 		mat->set_albedo(md.image_path);
-		mat->set_color(md.color);
+		mat->set_diffuse(md.diffuse);
+		mat->set_specular(md.specular);
+		mat->set_ambient(md.ambient);
 		mat->set_shininess(md.shininess);
 		mat->set_uuid(md.uuid);
 	}

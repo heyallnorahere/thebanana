@@ -172,6 +172,7 @@ namespace thebanana {
 			out << YAML::Key << "type" << YAML::Value << "light_component";
 			out << YAML::Key << "uuid" << YAML::Value << lc.get_uuid();
 			out << YAML::Key << "color" << YAML::Value << lc.get_property<property_classes::color>("Color")->get_vector();
+			out << YAML::Key << "ambient strength" << YAML::Value << *lc.get_property<float>("Ambient strength");
 			out << YAML::EndMap;
 		}
 		for (size_t i = 0; i < object->get_number_components<native_script_component>(); i++) {
@@ -318,6 +319,7 @@ namespace thebanana {
 				light_component& lc = object->add_component<light_component>();
 				lc.set_uuid(uuid);
 				lc.set_property<property_classes::color>("Color", n["color"].as<glm::vec3>());
+				lc.set_property("Ambient strength", n["ambient strength"].as<float>());
 			} else if (type == "native_script_component") {
 				native_script_component& nsc = object->add_component<native_script_component>();
 				nsc.set_uuid(uuid);

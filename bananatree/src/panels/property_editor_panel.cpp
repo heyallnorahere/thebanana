@@ -209,6 +209,14 @@ namespace bananatree {
 						thebanana::g_game->debug_print("could not add particlesystem component; no object selected");
 					}
 				}
+				if (ImGui::MenuItem("Light component")) {
+					if (object) {
+						object->add_component<thebanana::light_component>();
+					}
+					else {
+						thebanana::g_game->debug_print("could not add light component; no object selected");
+					}
+				}
 				if (ImGui::MenuItem("Native script component")) {
 					if (object) {
 						object->add_component<thebanana::native_script_component>();
@@ -252,9 +260,10 @@ namespace bananatree {
 				else if (typeid(c).hash_code() == typeid(thebanana::rigidbody).hash_code()) label = "Rigidbody";
 				else if (typeid(c).hash_code() == typeid(thebanana::camera_component).hash_code()) label = "Camera component";
 				else if (typeid(c).hash_code() == typeid(thebanana::particlesystem::particlesystem_component).hash_code()) label = "Particlesystem component";
+				else if (typeid(c).hash_code() == typeid(thebanana::light_component).hash_code()) label = "Light component";
 				else if (typeid(c).hash_code() == typeid(thebanana::native_script_component).hash_code()) label = "Native script component";
 				else if (typeid(c).hash_code() == typeid(thebanana::debug_component).hash_code()) label = "Debug component";
-				assert(label);
+				if (!label) continue;
 				char buf[256];
 				_ui64toa(c.get_uuid(), buf, 10);
 				std::string label_text = label + std::string(", UUID: ") + buf;

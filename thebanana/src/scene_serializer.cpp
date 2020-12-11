@@ -166,6 +166,14 @@ namespace thebanana {
 			out << YAML::Key << "max_size" << YAML::Value << *(psc.get_property<float>("Maximum particle size"));
 			out << YAML::EndMap;
 		}
+		for (size_t i = 0; i < object->get_number_components<light_component>(); i++) {
+			light_component& lc = object->get_component<light_component>(i);
+			out << YAML::BeginMap;
+			out << YAML::Key << "type" << YAML::Value << "light_component";
+			out << YAML::Key << "uuid" << YAML::Value << lc.get_uuid();
+			out << YAML::Key << "color" << YAML::Value << lc.get_property<property_classes::color>("Color")->get_vector();
+			out << YAML::EndMap;
+		}
 		for (size_t i = 0; i < object->get_number_components<native_script_component>(); i++) {
 			native_script_component& nsc = object->get_component<native_script_component>(i);
 			out << YAML::BeginMap;
@@ -296,7 +304,8 @@ namespace thebanana {
 				cc.set_uuid(uuid);
 				cc.set_property<glm::vec2>("Angle", n["angle"].as<glm::vec2>());
 				cc.set_property<bool>("Primary", n["primary"].as<bool>());
-			} else if (type == "particlesystem_component") {
+			}
+			else if (type == "particlesystem_component") {
 				particlesystem::particlesystem_component& psc = object->add_component<particlesystem::particlesystem_component>();
 				psc.set_uuid(uuid);
 				psc.set_property("Spawn interval", n["spawn_interval"].as<float>());
@@ -305,6 +314,10 @@ namespace thebanana {
 				psc.set_property("Particle acceleration", n["force"].as<glm::vec3>());
 				psc.set_property("Minimum particle size", n["min_size"].as<float>());
 				psc.set_property("Maximum particle size", n["max_size"].as<float>());
+			} else if (type == "light_component") {
+				light_component& lc = object->add_component<light_component>();
+				lc.set_uuid(uuid);
+				lc.set_property<property_classes::color>("Color", n["color"].as<glm::vec3>());
 			} else if (type == "native_script_component") {
 				native_script_component& nsc = object->add_component<native_script_component>();
 				nsc.set_uuid(uuid);
@@ -325,6 +338,7 @@ namespace thebanana {
 						v4,
 						read_only,
 						dropdown,
+						color,
 						object,
 						material,
 					};
@@ -341,6 +355,7 @@ namespace thebanana {
 					else if (type == typeid(glm::vec4).name()) pt = property_type::v4;
 					else if (type == typeid(component::property_base::read_only_text).name()) pt = property_type::read_only;
 					else if (type == typeid(component::property_base::dropdown).name()) pt = property_type::dropdown;
+					else if (type == typeid(component::property_base::color).name()) pt = property_type::color;
 					else if (type == typeid(gameobject*).name()) pt = property_type::object;
 					else if (type == typeid(material*).name()) pt = property_type::material;
 					else assert(false);
@@ -385,6 +400,9 @@ namespace thebanana {
 						}
 						nsc.set_property(name, component::property_base::dropdown(items, index));
 					}
+						break;
+					case property_type::color:
+						nsc.set_property<property_classes::color>(name, value_node.as<glm::vec3>());
 						break;
 					case property_type::object:
 						objects_to_find.push_back({ value_node.as<unsigned long long>(), nsc.get_property<gameobject*>(name) });

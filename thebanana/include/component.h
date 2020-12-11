@@ -31,6 +31,14 @@ namespace thebanana {
 			private:
 				std::string text;
 			};
+			class color {
+			public:
+				BANANA_API color(glm::vec3 vector);
+				BANANA_API const color& operator=(glm::vec3 vector);
+				BANANA_API glm::vec3& get_vector();
+			private:
+				glm::vec3 m_vector;
+			};
 			BANANA_API property_base(const std::string& name, size_t size);
 			BANANA_API void set_parent(component* parent);
 			BANANA_API void set_game(game* g_game);
@@ -111,6 +119,11 @@ namespace thebanana {
 		unsigned long long uuid;
 		friend class script;
 	};
+	namespace property_classes {
+		using dropdown = component::property_base::dropdown;
+		using read_only_text = component::property_base::read_only_text;
+		using color = component::property_base::color;
+	}
 	class debug_component : public component {
 	public:
 		BANANA_API debug_component(gameobject* obj);
@@ -173,6 +186,9 @@ namespace thebanana {
 	inline void component::property<component::property_base::read_only_text>::draw() const {
 		this->g_game->get_imgui_pointer<read_only_text>()(this->name.c_str(), this->value);
 	}
+	inline void component::property<property_classes::color>::draw() const {
+		this->g_game->get_imgui_pointer<color>()(this->name.c_str(), this->value);
+	}
 	template<typename T> inline void component::property<T>::draw() const {
 		std::string name = typeid(T).name();
 		size_t pos = name.find_last_of('*');
@@ -225,6 +241,9 @@ namespace thebanana {
 	}
 	inline void component::property<material*>::send_to_yaml(void* out) const {
 		(*(YAML::Emitter*)out) << ((*this->value) ? ::thebanana::get_uuid(*this->value) : 0);
+	}
+	inline void component::property<component::property_base::color>::send_to_yaml(void* out) const {
+		(*(YAML::Emitter*)out) << this->value->get_vector();
 	}
 	template<typename T> inline void component::property<T>::send_to_yaml(void* out) const {
 		(*(YAML::Emitter*)out) << (*this->value);

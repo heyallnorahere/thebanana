@@ -137,4 +137,12 @@ namespace thebanana {
 	unsigned long long get_uuid(material* mat) {
 		return mat->get_uuid();
 	}
+	component::property_base::color::color(glm::vec3 vector) : m_vector(vector) { }
+	const component::property_base::color& component::property_base::color::operator=(glm::vec3 vector) {
+		this->m_vector = vector;
+		return *this;
+	}
+	glm::vec3& component::property_base::color::get_vector() {
+		return this->m_vector;
+	}
 }

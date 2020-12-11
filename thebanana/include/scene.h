@@ -1,5 +1,6 @@
 #pragma once
 #include "gameobject.h"
+#include "components/light_component.h"
 #include "banana_api.h"
 namespace opengl_shader_library {
 	class shader;
@@ -23,6 +24,9 @@ namespace thebanana {
 		BANANA_API game* get_game();
 		BANANA_API gameobject* find(unsigned long long uuid);
 		BANANA_API gameobject* find_main_camera();
+		BANANA_API std::vector<light_component::light_data> get_lights();
+		template<typename T> std::vector<T*> find_all_instances_of_component();
+		template<typename T> T& find_component(size_t index = 0);
 	private:
 		game* m_game;
 		std::list<std::unique_ptr<gameobject>> m_children;
@@ -33,5 +37,23 @@ namespace thebanana {
 		if (!obj->is_initialized()) obj->init(ROOT, this, this->m_game);
 		this->m_children.push_back(std::unique_ptr<gameobject>(obj));
 		return obj;
+	}
+	template<typename T> inline void add_instances(gameobject* object, std::vector<T*>& instances) {
+		for (size_t i = 0; i < object->get_number_components<T>(); i++) {
+			instances.push_back(&object->get_component<T>(i));
+		}
+		for (size_t i = 0; i < object->get_children_count(); i++) {
+			add_instances(object->get_child(i), instances);
+		}
+	}
+	template<typename T> inline std::vector<T*> scene::find_all_instances_of_component() {
+		std::vector<T*> instances;
+		for (auto& object : this->m_children) {
+			add_instances(object.get(), instances);
+		}
+		return instances;
+	}
+	template<typename T> inline T& scene::find_component(size_t index) {
+		return *this->find_all_instances_of_component<T>()[index];
 	}
 }

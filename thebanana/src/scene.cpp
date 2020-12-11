@@ -114,4 +114,12 @@ namespace thebanana {
 		}
 		return object;
 	}
+	std::vector<light_component::light_data> scene::get_lights() {
+		std::vector<light_component::light_data> data;
+		std::vector<light_component*> lights = this->find_all_instances_of_component<light_component>();
+		for (auto light : lights) {
+			data.push_back(light->get_data());
+		}
+		return data;
+	}
 }

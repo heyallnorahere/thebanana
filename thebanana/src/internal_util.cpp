@@ -28,8 +28,9 @@ thebanana::component::property<glm::vec3> p6(glm::vec3(), "");
 thebanana::component::property<glm::vec4> p7(glm::vec4(), "");
 thebanana::component::property<thebanana::component::property_base::read_only_text> p8(thebanana::component::property_base::read_only_text(""), "");
 thebanana::component::property<thebanana::component::property_base::dropdown> p9(thebanana::component::property_base::dropdown(std::vector<std::string>()), "");
-thebanana::component::property<thebanana::gameobject*> p10(NULL, "");
-thebanana::component::property<thebanana::material*> p11(NULL, "");
+thebanana::component::property<thebanana::component::property_base::color> p10(glm::vec3(0.f), "");
+thebanana::component::property<thebanana::gameobject*> p11(NULL, "");
+thebanana::component::property<thebanana::material*> p12(NULL, "");
 float get_current_time() {
 	static double start_time = 0;
 	double raw_time = std::chrono::duration_cast<std::chrono::duration<double, std::ratio<1, 1>>>(std::chrono::system_clock::now().time_since_epoch()).count();

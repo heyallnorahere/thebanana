@@ -303,7 +303,7 @@ namespace thebanana {
 	static void text_input(const char* label, std::string* v) {
 		ImGui::InputText(label, v);
 	}
-	static void dropdown_input(const char* label, component::property_base::dropdown* value) {
+	static void dropdown_input(const char* label, property_classes::dropdown* value) {
 		const std::vector<std::string>& std_items = value->get_items();
 		std::vector<const char*> items;
 		for (auto& str : std_items) {
@@ -311,8 +311,11 @@ namespace thebanana {
 		}
 		ImGui::Combo(label, value->get_index_ptr(), items.data(), items.size());
 	}
-	static void readonly_input(const char* label, component::property_base::read_only_text* value) {
+	static void readonly_input(const char* label, property_classes::read_only_text* value) {
 		ImGui::InputText(label, &value->get_text(), ImGuiInputTextFlags_ReadOnly);
+	}
+	static void color_input(const char* label, property_classes::color* value) {
+		ImGui::ColorEdit3(label, &value->get_vector().x);
 	}
 	void game::fill_imgui_input_pointers() {
 		this->m_imgui_input_functions[typeid(int).hash_code()] = int_input;
@@ -323,7 +326,8 @@ namespace thebanana {
 		this->m_imgui_input_functions[typeid(glm::vec2).hash_code()] = float2_input;
 		this->m_imgui_input_functions[typeid(glm::vec3).hash_code()] = float3_input;
 		this->m_imgui_input_functions[typeid(glm::vec4).hash_code()] = float4_input;
-		this->m_imgui_input_functions[typeid(component::property_base::dropdown).hash_code()] = dropdown_input;
-		this->m_imgui_input_functions[typeid(component::property_base::read_only_text).hash_code()] = readonly_input;
+		this->m_imgui_input_functions[typeid(property_classes::dropdown).hash_code()] = dropdown_input;
+		this->m_imgui_input_functions[typeid(property_classes::read_only_text).hash_code()] = readonly_input;
+		this->m_imgui_input_functions[typeid(property_classes::color).hash_code()] = color_input;
 	}
 }

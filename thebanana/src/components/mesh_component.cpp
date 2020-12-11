@@ -46,7 +46,9 @@ namespace thebanana {
 						return "lights[" + std::to_string(i) + "]." + name;
 					};
 					uniforms.vec3(get_uniform_name("position"), light.position);
-					uniforms.vec3(get_uniform_name("color"), light.color);
+					uniforms.vec3(get_uniform_name("diffuse"), light.diffuse);
+					uniforms.vec3(get_uniform_name("specular"), light.specular);
+					uniforms.vec3(get_uniform_name("ambient"), light.ambient);
 					uniforms._float(get_uniform_name("ambient_strength"), light.ambient_strength);
 				}
 				uniforms._int("light_count", (int)lights.size());

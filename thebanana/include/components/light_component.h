@@ -6,7 +6,7 @@ namespace thebanana {
 	public:
 		struct light_data {
 			glm::vec3 position;
-			glm::vec3 color;
+			glm::vec3 diffuse, specular, ambient;
 			float ambient_strength;
 		};
 		BANANA_API light_component(gameobject* object);

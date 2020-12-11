@@ -105,7 +105,8 @@ void load_project(const std::string& path) {
 	for (YAML::Node m : file["materials"]) {
 		auto registry = thebanana::g_game->get_material_registry();
 		thebanana::material* mat = registry->find(registry->new_material());
-		mat->set_albedo(m["albedo"].as<std::string>());
+		mat->set_texture(m["texture"].as<std::string>());
+		mat->set_normal_map(m["normal map"].as<std::string>());
 		mat->set_diffuse(m["diffuse"].as<glm::vec3>());
 		mat->set_specular(m["specular"].as<glm::vec3>());
 		mat->set_ambient(m["ambient"].as<glm::vec3>());

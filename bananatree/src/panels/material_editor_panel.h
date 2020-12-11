@@ -23,7 +23,7 @@ namespace bananatree {
 		};
 		std::vector<matdesc> m_descriptors;
 		std::shared_ptr<project> m_project;
-		std::shared_ptr<thebanana::graphics::texture> m_material_albedo_ptr;
+		std::shared_ptr<thebanana::graphics::texture> m_material_texture_ptr, m_material_normal_map_ptr;
 		int m_index;
 	};
 }

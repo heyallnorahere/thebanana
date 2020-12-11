@@ -4,6 +4,11 @@ layout(location = 1) in vec3 nrm;
 layout(location = 2) in vec2 _uv;
 layout(location = 3) in ivec4 bone_ids;
 layout(location = 4) in vec4 weights;
+struct normal_map_t {
+	sampler2D tex;
+	bool exists;
+};
+uniform normal_map_t normal_map;
 uniform mat4 model;
 uniform mat4 model_transform;
 uniform mat4 view;
@@ -25,7 +30,14 @@ void main() {
 		transform = transform * bone_transform;
 	}
 	fragpos = vec3(transform * vec4(pos, 1.0));
-	normal = mat3(transpose(inverse(transform))) * nrm;
+	vec3 normal_value;
+	if (normal_map.exists) {
+		normal_value = vec3(texture(normal_map.tex, _uv));
+	}
+	else {
+		normal_value = nrm;
+	}
+	normal = mat3(transpose(inverse(transform))) * normal_value;
 	gl_Position = projection * view * model * model_transform * position;
 	uv = _uv;
 }

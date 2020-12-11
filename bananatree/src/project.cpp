@@ -136,7 +136,8 @@ namespace bananatree {
 		for (auto md : this->m_materials) {
 			out << YAML::BeginMap;
 			out << YAML::Key << "friendly name" << YAML::Value << md.friendly_name;
-			out << YAML::Key << "albedo" << YAML::Value << md.image_path;
+			out << YAML::Key << "texture" << YAML::Value << md.texture_path;
+			out << YAML::Key << "normal map" << YAML::Value << md.normal_map_path;
 			out << YAML::Key << "diffuse" << YAML::Value << md.diffuse;
 			out << YAML::Key << "specular" << YAML::Value << md.specular;
 			out << YAML::Key << "ambient" << YAML::Value << md.ambient;
@@ -217,7 +218,8 @@ namespace bananatree {
 		for (auto m : file["materials"]) {
 			material_descriptor md;
 			md.friendly_name = m["friendly name"].as<std::string>();
-			md.image_path = m["albedo"].as<std::string>();
+			md.texture_path = m["texture"].as<std::string>();
+			md.normal_map_path = m["normal map"].as<std::string>();
 			md.diffuse = m["diffuse"].as<glm::vec3>();
 			md.specular = m["specular"].as<glm::vec3>();
 			md.ambient = m["ambient"].as<glm::vec3>();

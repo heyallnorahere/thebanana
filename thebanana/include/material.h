@@ -5,11 +5,16 @@ namespace thebanana {
 	class material {
 	public:
 		BANANA_API material();
-		BANANA_API void set_albedo(const std::string& image_path);
-		BANANA_API void set_albedo(void* data, int width, int height, int channels, bool clear_path = true);
-		BANANA_API void set_albedo(graphics::texture* texture);
-		BANANA_API const std::shared_ptr<graphics::texture>& get_albedo();
-		BANANA_API std::string get_albedo_path();
+		BANANA_API void set_texture(const std::string& image_path);
+		BANANA_API void set_texture(void* data, int width, int height, int channels, bool clear_path = true);
+		BANANA_API void set_texture(graphics::texture* texture);
+		BANANA_API const std::shared_ptr<graphics::texture>& get_texture();
+		BANANA_API std::string get_texture_path();
+		BANANA_API void set_normal_map(const std::string& image_path);
+		BANANA_API void set_normal_map(void* data, int width, int height, int channels, bool clear_path = true);
+		BANANA_API void set_normal_map(graphics::texture* texture);
+		BANANA_API const std::shared_ptr<graphics::texture>& get_normal_map();
+		BANANA_API std::string get_normal_map_path();
 		BANANA_API void set_diffuse(glm::vec3 color);
 		BANANA_API void set_specular(glm::vec3 color);
 		BANANA_API void set_ambient(glm::vec3 color);
@@ -24,11 +29,11 @@ namespace thebanana {
 		BANANA_API std::string get_friendly_name();
 		BANANA_API void set_friendly_name(const std::string& name);
 	private:
-		std::shared_ptr<graphics::texture> m_albedo;
+		std::shared_ptr<graphics::texture> m_texture, m_normal_map;
 		glm::vec3 m_diffuse, m_specular, m_ambient;
 		float m_shininess;
 		unsigned long long m_uuid;
-		std::string m_albedo_path;
+		std::string m_texture_path, m_normal_map_path;
 		std::string m_friendly_name;
 	};
 	class material_registry {

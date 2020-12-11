@@ -67,23 +67,42 @@ namespace bananatree {
 			}
 			ImGui::PopID();
 			ImGui::InputText("Name", &this->m_descriptors[index].copy.friendly_name);
-			if (ImGui::CollapsingHeader("Albedo")) {
-				ImGui::Image((ImTextureID)mat->get_albedo()->get_id(), ImVec2(100.f, 100.f), ImVec2(0.f, 1.f), ImVec2(1.f, 0.f));
+			if (ImGui::CollapsingHeader("Texture")) {
+				ImGui::Image((ImTextureID)mat->get_texture()->get_id(), ImVec2(100.f, 100.f), ImVec2(0.f, 1.f), ImVec2(1.f, 0.f));
 				ImGui::SameLine();
 				if (ImGui::Button("...")) {
 					std::string path = util::open_dialog("PNG Image (*.png)\0*.png\0JPEG Image (*.jpeg,*.jpg)\0*.jpeg,*.jpg\0");
 					if (!path.empty()) {
-						this->m_material_albedo_ptr = mat->get_albedo();
-						this->m_descriptors[index].copy.image_path = path;
+						this->m_material_texture_ptr = mat->get_texture();
+						this->m_descriptors[index].copy.texture_path = path;
 					}
 				}
 				ImGui::SameLine();
 				if (ImGui::Button("Clear")) {
-					this->m_material_albedo_ptr = mat->get_albedo();
-					unsigned char albedo_color[3];
-					memset(albedo_color, 0xff, 3);
-					mat->set_albedo(albedo_color, 1, 1, 3);
-					this->m_descriptors[index].copy.image_path = mat->get_albedo_path();
+					this->m_material_texture_ptr = mat->get_texture();
+					unsigned char texture_color[3];
+					memset(texture_color, 0xff, 3);
+					mat->set_texture(texture_color, 1, 1, 3);
+					this->m_descriptors[index].copy.texture_path = mat->get_texture_path();
+				}
+			}
+			if (ImGui::CollapsingHeader("Normal map")) {
+				ImGui::Image((ImTextureID)mat->get_normal_map()->get_id(), ImVec2(100.f, 100.f), ImVec2(0.f, 1.f), ImVec2(1.f, 0.f));
+				ImGui::SameLine();
+				if (ImGui::Button("...")) {
+					std::string path = util::open_dialog("PNG Image (*.png)\0*.png\0JPEG Image (*.jpeg,*.jpg)\0*.jpeg,*.jpg\0");
+					if (!path.empty()) {
+						this->m_material_normal_map_ptr = mat->get_normal_map();
+						this->m_descriptors[index].copy.normal_map_path = path;
+					}
+				}
+				ImGui::SameLine();
+				if (ImGui::Button("Clear")) {
+					this->m_material_normal_map_ptr = mat->get_normal_map();
+					unsigned char normal_map_color[3];
+					memset(normal_map_color, 0xff, 3);
+					mat->set_normal_map(normal_map_color, 1, 1, 3);
+					this->m_descriptors[index].copy.normal_map_path = mat->get_normal_map_path();
 				}
 			}
 			if (ImGui::CollapsingHeader("Settings")) {
@@ -97,8 +116,10 @@ namespace bananatree {
 		}
 		for (size_t i = 0; i < thebanana::g_game->get_material_registry()->get_count(); i++) {
 			thebanana::material* mat = thebanana::g_game->get_material_registry()->get(i);
-			if (this->m_descriptors[i].copy.image_path != mat->get_albedo_path())
-				mat->set_albedo(this->m_descriptors[i].copy.image_path);
+			if (this->m_descriptors[i].copy.texture_path != mat->get_texture_path())
+				mat->set_texture(this->m_descriptors[i].copy.texture_path);
+			if (this->m_descriptors[i].copy.normal_map_path != mat->get_normal_map_path())
+				mat->set_normal_map(this->m_descriptors[i].copy.normal_map_path);
 			mat->set_friendly_name(this->m_descriptors[i].copy.friendly_name);
 			mat->set_diffuse(this->m_descriptors[i].copy.diffuse);
 			mat->set_specular(this->m_descriptors[i].copy.specular);
@@ -119,7 +140,8 @@ namespace bananatree {
 		thebanana::material_registry* registry = thebanana::g_game->get_material_registry();
 		thebanana::material* mat = registry->find(registry->new_material());
 		mat->set_friendly_name(md.friendly_name);
-		mat->set_albedo(md.image_path);
+		mat->set_texture(md.texture_path);
+		mat->set_normal_map(md.normal_map_path);
 		mat->set_diffuse(md.diffuse);
 		mat->set_specular(md.specular);
 		mat->set_ambient(md.ambient);

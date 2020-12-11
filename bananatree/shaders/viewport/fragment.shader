@@ -2,7 +2,7 @@
 out vec4 fragment_color;
 in vec2 uv;
 struct material_t {
-	sampler2D albedo;
+	sampler2D tex;
 	vec3 diffuse;
 	vec3 specular;
 	vec3 ambient;
@@ -36,5 +36,5 @@ void main() {
 		color += (ambient + diffuse + specular);
 	}
 	color /= float(light_count);
-	fragment_color = texture(shader_material.albedo, uv) * vec4(color, 1.0);
+	fragment_color = texture(shader_material.tex, uv) * vec4(color, 1.0);
 }

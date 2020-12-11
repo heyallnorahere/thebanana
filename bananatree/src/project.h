@@ -10,7 +10,7 @@ namespace bananatree {
 		};
 		struct material_descriptor {
 			std::string friendly_name;
-			std::string image_path;
+			std::string texture_path, normal_map_path;
 			glm::vec3 diffuse, specular, ambient;
 			float shininess;
 			unsigned long long uuid;

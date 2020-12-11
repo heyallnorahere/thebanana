@@ -7,6 +7,7 @@ namespace thebanana {
 	}
 	light_component::light_data light_component::get_data() {
 		light_data data;
+		data.position = this->get_transform();
 		data.color = this->get_property<property_classes::color>("Color")->get_vector();
 		data.ambient_strength = *this->get_property<float>("Ambient strength");
 		return data;

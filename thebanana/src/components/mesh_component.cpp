@@ -36,6 +36,24 @@ namespace thebanana {
 			if (mat) {
 				mat->send_to_shader(this->parent->get_scene()->get_shader()->get_id(), "shader_material");
 			}
+			{
+				auto lights = this->parent->get_scene()->get_lights();
+				opengl_shader_library::uni& uniforms = this->parent->get_scene()->get_shader()->get_uniforms();
+				// im doing the for loop manually for the index
+				for (size_t i = 0; i < lights.size(); i++) {
+					const auto& light = lights[i];
+					auto get_uniform_name = [&](const std::string& name) {
+						return "lights[" + std::to_string(i) + "]." + name;
+					};
+					uniforms.vec3(get_uniform_name("position"), light.position);
+					uniforms.vec3(get_uniform_name("color"), light.color);
+					uniforms._float(get_uniform_name("ambient_strength"), light.ambient_strength);
+				}
+				uniforms._int("light_count", (int)lights.size());
+				gameobject* camera = this->parent->get_scene()->find_main_camera();
+				glm::vec3 viewpos = camera ? (glm::vec3)camera->get_absolute_transform() : glm::vec3(0.f);
+				uniforms.vec3("viewpos", viewpos);
+			}
 			// model_transform is the transform passed in to the model registry, transformed by the root transform of the aiScene
 			transform model_transform = this->parent->get_game()->get_model_registry()->get_transform(this->model_name);
 			// pass it in to the shader

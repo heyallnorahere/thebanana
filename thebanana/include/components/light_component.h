@@ -5,6 +5,7 @@ namespace thebanana {
 	class light_component : public component {
 	public:
 		struct light_data {
+			glm::vec3 position;
 			glm::vec3 color;
 			float ambient_strength;
 		};

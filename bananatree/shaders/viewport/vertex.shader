@@ -11,15 +11,21 @@ uniform mat4 projection;
 uniform bool has_bones;
 uniform mat4 bones[100];
 out vec2 uv;
+out vec3 fragpos;
+out vec3 normal;
 void main() {
 	vec4 position = vec4(pos, 1.0);
+	mat4 transform = model * model_transform;
 	if (has_bones) {
 		mat4 bone_transform = bones[bone_ids[0]] * weights[0];
 		bone_transform += bones[bone_ids[1]] * weights[1];
 		bone_transform += bones[bone_ids[2]] * weights[2];
 		bone_transform += bones[bone_ids[3]] * weights[3];
 		position = bone_transform * position;
+		transform = transform * bone_transform;
 	}
+	fragpos = vec3(transform * vec4(pos, 1.0));
+	normal = mat3(transpose(inverse(transform))) * nrm;
 	gl_Position = projection * view * model * model_transform * position;
 	uv = _uv;
 }

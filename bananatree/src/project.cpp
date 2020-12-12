@@ -103,7 +103,6 @@ namespace bananatree {
 			mep->refresh();
 		}
 		this->m_descriptors.clear();
-		this->m_materials.clear();
 	}
 	void project::save(const std::string& path) {
 		this->m_temp_path = path;
@@ -133,7 +132,7 @@ namespace bananatree {
 		}
 		out << YAML::EndSeq;
 		out << YAML::Key << "materials" << YAML::Value << YAML::BeginSeq;
-		for (auto md : this->m_materials) {
+		for (auto md : this->m_editor_layer->get_imgui_layer()->find_panel<material_editor_panel>()->get_descriptors()) {
 			out << YAML::BeginMap;
 			out << YAML::Key << "friendly name" << YAML::Value << md.friendly_name;
 			out << YAML::Key << "texture" << YAML::Value << md.texture_path;
@@ -215,18 +214,19 @@ namespace bananatree {
 			this->m_editor_layer->get_imgui_layer()->find_panel<model_registry_panel>()->import(md);
 		}
 		assert(file["materials"]);
+		thebanana::material_registry* registry = thebanana::g_game->get_material_registry();
 		for (auto m : file["materials"]) {
-			material_descriptor md;
-			md.friendly_name = m["friendly name"].as<std::string>();
-			md.texture_path = m["texture"].as<std::string>();
-			md.normal_map_path = m["normal map"].as<std::string>();
-			md.diffuse = m["diffuse"].as<glm::vec3>();
-			md.specular = m["specular"].as<glm::vec3>();
-			md.ambient = m["ambient"].as<glm::vec3>();
-			md.shininess = m["shininess"].as<float>();
-			md.uuid = m["uuid"].as<unsigned long long>();
-			this->m_materials.push_back(md);
-			this->m_editor_layer->get_imgui_layer()->find_panel<material_editor_panel>()->add_material(md);
+			thebanana::material* mat = registry->find(registry->new_material());
+			mat->set_friendly_name(m["friendly name"].as<std::string>());
+			mat->set_texture(m["texture"].as<std::string>());
+			mat->set_normal_map(m["normal map"].as<std::string>());
+			mat->set_diffuse(m["diffuse"].as<glm::vec3>());
+			mat->set_specular(m["specular"].as<glm::vec3>());
+			mat->set_ambient(m["ambient"].as<glm::vec3>());
+			mat->set_shininess(m["shininess"].as<float>());
+			mat->set_uuid(m["uuid"].as<unsigned long long>());
+			this->m_editor_layer->get_imgui_layer()->find_panel<material_editor_panel>()->add_material_desc(mat);
+			mat = NULL;
 		}
 		this->m_editor_layer->get_imgui_layer()->find_panel<material_editor_panel>()->refresh();
 	}
@@ -262,12 +262,5 @@ namespace bananatree {
 	}
 	std::string project::get_path() {
 		return this->m_temp_path;
-	}
-	project::material_descriptor* project::add_material() {
-		this->m_materials.push_back(material_descriptor());
-		return &this->m_materials[this->m_materials.size() - 1];
-	}
-	const std::vector<project::material_descriptor>& project::get_materials() {
-		return this->m_materials;
 	}
 }

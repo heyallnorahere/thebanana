@@ -111,8 +111,10 @@
     <None Include="packages.config" />
     <None Include="imgui.ini" />
     <None Include="steam_api64.dll" />
-    <None Include="shaders\viewport\vertex.shader" />
-    <None Include="shaders\viewport\fragment.shader" />
+    <None Include="shaders\rendered\fragment.shader" />
+    <None Include="shaders\rendered\vertex.shader" />
+    <None Include="shaders\material_preview\vertex.shader" />
+    <None Include="shaders\material_preview\fragment.shader" />
   </ItemGroup>
   <ItemGroup>
     <Font Include="fonts\OpenSans-Regular.ttf" />

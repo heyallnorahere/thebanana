@@ -13,9 +13,8 @@ namespace bananatree {
 			this->m_materials.push_back(thebanana::g_game->get_material_registry()->get(i));
 		}
 		this->m_descriptors.clear();
-		auto& materials = this->m_project->get_materials();
-		for (auto& m : materials) {
-			this->m_descriptors.push_back((project::material_descriptor*)&m);
+		for (auto mat : this->m_materials) {
+			this->add_material_desc(mat);
 		}
 	}
 	void material_editor_panel::render() {
@@ -36,7 +35,6 @@ namespace bananatree {
 		ImGui::SameLine();
 		if (ImGui::Button("New")) {
 			unsigned long long uuid = thebanana::g_game->get_material_registry()->new_material();
-			this->m_project->add_material();
 			this->refresh();
 			for (size_t i = 0; i < thebanana::g_game->get_material_registry()->get_count(); i++) {
 				thebanana::material* mat = thebanana::g_game->get_material_registry()->get(i);
@@ -45,13 +43,7 @@ namespace bananatree {
 				}
 			}
 			thebanana::material* mat = thebanana::g_game->get_material_registry()->get((size_t)this->m_index - 1);
-			this->m_descriptors[(size_t)this->m_index - 1].copy.friendly_name = mat->get_friendly_name();
-			this->m_descriptors[(size_t)this->m_index - 1].copy.diffuse = mat->get_diffuse();
-			this->m_descriptors[(size_t)this->m_index - 1].copy.specular = mat->get_specular();
-			this->m_descriptors[(size_t)this->m_index - 1].copy.ambient = mat->get_ambient();
-			this->m_descriptors[(size_t)this->m_index - 1].copy.shininess = mat->get_shininess();
-			this->m_descriptors[(size_t)this->m_index - 1].copy.uuid = mat->get_uuid();
-			this->m_descriptors[(size_t)this->m_index - 1].commit();
+			this->add_material_desc(mat);
 		}
 		size_t index = (size_t)this->m_index;
 		if (index > 0) {
@@ -66,7 +58,7 @@ namespace bananatree {
 				ImGui::EndDragDropSource();
 			}
 			ImGui::PopID();
-			ImGui::InputText("Name", &this->m_descriptors[index].copy.friendly_name);
+			ImGui::InputText("Name", &this->m_descriptors[index].friendly_name);
 			if (ImGui::CollapsingHeader("Texture")) {
 				ImGui::PushID("texture");
 				ImGui::Image((ImTextureID)mat->get_texture()->get_id(), ImVec2(100.f, 100.f), ImVec2(0.f, 1.f), ImVec2(1.f, 0.f));
@@ -75,7 +67,7 @@ namespace bananatree {
 					std::string path = util::open_dialog("PNG Image (*.png)\0*.png\0JPEG Image (*.jpeg,*.jpg)\0*.jpeg,*.jpg\0");
 					if (!path.empty()) {
 						this->m_material_texture_ptr = mat->get_texture();
-						this->m_descriptors[index].copy.texture_path = path;
+						this->m_descriptors[index].texture_path = path;
 					}
 				}
 				ImGui::SameLine();
@@ -84,7 +76,7 @@ namespace bananatree {
 					unsigned char texture_color[3];
 					memset(texture_color, 0xff, 3);
 					mat->set_texture(texture_color, 1, 1, 3);
-					this->m_descriptors[index].copy.texture_path = mat->get_texture_path();
+					this->m_descriptors[index].texture_path = mat->get_texture_path();
 				}
 				ImGui::PopID();
 			}
@@ -96,7 +88,7 @@ namespace bananatree {
 					std::string path = util::open_dialog("PNG Image (*.png)\0*.png\0JPEG Image (*.jpeg,*.jpg)\0*.jpeg,*.jpg\0");
 					if (!path.empty()) {
 						this->m_material_normal_map_ptr = mat->get_normal_map();
-						this->m_descriptors[index].copy.normal_map_path = path;
+						this->m_descriptors[index].normal_map_path = path;
 					}
 				}
 				ImGui::SameLine();
@@ -105,31 +97,30 @@ namespace bananatree {
 					unsigned char normal_map_color[3];
 					memset(normal_map_color, 0xff, 3);
 					mat->set_normal_map(normal_map_color, 1, 1, 3);
-					this->m_descriptors[index].copy.normal_map_path = mat->get_normal_map_path();
+					this->m_descriptors[index].normal_map_path = mat->get_normal_map_path();
 				}
 				ImGui::PopID();
 			}
 			if (ImGui::CollapsingHeader("Settings")) {
-				ImGui::ColorEdit3("Diffuse color", &this->m_descriptors[index].copy.diffuse.x);
-				ImGui::ColorEdit3("Specular color", &this->m_descriptors[index].copy.specular.x);
-				ImGui::ColorEdit3("Ambient color", &this->m_descriptors[index].copy.ambient.x);
-				ImGui::DragFloat("Shininess", &this->m_descriptors[index].copy.shininess, 0.001f, 0.f, 1.f);
+				ImGui::ColorEdit3("Diffuse color", &this->m_descriptors[index].diffuse.x);
+				ImGui::ColorEdit3("Specular color", &this->m_descriptors[index].specular.x);
+				ImGui::ColorEdit3("Ambient color", &this->m_descriptors[index].ambient.x);
+				ImGui::DragFloat("Shininess", &this->m_descriptors[index].shininess, 0.001f, 0.f, 1.f);
 			}
 		} else {
 			ImGui::Text("No material selected");
 		}
 		for (size_t i = 0; i < thebanana::g_game->get_material_registry()->get_count(); i++) {
 			thebanana::material* mat = thebanana::g_game->get_material_registry()->get(i);
-			if (this->m_descriptors[i].copy.texture_path != mat->get_texture_path())
-				mat->set_texture(this->m_descriptors[i].copy.texture_path);
-			if (this->m_descriptors[i].copy.normal_map_path != mat->get_normal_map_path())
-				mat->set_normal_map(this->m_descriptors[i].copy.normal_map_path);
-			mat->set_friendly_name(this->m_descriptors[i].copy.friendly_name);
-			mat->set_diffuse(this->m_descriptors[i].copy.diffuse);
-			mat->set_specular(this->m_descriptors[i].copy.specular);
-			mat->set_ambient(this->m_descriptors[i].copy.ambient);
-			mat->set_shininess(this->m_descriptors[i].copy.shininess);
-			this->m_descriptors[i].commit();
+			if (this->m_descriptors[i].texture_path != mat->get_texture_path())
+				mat->set_texture(this->m_descriptors[i].texture_path);
+			if (this->m_descriptors[i].normal_map_path != mat->get_normal_map_path())
+				mat->set_normal_map(this->m_descriptors[i].normal_map_path);
+			mat->set_friendly_name(this->m_descriptors[i].friendly_name);
+			mat->set_diffuse(this->m_descriptors[i].diffuse);
+			mat->set_specular(this->m_descriptors[i].specular);
+			mat->set_ambient(this->m_descriptors[i].ambient);
+			mat->set_shininess(this->m_descriptors[i].shininess);
 		}
 		ImGui::End();
 	}
@@ -140,16 +131,19 @@ namespace bananatree {
 		this->m_project = p;
 		this->refresh();
 	}
-	void material_editor_panel::add_material(const project::material_descriptor& md) {
-		thebanana::material_registry* registry = thebanana::g_game->get_material_registry();
-		thebanana::material* mat = registry->find(registry->new_material());
-		mat->set_friendly_name(md.friendly_name);
-		mat->set_texture(md.texture_path);
-		mat->set_normal_map(md.normal_map_path);
-		mat->set_diffuse(md.diffuse);
-		mat->set_specular(md.specular);
-		mat->set_ambient(md.ambient);
-		mat->set_shininess(md.shininess);
-		mat->set_uuid(md.uuid);
+	void material_editor_panel::add_material_desc(thebanana::material* mat) {
+		project::material_descriptor desc;
+		desc.ambient = mat->get_ambient();
+		desc.diffuse = mat->get_diffuse();
+		desc.specular = mat->get_specular();
+		desc.friendly_name = mat->get_friendly_name();
+		desc.shininess = mat->get_shininess();
+		desc.texture_path = mat->get_texture_path();
+		desc.normal_map_path = mat->get_normal_map_path();
+		desc.uuid = mat->get_uuid();
+		this->m_descriptors.push_back(desc);
+	}
+	std::vector<project::material_descriptor> material_editor_panel::get_descriptors() {
+		return this->m_descriptors;
 	}
 }

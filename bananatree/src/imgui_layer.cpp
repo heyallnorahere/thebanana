@@ -283,6 +283,15 @@ namespace bananatree {
 				}
 				ImGui::EndMenu();
 			}
+			if (ImGui::BeginMenu("Shaders")) {
+				if (ImGui::MenuItem("Material preview (Default)")) {
+					thebanana::g_game->get_scene()->set_shader_name("material preview");
+				}
+				if (ImGui::MenuItem("Rendered")) {
+					thebanana::g_game->get_scene()->set_shader_name("rendered");
+				}
+				ImGui::EndMenu();
+			}
 #ifdef _DEBUG
 			if (ImGui::BeginMenu("Debug")) {
 				if (ImGui::MenuItem("Break")) {

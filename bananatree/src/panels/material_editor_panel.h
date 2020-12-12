@@ -8,20 +8,11 @@ namespace bananatree {
 		virtual void render() override;
 		virtual std::string get_menu_text() override;
 		void set_project(const std::shared_ptr<project>& p);
-		void add_material(const project::material_descriptor& md);
+		void add_material_desc(thebanana::material* mat);
+		std::vector<project::material_descriptor> get_descriptors();
 	private:
 		std::vector<thebanana::material*> m_materials;
-		struct matdesc {
-			matdesc(project::material_descriptor* ptr) {
-				this->ptr = ptr;
-				this->copy = *this->ptr;
-			}
-			void commit() {
-				*this->ptr = this->copy;
-			}
-			project::material_descriptor* ptr, copy;
-		};
-		std::vector<matdesc> m_descriptors;
+		std::vector<project::material_descriptor> m_descriptors;
 		std::shared_ptr<project> m_project;
 		std::shared_ptr<thebanana::graphics::texture> m_material_texture_ptr, m_material_normal_map_ptr;
 		int m_index;

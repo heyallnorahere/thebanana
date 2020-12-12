@@ -18,8 +18,9 @@ namespace bananatree {
 		}
 		thebanana::g_game->show_cursor();
 		thebanana::g_game->unclip_cursor();
-		thebanana::g_game->get_shader_registry()->register_shader("viewport", "viewport");
-		thebanana::g_game->get_scene()->set_shader_name("viewport");
+		thebanana::g_game->get_shader_registry()->register_shader("rendered", "rendered");
+		thebanana::g_game->get_shader_registry()->register_shader("material preview", "material_preview");
+		thebanana::g_game->get_scene()->set_shader_name("material preview");
 	}
 	void editor_layer::gameloop() {
 		thebanana::g_game->update();

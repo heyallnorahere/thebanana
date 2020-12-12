@@ -127,11 +127,13 @@
       <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</DeploymentContent>
     </None>
     <None Include="packages.config" />
-    <None Include="shaders\viewport\fragment.shader">
+    <None Include="shaders\material_preview\fragment.shader" />
+    <None Include="shaders\material_preview\vertex.shader" />
+    <None Include="shaders\rendered\fragment.shader">
       <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</DeploymentContent>
       <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</DeploymentContent>
     </None>
-    <None Include="shaders\viewport\vertex.shader">
+    <None Include="shaders\rendered\vertex.shader">
       <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</DeploymentContent>
       <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</DeploymentContent>
     </None>

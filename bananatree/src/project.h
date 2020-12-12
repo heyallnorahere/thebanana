@@ -34,12 +34,9 @@ namespace bananatree {
 		bool has_temp_path();
 		const std::vector<model_descriptor>& get_descriptors();
 		std::string get_path();
-		material_descriptor* add_material();
-		const std::vector<material_descriptor>& get_materials();
 	private:
 		std::string m_name, m_main_scene, m_code_project, m_dll_name;
 		std::vector<model_descriptor> m_descriptors;
-		std::vector<material_descriptor> m_materials;
 		editor_layer* m_editor_layer;
 		std::string m_temp_path;
 	};

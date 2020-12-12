@@ -127,7 +127,7 @@ namespace thebanana {
 	}
 	bool gameobject::has_tag(const std::string& tag) const {
 		for (size_t i = 0; i < ((gameobject*)this)->get_number_components<tag_component>(); i++) {
-			if (tag == ((gameobject*)this)->get_component<tag_component>().get_tag()) return true;
+			if (tag == ((gameobject*)this)->get_component<tag_component>(i).get_tag()) return true;
 		}
 		return false;
 	}

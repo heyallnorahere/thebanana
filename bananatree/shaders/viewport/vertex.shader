@@ -30,12 +30,9 @@ void main() {
 		transform = transform * bone_transform;
 	}
 	fragpos = vec3(transform * vec4(pos, 1.0));
-	vec3 normal_value;
+	vec3 normal_value = nrm;
 	if (normal_map.exists) {
-		normal_value = vec3(texture(normal_map.tex, _uv));
-	}
-	else {
-		normal_value = nrm;
+		normal_value *= vec3(texture(normal_map.tex, _uv));
 	}
 	normal = mat3(transpose(inverse(transform))) * normal_value;
 	gl_Position = projection * view * model * model_transform * position;

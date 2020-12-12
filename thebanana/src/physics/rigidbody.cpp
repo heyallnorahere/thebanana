@@ -7,11 +7,12 @@ namespace thebanana {
 	const float drag = 0.05f;
 	rigidbody::rigidbody(gameobject* obj) : component(obj) {
 		this->add_property(new property<bool>(false, "Gravity"));
-		this->add_property(new property<glm::vec3>(glm::vec3(0.f, -1.f, 0.f), "Gravity value"));
+		this->add_property(new property<glm::vec3>(glm::vec3(0.f, -0.05f, 0.f), "Gravity value"));
 		this->add_property(new property<float>(1.f, "Mass"));
 		this->add_property(new property<float>(drag, "Drag"));
 		this->add_property(new property<property_base::dropdown>(property_base::dropdown(std::vector<std::string>({ "None", "Collide" })), "Collision type"));
 		this->add_property(new property<std::string>("", "Collision mesh name"));
+		this->add_property(new property<std::string>("", "Ignore tag"));
 		this->coll = NULL;
 		this->last_frame_model_name = "";
 		this->check_for_collisions = false;
@@ -52,6 +53,7 @@ namespace thebanana {
 		if (this->coll && this->check_for_collisions) {
 			for (auto ptr : this->parent->get_game()->get_rigidbody_list()) {
 				if (ptr == this) continue;
+				if (ptr->parent->has_tag(*this->get_property<std::string>("Ignore tag"))) continue;
 				glm::vec4 my_pos = this->parent->get_transform();
 				glm::vec4 other_pos = ptr->parent->get_transform();
 				glm::vec4 difference = my_pos - other_pos;
@@ -69,6 +71,9 @@ namespace thebanana {
 		assert(other->has_component<rigidbody>());
 		property_base::dropdown* other_ct = other->get_component<rigidbody>().get_property<property_base::dropdown>("Collision type");
 		if (this->num_collisions != 0 && this->check_for_collisions && (*collision_type->get_index_ptr() == 1) && (*other_ct->get_index_ptr() == 1)) {
+			if (other->has_tag(*this->get_property<std::string>("Ignore tag"))) {
+				return;
+			}
 			if (glm::length(this->shift_delta) > this->get_last_move_speed()) {
 				this->shift_delta = glm::normalize(this->shift_delta);
 				this->shift_delta *= this->get_last_move_speed() * 1.1f;
@@ -79,6 +84,7 @@ namespace thebanana {
 	}
 	void rigidbody::clean_up() {
 		delete this->coll;
+		this->parent->get_game()->get_rigidbody_list().remove(this);
 	}
 	rigidbody& rigidbody::set_check_for_collisions(bool check) {
 		this->check_for_collisions = check;
@@ -124,5 +130,11 @@ namespace thebanana {
 	}
 	collider* rigidbody::get_collider() const {
 		return this->coll;
+	}
+	glm::vec3 rigidbody::get_velocity() const {
+		return this->velocity;
+	}
+	glm::vec3 rigidbody::get_acceleration() const {
+		return this->acceleration;
 	}
 }

@@ -68,6 +68,7 @@ namespace bananatree {
 			ImGui::PopID();
 			ImGui::InputText("Name", &this->m_descriptors[index].copy.friendly_name);
 			if (ImGui::CollapsingHeader("Texture")) {
+				ImGui::PushID("texture");
 				ImGui::Image((ImTextureID)mat->get_texture()->get_id(), ImVec2(100.f, 100.f), ImVec2(0.f, 1.f), ImVec2(1.f, 0.f));
 				ImGui::SameLine();
 				if (ImGui::Button("...")) {
@@ -85,8 +86,10 @@ namespace bananatree {
 					mat->set_texture(texture_color, 1, 1, 3);
 					this->m_descriptors[index].copy.texture_path = mat->get_texture_path();
 				}
+				ImGui::PopID();
 			}
 			if (ImGui::CollapsingHeader("Normal map")) {
+				ImGui::PushID("normalmap");
 				ImGui::Image((ImTextureID)mat->get_normal_map()->get_id(), ImVec2(100.f, 100.f), ImVec2(0.f, 1.f), ImVec2(1.f, 0.f));
 				ImGui::SameLine();
 				if (ImGui::Button("...")) {
@@ -104,6 +107,7 @@ namespace bananatree {
 					mat->set_normal_map(normal_map_color, 1, 1, 3);
 					this->m_descriptors[index].copy.normal_map_path = mat->get_normal_map_path();
 				}
+				ImGui::PopID();
 			}
 			if (ImGui::CollapsingHeader("Settings")) {
 				ImGui::ColorEdit3("Diffuse color", &this->m_descriptors[index].copy.diffuse.x);

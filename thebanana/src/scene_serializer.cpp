@@ -140,6 +140,7 @@ namespace thebanana {
 			}
 			out << YAML::Key << "collision_model_name" << YAML::Value << rb.get_collision_model_name();
 			out << YAML::Key << "check_for_collisions" << YAML::Value << rb.is_checking_for_collisions();
+			out << YAML::Key << "ignore tag" << YAML::Value << *rb.get_property<std::string>("Ignore tag");
 			collider* c = rb.get_collider();
 			if (c) serialize_collider(out, c);
 			out << YAML::EndMap;
@@ -300,6 +301,7 @@ namespace thebanana {
 				}
 				rb.set_collision_model_name(n["collision_model_name"].as<std::string>());
 				rb.set_check_for_collisions(n["check_for_collisions"].as<bool>());
+				rb.set_property("Ignore tag", n["ignore tag"].as<std::string>());
 				if (n["collider"])
 					deserialize_collider(n["collider"], rb);
 			} else if (type == "camera_component") {

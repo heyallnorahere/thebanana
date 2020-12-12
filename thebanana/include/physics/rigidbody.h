@@ -27,6 +27,8 @@ namespace thebanana {
 		BANANA_API float get_speed_cap();
 		BANANA_API float get_last_move_speed();
 		BANANA_API collider* get_collider() const;
+		BANANA_API glm::vec3 get_velocity() const;
+		BANANA_API glm::vec3 get_acceleration() const;
 	private:
 		int num_collisions;
 		glm::vec3 shift_delta;

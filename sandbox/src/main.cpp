@@ -121,8 +121,10 @@ void sandbox_application_layer::init() {
 #endif
 	// load shaders
 	thebanana::g_game->get_shader_registry()->register_shader("basic", "basic");
+	thebanana::g_game->get_shader_registry()->register_shader("depth", "depth", true);
 	thebanana::g_game->get_shader_registry()->register_shader("2d", "2d");
 	thebanana::g_game->get_scene()->set_shader_name("basic");
+	thebanana::g_game->get_scene()->set_depth_shader_name("depth");
 	thebanana::graphics::quad::init_opengl_shader("2d");
 	// if a scene is specified, load it
 	std::vector<std::string> cmdline = thebanana::g_game->get_command_line();

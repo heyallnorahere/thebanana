@@ -49,6 +49,9 @@
     <None Include="models\Lblock.mtl" />
     <None Include="models\Lblock.obj" />
     <None Include="steam_api64.dll" />
+    <None Include="shaders\depth\vertex.shader" />
+    <None Include="shaders\depth\geometry.shader" />
+    <None Include="shaders\depth\fragment.shader" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="steam_appid.txt" />

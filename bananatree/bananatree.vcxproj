@@ -122,8 +122,6 @@
     <ClInclude Include="src\util.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\sandbox\shaders\basic\fragment.shader" />
-    <None Include="..\sandbox\shaders\basic\vertex.shader" />
     <None Include="imgui.ini">
       <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</DeploymentContent>
       <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</DeploymentContent>

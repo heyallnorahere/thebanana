@@ -12,6 +12,7 @@
 #include "panels/project_editor_panel.h"
 #include "panels/script_registry_panel.h"
 #include "panels/material_editor_panel.h"
+#include "panels/texture_viewer_panel.h"
 #include "editor_layer.h"
 #include "util.h"
 namespace bananatree {
@@ -60,10 +61,12 @@ namespace bananatree {
 		this->add_panel<viewport_panel>()->set_imgui_layer(this);
 		this->add_panel<log_panel>();
 		this->add_panel<property_editor_panel>()->set_hierarchy(this->add_panel<scene_hierarchy_panel>());
+		this->find_panel<property_editor_panel>()->set_texture_viewer(this->add_panel<texture_viewer_panel>());
 		this->add_panel<model_registry_panel>()->set_project(this->m_editor_layer->get_project());
 		this->add_panel<project_editor_panel>()->set_project(this->m_editor_layer->get_project());
 		this->add_panel<script_registry_panel>();
 		this->add_panel<material_editor_panel>()->set_project(this->m_editor_layer->get_project());
+		this->find_panel<material_editor_panel>()->set_texture_viewer(this->find_panel<texture_viewer_panel>());
 	}
 	imgui_layer::~imgui_layer() {
 		ImGui_ImplOpenGL3_Shutdown();

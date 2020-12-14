@@ -5,6 +5,7 @@
 #include <backends/imgui_impl_opengl3.h>
 #include <misc/cpp/imgui_stdlib.h>
 #include "../util.h"
+#include "texture_viewer_panel.h"
 namespace bananatree {
 	void material_editor_panel::refresh() {
 		this->m_index = 0;
@@ -78,6 +79,9 @@ namespace bananatree {
 					mat->set_texture(texture_color, 1, 1, 3);
 					this->m_descriptors[index].texture_path = mat->get_texture_path();
 				}
+				if (ImGui::Button("Open in texture viewer")) {
+					this->m_texture_viewer->set_texture(mat->get_texture()->get_id());
+				}
 				ImGui::PopID();
 			}
 			if (ImGui::CollapsingHeader("Normal map")) {
@@ -98,6 +102,9 @@ namespace bananatree {
 					memset(normal_map_color, 0xff, 3);
 					mat->set_normal_map(normal_map_color, 1, 1, 3);
 					this->m_descriptors[index].normal_map_path = mat->get_normal_map_path();
+				}
+				if (ImGui::Button("Open in texture viewer")) {
+					this->m_texture_viewer->set_texture(mat->get_normal_map()->get_id());
 				}
 				ImGui::PopID();
 			}
@@ -125,11 +132,14 @@ namespace bananatree {
 		ImGui::End();
 	}
 	std::string material_editor_panel::get_menu_text() {
-		return std::string();
+		return "Material editor";
 	}
 	void material_editor_panel::set_project(const std::shared_ptr<project>& p) {
 		this->m_project = p;
 		this->refresh();
+	}
+	void material_editor_panel::set_texture_viewer(texture_viewer_panel* viewer) {
+		this->m_texture_viewer = viewer;
 	}
 	void material_editor_panel::add_material_desc(thebanana::material* mat) {
 		project::material_descriptor desc;

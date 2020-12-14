@@ -60,6 +60,9 @@
     <ClCompile Include="src\panels\material_editor_panel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\panels\texture_viewer_panel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\editor_layer.h">
@@ -102,6 +105,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\panels\material_editor_panel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\panels\texture_viewer_panel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

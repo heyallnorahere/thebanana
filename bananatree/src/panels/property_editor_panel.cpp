@@ -6,7 +6,8 @@
 #include <backends/imgui_impl_opengl3.h>
 #include <misc/cpp/imgui_stdlib.h>
 #include "scene_hierarchy_panel.h"
-#include <unordered_map>
+#include "texture_viewer_panel.h"
+__declspec(dllimport) bool is_2d(unsigned int texture);
 namespace bananatree {
 	property_editor_panel::property_editor_panel() {
 		this->m_component_index = 0;
@@ -287,6 +288,16 @@ namespace bananatree {
 					if (typeid(c).hash_code() == typeid(thebanana::rigidbody).hash_code()) {
 						collider_control((thebanana::rigidbody&)c);
 					}
+					if (typeid(c).hash_code() == typeid(thebanana::light_component).hash_code()) {
+						thebanana::light_component& lc = (thebanana::light_component&)c;
+						thebanana::graphics::framebuffer* db = lc.get_depthbuffer();
+						int texture = (int)db->get_attachments()[db->get_attachment_map().depth_index].value;
+						if (is_2d(texture)) {
+							if (ImGui::Button("View depth map")) {
+								this->m_texture_viewer->set_texture(texture);
+							}
+						}
+					}
 					auto& properties = c.get_properties();
 					for (size_t i = 0; i < properties.size(); i++) {
 						auto it = properties.begin();
@@ -366,5 +377,8 @@ namespace bananatree {
 	}
 	void property_editor_panel::set_hierarchy(scene_hierarchy_panel* hierarchy) {
 		this->m_hierarchy = hierarchy;
+	}
+	void property_editor_panel::set_texture_viewer(texture_viewer_panel* viewer) {
+		this->m_texture_viewer = viewer;
 	}
 }

@@ -99,6 +99,7 @@
     <ClCompile Include="src\panels\property_editor_panel.cpp" />
     <ClCompile Include="src\panels\scene_hierarchy_panel.cpp" />
     <ClCompile Include="src\panels\script_registry_panel.cpp" />
+    <ClCompile Include="src\panels\texture_viewer_panel.cpp" />
     <ClCompile Include="src\panels\viewport_panel.cpp" />
     <ClCompile Include="src\project.cpp" />
     <ClCompile Include="src\util.cpp" />
@@ -115,6 +116,7 @@
     <ClInclude Include="src\panels\property_editor_panel.h" />
     <ClInclude Include="src\panels\scene_hierarchy_panel.h" />
     <ClInclude Include="src\panels\script_registry_panel.h" />
+    <ClInclude Include="src\panels\texture_viewer_panel.h" />
     <ClInclude Include="src\panels\viewport_panel.h" />
     <ClInclude Include="src\project.h" />
     <ClInclude Include="src\util.h" />

@@ -21,6 +21,24 @@ namespace thebanana {
 			void opengl_texture::set_data(void* pixels) {
 				this->bind();
 				int internal_format;
+				int format;
+				this->get_format(format, internal_format);
+				glTexImage2D(GL_TEXTURE_2D, NULL, internal_format, this->m_width, this->m_height, NULL, format, GL_UNSIGNED_BYTE, pixels);
+				if (pixels) {
+					glGenerateMipmap(GL_TEXTURE_2D);
+				}
+				this->unbind();
+			}
+			void opengl_texture::get_data(void* buffer) {
+				int format, internal_format;
+				this->get_format(format, internal_format);
+				size_t size = (size_t)this->m_width * (size_t)this->m_height * (size_t)this->m_channels * sizeof(unsigned char);
+				glGetTextureImage(this->id, NULL, format, GL_UNSIGNED_BYTE, size, buffer);
+			}
+			opengl_texture::~opengl_texture() {
+				this->destroy_texture();
+			}
+			void opengl_texture::get_format(int& format, int& internal_format) {
 				switch (this->m_channels) {
 				case 1:
 					internal_format = GL_RED;
@@ -38,18 +56,10 @@ namespace thebanana {
 					return;
 					break;
 				}
-				int format = this->m_settings.format;
+				format = this->m_settings.format;
 				if (!format) {
 					format = internal_format;
 				}
-				glTexImage2D(GL_TEXTURE_2D, NULL, internal_format, this->m_width, this->m_height, NULL, format, GL_UNSIGNED_BYTE, pixels);
-				if (pixels) {
-					glGenerateMipmap(GL_TEXTURE_2D);
-				}
-				this->unbind();
-			}
-			opengl_texture::~opengl_texture() {
-				this->destroy_texture();
 			}
 			void opengl_texture::create_texture(void* pixels) {
 				glGenTextures(1, &this->id);

@@ -115,6 +115,9 @@
     <None Include="shaders\rendered\vertex.shader" />
     <None Include="shaders\material_preview\vertex.shader" />
     <None Include="shaders\material_preview\fragment.shader" />
+    <None Include="shaders\depth\vertex.shader" />
+    <None Include="shaders\depth\geometry.shader" />
+    <None Include="shaders\depth\fragment.shader" />
   </ItemGroup>
   <ItemGroup>
     <Font Include="fonts\OpenSans-Regular.ttf" />

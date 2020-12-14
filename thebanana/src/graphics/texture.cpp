@@ -38,5 +38,6 @@ namespace thebanana {
 		void dummy_texture::bind(unsigned int slot) { }
 		void dummy_texture::unbind() { }
 		void dummy_texture::set_data(void* pixels) { }
+		void dummy_texture::get_data(void* buffer) { }
 	}
 }

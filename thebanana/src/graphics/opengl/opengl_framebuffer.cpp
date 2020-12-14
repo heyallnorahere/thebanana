@@ -36,26 +36,50 @@ namespace thebanana {
 				glCreateFramebuffers(1, &this->m_id);
 				glBindFramebuffer(GL_FRAMEBUFFER, this->m_id);
 				if (this->m_specification.buffers & specification::color) {
+					attachment_settings settings = this->m_specification.color_settings;
+					unsigned int type = (settings.type ? settings.type : GL_TEXTURE_2D);
+					unsigned int internal_format = (settings.internal_format ? settings.internal_format : GL_RGBA8);
+					unsigned int format = (settings.format ? settings.format : GL_RGBA);
+					unsigned int attachment_type = (settings.attachment_type ? settings.attachment_type : GL_COLOR_ATTACHMENT0);
+					unsigned int min_filter = (settings.min_filter ? settings.min_filter : GL_LINEAR);
+					unsigned int mag_filter = (settings.mag_filter ? settings.mag_filter : GL_LINEAR);
 					unsigned int color;
-					glCreateTextures(GL_TEXTURE_2D, 1, &color);
-					glBindTexture(GL_TEXTURE_2D, color);
-					glTexImage2D(GL_TEXTURE_2D, NULL, GL_RGBA8, this->m_specification.width, this->m_specification.height, NULL, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
-					glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-					glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-					glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + this->m_attachments.size(), GL_TEXTURE_2D, color, NULL);
+					glCreateTextures(type, 1, &color);
+					glBindTexture(type, color);
+					if (settings.texture_proc) settings.texture_proc(&this->m_specification);
+					else glTexImage2D(type, NULL, internal_format, this->m_specification.width, this->m_specification.height, NULL, format, GL_UNSIGNED_BYTE, NULL);
+					glTexParameteri(type, GL_TEXTURE_MIN_FILTER, min_filter);
+					glTexParameteri(type, GL_TEXTURE_MAG_FILTER, mag_filter);
+					if (settings.framebuffer_attachment_proc) settings.framebuffer_attachment_proc(color, &this->m_specification);
+					else glFramebufferTexture2D(GL_FRAMEBUFFER, attachment_type + this->m_attachments.size(), type, color, NULL);
 					this->m_attachment_map.color_index = this->m_attachments.size();
 					this->m_attachments.push_back({ attachment::color, (void*)color });
 				}
 				if (this->m_specification.buffers & specification::depth) {
+					attachment_settings settings = this->m_specification.depth_settings;
+					unsigned int type = (settings.type ? settings.type : GL_TEXTURE_2D);
+					unsigned int internal_format = (settings.internal_format ? settings.internal_format : GL_DEPTH24_STENCIL8);
+					unsigned int format = (settings.format ? settings.format : GL_DEPTH24_STENCIL8);
+					unsigned int attachment_type = (settings.attachment_type ? settings.attachment_type : GL_DEPTH_STENCIL_ATTACHMENT);
+					unsigned int min_filter = (settings.min_filter ? settings.min_filter : GL_NEAREST);
+					unsigned int mag_filter = (settings.mag_filter ? settings.mag_filter : GL_NEAREST);
+					unsigned int wrap_s = (settings.wrap_s ? settings.wrap_s : GL_CLAMP_TO_BORDER);
+					unsigned int wrap_t = (settings.wrap_t ? settings.wrap_t : GL_CLAMP_TO_BORDER);
 					unsigned int depth;
-					glCreateTextures(GL_TEXTURE_2D, 1, &depth);
-					glBindTexture(GL_TEXTURE_2D, depth);
-					glTexStorage2D(GL_TEXTURE_2D, 1, GL_DEPTH24_STENCIL8, this->m_specification.width, this->m_specification.height);
-					glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-					glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-					glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
-					glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
-					glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_TEXTURE_2D, depth, 0);
+					glCreateTextures(type, 1, &depth);
+					glBindTexture(type, depth);
+					if (settings.texture_proc) settings.texture_proc(&this->m_specification);
+					else glTexStorage2D(type, 1, internal_format, this->m_specification.width, this->m_specification.height);
+					glTexParameteri(type, GL_TEXTURE_MIN_FILTER, min_filter);
+					glTexParameteri(type, GL_TEXTURE_MAG_FILTER, mag_filter);
+					glTexParameteri(type, GL_TEXTURE_WRAP_S, wrap_s);
+					glTexParameteri(type, GL_TEXTURE_WRAP_T, wrap_t);
+					// by default, there is no WRAP_R property
+					if (settings.wrap_r) {
+						glTexParameteri(type, GL_TEXTURE_WRAP_R, settings.wrap_r);
+					}
+					if (settings.framebuffer_attachment_proc) settings.framebuffer_attachment_proc(depth, &this->m_specification);
+					else glFramebufferTexture2D(GL_FRAMEBUFFER, attachment_type, type, depth, 0);
 					this->m_attachment_map.depth_index = this->m_attachments.size();
 					this->m_attachments.push_back({ attachment::depth, (void*)depth });
 				}

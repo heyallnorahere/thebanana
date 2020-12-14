@@ -12,8 +12,10 @@ namespace thebanana {
 				virtual void bind(unsigned int slot = 0) override;
 				virtual void unbind() override;
 				virtual void set_data(void* pixels) override;
+				virtual void get_data(void* buffer) override;
 				virtual ~opengl_texture() override;
 			private:
+				void get_format(int& format, int& internal_format);
 				settings m_settings;
 				void create_texture(void* pixels);
 				void destroy_texture();

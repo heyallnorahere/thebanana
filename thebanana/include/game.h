@@ -62,7 +62,8 @@ namespace thebanana {
 		BANANA_API void debug_print(const std::string& message);
 		BANANA_API std::list<rigidbody*>& get_rigidbody_list();
 		BANANA_API std::string get_debug_log();
-		template<typename T> void calculate_aspect_ratio(T width, T height);
+		BANANA_API glm::vec2 get_window_size();
+		template<typename T> void update_size(T width, T height);
 		// very loose template stuff, but if you know what to do with it, it works
 		template<typename T> using imgui_ptr = void(*)(const char*, T*);
 		template<typename T> imgui_ptr<T> get_imgui_pointer();
@@ -87,7 +88,7 @@ namespace thebanana {
 		sound::sound_manager* m_sound_manager;
 		gameobject* m_menu_quad;
 		lua_interpreter* m_interpreter;
-		float m_aspect_ratio;
+		float m_aspect_ratio, m_width, m_height;
 		std::vector<model_registry::model_descriptor> m_descriptors;
 		bool m_show_cursor;
 		bool m_debug_menus_initialized;
@@ -100,8 +101,10 @@ namespace thebanana {
 		script_module::module_t m_executable;
 	};
 	BANANA_API extern game* g_game;
-	template<typename T> inline void game::calculate_aspect_ratio(T width, T height) {
-		this->m_aspect_ratio = static_cast<float>(width) / static_cast<float>(height);
+	template<typename T> inline void game::update_size(T width, T height) {
+		this->m_width = static_cast<float>(width);
+		this->m_height = static_cast<float>(height);
+		this->m_aspect_ratio = this->m_width / this->m_height;
 	}
 	template<typename T> inline game::imgui_ptr<T> game::get_imgui_pointer() {
 		return (imgui_ptr<T>)this->m_imgui_input_functions[typeid(T).hash_code()];

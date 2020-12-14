@@ -127,6 +127,9 @@
       <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</DeploymentContent>
     </None>
     <None Include="packages.config" />
+    <None Include="shaders\depth\fragment.shader" />
+    <None Include="shaders\depth\geometry.shader" />
+    <None Include="shaders\depth\vertex.shader" />
     <None Include="shaders\material_preview\fragment.shader" />
     <None Include="shaders\material_preview\vertex.shader" />
     <None Include="shaders\rendered\fragment.shader">

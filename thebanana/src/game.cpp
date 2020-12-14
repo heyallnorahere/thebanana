@@ -36,7 +36,9 @@ namespace thebanana {
 		}
 		RECT r;
 		GetWindowRect(this->m_window, &r);
-		this->m_aspect_ratio = static_cast<float>(r.right - r.left) / static_cast<float>(r.bottom - r.top);
+		this->m_width = static_cast<float>(r.right - r.left);
+		this->m_height = static_cast<float>(r.bottom - r.top);
+		this->m_aspect_ratio = this->m_width / this->m_height;
 		this->m_viewport = new opengl_viewport(opengl_viewport::viewport_attribs{ this->m_window, 0, 0, width, height, 4, 6, opengl_viewport::viewport_attribs::passed_window });
 		this->m_interpreter = new lua_interpreter;
 		this->m_scene = new scene(this);
@@ -143,7 +145,7 @@ namespace thebanana {
 			if (g_game) {
 				long width = r.right - r.left;
 				long height = r.bottom - r.top;
-				g_game->m_aspect_ratio = static_cast<float>(width) / static_cast<float>(height);
+				g_game->update_size(width, height);
 				glViewport(0, 0, width, height);
 			}
 		}
@@ -275,6 +277,9 @@ namespace thebanana {
 	}
 	std::string game::get_debug_log() {
 		return this->m_debug_log.str();
+	}
+	glm::vec2 game::get_window_size() {
+		return glm::vec2(this->m_width, this->m_height);
 	}
 	void game::shutdown_steam() {
 		SteamAPI_Shutdown();

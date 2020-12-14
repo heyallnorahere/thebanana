@@ -11,8 +11,9 @@
 #include "components/camera_component.h"
 namespace thebanana {
 	scene::scene(game* g) {
-		this->m_shader = NULL;
+		this->m_shader = this->m_depth_shader = NULL;
 		this->m_game = g;
+		this->set_shadow_defaults();
 	}
 	scene::~scene() {
 		char buf[256];
@@ -55,11 +56,36 @@ namespace thebanana {
 		}
 	}
 	void scene::render() {
-		opengl_shader_library::shader::use(this->m_shader);
-		for (auto& c : this->m_children) {
-			opengl_shader_library::shader::use(this->m_shader);
-			c->render();
+		if (this->m_depth_shader) {
+			int bound_framebuffer;
+			glGetIntegerv(GL_FRAMEBUFFER_BINDING, &bound_framebuffer);
+			opengl_shader_library::shader::use(this->m_depth_shader);
+			std::vector<light_component*> lights = this->find_all_instances_of_component<light_component>();
+			glm::mat4 shadow_projection = glm::perspective(glm::radians(90.f), 1.f, this->m_shadow_settings.near_plane, this->m_shadow_settings.far_plane);
+			for (auto light : lights) {
+				light->get_depthbuffer()->bind();
+				this->m_game->clear_screen();
+				auto& u = this->m_depth_shader->get_uniforms();
+				auto light_data = light->get_data();
+				u.vec3("lightpos", light_data.position);
+				u._float("far_plane", this->m_shadow_settings.far_plane);
+				std::vector<glm::mat4> shadow_transforms;
+				shadow_transforms.push_back(shadow_projection * glm::lookAt(light_data.position, light_data.position + glm::vec3(1.0, 0.0, 0.0), glm::vec3(0.0, -1.0, 0.0)));
+				shadow_transforms.push_back(shadow_projection * glm::lookAt(light_data.position, light_data.position + glm::vec3(-1.0, 0.0, 0.0), glm::vec3(0.0, -1.0, 0.0)));
+				shadow_transforms.push_back(shadow_projection * glm::lookAt(light_data.position, light_data.position + glm::vec3(0.0, 1.0, 0.0), glm::vec3(0.0, 0.0, 1.0)));
+				shadow_transforms.push_back(shadow_projection * glm::lookAt(light_data.position, light_data.position + glm::vec3(0.0, -1.0, 0.0), glm::vec3(0.0, 0.0, -1.0)));
+				shadow_transforms.push_back(shadow_projection * glm::lookAt(light_data.position, light_data.position + glm::vec3(0.0, 0.0, 1.0), glm::vec3(0.0, -1.0, 0.0)));
+				shadow_transforms.push_back(shadow_projection * glm::lookAt(light_data.position, light_data.position + glm::vec3(0.0, 0.0, -1.0), glm::vec3(0.0, -1.0, 0.0)));
+				light->set_shadow_transforms(shadow_transforms);
+				for (size_t i = 0; i < shadow_transforms.size(); i++) {
+					u.mat4("shadow_matrices[" + std::to_string(i) + "]", shadow_transforms[i]);
+				}
+				this->render_scene();
+			}
+			glBindFramebuffer(GL_FRAMEBUFFER, (unsigned int)bound_framebuffer);
 		}
+		opengl_shader_library::shader::use(this->m_shader);
+		this->render_scene();
 		opengl_shader_library::shader::use(NULL);
 	}
 	size_t scene::get_children_count() const {
@@ -80,8 +106,14 @@ namespace thebanana {
 	opengl_shader_library::shader* scene::get_shader() const {
 		return this->m_shader;
 	}
+	opengl_shader_library::shader* scene::get_depth_shader() const {
+		return this->m_depth_shader;
+	}
 	void scene::set_shader_name(const std::string& shader_name) {
 		this->m_shader = this->m_game->get_shader_registry()->get_shader(shader_name);
+	}
+	void scene::set_depth_shader_name(const std::string& shader_name) {
+		this->m_depth_shader = this->m_game->get_shader_registry()->get_shader(shader_name);
 	}
 	game* scene::get_game() {
 		return this->m_game;
@@ -121,5 +153,20 @@ namespace thebanana {
 			data.push_back(light->get_data());
 		}
 		return data;
+	}
+	scene::shadow_settings& scene::get_shadow_settings() {
+		return this->m_shadow_settings;
+	}
+	void scene::set_shadow_defaults() {
+		this->m_shadow_settings.near_plane = 1.f;
+		this->m_shadow_settings.far_plane = 7.5f;
+		this->m_shadow_settings.left = this->m_shadow_settings.bottom = -10.f;
+		this->m_shadow_settings.right = this->m_shadow_settings.top = 10.f;
+	}
+	void scene::render_scene() {
+		for (auto& c : this->m_children) {
+			opengl_shader_library::shader::use(this->m_shader);
+			c->render();
+		}
 	}
 }

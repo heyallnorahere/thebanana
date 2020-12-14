@@ -13,6 +13,8 @@ namespace thebanana {
 			virtual void bind(unsigned int slot = 0) = 0;
 			virtual void unbind() = 0;
 			virtual void set_data(void* pixels) = 0;
+			// buffer must have a size of at least width * height * channels
+			virtual void get_data(void* buffer) = 0;
 			BANANA_API virtual ~texture();
 			BANANA_API int get_width() const;
 			BANANA_API int get_height() const;
@@ -29,6 +31,7 @@ namespace thebanana {
 			BANANA_API virtual void bind(unsigned int slot = 0) override;
 			BANANA_API virtual void unbind() override;
 			BANANA_API virtual void set_data(void* pixels) override;
+			BANANA_API virtual void get_data(void* buffer) override;
 		};
 	}
 }

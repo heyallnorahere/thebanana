@@ -35,6 +35,5 @@ void main() {
 		vec3 specular = lights[i].specular * (spec * shader_material.specular);
 		color += (ambient + diffuse + specular);
 	}
-	color /= float(light_count);
 	fragment_color = texture(shader_material.tex, uv) * vec4(color, 1.0);
 }

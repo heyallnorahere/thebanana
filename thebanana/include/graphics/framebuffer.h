@@ -5,9 +5,24 @@ namespace thebanana {
 	namespace graphics {
 		class framebuffer {
 		public:
+			struct specification;
+			struct attachment_settings {
+				unsigned int type = 0;
+				unsigned int internal_format = 0;
+				unsigned int format = 0;
+				unsigned int attachment_type = 0;
+				unsigned int min_filter = 0;
+				unsigned int mag_filter = 0;
+				unsigned int wrap_s = 0;
+				unsigned int wrap_t = 0;
+				unsigned int wrap_r = 0;
+				void(*texture_proc)(specification* spec) = NULL;
+				void(*framebuffer_attachment_proc)(unsigned int id, specification* spec) = NULL;
+			};
 			struct specification {
 				static constexpr int color = 0b1, depth = 0b10;
 				int width, height, buffers;
+				attachment_settings color_settings, depth_settings;
 			};
 			struct attachment_map {
 				int color_index = -1;

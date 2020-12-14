@@ -7,7 +7,6 @@
 #include <misc/cpp/imgui_stdlib.h>
 #include "scene_hierarchy_panel.h"
 #include "texture_viewer_panel.h"
-__declspec(dllimport) bool is_2d(unsigned int texture);
 namespace bananatree {
 	property_editor_panel::property_editor_panel() {
 		this->m_component_index = 0;
@@ -292,7 +291,7 @@ namespace bananatree {
 						thebanana::light_component& lc = (thebanana::light_component&)c;
 						thebanana::graphics::framebuffer* db = lc.get_depthbuffer();
 						int texture = (int)db->get_attachments()[db->get_attachment_map().depth_index].value;
-						if (is_2d(texture)) {
+						if (thebanana::graphics::util::is_2d(texture)) {
 							if (ImGui::Button("View depth map")) {
 								this->m_texture_viewer->set_texture(texture);
 							}

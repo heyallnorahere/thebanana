@@ -171,7 +171,7 @@ namespace thebanana {
 		for (auto& c : this->m_components) {
 			c->pre_render();
 		}
-		this->m_scene->get_shader()->get_uniforms().mat4("model", this->get_absolute_transform().get_matrix());
+		this->m_scene->get_current_shader()->get_uniforms().mat4("model", this->get_absolute_transform().get_matrix());
 	}
 	void gameobject::update_components() {
 		for (auto& c : this->m_components) {

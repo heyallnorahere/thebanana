@@ -14,13 +14,23 @@ struct light {
 	vec3 specular;
 	vec3 ambient;
 	float ambient_strength;
+	samplerCube depthmap;
 };
 uniform material_t shader_material;
 uniform light lights[100];
 uniform int light_count;
 uniform vec3 viewpos;
+uniform float far_plane;
 in vec3 fragpos;
 in vec3 normal;
+float calculate_shadows(int light_index) {
+	vec3 frag_to_light = fragpos - lights[light_index].position;
+	float closest_depth = texture(lights[light_index].depthmap, frag_to_light).r * far_plane;
+	float current_depth = length(frag_to_light);
+	float bias = 0.05;
+	float shadow = current_depth - bias > closest_depth ? 1.0 : 0.0;
+	return shadow;
+}
 void main() {
 	vec3 color = vec3(0, 0, 0);
 	vec3 nrm = normalize(normal);
@@ -33,7 +43,8 @@ void main() {
 		vec3 reflect_dir = reflect(-light_dir, nrm);
 		float spec = pow(max(dot(view_dir, reflect_dir), 0.0), shader_material.shininess);
 		vec3 specular = lights[i].specular * (spec * shader_material.specular);
-		color += (ambient + diffuse + specular);
+		float shadow = calculate_shadows(i);
+		color += (ambient + (1.0 - shadow) * (diffuse + specular));
 	}
 	fragment_color = texture(shader_material.tex, uv) * vec4(color, 1.0);
 }

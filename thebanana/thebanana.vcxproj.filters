@@ -153,6 +153,9 @@
     <ClCompile Include="src\components\light_component.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\graphics\util.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -356,6 +359,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\components\light_component.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\graphics\util.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

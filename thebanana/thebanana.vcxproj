@@ -124,6 +124,7 @@
     <ClCompile Include="src\graphics\opengl\opengl_texture.cpp" />
     <ClCompile Include="src\graphics\quad.cpp" />
     <ClCompile Include="src\graphics\texture.cpp" />
+    <ClCompile Include="src\graphics\util.cpp" />
     <ClCompile Include="src\input_manager.cpp" />
     <ClCompile Include="src\internal_util.cpp" />
     <ClCompile Include="src\keyboard.cpp" />
@@ -164,6 +165,7 @@
     <ClInclude Include="include\components\native_script_component.h" />
     <ClInclude Include="include\components\tag_component.h" />
     <ClInclude Include="include\graphics\graphics.h" />
+    <ClInclude Include="include\graphics\util.h" />
     <ClInclude Include="src\graphics\opengl\opengl\opengl.h" />
     <ClInclude Include="src\graphics\opengl\opengl\opengl_quad.h" />
     <ClInclude Include="src\graphics\opengl\opengl\opengl_texture.h" />

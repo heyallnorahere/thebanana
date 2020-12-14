@@ -2,6 +2,7 @@
 #include "opengl_quad.h"
 #include "game.h"
 #include "shader_registry.h"
+#include "graphics/util.h"
 struct vertex {
 	glm::vec3 pos;
 	glm::vec2 uv;
@@ -19,12 +20,14 @@ namespace thebanana {
 				quad_shader = g_game->get_shader_registry()->get_shader(name);
 			}
 			void opengl_quad::api_render() {
+				unsigned int shader = util::get_current_shader();
 				opengl_shader_library::shader::use(quad_shader);
 				glDisable(GL_DEPTH_TEST);
 				glBindVertexArray(this->m_vao);
 				glDrawElements(GL_TRIANGLES, this->m_index_count, GL_UNSIGNED_INT, NULL);
 				glBindVertexArray(NULL);
 				glEnable(GL_DEPTH_TEST);
+				glUseProgram(shader);
 			}
 			void opengl_quad::init_quad(bool invert_uv) {
 				std::vector<vertex> vertices = {

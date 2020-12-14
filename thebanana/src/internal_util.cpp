@@ -41,8 +41,3 @@ float get_current_time() {
 	float time = static_cast<float>(raw_time - start_time);
 	return time;
 }
-bool is_2d(unsigned int texture) {
-	int target;
-	glGetTextureParameteriv(texture, GL_TEXTURE_TARGET, &target);
-	return target == GL_TEXTURE_2D;
-}

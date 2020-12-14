@@ -25,8 +25,10 @@ namespace thebanana {
 		BANANA_API gameobject* get_child(size_t index);
 		BANANA_API opengl_shader_library::shader* get_shader() const;
 		BANANA_API opengl_shader_library::shader* get_depth_shader() const;
+		BANANA_API opengl_shader_library::shader* get_current_shader() const;
 		BANANA_API void set_shader_name(const std::string& shader_name);
 		BANANA_API void set_depth_shader_name(const std::string& shader_name);
+		BANANA_API bool is_generating_shadows() const;
 		BANANA_API game* get_game();
 		BANANA_API gameobject* find(unsigned long long uuid);
 		BANANA_API gameobject* find_main_camera();
@@ -42,6 +44,7 @@ namespace thebanana {
 		opengl_shader_library::shader* m_shader;
 		opengl_shader_library::shader* m_depth_shader;
 		shadow_settings m_shadow_settings;
+		bool m_generating_shadows;
 		friend class scene_serializer;
 	};
 	template<typename T> inline T* scene::add_object(T* obj) {

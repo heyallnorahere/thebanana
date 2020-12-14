@@ -261,16 +261,16 @@ namespace bananatree {
 			}
 			if (ImGui::BeginMenu("Gizmos")) {
 				if (ImGui::BeginMenu("Transformation Gizmo...")) {
-					if (ImGui::MenuItem("None", "W")) {
+					if (ImGui::MenuItem("None", "Alt+W")) {
 						this->find_panel<viewport_panel>()->set_gizmo_operation(viewport_panel::gizmo_operation::none);
 					}
-					if (ImGui::MenuItem("Translate", "E")) {
+					if (ImGui::MenuItem("Translate", "Alt+E")) {
 						this->find_panel<viewport_panel>()->set_gizmo_operation(viewport_panel::gizmo_operation::translate);
 					}
-					if (ImGui::MenuItem("Rotate", "R")) {
+					if (ImGui::MenuItem("Rotate", "Alt+R")) {
 						this->find_panel<viewport_panel>()->set_gizmo_operation(viewport_panel::gizmo_operation::rotate);
 					}
-					if (ImGui::MenuItem("Scale", "T")) {
+					if (ImGui::MenuItem("Scale", "Alt+T")) {
 						this->find_panel<viewport_panel>()->set_gizmo_operation(viewport_panel::gizmo_operation::scale);
 					}
 					ImGui::EndMenu();
@@ -333,6 +333,7 @@ namespace bananatree {
 		auto input_manager = thebanana::g_game->get_input_manager();
 		bool control = input_manager->get_key(thebanana::key_ctrl).held;
 		bool shift = input_manager->get_key(thebanana::key_shift).held;
+		bool alt = input_manager->get_key(thebanana::key_alt).held;
 		if (input_manager->get_key(thebanana::key_n).down && control) {
 			this->new_scene();
 		}
@@ -343,16 +344,16 @@ namespace bananatree {
 			if (control && shift) this->save_scene();
 			else if (control) this->save_scene_from_temp();
 		}
-		if (input_manager->get_key(thebanana::key_w).down) {
+		if (input_manager->get_key(thebanana::key_w).down && alt) {
 			this->find_panel<viewport_panel>()->set_gizmo_operation(viewport_panel::gizmo_operation::none);
 		}
-		if (input_manager->get_key(thebanana::key_e).down) {
+		if (input_manager->get_key(thebanana::key_e).down && alt) {
 			this->find_panel<viewport_panel>()->set_gizmo_operation(viewport_panel::gizmo_operation::translate);
 		}
-		if (input_manager->get_key(thebanana::key_r).down) {
+		if (input_manager->get_key(thebanana::key_r).down && alt) {
 			this->find_panel<viewport_panel>()->set_gizmo_operation(viewport_panel::gizmo_operation::rotate);
 		}
-		if (input_manager->get_key(thebanana::key_t).down) {
+		if (input_manager->get_key(thebanana::key_t).down && alt) {
 			this->find_panel<viewport_panel>()->set_gizmo_operation(viewport_panel::gizmo_operation::scale);
 		}
 	}

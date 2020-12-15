@@ -47,15 +47,18 @@ namespace thebanana {
 					auto get_uniform_name = [&](const std::string& name) {
 						return "lights[" + std::to_string(i) + "]." + name;
 					};
+					uniforms._int(get_uniform_name("type"), (int)light.type);
 					uniforms.vec3(get_uniform_name("position"), light.position);
+					uniforms.vec3(get_uniform_name("direction"), light.direction);
 					uniforms.vec3(get_uniform_name("diffuse"), light.diffuse);
 					uniforms.vec3(get_uniform_name("specular"), light.specular);
 					uniforms.vec3(get_uniform_name("ambient"), light.ambient);
 					uniforms._float(get_uniform_name("ambient_strength"), light.ambient_strength);
-					glActiveTexture(GL_TEXTURE0 + i);
 					unsigned int texture = (unsigned int)light.shadowmap;
+					bool is_2d = graphics::util::is_2d(texture);
+					glActiveTexture((is_2d ? GL_TEXTURE12 : GL_TEXTURE0) + i);
 					glBindTexture(graphics::util::get_target(texture), texture);
-					uniforms._int(get_uniform_name("depthmap"), i);
+					uniforms._int(get_uniform_name(is_2d ? "depthmap_2d" : "depthmap"), (is_2d ? 12 : 0) + i);
 				}
 				uniforms._int("light_count", (int)lights.size());
 				gameobject* camera = this->parent->get_scene()->find_main_camera();

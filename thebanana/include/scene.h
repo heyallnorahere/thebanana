@@ -24,10 +24,9 @@ namespace thebanana {
 		BANANA_API const gameobject* get_child(size_t index) const;
 		BANANA_API gameobject* get_child(size_t index);
 		BANANA_API opengl_shader_library::shader* get_shader() const;
-		BANANA_API opengl_shader_library::shader* get_depth_shader() const;
-		BANANA_API opengl_shader_library::shader* get_current_shader() const;
+		BANANA_API opengl_shader_library::shader* get_current_shader();
 		BANANA_API void set_shader_name(const std::string& shader_name);
-		BANANA_API void set_depth_shader_name(const std::string& shader_name);
+		BANANA_API void set_depth_shader_name(light_component::light_type type, const std::string& shader_name);
 		BANANA_API bool is_generating_shadows() const;
 		BANANA_API game* get_game();
 		BANANA_API gameobject* find(unsigned long long uuid);
@@ -39,10 +38,12 @@ namespace thebanana {
 		template<typename T> T& find_component(size_t index = 0);
 	private:
 		void render_scene();
+		void generate_shadows();
 		game* m_game;
 		std::list<std::unique_ptr<gameobject>> m_children;
 		opengl_shader_library::shader* m_shader;
-		opengl_shader_library::shader* m_depth_shader;
+		std::map<light_component::light_type, opengl_shader_library::shader*> m_depth_shaders;
+		light_component::light_type m_current_light_type;
 		shadow_settings m_shadow_settings;
 		bool m_generating_shadows;
 		friend class scene_serializer;

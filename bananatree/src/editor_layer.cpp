@@ -22,7 +22,7 @@ namespace bananatree {
 		thebanana::g_game->get_shader_registry()->register_shader("material preview", "material_preview");
 		thebanana::g_game->get_shader_registry()->register_shader("depth", "depth", true);
 		thebanana::g_game->get_scene()->set_shader_name("material preview");
-		thebanana::g_game->get_scene()->set_depth_shader_name("depth");
+		thebanana::g_game->get_scene()->set_depth_shader_name(thebanana::light_component::light_type::point, "depth");
 	}
 	void editor_layer::gameloop() {
 		thebanana::g_game->update();

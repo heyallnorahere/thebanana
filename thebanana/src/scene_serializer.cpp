@@ -172,6 +172,9 @@ namespace thebanana {
 			out << YAML::BeginMap;
 			out << YAML::Key << "type" << YAML::Value << "light_component";
 			out << YAML::Key << "uuid" << YAML::Value << lc.get_uuid();
+			out << YAML::Key << "point" << YAML::Value << *lc.get_property<bool>("Point");
+			out << YAML::Key << "directional" << YAML::Value << *lc.get_property<bool>("Directional");
+			out << YAML::Key << "direction" << YAML::Value << *lc.get_property<glm::vec3>("Direction");
 			out << YAML::Key << "diffuse" << YAML::Value << lc.get_property<property_classes::color>("Diffuse")->get_vector();
 			out << YAML::Key << "specular" << YAML::Value << lc.get_property<property_classes::color>("Specular")->get_vector();
 			out << YAML::Key << "ambient" << YAML::Value << lc.get_property<property_classes::color>("Ambient")->get_vector();
@@ -322,6 +325,9 @@ namespace thebanana {
 			} else if (type == "light_component") {
 				light_component& lc = object->add_component<light_component>();
 				lc.set_uuid(uuid);
+				lc.set_property("Point", n["point"].as<bool>());
+				lc.set_property("Directional", n["directional"].as<bool>());
+				lc.set_property("Direction", n["direction"].as<glm::vec3>());
 				lc.set_property<property_classes::color>("Diffuse", n["diffuse"].as<glm::vec3>());
 				lc.set_property<property_classes::color>("Specular", n["specular"].as<glm::vec3>());
 				lc.set_property<property_classes::color>("Ambient", n["ambient"].as<glm::vec3>());

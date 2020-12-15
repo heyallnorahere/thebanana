@@ -12,7 +12,7 @@
 #include "graphics/util.h"
 namespace thebanana {
 	scene::scene(game* g) {
-		this->m_shader = this->m_depth_shader = NULL;
+		this->m_shader = NULL;
 		this->m_game = g;
 		this->set_shadow_defaults();
 		this->m_generating_shadows = false;
@@ -58,34 +58,15 @@ namespace thebanana {
 		}
 	}
 	void scene::render() {
-		if (this->m_depth_shader) {
-			this->m_generating_shadows = true;
-			unsigned int bound_framebuffer = graphics::util::get_bound_framebuffer();
-			opengl_shader_library::shader::use(this->m_depth_shader);
-			std::vector<light_component*> lights = this->find_all_instances_of_component<light_component>();
-			glm::mat4 shadow_projection = glm::perspective(glm::radians(90.f), 1.f, this->m_shadow_settings.near_plane, this->m_shadow_settings.far_plane);
-			for (auto light : lights) {
-				light->get_depthbuffer()->bind();
-				glViewport(0, 0, 1024, 1024);
-				this->m_game->clear_screen();
-				auto& u = this->m_depth_shader->get_uniforms();
-				auto light_data = light->get_data();
-				u.vec3("lightpos", light_data.position);
-				u._float("far_plane", this->m_shadow_settings.far_plane);
-				std::vector<glm::mat4> shadow_transforms;
-				shadow_transforms.push_back(shadow_projection * glm::lookAt(light_data.position, light_data.position + glm::vec3(1.0, 0.0, 0.0), glm::vec3(0.0, -1.0, 0.0)));
-				shadow_transforms.push_back(shadow_projection * glm::lookAt(light_data.position, light_data.position + glm::vec3(-1.0, 0.0, 0.0), glm::vec3(0.0, -1.0, 0.0)));
-				shadow_transforms.push_back(shadow_projection * glm::lookAt(light_data.position, light_data.position + glm::vec3(0.0, 1.0, 0.0), glm::vec3(0.0, 0.0, 1.0)));
-				shadow_transforms.push_back(shadow_projection * glm::lookAt(light_data.position, light_data.position + glm::vec3(0.0, -1.0, 0.0), glm::vec3(0.0, 0.0, -1.0)));
-				shadow_transforms.push_back(shadow_projection * glm::lookAt(light_data.position, light_data.position + glm::vec3(0.0, 0.0, 1.0), glm::vec3(0.0, -1.0, 0.0)));
-				shadow_transforms.push_back(shadow_projection * glm::lookAt(light_data.position, light_data.position + glm::vec3(0.0, 0.0, -1.0), glm::vec3(0.0, -1.0, 0.0)));
-				light->set_shadow_transforms(shadow_transforms);
-				for (size_t i = 0; i < shadow_transforms.size(); i++) {
-					u.mat4("shadow_matrices[" + std::to_string(i) + "]", shadow_transforms[i]);
-				}
-				this->render_scene();
+		bool has_depth_shader = false;
+		for (auto p : this->m_depth_shaders) {
+			if (p.second) {
+				has_depth_shader = true;
+				break;
 			}
-			glBindFramebuffer(GL_FRAMEBUFFER, bound_framebuffer);
+		}
+		if (has_depth_shader) {
+			this->generate_shadows();
 		}
 		this->m_generating_shadows = false;
 		glViewport(0, 0, (int)this->m_game->get_window_size().x, (int)this->m_game->get_window_size().y);
@@ -112,17 +93,14 @@ namespace thebanana {
 	opengl_shader_library::shader* scene::get_shader() const {
 		return this->m_shader;
 	}
-	opengl_shader_library::shader* scene::get_depth_shader() const {
-		return this->m_depth_shader;
-	}
-	opengl_shader_library::shader* scene::get_current_shader() const {
-		return this->m_generating_shadows ? this->m_depth_shader : this->m_shader;
+	opengl_shader_library::shader* scene::get_current_shader() {
+		return this->m_generating_shadows ? this->m_depth_shaders[this->m_current_light_type] : this->m_shader;
 	}
 	void scene::set_shader_name(const std::string& shader_name) {
 		this->m_shader = this->m_game->get_shader_registry()->get_shader(shader_name);
 	}
-	void scene::set_depth_shader_name(const std::string& shader_name) {
-		this->m_depth_shader = this->m_game->get_shader_registry()->get_shader(shader_name);
+	void scene::set_depth_shader_name(light_component::light_type type, const std::string& shader_name) {
+		this->m_depth_shaders[type] = this->m_game->get_shader_registry()->get_shader(shader_name);
 	}
 	bool scene::is_generating_shadows() const {
 		return this->m_generating_shadows;
@@ -179,5 +157,41 @@ namespace thebanana {
 		for (auto& c : this->m_children) {
 			c->render();
 		}
+	}
+	void scene::generate_shadows() {
+		this->m_generating_shadows = true;
+		unsigned int bound_framebuffer = graphics::util::get_bound_framebuffer();
+		std::vector<light_component*> lights = this->find_all_instances_of_component<light_component>();
+		glm::mat4 shadow_projection = glm::perspective(glm::radians(90.f), 1.f, this->m_shadow_settings.near_plane, this->m_shadow_settings.far_plane);
+		for (auto light : lights) {
+			if (!light->get_depthbuffer()) light->update_depthbuffer();
+			light->get_depthbuffer()->bind();
+			glViewport(0, 0, 1024, 1024);
+			this->m_game->clear_screen();
+			auto light_data = light->get_data();
+			this->m_current_light_type = light_data.type;
+			if (!this->get_current_shader()) continue;
+			opengl_shader_library::shader::use(this->get_current_shader());
+			auto& u = this->get_current_shader()->get_uniforms();
+			switch (this->m_current_light_type) {
+			case light_component::light_type::point:
+				u.vec3("lightpos", light_data.position);
+				u._float("far_plane", this->m_shadow_settings.far_plane);
+				std::vector<glm::mat4> shadow_transforms;
+				shadow_transforms.push_back(shadow_projection * glm::lookAt(light_data.position, light_data.position + glm::vec3(1.0, 0.0, 0.0), glm::vec3(0.0, -1.0, 0.0)));
+				shadow_transforms.push_back(shadow_projection * glm::lookAt(light_data.position, light_data.position + glm::vec3(-1.0, 0.0, 0.0), glm::vec3(0.0, -1.0, 0.0)));
+				shadow_transforms.push_back(shadow_projection * glm::lookAt(light_data.position, light_data.position + glm::vec3(0.0, 1.0, 0.0), glm::vec3(0.0, 0.0, 1.0)));
+				shadow_transforms.push_back(shadow_projection * glm::lookAt(light_data.position, light_data.position + glm::vec3(0.0, -1.0, 0.0), glm::vec3(0.0, 0.0, -1.0)));
+				shadow_transforms.push_back(shadow_projection * glm::lookAt(light_data.position, light_data.position + glm::vec3(0.0, 0.0, 1.0), glm::vec3(0.0, -1.0, 0.0)));
+				shadow_transforms.push_back(shadow_projection * glm::lookAt(light_data.position, light_data.position + glm::vec3(0.0, 0.0, -1.0), glm::vec3(0.0, -1.0, 0.0)));
+				light->set_shadow_transforms(shadow_transforms);
+				for (size_t i = 0; i < shadow_transforms.size(); i++) {
+					u.mat4("shadow_matrices[" + std::to_string(i) + "]", shadow_transforms[i]);
+				}
+				break;
+			}
+			this->render_scene();
+		}
+		glBindFramebuffer(GL_FRAMEBUFFER, bound_framebuffer);
 	}
 }

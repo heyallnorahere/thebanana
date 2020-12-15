@@ -26,7 +26,7 @@ uniform vec3 viewpos;
 uniform float far_plane;
 in vec3 fragpos;
 in vec3 normal;
-float calculate_shadows(int light_index) {
+float calculate_point_shadows(int light_index) {
 	vec3 frag_to_light = fragpos - lights[light_index].position;
 	float closest_depth = texture(lights[light_index].depthmap, frag_to_light).r * far_plane;
 	float current_depth = length(frag_to_light);
@@ -43,14 +43,35 @@ vec3 calculate_point_light(int light_index, vec3 nrm) {
 	vec3 reflect_dir = reflect(-light_dir, nrm);
 	float spec = pow(max(dot(view_dir, reflect_dir), 0.0), shader_material.shininess);
 	vec3 specular = lights[light_index].specular * (spec * shader_material.specular);
-	float shadow = calculate_shadows(light_index);
+	float shadow = calculate_point_shadows(light_index);
+	return (ambient + (1.0 - shadow) * (diffuse + specular));
+}
+vec3 calculate_directional_light(int light_index, vec3 nrm) {
+	vec3 ambient = lights[light_index].ambient * lights[light_index].ambient_strength * shader_material.ambient;
+	vec3 light_dir = normalize(-lights[light_index].direction);
+	float diff = max(dot(nrm, light_dir), 0.0);
+	vec3 diffuse = diff * lights[light_index].diffuse * shader_material.diffuse;
+	vec3 view_dir = normalize(viewpos - fragpos);
+	vec3 reflect_dir = reflect(-light_dir, nrm);
+	float spec = pow(max(dot(view_dir, reflect_dir), 0.0), shader_material.shininess);
+	vec3 specular = lights[light_index].specular * (spec * shader_material.specular);
+	float shadow = 0.0;
 	return (ambient + (1.0 - shadow) * (diffuse + specular));
 }
 void main() {
 	vec3 color = vec3(0, 0, 0);
 	vec3 nrm = normalize(normal);
 	for (int i = 0; i < light_count; i++) {
-		color += calculate_point_light(i, nrm);
+		vec3 c = vec3(0, 0, 0);
+		switch (lights[i].type) {
+		case 1:
+			c = calculate_point_light(i, nrm);
+			break;
+		case 2:
+			c = calculate_directional_light(i, nrm);
+			break;
+		}
+		color += c;
 	}
 	fragment_color = texture(shader_material.tex, uv) * vec4(color, 1.0);
 }

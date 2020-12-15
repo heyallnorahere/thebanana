@@ -16,6 +16,7 @@ struct light {
 	vec3 specular;
 	vec3 ambient;
 	float ambient_strength;
+	float cutoff;
 	samplerCube depthmap;
 	sampler2D depthmap_2d;
 };
@@ -58,6 +59,22 @@ vec3 calculate_directional_light(int light_index, vec3 nrm) {
 	float shadow = 0.0;
 	return (ambient + (1.0 - shadow) * (diffuse + specular));
 }
+vec3 calculate_spotlight(int light_index, vec3 nrm) {
+	vec3 light_dir = normalize(lights[light_index].position - fragpos);
+	float theta = dot(light_dir, normalize(-lights[light_index].direction));
+	if (theta > lights[light_index].cutoff) {
+		vec3 ambient = lights[light_index].ambient * lights[light_index].ambient_strength * shader_material.ambient;
+		float diff = max(dot(nrm, light_dir), 0.0);
+		vec3 diffuse = diff * lights[light_index].diffuse * shader_material.diffuse;
+		vec3 view_dir = normalize(viewpos - fragpos);
+		vec3 reflect_dir = reflect(-light_dir, nrm);
+		float spec = pow(max(dot(view_dir, reflect_dir), 0.0), shader_material.shininess);
+		vec3 specular = lights[light_index].specular * (spec * shader_material.specular);
+		float shadow = 0.0;
+		return (ambient + (1.0 - shadow) * (diffuse + specular));
+	}
+	return vec3(0, 0, 0);
+}
 void main() {
 	vec3 color = vec3(0, 0, 0);
 	vec3 nrm = normalize(normal);
@@ -69,6 +86,9 @@ void main() {
 			break;
 		case 2:
 			c = calculate_directional_light(i, nrm);
+			break;
+		case 3:
+			c = calculate_spotlight(i, nrm);
 			break;
 		}
 		color += c;

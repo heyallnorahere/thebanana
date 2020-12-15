@@ -9,6 +9,7 @@ namespace thebanana {
 		this->add_property(new property<property_classes::color>(glm::vec3(1.f), "Specular"));
 		this->add_property(new property<property_classes::color>(glm::vec3(1.f), "Ambient"));
 		this->add_property(new property<float>(0.1f, "Ambient strength"));
+		this->add_property(new property<float>(12.5f, "Spotlight cutoff"));
 		this->m_type = light_type::none;
 	}
 	void light_component::update() {
@@ -18,11 +19,12 @@ namespace thebanana {
 		light_data data;
 		data.type = this->m_type;
 		data.position = this->get_transform();
-		data.direction = *this->get_property<glm::vec3>("Direction");
+		data.direction = glm::normalize(*this->get_property<glm::vec3>("Direction"));
 		data.diffuse = this->get_property<property_classes::color>("Diffuse")->get_vector();
 		data.specular = this->get_property<property_classes::color>("Specular")->get_vector();
 		data.ambient = this->get_property<property_classes::color>("Ambient")->get_vector();
 		data.ambient_strength = *this->get_property<float>("Ambient strength");
+		data.cutoff = *this->get_property<float>("Spotlight cutoff");
 		data.shadowmap = this->m_depthbuffer->get_attachments()[this->m_depthbuffer->get_attachment_map().depth_index].value;
 		data.shadow_transforms = this->m_shadow_transforms;
 		return data;

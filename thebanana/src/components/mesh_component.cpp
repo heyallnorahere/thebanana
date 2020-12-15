@@ -54,6 +54,7 @@ namespace thebanana {
 					uniforms.vec3(get_uniform_name("specular"), light.specular);
 					uniforms.vec3(get_uniform_name("ambient"), light.ambient);
 					uniforms._float(get_uniform_name("ambient_strength"), light.ambient_strength);
+					uniforms._float(get_uniform_name("cutoff"), light.cutoff);
 					unsigned int texture = (unsigned int)light.shadowmap;
 					bool is_2d = graphics::util::is_2d(texture);
 					glActiveTexture((is_2d ? GL_TEXTURE12 : GL_TEXTURE0) + i);

@@ -179,6 +179,7 @@ namespace thebanana {
 			out << YAML::Key << "specular" << YAML::Value << lc.get_property<property_classes::color>("Specular")->get_vector();
 			out << YAML::Key << "ambient" << YAML::Value << lc.get_property<property_classes::color>("Ambient")->get_vector();
 			out << YAML::Key << "ambient strength" << YAML::Value << *lc.get_property<float>("Ambient strength");
+			out << YAML::Key << "cutoff" << YAML::Value << *lc.get_property<float>("Spotlight cutoff");
 			out << YAML::EndMap;
 		}
 		for (size_t i = 0; i < object->get_number_components<native_script_component>(); i++) {
@@ -332,6 +333,7 @@ namespace thebanana {
 				lc.set_property<property_classes::color>("Specular", n["specular"].as<glm::vec3>());
 				lc.set_property<property_classes::color>("Ambient", n["ambient"].as<glm::vec3>());
 				lc.set_property("Ambient strength", n["ambient strength"].as<float>());
+				lc.set_property("Spotlight cutoff", n["cutoff"].as<float>());
 			} else if (type == "native_script_component") {
 				native_script_component& nsc = object->add_component<native_script_component>();
 				nsc.set_uuid(uuid);

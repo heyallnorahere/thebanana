@@ -16,6 +16,7 @@ namespace thebanana {
 			glm::vec3 position, direction;
 			glm::vec3 diffuse, specular, ambient;
 			float ambient_strength;
+			float cutoff;
 			std::vector<glm::mat4> shadow_transforms;
 			void* shadowmap;
 		};

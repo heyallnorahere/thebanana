@@ -2,7 +2,6 @@
 layout(location = 0) in vec3 pos;
 layout(location = 3) in ivec4 bone_ids;
 layout(location = 4) in vec4 weights;
-uniform mat4 light_space_matrix;
 uniform mat4 model;
 uniform mat4 model_transform;
 uniform bool has_bones;
@@ -16,5 +15,5 @@ void main() {
 		bone_transform += bones[bone_ids[3]] * weights[3];
 		position = bone_transform * position;
 	}
-	gl_Position = light_space_matrix * model * model_transform * position;
+	gl_Position = model * model_transform * position;
 }

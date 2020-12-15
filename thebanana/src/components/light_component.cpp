@@ -11,6 +11,7 @@ namespace thebanana {
 		this->add_property(new property<float>(0.1f, "Ambient strength"));
 		this->add_property(new property<float>(12.5f, "Spotlight cutoff"));
 		this->m_type = light_type::none;
+		this->m_light_space_matrix = glm::mat4(1.f);
 	}
 	void light_component::update() {
 		this->update_depthbuffer();
@@ -26,14 +27,14 @@ namespace thebanana {
 		data.ambient_strength = *this->get_property<float>("Ambient strength");
 		data.cutoff = *this->get_property<float>("Spotlight cutoff");
 		data.shadowmap = this->m_depthbuffer->get_attachments()[this->m_depthbuffer->get_attachment_map().depth_index].value;
-		data.shadow_transforms = this->m_shadow_transforms;
+		data.light_space_matrix = this->m_light_space_matrix;
 		return data;
 	}
 	BANANA_API graphics::framebuffer* light_component::get_depthbuffer() {
 		return this->m_depthbuffer.get();
 	}
-	void light_component::set_shadow_transforms(const std::vector<glm::mat4>& transforms) {
-		this->m_shadow_transforms = transforms;
+	void light_component::set_light_space_matrix(const glm::mat4& matrix) {
+		this->m_light_space_matrix = matrix;
 	}
 	void light_component::update_depthbuffer() {
 		light_type type = this->get_type();

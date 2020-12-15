@@ -15,6 +15,7 @@ uniform mat4 view;
 uniform mat4 projection;
 uniform bool has_bones;
 uniform mat4 bones[100];
+uniform int light_count;
 out vec2 uv;
 out vec3 fragpos;
 out vec3 normal;

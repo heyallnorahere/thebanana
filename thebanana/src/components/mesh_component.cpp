@@ -57,9 +57,10 @@ namespace thebanana {
 					uniforms._float(get_uniform_name("cutoff"), light.cutoff);
 					unsigned int texture = (unsigned int)light.shadowmap;
 					bool is_2d = graphics::util::is_2d(texture);
-					glActiveTexture((is_2d ? GL_TEXTURE12 : GL_TEXTURE0) + i);
+					glActiveTexture(GL_TEXTURE12 + i);
 					glBindTexture(graphics::util::get_target(texture), texture);
-					uniforms._int(get_uniform_name(is_2d ? "depthmap_2d" : "depthmap"), (is_2d ? 12 : 0) + i);
+					uniforms._int(get_uniform_name(is_2d ? "depthmap_2d" : "depthmap_cube"), 12 + i);
+					uniforms.mat4("light_space_matrices[" + std::to_string(i) + "]", light.light_space_matrix);
 				}
 				uniforms._int("light_count", (int)lights.size());
 				gameobject* camera = this->parent->get_scene()->find_main_camera();

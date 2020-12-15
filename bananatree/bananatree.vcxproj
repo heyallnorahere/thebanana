@@ -128,8 +128,10 @@
     </None>
     <None Include="packages.config" />
     <None Include="shaders\depth\fragment.shader" />
-    <None Include="shaders\depth\geometry.shader" />
     <None Include="shaders\depth\vertex.shader" />
+    <None Include="shaders\point_depth\fragment.shader" />
+    <None Include="shaders\point_depth\geometry.shader" />
+    <None Include="shaders\point_depth\vertex.shader" />
     <None Include="shaders\material_preview\fragment.shader" />
     <None Include="shaders\material_preview\vertex.shader" />
     <None Include="shaders\rendered\fragment.shader">

@@ -21,6 +21,14 @@ namespace thebanana {
 				glGetIntegerv(GL_PROGRAM_BINDING_ARB, &current_shader);
 				return (unsigned int)current_shader;
 			}
+			void unbind_all_textures(const std::vector<unsigned int>& types) {
+				for (unsigned int texture_index = 0; texture_index < 30; texture_index++) {
+					glActiveTexture(GL_TEXTURE0 + texture_index);
+					for (auto type : types) {
+						glBindTexture(type, NULL);
+					}
+				}
+			}
 		}
 	}
 }

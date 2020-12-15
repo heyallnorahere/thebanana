@@ -157,6 +157,7 @@ namespace thebanana {
 		for (auto& c : this->m_children) {
 			c->render();
 		}
+		graphics::util::unbind_all_textures({ GL_TEXTURE_2D, GL_TEXTURE_CUBE_MAP });
 	}
 	void scene::generate_shadows() {
 		this->m_generating_shadows = true;
@@ -175,6 +176,7 @@ namespace thebanana {
 			auto& u = this->get_current_shader()->get_uniforms();
 			switch (this->m_current_light_type) {
 			case light_component::light_type::point:
+			{
 				u.vec3("lightpos", light_data.position);
 				u._float("far_plane", this->m_shadow_settings.far_plane);
 				std::vector<glm::mat4> shadow_transforms;
@@ -184,10 +186,26 @@ namespace thebanana {
 				shadow_transforms.push_back(shadow_projection * glm::lookAt(light_data.position, light_data.position + glm::vec3(0.0, -1.0, 0.0), glm::vec3(0.0, 0.0, -1.0)));
 				shadow_transforms.push_back(shadow_projection * glm::lookAt(light_data.position, light_data.position + glm::vec3(0.0, 0.0, 1.0), glm::vec3(0.0, -1.0, 0.0)));
 				shadow_transforms.push_back(shadow_projection * glm::lookAt(light_data.position, light_data.position + glm::vec3(0.0, 0.0, -1.0), glm::vec3(0.0, -1.0, 0.0)));
-				light->set_shadow_transforms(shadow_transforms);
 				for (size_t i = 0; i < shadow_transforms.size(); i++) {
 					u.mat4("shadow_matrices[" + std::to_string(i) + "]", shadow_transforms[i]);
 				}
+			}
+				break;
+			case light_component::light_type::directional:
+			case light_component::light_type::spotlight:
+			{
+				glm::vec3 lightpos = light_data.position;
+				if (this->m_current_light_type == light_component::light_type::directional) {
+					lightpos = -light_data.direction * (this->m_shadow_settings.far_plane / 2.f);
+				}
+				glm::mat4 light_projection = glm::ortho(this->m_shadow_settings.left, this->m_shadow_settings.right,
+					this->m_shadow_settings.bottom, this->m_shadow_settings.top,
+					this->m_shadow_settings.near_plane, this->m_shadow_settings.far_plane);
+				glm::mat4 light_view = glm::lookAt(lightpos, lightpos + light_data.direction, glm::vec3(0.f, 1.f, 0.f));
+				glm::mat4 light_space_matrix = light_projection * light_view;
+				light->set_light_space_matrix(light_space_matrix);
+				u.mat4("light_space_matrix", light_space_matrix);
+			}
 				break;
 			}
 			this->render_scene();

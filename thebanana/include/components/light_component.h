@@ -17,19 +17,19 @@ namespace thebanana {
 			glm::vec3 diffuse, specular, ambient;
 			float ambient_strength;
 			float cutoff;
-			std::vector<glm::mat4> shadow_transforms;
 			void* shadowmap;
+			glm::mat4 light_space_matrix;
 		};
 		BANANA_API light_component(gameobject* object);
 		BANANA_API virtual void update() override;
 		BANANA_API light_data get_data();
 		BANANA_API graphics::framebuffer* get_depthbuffer();
-		BANANA_API void set_shadow_transforms(const std::vector<glm::mat4>& transforms);
+		BANANA_API void set_light_space_matrix(const glm::mat4& matrix);
 		BANANA_API void update_depthbuffer();
 	private:
 		light_type get_type();
 		light_type m_type;
 		std::unique_ptr<graphics::framebuffer> m_depthbuffer;
-		std::vector<glm::mat4> m_shadow_transforms;
+		glm::mat4 m_light_space_matrix;
 	};
 }

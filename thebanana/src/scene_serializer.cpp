@@ -87,9 +87,12 @@ namespace thebanana {
 		out << YAML::BeginMap;
 		out << YAML::Key << "object" << YAML::Value << object->get_uuid();
 		out << YAML::Key << "nickname" << YAML::Value << object->get_nickname();
-		out << YAML::Key << "transform" << YAML::Value << YAML::BeginSeq;
-		glm::mat4 matrix = object->get_transform().get_matrix();
-		out << matrix[0] << matrix[1] << matrix[2] << matrix[3] << YAML::EndSeq;
+		out << YAML::Key << "transform" << YAML::BeginMap;
+		transform t = object->get_transform();
+		out << YAML::Key << "translation" << YAML::Value << t.get_translation();
+		out << YAML::Key << "rotation" << YAML::Value << t.get_rotation();
+		out << YAML::Key << "scale" << YAML::Value << t.get_scale();
+		out << YAML::EndMap;
 		out << YAML::Key << "components" << YAML::Value << YAML::BeginSeq;
 		for (size_t i = 0; i < object->get_number_components<tag_component>(); i++) {
 			tag_component& c = object->get_component<tag_component>(i);
@@ -219,6 +222,15 @@ namespace thebanana {
 		YAML::Emitter out;
 		out << YAML::BeginMap;
 		out << YAML::Key << "scene" << YAML::Value << "untitled";
+		out << YAML::Key << "shadow config" << YAML::BeginMap;
+		scene::shadow_settings& settings = this->m_scene->get_shadow_settings();
+		out << YAML::Key << "left" << YAML::Value << settings.left;
+		out << YAML::Key << "right" << YAML::Value << settings.right;
+		out << YAML::Key << "bottom" << YAML::Value << settings.bottom;
+		out << YAML::Key << "top" << YAML::Value << settings.top;
+		out << YAML::Key << "near plane" << YAML::Value << settings.near_plane;
+		out << YAML::Key << "far plane" << YAML::Value << settings.far_plane;
+		out << YAML::EndMap;
 		out << YAML::Key << "objects" << YAML::Value << YAML::BeginSeq;
 		for (size_t i = 0; i < this->m_scene->get_children_count(); i++) {
 			serialize_object(out, this->m_scene->get_child(i));
@@ -459,11 +471,18 @@ namespace thebanana {
 		object->get_nickname() = nickname_node.as<std::string>();
 		YAML::Node transform_node = node["transform"];
 		assert(transform_node);
-		glm::mat4 t(1.f);
-		for (size_t i = 0; i < 4; i++) {
-			t[i] = transform_node[i].as<glm::vec4>();
+		if (transform_node.IsSequence()) {
+			glm::mat4 t(1.f);
+			for (size_t i = 0; i < 4; i++) {
+				t[i] = transform_node[i].as<glm::vec4>();
+			}
+			object->get_transform() = transform(t);
 		}
-		object->get_transform() = transform(t);
+		else {
+			object->get_transform().set_translation(transform_node["translation"].as<glm::vec3>());
+			object->get_transform().set_rotation(transform_node["rotation"].as<glm::vec3>());
+			object->get_transform().set_scale(transform_node["scale"].as<glm::vec3>());
+		}
 		object->init(parent, s, s->get_game());
 		deserialize_components(node["components"], object, s);
 		assert(node["children"]);
@@ -483,6 +502,16 @@ namespace thebanana {
 		assert(data["scene"]);
 		std::string name = data["scene"].as<std::string>();
 		this->m_scene->get_game()->debug_print("loading scene " + name + " from " + path);
+		if (data["shadow config"]) {
+			YAML::Node shadow_config = data["shadow config"];
+			scene::shadow_settings& settings = this->m_scene->get_shadow_settings();
+			settings.left = shadow_config["left"].as<float>();
+			settings.right = shadow_config["right"].as<float>();
+			settings.bottom = shadow_config["bottom"].as<float>();
+			settings.top = shadow_config["top"].as<float>();
+			settings.near_plane = shadow_config["near plane"].as<float>();
+			settings.far_plane = shadow_config["far plane"].as<float>();
+		}
 		auto objects = data["objects"];
 		if (objects) {
 			for (auto obj : objects) {

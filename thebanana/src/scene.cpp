@@ -34,6 +34,7 @@ namespace thebanana {
 		this->m_game->debug_print("deleting " + std::string(buf) + (this->m_children.size() == 1 ? " object" : " objects"));
 		this->m_children.clear();
 		this->m_game->get_rigidbody_list().clear();
+		this->set_shadow_defaults();
 	}
 	void scene::update() {
 #ifdef _DEBUG

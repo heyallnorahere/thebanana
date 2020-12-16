@@ -48,7 +48,11 @@ namespace thebanana {
 						return "lights[" + std::to_string(i) + "]." + name;
 					};
 					uniforms._int(get_uniform_name("type"), (int)light.type);
-					uniforms.vec3(get_uniform_name("position"), light.position);
+					glm::vec3 position = light.position;
+					if (light.type == light_component::light_type::directional) {
+						position -= light.direction;
+					}
+					uniforms.vec3(get_uniform_name("position"), position);
 					uniforms.vec3(get_uniform_name("direction"), light.direction);
 					uniforms.vec3(get_uniform_name("diffuse"), light.diffuse);
 					uniforms.vec3(get_uniform_name("specular"), light.specular);

@@ -196,7 +196,7 @@ namespace thebanana {
 			{
 				glm::vec3 lightpos = light_data.position;
 				if (this->m_current_light_type == light_component::light_type::directional) {
-					lightpos = -light_data.direction * (this->m_shadow_settings.far_plane / 2.f);
+					lightpos -= light_data.direction;
 				}
 				glm::mat4 light_projection = glm::ortho(this->m_shadow_settings.left, this->m_shadow_settings.right,
 					this->m_shadow_settings.bottom, this->m_shadow_settings.top,

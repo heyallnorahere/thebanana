@@ -408,3 +408,5 @@ bananatreeconfig.yaml
 steam-sdk/
 # gah visual studio cant tell the difference between intermediate files and models
 !models/*.obj
+# binaries in vendor folder
+!vendor/**

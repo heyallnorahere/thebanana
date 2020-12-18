@@ -12,6 +12,10 @@ namespace thebanana {
 			void opengl_vbo::unbind() {
 				glBindBuffer(GL_ARRAY_BUFFER, NULL);
 			}
+			void opengl_vbo::draw() {
+				this->bind();
+				glDrawArrays(GL_TRIANGLES, 0, this->m_data.vertex_count);
+			}
 			opengl_vbo::~opengl_vbo() {
 				glDeleteBuffers(1, &this->m_id);
 			}

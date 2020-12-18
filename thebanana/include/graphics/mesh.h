@@ -12,7 +12,7 @@ namespace thebanana {
 				glm::vec2 uv;
 			};
 			BANANA_API mesh(const std::vector<vertex>& vertices, const std::vector<unsigned int>& indices);
-			BANANA_API void render(int animation_index);
+			BANANA_API void render();
 			BANANA_API ~mesh();
 		private:
 			void setup();

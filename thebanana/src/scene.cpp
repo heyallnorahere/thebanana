@@ -74,7 +74,6 @@ namespace thebanana {
 		opengl_shader_library::shader::use(this->m_shader);
 		this->m_shader->get_uniforms()._float("far_plane", this->m_shadow_settings.far_plane);
 		this->render_scene();
-		opengl_shader_library::shader::use(NULL);
 	}
 	size_t scene::get_children_count() const {
 		return this->m_children.size();

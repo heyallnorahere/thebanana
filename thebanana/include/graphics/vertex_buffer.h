@@ -21,11 +21,12 @@ namespace thebanana {
 				};
 				std::vector<vertex_attrib> attributes;
 				const void* data;
-				size_t size;
+				size_t size, vertex_count;
 			};
 			BANANA_API vertex_buffer(const data& d);
 			virtual void bind() = 0;
 			virtual void unbind() = 0;
+			virtual void draw() = 0;
 			BANANA_API virtual ~vertex_buffer();
 			BANANA_API static vertex_buffer* create(const data& d, graphics_api api = graphics_api::none);
 		protected:

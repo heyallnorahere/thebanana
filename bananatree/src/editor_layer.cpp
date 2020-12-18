@@ -26,12 +26,6 @@ namespace bananatree {
 		thebanana::g_game->get_scene()->set_depth_shader_name(thebanana::light_component::light_type::point, "point_depth");
 		thebanana::g_game->get_scene()->set_depth_shader_name(thebanana::light_component::light_type::directional, "depth");
 		thebanana::g_game->get_scene()->set_depth_shader_name(thebanana::light_component::light_type::spotlight, "depth");
-		std::vector<thebanana::graphics::mesh::vertex> vertices;
-		vertices.push_back({ glm::vec3(-0.5f, -0.5f, 0.f), glm::vec3(0.f, 0.f, -1.f), glm::vec2(0.f, 0.f) });
-		vertices.push_back({ glm::vec3( 0.5f, -0.5f, 0.f), glm::vec3(0.f, 0.f, -1.f), glm::vec2(0.f, 0.f) });
-		vertices.push_back({ glm::vec3( 0.0f,  0.5f, 0.f), glm::vec3(0.f, 0.f, -1.f), glm::vec2(0.f, 0.f) });
-		std::vector<unsigned int> indices = { 0, 1, 2 };
-		delete new thebanana::graphics::mesh(vertices, indices);
 	}
 	void editor_layer::gameloop() {
 		thebanana::g_game->update();

@@ -8,6 +8,7 @@ namespace thebanana {
 			dummy_vbo(const data& d);
 			virtual void bind() override;
 			virtual void unbind() override;
+			virtual void draw() override;
 		};
 		vertex_buffer::vertex_buffer(const data& d) {
 			this->m_data = d;
@@ -31,5 +32,6 @@ namespace thebanana {
 		dummy_vbo::dummy_vbo(const data& d) : vertex_buffer(d) { }
 		void dummy_vbo::bind() { }
 		void dummy_vbo::unbind() { }
+		void dummy_vbo::draw() { }
 	}
 }

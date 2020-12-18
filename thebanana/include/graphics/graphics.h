@@ -5,3 +5,4 @@
 #include "graphics_types.h"
 #include "util.h"
 #include "mesh.h"
+#include "vertex_array_object.h"

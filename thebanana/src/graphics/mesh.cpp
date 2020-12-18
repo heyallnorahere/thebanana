@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "graphics/mesh.h"
+#include "graphics/vertex_array_object.h"
 namespace thebanana {
 	namespace graphics {
 		mesh::mesh(const std::vector<vertex>& vertices, const std::vector<unsigned int>& indices) {
@@ -11,10 +12,10 @@ namespace thebanana {
 			// todo: implement
 		}
 		mesh::~mesh() {
-			// todo: implement
+			delete this->m_vao;
 		}
 		void mesh::setup() {
-			// todo: implement
+			this->m_vao = vertex_array_object::create();
 		}
 	}
 }

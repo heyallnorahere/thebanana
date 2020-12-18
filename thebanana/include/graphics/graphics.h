@@ -6,3 +6,4 @@
 #include "util.h"
 #include "mesh.h"
 #include "vertex_array_object.h"
+#include "vertex_buffer.h"

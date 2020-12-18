@@ -132,10 +132,12 @@ copy "$(SolutionDir)vendor\assimp\bin\$(Configuration)\*.dll" "$(OutDir)"</Comma
     <ClCompile Include="src\graphics\opengl\opengl_quad.cpp" />
     <ClCompile Include="src\graphics\opengl\opengl_texture.cpp" />
     <ClCompile Include="src\graphics\opengl\opengl_vao.cpp" />
+    <ClCompile Include="src\graphics\opengl\opengl_vbo.cpp" />
     <ClCompile Include="src\graphics\quad.cpp" />
     <ClCompile Include="src\graphics\texture.cpp" />
     <ClCompile Include="src\graphics\util.cpp" />
     <ClCompile Include="src\graphics\vertex_array_object.cpp" />
+    <ClCompile Include="src\graphics\vertex_buffer.cpp" />
     <ClCompile Include="src\input_manager.cpp" />
     <ClCompile Include="src\internal_util.cpp" />
     <ClCompile Include="src\keyboard.cpp" />
@@ -179,6 +181,7 @@ copy "$(SolutionDir)vendor\assimp\bin\$(Configuration)\*.dll" "$(OutDir)"</Comma
     <ClInclude Include="include\graphics\mesh.h" />
     <ClInclude Include="include\graphics\util.h" />
     <ClInclude Include="include\graphics\vertex_array_object.h" />
+    <ClInclude Include="include\graphics\vertex_buffer.h" />
     <ClInclude Include="src\graphics\opengl\opengl\opengl.h" />
     <ClInclude Include="src\graphics\opengl\opengl\opengl_quad.h" />
     <ClInclude Include="src\graphics\opengl\opengl\opengl_texture.h" />
@@ -195,6 +198,7 @@ copy "$(SolutionDir)vendor\assimp\bin\$(Configuration)\*.dll" "$(OutDir)"</Comma
     <ClInclude Include="src\graphics\opengl\opengl_quad.h" />
     <ClInclude Include="src\graphics\opengl\opengl_texture.h" />
     <ClInclude Include="src\graphics\opengl\opengl_vao.h" />
+    <ClInclude Include="src\graphics\opengl\opengl_vbo.h" />
     <ClInclude Include="src\internal_only_includelist.h" />
     <ClInclude Include="include\lua_interpreter.h" />
     <ClInclude Include="include\main_module.h" />

@@ -4,3 +4,4 @@
 #include "quad.h"
 #include "graphics_types.h"
 #include "util.h"
+#include "mesh.h"

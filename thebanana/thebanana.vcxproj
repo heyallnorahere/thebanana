@@ -127,6 +127,7 @@ copy "$(SolutionDir)vendor\assimp\bin\$(Configuration)\*.dll" "$(OutDir)"</Comma
     <ClCompile Include="src\gameobject.cpp" />
     <ClCompile Include="src\graphics\framebuffer.cpp" />
     <ClCompile Include="src\graphics\graphics_types.cpp" />
+    <ClCompile Include="src\graphics\mesh.cpp" />
     <ClCompile Include="src\graphics\opengl\opengl_framebuffer.cpp" />
     <ClCompile Include="src\graphics\opengl\opengl_quad.cpp" />
     <ClCompile Include="src\graphics\opengl\opengl_texture.cpp" />
@@ -173,6 +174,7 @@ copy "$(SolutionDir)vendor\assimp\bin\$(Configuration)\*.dll" "$(OutDir)"</Comma
     <ClInclude Include="include\components\native_script_component.h" />
     <ClInclude Include="include\components\tag_component.h" />
     <ClInclude Include="include\graphics\graphics.h" />
+    <ClInclude Include="include\graphics\mesh.h" />
     <ClInclude Include="include\graphics\util.h" />
     <ClInclude Include="src\graphics\opengl\opengl\opengl.h" />
     <ClInclude Include="src\graphics\opengl\opengl\opengl_quad.h" />

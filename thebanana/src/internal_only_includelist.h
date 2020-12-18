@@ -32,4 +32,5 @@ extern "C" {
 #include <mono/metadata/assembly.h>
 #include <mono/metadata/debug-helpers.h>
 #include <mono/metadata/attrdefs.h>
+#include <assimp/Importer.hpp>
 #endif

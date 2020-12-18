@@ -177,6 +177,9 @@
     <ClCompile Include="src\graphics\opengl\opengl_ebo.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\model.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -404,6 +407,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\graphics\opengl\opengl_ebo.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\model.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

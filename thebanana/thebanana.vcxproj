@@ -145,6 +145,7 @@ copy "$(SolutionDir)vendor\assimp\bin\$(Configuration)\*.dll" "$(OutDir)"</Comma
     <ClCompile Include="src\keyboard.cpp" />
     <ClCompile Include="src\lua_interpreter.cpp" />
     <ClCompile Include="src\material.cpp" />
+    <ClCompile Include="src\model.cpp" />
     <ClCompile Include="src\model_registry.cpp" />
     <ClCompile Include="src\mouse.cpp" />
     <ClCompile Include="src\basic_gameobject.cpp" />
@@ -185,6 +186,7 @@ copy "$(SolutionDir)vendor\assimp\bin\$(Configuration)\*.dll" "$(OutDir)"</Comma
     <ClInclude Include="include\graphics\util.h" />
     <ClInclude Include="include\graphics\vertex_array_object.h" />
     <ClInclude Include="include\graphics\vertex_buffer.h" />
+    <ClInclude Include="include\model.h" />
     <ClInclude Include="src\graphics\opengl\opengl\opengl.h" />
     <ClInclude Include="src\graphics\opengl\opengl\opengl_quad.h" />
     <ClInclude Include="src\graphics\opengl\opengl\opengl_texture.h" />

@@ -19,3 +19,4 @@
 #include "script_module.h"
 #include "keys.h"
 #include "material.h"
+#include "model.h"

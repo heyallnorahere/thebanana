@@ -24,6 +24,7 @@
 #include <iterator>
 #include <vector>
 #include <list>
+#include <array>
 #include <map>
 #include <memory>
 #include <chrono>

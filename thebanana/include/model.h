@@ -25,7 +25,7 @@ namespace thebanana {
 		};
 		void load(const std::string& path);
 		void process_node(aiNode* node);
-		void process_mesh(aiMesh* mesh);
+		void process_mesh(aiMesh* mesh, aiNode* parent);
 		void read_node_hierarchy(float time, const aiNode* node, const glm::mat4& parent_transform, int animation_id);
 		Assimp::Importer* m_importer;
 		const aiScene* m_scene;

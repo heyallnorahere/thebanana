@@ -123,11 +123,6 @@ namespace bananatree {
 			out << YAML::BeginMap;
 			out << YAML::Key << "path" << YAML::Value << md.path;
 			out << YAML::Key << "name" << YAML::Value << md.name;
-			out << YAML::Key << "should_replace" << YAML::Value << md.should_replace;
-			if (md.should_replace) {
-				out << YAML::Key << "find" << YAML::Value << md.find;
-				out << YAML::Key << "replace" << YAML::Value << md.replace;
-			}
 			out << YAML::EndMap;
 		}
 		out << YAML::EndSeq;
@@ -205,11 +200,6 @@ namespace bananatree {
 			model_descriptor md;
 			md.path = m["path"].as<std::string>();
 			md.name = m["name"].as<std::string>();
-			md.should_replace = m["should_replace"].as<bool>();
-			if (md.should_replace) {
-				md.find = m["find"].as<std::string>();
-				md.replace = m["replace"].as<std::string>();
-			}
 			this->m_descriptors.push_back(md);
 			this->m_editor_layer->get_imgui_layer()->find_panel<model_registry_panel>()->import(md);
 		}

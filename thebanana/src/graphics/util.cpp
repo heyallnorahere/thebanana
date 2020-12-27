@@ -18,7 +18,7 @@ namespace thebanana {
 			}
 			unsigned int get_current_shader() {
 				int current_shader;
-				glGetIntegerv(GL_PROGRAM_BINDING_ARB, &current_shader);
+				glGetIntegerv(GL_CURRENT_PROGRAM, &current_shader);
 				return (unsigned int)current_shader;
 			}
 			void unbind_all_textures(const std::vector<unsigned int>& types) {

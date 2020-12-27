@@ -81,8 +81,8 @@ namespace thebanana {
 			if (this->get_number_components<animation_component>() > 0) {
 				animation_index = this->get_component<animation_component>().get_animation_id();
 			}
-			// draw the model! (via my model loader library)
-			this->parent->get_game()->get_model_registry()->draw(this->model_name, animation_time, animation_index, this->parent->get_scene()->get_current_shader());
+			// draw the model!
+			this->parent->get_game()->get_model_registry()->draw(this->model_name, animation_time, animation_index);
 		}
 	}
 }

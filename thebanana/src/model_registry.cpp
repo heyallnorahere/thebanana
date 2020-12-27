@@ -1,5 +1,7 @@
 #include "pch.h"
 #include "model_registry.h"
+#include "internal_util.h"
+#include "util.h"
 namespace thebanana {
 	model_registry::model_registry() {
 		this->unload();
@@ -17,25 +19,24 @@ namespace thebanana {
 		this->unload();
 		this->load(models);
 	}
-	void model_registry::draw(const std::string& name, double time, int m_animation_index, opengl_shader_library::shader* shader) {
+	void model_registry::draw(const std::string& name, double time, int m_animation_index) {
 		if (!this->has_loaded) return;
 		const auto& m = this->models[name];
 		if (!m.get()) return;
-		m->draw(shader->get_id(), static_cast<float>(time), m_animation_index);
+		m->draw(static_cast<float>(time), m_animation_index);
 	}
 	transform model_registry::get_transform(const std::string& name) {
 		if (!this->has_loaded) return transform();
-		size_t index = std::string::npos;
-		for (size_t i = 0; i < this->descriptors.size(); i++) {
-			if (this->descriptors[i].name == name) {
-				index = i;
+		std::vector<model_descriptor>::iterator it;
+		for (it = this->descriptors.begin(); it != this->descriptors.end(); it++) {
+			if (it->name == name) {
 				break;
 			}
 		}
-		if (index == std::string::npos) {
+		if (it == this->descriptors.end()) {
 			return transform();
 		}
-		transform model_transform = this->descriptors[index].model_transform;
+		transform model_transform = it->model_transform;
 		const aiScene* scene = this->get_scene(name);
 		if (scene) model_transform *= scene->mRootNode->mTransformation;
 		return model_transform;
@@ -73,20 +74,19 @@ namespace thebanana {
 		model_registry* r;
 		std::string n;
 	};
-	void vertex_loader(aiMesh*, aiNode*, gl_model_loader::model*, const std::vector<gl_model_loader::vertex>& vertices, const std::vector<unsigned int>& indices, const std::vector<gl_model_loader::texture>&, const std::vector<gl_model_loader::vbd>& bone_data, vertex_loader_params* params) {
+	void vertex_loader(aiMesh*, aiNode*, model*, const std::vector<graphics::mesh::vertex>& vertices, const std::vector<unsigned int>& indices, const std::vector<graphics::mesh::vertex_bone_data>& bone_data, vertex_loader_params* params) {
 		params->r->add_vertex_data(params->n, { vertices, indices, bone_data });
 	}
 	void model_registry::load(const std::vector<model_descriptor>& models) {
 		for (auto m : models) {
-			gl_model_loader::set_texture_path_proc(m.texture_proc, &m);
-			gl_model_loader::clear_mesh_procs();
 			vertex_loader_params* vlp = new vertex_loader_params{ this, m.name };
-			gl_model_loader::add_mesh_proc((gl_model_loader::process_mesh_proc)vertex_loader, vlp);
+			set_per_mesh_function((per_mesh_function)vertex_loader);
+			set_user_data(vlp);
 			this->vertex_data[m.name] = model_vertex_data();
-			this->models[m.name] = std::unique_ptr<gl_model_loader::model>(new gl_model_loader::model(m.path));
+			this->models[m.name] = std::unique_ptr<model>(new model(m.path));
 			delete vlp;
 		}
-		this->descriptors = models;
+		append_vector(this->descriptors, models);
 		this->has_loaded = true;
 	}
 	std::vector<std::string> model_registry::get_loaded_model_names() const {

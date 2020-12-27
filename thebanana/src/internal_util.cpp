@@ -41,3 +41,17 @@ float get_current_time() {
 	float time = static_cast<float>(raw_time - start_time);
 	return time;
 }
+per_mesh_function pmf = NULL;
+void* user_data = NULL;
+void set_per_mesh_function(per_mesh_function pmf) {
+	::pmf = pmf;
+}
+per_mesh_function get_per_mesh_function() {
+	return pmf;
+}
+void set_user_data(void* data) {
+	user_data = data;
+}
+void* get_user_data() {
+	return user_data;
+}

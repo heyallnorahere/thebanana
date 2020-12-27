@@ -5,8 +5,6 @@ namespace bananatree {
 	public:
 		struct model_descriptor {
 			std::string path, name;
-			bool should_replace;
-			std::string find, replace;
 		};
 		struct material_descriptor {
 			std::string friendly_name;

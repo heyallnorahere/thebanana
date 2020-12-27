@@ -62,7 +62,7 @@ namespace thebanana {
 		model_registry::model_vertex_data data = other->get_vertex_data();
 		std::vector<glm::vec3> positions, normals;
 		for (auto v : data.vertices) {
-			positions.push_back(v.pos);
+			positions.push_back(v.position);
 			normals.push_back(v.normal);
 		}
 		std::vector<unsigned int> inds = data.indices;

@@ -6,11 +6,6 @@
 #include <misc/cpp/imgui_stdlib.h>
 #include "../util.h"
 namespace bananatree {
-	struct frs {
-		bool enabled;
-		std::string find, replace;
-	};
-	static frs current;
 	static void import_menu(bool* open, model_registry_panel* panel) {
 		ImGui::Begin("Import model", open, ImGuiWindowFlags_NoDocking);
 		static std::string path = "";
@@ -40,7 +35,6 @@ namespace bananatree {
 		}
 		ImGui::SameLine();
 		if (ImGui::Button("Import")) {
-			current = { replace, find, replace_ };
 			panel->import(path, name);
 			path = "";
 			name = "";
@@ -76,20 +70,12 @@ namespace bananatree {
 	std::string model_registry_panel::get_menu_text() {
 		return "Model registry";
 	}
-	static std::string find_replace_proc(const std::string& path, void*) {
-		return thebanana::model_registry::path_helper(path, current.find, current.replace);
-	}
 	void model_registry_panel::import(const std::string& path, const std::string& name) {
-		this->m_project->register_model({ path, name, current.enabled, current.find, current.replace });
-		thebanana::g_game->get_model_registry()->load({ { name, path, (current.enabled ? find_replace_proc : NULL), thebanana::transform() } });
+		this->m_project->register_model({ path, name });
+		thebanana::g_game->get_model_registry()->load({ { name, path, thebanana::transform() } });
 	}
 	void model_registry_panel::import(const project::model_descriptor& md) {
-		current.enabled = md.should_replace;
-		if (current.enabled) {
-			current.find = md.find;
-			current.replace = md.replace;
-		}
-		thebanana::g_game->get_model_registry()->load({ { md.name, md.path, (current.enabled ? find_replace_proc : NULL), thebanana::transform() } });
+		thebanana::g_game->get_model_registry()->load({ { md.name, md.path, thebanana::transform() } });
 	}
 	void model_registry_panel::set_project(const std::shared_ptr<project>& p) {
 		this->m_project = p;

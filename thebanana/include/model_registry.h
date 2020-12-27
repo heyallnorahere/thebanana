@@ -1,5 +1,6 @@
 #pragma once
 #include "transform.h"
+#include "model.h"
 #include "banana_api.h"
 namespace opengl_shader_library {
 	class shader;
@@ -7,29 +8,21 @@ namespace opengl_shader_library {
 namespace thebanana {
 	class model_registry {
 	public:
-		using texture_path_proc = std::string(*)(const std::string&, void*);
 		struct model_descriptor {
 			std::string name, path;
-			texture_path_proc texture_proc;
 			transform model_transform;
 		};
-#ifdef BANANA_BUILD
 		struct model_vertex_data {
-			std::vector<gl_model_loader::vertex> vertices;
+			std::vector<graphics::mesh::vertex> vertices;
 			std::vector<unsigned int> indices;
-			std::vector<gl_model_loader::vbd> bone_data;
+			std::vector<graphics::mesh::vertex_bone_data> bone_data;
 		};
-#else
-		struct model_vertex_data {
-			std::vector<int> unused[3];
-		};
-#endif
 		BANANA_API model_registry();
 		BANANA_API model_registry(const std::vector<model_descriptor>& models);
 		BANANA_API ~model_registry();
 		BANANA_API bool loaded();
 		BANANA_API void reload(const std::vector<model_descriptor>& models);
-		BANANA_API void draw(const std::string& name, double time, int m_animation_index, opengl_shader_library::shader* shader);
+		BANANA_API void draw(const std::string& name, double time, int m_animation_index);
 		BANANA_API transform get_transform(const std::string& name);
 #ifdef BANANA_BUILD
 		const aiScene* get_scene(const std::string& name);
@@ -41,13 +34,8 @@ namespace thebanana {
 		BANANA_API std::vector<std::string> get_loaded_model_names() const;
 	private:
 		void unload();
-#ifdef BANANA_BUILD
-		using model_ptr = std::unique_ptr<gl_model_loader::model>;
-#else
-		using model_ptr = void*;
-#endif
 		std::map<std::string, model_vertex_data> vertex_data;
-		std::map<std::string, model_ptr> models;
+		std::map<std::string, std::unique_ptr<model>> models;
 		std::vector<model_descriptor> descriptors;
 		bool has_loaded;
 	};

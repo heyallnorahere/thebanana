@@ -99,7 +99,7 @@ void load_project(const std::string& path) {
 			findreplacestruct.find = m["find"].as<std::string>();
 			findreplacestruct.replace = m["replace"].as<std::string>();
 		}
-		thebanana::g_game->get_model_registry()->load({ { name, path, should_replace ? model_loader_proc : NULL, thebanana::transform() } });
+		thebanana::g_game->get_model_registry()->load({ { name, path, thebanana::transform() } });
 	}
 	assert(file["materials"]);
 	for (YAML::Node m : file["materials"]) {
@@ -144,9 +144,9 @@ void sandbox_application_layer::init() {
 	}
 	if (r) return;
 	// load models
-	thebanana::g_game->add_model_desc({ "player", "models/placeholder/waluigi.fbx", waluigi_paths, thebanana::transform().scale(0.0005f) });
-	thebanana::g_game->add_model_desc({ "test_cube", "models/cube.obj", test_texture_path, thebanana::transform() });
-	thebanana::g_game->add_model_desc({ "test_Lblock", "models/Lblock.obj", test_texture_path, thebanana::transform() });
+	thebanana::g_game->add_model_desc({ "player", "models/placeholder/waluigi.fbx", thebanana::transform().scale(0.0005f) });
+	thebanana::g_game->add_model_desc({ "test_cube", "models/cube.obj", thebanana::transform() });
+	thebanana::g_game->add_model_desc({ "test_Lblock", "models/Lblock.obj", thebanana::transform() });
 	thebanana::g_game->load_models();
 	// add gameobjects to the scene
 	thebanana::gameobject* player = new thebanana::basic_gameobject;

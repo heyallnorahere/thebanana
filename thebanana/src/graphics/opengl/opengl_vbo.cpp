@@ -52,8 +52,9 @@ namespace thebanana {
 						break;
 					}
 					assert(type);
-					glEnableVertexAttribArray(i);
-					glVertexAttribPointer(i, attr.elements, type, attr.normalize, total_size, (void*)offset);
+					size_t index = ((attr.custom_index < 0) ? i : (size_t)attr.custom_index);
+					glEnableVertexAttribArray(index);
+					glVertexAttribPointer(index, attr.elements, type, attr.normalize, total_size, (void*)offset);
 				}
 			}
 		}

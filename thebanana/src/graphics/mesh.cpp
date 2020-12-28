@@ -6,16 +6,17 @@
 #include "graphics/util.h"
 namespace thebanana {
 	namespace graphics {
-		mesh::mesh(const std::vector<vertex>& vertices, const std::vector<unsigned int>& indices, const std::vector<vertex_bone_data>& bone_data) {
+		mesh::mesh(const std::vector<vertex>& vertices, const std::vector<unsigned int>& indices, const std::vector<vertex_bone_data>& bone_data, bool has_bones) {
 			this->m_vertices = vertices;
 			this->m_indices = indices;
 			this->m_bone_data = bone_data;
+			this->m_has_bones = has_bones;
 			this->setup();
 		}
 		void mesh::render() {
 			unsigned int shader = util::get_current_shader();
 			// todo: replace opengl calls with engine calls once a shader class is implemented
-			if (shader) glUniform1i(glGetUniformLocation(shader, "has_bones"), !this->m_bone_data.empty());
+			if (shader) glUniform1i(glGetUniformLocation(shader, "has_bones"), this->m_has_bones);
 			this->m_vao->bind();
 			this->m_ebo->draw();
 			this->m_vao->unbind();
@@ -58,9 +59,11 @@ namespace thebanana {
 			attrib.type = vertex_buffer::data::vertex_attrib::type_int;
 			attrib.normalize = false;
 			attrib.elements = vertex_bone_data::max_bones_per_vertex;
+			attrib.custom_index = 3;
 			vertex_buffer_data.attributes.push_back(attrib);
 			attrib.size = sizeof(glm::vec<vertex_bone_data::max_bones_per_vertex, float>);
 			attrib.type = vertex_buffer::data::vertex_attrib::type_float;
+			attrib.custom_index = 4;
 			vertex_buffer_data.attributes.push_back(attrib);
 			this->m_bones = vertex_buffer::create(vertex_buffer_data);
 			this->m_vao->unbind();

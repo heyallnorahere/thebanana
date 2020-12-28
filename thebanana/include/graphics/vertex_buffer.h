@@ -18,6 +18,7 @@ namespace thebanana {
 					_type type;
 					bool normalize;
 					unsigned int elements;
+					int custom_index = -1;
 				};
 				std::vector<vertex_attrib> attributes;
 				const void* data;

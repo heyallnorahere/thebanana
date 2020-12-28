@@ -139,9 +139,9 @@ namespace thebanana {
 				}
 			}
 		}
+		this->m_meshes.push_back(std::unique_ptr<graphics::mesh>(new graphics::mesh(vertices, indices, bone_data, mesh->HasBones())));
 		per_mesh_function ptr = get_per_mesh_function();
 		if (ptr) ptr(mesh, parent, this, vertices, indices, bone_data, get_user_data());
-		this->m_meshes.push_back(std::unique_ptr<graphics::mesh>(new graphics::mesh(vertices, indices, bone_data)));
 	}
 	void calc_interpolated_scaling(aiVector3D& out, float animation_time, const aiNodeAnim* node_animation);
 	void calc_interpolated_rotation(aiQuaternion& out, float animation_time, const aiNodeAnim* node_animation);

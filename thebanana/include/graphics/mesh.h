@@ -18,7 +18,7 @@ namespace thebanana {
 				BANANA_API void add_bone_data(unsigned int id, float weight);
 				BANANA_API vertex_bone_data();
 			};
-			BANANA_API mesh(const std::vector<vertex>& vertices, const std::vector<unsigned int>& indices, const std::vector<vertex_bone_data>& bone_data = std::vector<vertex_bone_data>());
+			BANANA_API mesh(const std::vector<vertex>& vertices, const std::vector<unsigned int>& indices, const std::vector<vertex_bone_data>& bone_data = std::vector<vertex_bone_data>(), bool has_bones = false);
 			BANANA_API void render();
 			BANANA_API ~mesh();
 		private:
@@ -30,6 +30,7 @@ namespace thebanana {
 			std::vector<vertex> m_vertices;
 			std::vector<unsigned int> m_indices;
 			std::vector<vertex_bone_data> m_bone_data;
+			bool m_has_bones;
 		};
 	}
 }

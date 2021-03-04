@@ -41,7 +41,7 @@ namespace thebanana {
 		if (this->m_type != type) {
 			this->m_type = type;
 			graphics::framebuffer::specification spec;
-			spec.width = spec.height = 1024;
+			spec.width = spec.height = 2048;
 			spec.buffers = spec.depth;
 			graphics::framebuffer::attachment_settings& depth_settings = spec.depth_settings;
 			switch (this->m_type) {

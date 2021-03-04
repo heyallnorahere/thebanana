@@ -54,7 +54,15 @@ namespace thebanana {
 					assert(type);
 					size_t index = ((attr.custom_index < 0) ? i : (size_t)attr.custom_index);
 					glEnableVertexAttribArray(index);
-					glVertexAttribPointer(index, attr.elements, type, attr.normalize, total_size, (void*)offset);
+					switch (attr.type) {
+					case data::vertex_attrib::type_uint:
+					case data::vertex_attrib::type_int:
+						glVertexAttribIPointer(index, attr.elements, type, total_size, (void*)offset);
+						break;
+					default:
+						glVertexAttribPointer(index, attr.elements, type, attr.normalize, total_size, (void*)offset);
+						break;
+					}
 				}
 			}
 		}

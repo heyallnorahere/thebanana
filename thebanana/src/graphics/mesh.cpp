@@ -55,13 +55,13 @@ namespace thebanana {
 			vertex_buffer_data.size = this->m_bone_data.size() * sizeof(vertex_bone_data);
 			vertex_buffer_data.vertex_count = this->m_bone_data.size();
 			vertex_buffer_data.attributes.clear();
-			attrib.size = sizeof(glm::vec<vertex_bone_data::max_bones_per_vertex, int>);
+			attrib.size = sizeof(int) * vertex_bone_data::max_bones_per_vertex;
 			attrib.type = vertex_buffer::data::vertex_attrib::type_int;
 			attrib.normalize = false;
 			attrib.elements = vertex_bone_data::max_bones_per_vertex;
 			attrib.custom_index = 3;
 			vertex_buffer_data.attributes.push_back(attrib);
-			attrib.size = sizeof(glm::vec<vertex_bone_data::max_bones_per_vertex, float>);
+			attrib.size = sizeof(float) * vertex_bone_data::max_bones_per_vertex;
 			attrib.type = vertex_buffer::data::vertex_attrib::type_float;
 			attrib.custom_index = 4;
 			vertex_buffer_data.attributes.push_back(attrib);

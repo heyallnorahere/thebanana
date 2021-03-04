@@ -8,14 +8,14 @@
 namespace thebanana {
 	animation_component::animation_component(gameobject* obj) : component(obj), animation_start_time(0.0), repeat(false), animation_id(-1) { }
 	void animation_component::post_update() {
-		if (this->animation_id > -1) {
+		std::string model_name = "";
+		if (this->get_number_components<mesh_component>() > 0) {
+			model_name = this->get_component<mesh_component>().get_mesh_name();
+		}
+		const aiScene* s = this->parent->get_game()->get_model_registry()->get_scene(model_name);
+		if (!s) return;
+		if (this->animation_id > -1 && this->animation_id < s->mNumAnimations) {
 			double current_time = this->get_animation_time();
-			std::string model_name = "";
-			if (this->get_number_components<mesh_component>() > 0) {
-				model_name = this->get_component<mesh_component>().get_mesh_name();
-			}
-			const aiScene* s = this->parent->get_game()->get_model_registry()->get_scene(model_name);
-			if (!s) return;
 			aiAnimation* animation = s->mAnimations[this->animation_id];
 			double length_in_sec = animation->mDuration / animation->mTicksPerSecond;
 			if (!this->repeat && current_time > length_in_sec) {

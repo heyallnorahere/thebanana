@@ -132,8 +132,7 @@ namespace thebanana {
 		return this->m_menu_manager;
 	}
 	long long __stdcall game::wndproc(HWND window, unsigned int msg, unsigned long long w_param, long long l_param) {
-		if (ImGui_ImplWin32_WndProcHandler(window, msg, w_param, l_param))
-			return true;
+		ImGui_ImplWin32_WndProcHandler(window, msg, w_param, l_param);
 		switch (msg) {
 		case WM_DESTROY:
 			PostQuitMessage(0);

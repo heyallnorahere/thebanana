@@ -5,6 +5,7 @@ namespace bananatree {
 	public:
 		struct model_descriptor {
 			std::string path, name;
+			thebanana::transform model_transform;
 		};
 		struct material_descriptor {
 			std::string friendly_name;

@@ -44,7 +44,7 @@ namespace bananatree {
 		}
 		ImGui::PopID();
 	}
-	static void vec3_control(const std::string& label, glm::vec3& vector, float reset_value = 0.f, float speed = 0.1f, float column_width = 100.f) {
+	void vec3_control(const std::string& label, glm::vec3& vector, float reset_value = 0.f, float speed = 0.1f, float column_width = 100.f) {
 		ImGuiIO& io = ImGui::GetIO();
 		auto bold_font = io.Fonts->Fonts[0];
 		ImGui::PushID(label.c_str());

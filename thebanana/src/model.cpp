@@ -6,23 +6,31 @@
 #include "graphics/util.h"
 #include "internal_util.h"
 namespace thebanana {
-	static glm::mat4 from_assimp(const aiMatrix4x4& m) {
-		glm::mat4 result;
-		memcpy(&result, &m, sizeof(glm::mat4));
+	static glm::mat4 from_assimp(const aiMatrix4x4& m, bool transpose = false) {
+		glm::mat4 result(
+			m.a1, m.a2, m.a3, m.a4,
+			m.b1, m.b2, m.b3, m.b4,
+			m.c1, m.c2, m.c3, m.c4,
+			m.d1, m.d2, m.d3, m.d4
+		);
+
+		if (transpose) result = glm::transpose(result);
 		return result;
 	}
 	static glm::mat4 to_scaling_matrix(aiVector3D scaling) {
 		glm::mat4 m(1.f);
-		m[0][0] = scaling.x;
-		m[1][1] = scaling.y;
-		m[2][2] = scaling.z;
+		m[0][0] = scaling.x;    m[0][1] = 0.0f;   m[0][2] = 0.0f;   m[0][3] = 0.0f;
+		m[1][0] = 0.0f;   m[1][1] = scaling.y;    m[1][2] = 0.0f;   m[1][3] = 0.0f;
+		m[2][0] = 0.0f;   m[2][1] = 0.0f;   m[2][2] = scaling.z;    m[2][3] = 0.0f;
+		m[3][0] = 0.0f;   m[3][1] = 0.0f;   m[3][2] = 0.0f;   m[3][3] = 1.0f;
 		return m;
 	}
 	static glm::mat4 to_translation_matrix(aiVector3D position) {
 		glm::mat4 m(1.f);
-		m[3][0] = position.x;
-		m[3][1] = position.y;
-		m[3][2] = position.z;
+		m[0][0] = 1.0f; m[0][1] = 0.0f; m[0][2] = 0.0f; m[0][3] = position.x;
+		m[1][0] = 0.0f; m[1][1] = 1.0f; m[1][2] = 0.0f; m[1][3] = position.y;
+		m[2][0] = 0.0f; m[2][1] = 0.0f; m[2][2] = 1.0f; m[2][3] = position.z;
+		m[3][0] = 0.0f; m[3][1] = 0.0f; m[3][2] = 0.0f; m[3][3] = 1.0f;
 		return m;
 	}
 	model::model(const std::string& path) {
@@ -37,25 +45,24 @@ namespace thebanana {
 		return this->m_scene;
 	}
 	void model::draw(float time, int animation_id) {
-		if (this->m_bone_count > 0) {
-			glm::mat4 identity(1.f);
-			float animation_time = 0.f;
-			if (animation_id != -1) {
-				assert(this->m_scene->HasAnimations());
-				aiAnimation* animation = this->m_scene->mAnimations[animation_id];
-				float ticks_per_second = static_cast<float>(animation->mTicksPerSecond != 0.0 ? animation->mTicksPerSecond : 25.0);
-				float time_in_ticks = time * ticks_per_second;
-				animation_time = fmod(time_in_ticks, (float)animation->mDuration);
-			}
-			this->read_node_hierarchy(animation_time, this->m_scene->mRootNode, identity, animation_id);
-			unsigned int shader = graphics::util::get_current_shader();
-			if (shader) {
-				for (size_t i = 0; i < this->m_bone_count; i++) {
-					std::string uniform_name = "bones[" + std::to_string(i) + "]";
-					// todo: replace with engine call
-					auto location = glGetUniformLocation(shader, uniform_name.c_str());
-					glUniformMatrix4fv(location, 1, false, glm::value_ptr(this->m_bone_info[i].final_transform));
-				}
+		glm::mat4 identity(1.f);
+		float animation_time = 0.f;
+		if (animation_id != -1 && animation_id < this->m_scene->mNumAnimations) {
+			assert(this->m_scene->HasAnimations());
+			float ticks_per_second = (float)(this->m_scene->mAnimations[animation_id]->mTicksPerSecond != 0 ? this->m_scene->mAnimations[animation_id]->mTicksPerSecond : 25.0f);
+			float time_in_ticks = time * ticks_per_second;
+			animation_time = fmod(time_in_ticks, (float)this->m_scene->mAnimations[animation_id]->mDuration);
+		}
+		this->read_node_hierarchy(animation_time, this->m_scene->mRootNode, identity, animation_id);
+		unsigned int shader = graphics::util::get_current_shader();
+		if (shader) {
+			for (size_t i = 0; i < this->m_bone_count; i++) {
+				assert(i < 100);
+				char name[256];
+				sprintf(name, "bones[%d]", i);
+				// todo: replace with engine call
+				auto location = glGetUniformLocation(shader, name);
+				glUniformMatrix4fv(location, 1, true, glm::value_ptr(this->m_bone_info[i].final_transform));
 			}
 		}
 		for (auto& mesh : this->m_meshes) {
@@ -76,8 +83,7 @@ namespace thebanana {
 			g_game->debug_print("assimp error: " + std::string(this->m_importer->GetErrorString()));
 			return;
 		}
-		this->m_global_inverse_transform = from_assimp(this->m_scene->mRootNode->mTransformation);
-		this->m_global_inverse_transform = glm::inverse(this->m_global_inverse_transform);
+		this->m_global_inverse_transform = glm::inverse(from_assimp(this->m_scene->mRootNode->mTransformation));
 		this->process_node(this->m_scene->mRootNode);
 		this->m_loaded = true;
 	}
@@ -92,7 +98,9 @@ namespace thebanana {
 	}
 	void model::process_mesh(aiMesh* mesh, aiNode* parent) {
 		std::vector<graphics::mesh::vertex> vertices;
+		vertices.reserve(mesh->mNumVertices);
 		std::vector<unsigned int> indices;
+		indices.reserve(mesh->mNumVertices);
 		std::vector<graphics::mesh::vertex_bone_data> bone_data;
 		bone_data.resize(mesh->mNumVertices);
 		for (size_t i = 0; i < mesh->mNumVertices; i++) {
@@ -116,27 +124,26 @@ namespace thebanana {
 				indices.push_back(face.mIndices[j]);
 			}
 		}
-		if (mesh->HasBones()) {
-			for (size_t i = 0; i < mesh->mNumBones; i++) {
-				aiBone* bone = mesh->mBones[i];
-				size_t bone_index = 0;
-				std::string bone_name = std::string(bone->mName.data, bone->mName.length);
-				if (this->m_bone_mapping.find(bone_name) == this->m_bone_mapping.end()) {
-					bone_index = this->m_bone_count;
-					this->m_bone_count++;
-					bone_info bi;
-					bi.bone_offset = from_assimp(bone->mOffsetMatrix);
-					this->m_bone_info.push_back(bi);
-					this->m_bone_mapping[bone_name] = bone_index;
-				} else {
-					bone_index = this->m_bone_mapping[bone_name];
-				}
-				for (size_t j = 0; j < bone->mNumWeights; j++) {
-					aiVertexWeight weight = bone->mWeights[j];
-					size_t vertex_id = weight.mVertexId;
-					float weight_value = weight.mWeight;
-					bone_data[vertex_id].add_bone_data(bone_index, weight_value);
-				}
+		for (int i = 0; i < mesh->mNumBones; i++) {
+			size_t bone_index = 0;
+			aiBone*& bone = mesh->mBones[i];
+			std::string bone_name(bone->mName.data);
+			if (this->m_bone_mapping.find(bone_name) == this->m_bone_mapping.end()) {
+				bone_index = this->m_bone_count;
+				this->m_bone_count++;
+				bone_info bi;
+				bi.bone_offset = from_assimp(bone->mOffsetMatrix);
+				this->m_bone_info.push_back(bi);
+				this->m_bone_mapping[bone_name] = bone_index;
+			}
+			else {
+				bone_index = this->m_bone_mapping[bone_name];
+			}
+			for (int j = 0; j < bone->mNumWeights; j++) {
+				aiVertexWeight& w = bone->mWeights[j];
+				int vertex_id = w.mVertexId;
+				float weight = w.mWeight;
+				bone_data[vertex_id].add_bone_data(bone_index, weight);
 			}
 		}
 		this->m_meshes.push_back(std::unique_ptr<graphics::mesh>(new graphics::mesh(vertices, indices, bone_data, mesh->HasBones())));
@@ -150,29 +157,29 @@ namespace thebanana {
 	void model::read_node_hierarchy(float time, const aiNode* node, const glm::mat4& parent_transform, int animation_id) {
 		std::string node_name = std::string(node->mName.data, node->mName.length);
 		const aiAnimation* animation = NULL;
-		if (animation_id != -1) {
+		if (animation_id != -1 && animation_id < this->m_scene->mNumAnimations) {
 			animation = this->m_scene->mAnimations[animation_id];
 		}
 		glm::mat4 node_transform = from_assimp(node->mTransformation);
-		if (animation_id != -1) {
+		if (animation_id != -1 && animation_id < this->m_scene->mNumAnimations) {
 			const aiNodeAnim* node_animation = find_node_animation(animation, node_name);
 			if (node_animation) {
-				aiVector3D aivec;
-				calc_interpolated_scaling(aivec, time, node_animation);
-				glm::mat4 scaling = to_scaling_matrix(aivec);
-				aiQuaternion aiquat;
-				calc_interpolated_rotation(aiquat, time, node_animation);
-				glm::mat4 rotation = from_assimp(aiMatrix4x4(aiquat.GetMatrix()));
-				calc_interpolated_position(aivec, time, node_animation);
-				glm::mat4 translation = to_translation_matrix(aivec);
-				node_transform = scaling * rotation * translation;
+				aiVector3D scaling;
+				calc_interpolated_scaling(scaling, time, node_animation);
+				glm::mat4 scaling_m = to_scaling_matrix(scaling);
+				aiQuaternion rotation;
+				calc_interpolated_rotation(rotation, time, node_animation);
+				glm::mat4 rotation_m = from_assimp(aiMatrix4x4(rotation.GetMatrix()));
+				aiVector3D position;
+				calc_interpolated_position(position, time, node_animation);
+				glm::mat4 position_m = to_translation_matrix(position);
+				node_transform = scaling_m * rotation_m * position_m;
 			}
 		}
 		glm::mat4 global_transform = node_transform * parent_transform;
 		if (this->m_bone_mapping.find(node_name) != this->m_bone_mapping.end()) {
 			size_t bone_index = this->m_bone_mapping[node_name];
-			bone_info& bi = this->m_bone_info[bone_index];
-			bi.final_transform = bi.bone_offset * global_transform * this->m_global_inverse_transform;
+			this->m_bone_info[bone_index].final_transform = this->m_bone_info[bone_index].bone_offset * global_transform * this->m_global_inverse_transform;
 		}
 		for (size_t i = 0; i < node->mNumChildren; i++) {
 			this->read_node_hierarchy(time, node->mChildren[i], global_transform, animation_id);

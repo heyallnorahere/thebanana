@@ -123,6 +123,12 @@ namespace bananatree {
 			out << YAML::BeginMap;
 			out << YAML::Key << "path" << YAML::Value << md.path;
 			out << YAML::Key << "name" << YAML::Value << md.name;
+			out << YAML::Key << "model transform" << YAML::BeginMap;
+			thebanana::transform transform = md.model_transform;
+			out << YAML::Key << "translation" << YAML::Value << transform.get_translation();
+			out << YAML::Key << "rotation" << YAML::Value << transform.get_rotation();
+			out << YAML::Key << "scale" << YAML::Value << transform.get_scale();
+			out << YAML::EndMap;
 			out << YAML::EndMap;
 		}
 		out << YAML::EndSeq;
@@ -200,6 +206,11 @@ namespace bananatree {
 			model_descriptor md;
 			md.path = m["path"].as<std::string>();
 			md.name = m["name"].as<std::string>();
+			YAML::Node transform_node = m["model transform"];
+			glm::vec3 translation = transform_node["translation"].as<glm::vec3>();
+			glm::vec3 rotation = transform_node["rotation"].as<glm::vec3>();
+			glm::vec3 scale = transform_node["scale"].as<glm::vec3>();
+			md.model_transform = thebanana::transform(translation, rotation, scale);
 			this->m_descriptors.push_back(md);
 			this->m_editor_layer->get_imgui_layer()->find_panel<model_registry_panel>()->import(md);
 		}

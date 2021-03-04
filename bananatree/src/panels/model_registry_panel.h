@@ -7,7 +7,7 @@ namespace bananatree {
 		model_registry_panel();
 		virtual void render() override;
 		virtual std::string get_menu_text() override;
-		void import(const std::string& path, const std::string& name);
+		void import(const std::string& path, const std::string& name, const thebanana::transform& transform);
 		void import(const project::model_descriptor& md);
 		void set_project(const std::shared_ptr<project>& p);
 	private:

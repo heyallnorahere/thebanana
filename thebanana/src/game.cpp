@@ -56,7 +56,7 @@ namespace thebanana {
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		glEnable(GL_CULL_FACE);
 		glCullFace(GL_BACK);
-#ifdef _DEBUG
+#ifdef BANANA_DEBUG
 		int flags; glGetIntegerv(GL_CONTEXT_FLAGS, &flags);
 		if (flags & GL_CONTEXT_FLAG_DEBUG_BIT) {
 			glEnable(GL_DEBUG_OUTPUT);
@@ -75,7 +75,7 @@ namespace thebanana {
 		char filename[256];
 		GetModuleFileNameA(NULL, filename, 256);
 		this->m_file_log = std::ofstream(std::string(filename) + ".log");
-		this->m_file_log << "[start of " + std::string(filename) + ".log]";
+		this->m_file_log << "[start of " + std::string(filename) + ".log]\n";
 		char sizebuf[256];
 		sprintf(sizebuf, "width: %d, height: %d", width, height);
 		this->debug_print("successfully created graphics context:\n	backend: " + graphics::get_backend_version() + "\n	" + sizebuf);

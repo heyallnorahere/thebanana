@@ -31,7 +31,7 @@ namespace bananatree {
 			thebanana::gameobject* object;
 			if (parent) object = parent->add_object(new thebanana::static_mesh(mesh_name));
 			else object = thebanana::g_game->get_scene()->add_object(new thebanana::static_mesh(mesh_name));
-#ifndef _DEBUG
+#ifndef BANANA_DEBUG
 			object->add_component<thebanana::debug_component>();
 #endif
 			mesh_name = "";
@@ -243,7 +243,7 @@ namespace bananatree {
 			if (ImGui::BeginMenu("Gameobject")) {
 				if (ImGui::MenuItem("Empty")) {
 					thebanana::gameobject* object = thebanana::g_game->get_scene()->add_object(new thebanana::basic_gameobject);
-#ifndef _DEBUG
+#ifndef BANANA_DEBUG
 					object->add_component<thebanana::debug_component>();
 #endif
 				}
@@ -297,7 +297,7 @@ namespace bananatree {
 				}
 				ImGui::EndMenu();
 			}
-#ifdef _DEBUG
+#ifdef BANANA_DEBUG
 			if (ImGui::BeginMenu("Debug")) {
 				if (ImGui::MenuItem("Break")) {
 					__debugbreak();

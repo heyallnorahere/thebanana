@@ -10,7 +10,7 @@
 #include "particlesystem/particle_component.h"
 namespace thebanana {
 	gameobject::gameobject() : last_collided_frame(0) {
-#ifdef _DEBUG
+#ifdef BANANA_DEBUG
 		this->add_component<debug_component>();
 #endif
 		this->initialized = false;

@@ -115,7 +115,7 @@ void load_project(const std::string& path) {
 	}
 }
 void sandbox_application_layer::init() {
-#ifdef _DEBUG
+#ifdef BANANA_DEBUG
 	// initialize imgui debug menus
 	thebanana::g_game->init_debug_menus();
 #endif
@@ -182,7 +182,7 @@ void sandbox_application_layer::gameloop() {
 	thebanana::g_game->update();
 	thebanana::g_game->render();
 	thebanana::g_game->swap_buffers();
-#ifdef _DEBUG
+#ifdef BANANA_DEBUG
 	if (thebanana::g_game->get_input_manager()->get_device_type(0) == thebanana::input_manager::device_type::keyboard) {
 		std::vector<thebanana::input_manager::device::button> btns = thebanana::g_game->get_input_manager()->get_device_buttons(0);
 		if (btns[DIK_EQUALS].down) {

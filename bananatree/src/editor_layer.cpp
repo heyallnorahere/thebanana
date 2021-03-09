@@ -58,7 +58,7 @@ namespace bananatree {
 		PROCESS_INFORMATION pi = { 0 };
 		STARTUPINFOA si = { 0 };
 		std::string config =
-#ifdef _DEBUG
+#ifdef BANANA_DEBUG
 			"Debug";
 #else
 			"Release";
@@ -93,7 +93,7 @@ namespace bananatree {
 		STARTUPINFOA si = { 0 };
 		std::string msbuild_path = this->m_config->get<std::string>("msbuild");
 		std::string config =
-#ifdef _DEBUG
+#ifdef BANANA_DEBUG
 			"Debug";
 #else
 			"Release";
@@ -116,7 +116,7 @@ namespace bananatree {
 	std::string editor_layer::get_dll_path() {
 		std::string project_path = this->m_project->get_code_project_path();
 		std::string configuration =
-#ifdef _DEBUG
+#ifdef BANANA_DEBUG
 			"Debug";
 #else
 			"Release";

@@ -37,7 +37,7 @@ namespace bananatree {
 			if (ImGui::BeginMenu("Add child")) {
 				if (ImGui::MenuItem("Empty")) {
 					thebanana::gameobject* object_ = object->add_object(new thebanana::basic_gameobject);
-#ifndef _DEBUG
+#ifndef BANANA_DEBUG
 					object_->add_component<thebanana::debug_component>();
 #endif
 				}

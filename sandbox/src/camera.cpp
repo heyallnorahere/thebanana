@@ -7,12 +7,12 @@ camera_behavior::camera_behavior(thebanana::gameobject* object, thebanana::nativ
 	this->add_property(new thebanana::component::property<thebanana::gameobject*>(NULL, "player"));
 	this->add_property(new thebanana::component::property<glm::vec3>(glm::vec3(0.f, 0.f, 1.f), "direction"));
 	this->add_property(new thebanana::component::property<glm::vec2>(glm::vec2(0.f, -90.f), "angle"));
-#ifdef _DEBUG
+#ifdef BANANA_DEBUG
 	this->remove_component<thebanana::debug_component>();
 #endif
 }
 void camera_behavior::update() {
-#ifdef _DEBUG
+#ifdef BANANA_DEBUG
 	if (thebanana::debug::control) {
 #endif
 		glm::vec2 result;
@@ -41,7 +41,7 @@ void camera_behavior::update() {
 		d.y = sin(glm::radians(angle.x));
 		d.z = sin(glm::radians(angle.y)) * cos(glm::radians(angle.x));
 		this->set_property<glm::vec3>("direction", glm::normalize(d));
-#ifdef _DEBUG
+#ifdef BANANA_DEBUG
 	}
 #endif
 	thebanana::component::property<float>* distance = this->find_property<float>("distance");

@@ -27,7 +27,7 @@ void player_behavior::update() {
 			this->get_component<thebanana::animation_component>().start_animation("idle", true);
 		}
 	}
-#ifdef _DEBUG
+#ifdef BANANA_DEBUG
 	if (thebanana::debug::control) {
 #endif
 		glm::vec3 translate(0.f);
@@ -95,7 +95,7 @@ void player_behavior::update() {
 		glm::mat4 rotation = this->get_transform();
 		rotation[3] = glm::vec4(0.f, 0.f, 0.f, rotation[3].w);
 		this->get_component<thebanana::rigidbody>().apply_force(rotation * glm::vec4(translate, 1.f));
-#ifdef _DEBUG
+#ifdef BANANA_DEBUG
 	}
 #endif
 }

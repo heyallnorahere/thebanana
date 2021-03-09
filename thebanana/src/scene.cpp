@@ -37,7 +37,7 @@ namespace thebanana {
 		this->set_shadow_defaults();
 	}
 	void scene::update() {
-#ifdef _DEBUG
+#ifdef BANANA_DEBUG
 		{
 			bool toggle_control = false, toggle_cursor = false;
 			if (this->m_game->get_input_manager()->get_device_type(0) == input_manager::device_type::keyboard) {

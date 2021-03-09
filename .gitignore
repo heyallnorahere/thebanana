@@ -411,3 +411,8 @@ steam-sdk/
 # binaries in vendor folder
 !vendor/**
 bin-int/
+# visual studio project files
+*.sln
+*.*proj*
+# makefiles
+Makefile

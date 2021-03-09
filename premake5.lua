@@ -23,6 +23,13 @@ workspace "thebanana"
         }
         optimize "on"
 outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
+project "configfiles"
+    kind "None"
+    files {
+        "premake5.lua",
+        "README.md",
+        ".gitignore"
+    }
 group "dependencies"
 project "imgui"
     location "imgui"

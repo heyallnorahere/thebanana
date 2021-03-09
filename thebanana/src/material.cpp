@@ -40,7 +40,7 @@ namespace thebanana {
 	const std::shared_ptr<graphics::texture>& material::get_texture() {
 		return this->m_texture;
 	}
-	std::string material::get_texture_path() {
+	const std::string& material::get_texture_path() {
 		return this->m_texture_path;
 	}
 	void material::set_normal_map(const std::string& image_path) {
@@ -69,7 +69,7 @@ namespace thebanana {
 	const std::shared_ptr<graphics::texture>& material::get_normal_map() {
 		return this->m_normal_map;
 	}
-	std::string material::get_normal_map_path() {
+	const std::string& material::get_normal_map_path() {
 		return this->m_normal_map_path;
 	}
 	void material::set_diffuse(glm::vec3 color) {
@@ -120,7 +120,7 @@ namespace thebanana {
 	unsigned long long material::get_uuid() {
 		return this->m_uuid;
 	}
-	std::string material::get_friendly_name() {
+	const std::string& material::get_friendly_name() {
 		return this->m_friendly_name;
 	}
 	void material::set_friendly_name(const std::string& name) {

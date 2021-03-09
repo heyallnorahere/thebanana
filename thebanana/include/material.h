@@ -9,12 +9,12 @@ namespace thebanana {
 		BANANA_API void set_texture(void* data, int width, int height, int channels, bool clear_path = true);
 		BANANA_API void set_texture(graphics::texture* texture);
 		BANANA_API const std::shared_ptr<graphics::texture>& get_texture();
-		BANANA_API std::string get_texture_path();
+		BANANA_API const std::string& get_texture_path();
 		BANANA_API void set_normal_map(const std::string& image_path);
 		BANANA_API void set_normal_map(void* data, int width, int height, int channels, bool clear_path = true);
 		BANANA_API void set_normal_map(graphics::texture* texture);
 		BANANA_API const std::shared_ptr<graphics::texture>& get_normal_map();
-		BANANA_API std::string get_normal_map_path();
+		BANANA_API const std::string& get_normal_map_path();
 		BANANA_API void set_diffuse(glm::vec3 color);
 		BANANA_API void set_specular(glm::vec3 color);
 		BANANA_API void set_ambient(glm::vec3 color);
@@ -26,7 +26,7 @@ namespace thebanana {
 		BANANA_API void send_to_shader(unsigned int shader_id, const std::string& uniform_name);
 		BANANA_API void set_uuid(unsigned long long uuid);
 		BANANA_API unsigned long long get_uuid();
-		BANANA_API std::string get_friendly_name();
+		BANANA_API const std::string& get_friendly_name();
 		BANANA_API void set_friendly_name(const std::string& name);
 	private:
 		std::shared_ptr<graphics::texture> m_texture, m_normal_map;

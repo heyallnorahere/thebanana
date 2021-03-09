@@ -10,3 +10,6 @@
 [submodule "imguizmo/ImGuizmo"]
 	path = imguizmo/ImGuizmo
 	url = https://github.com/TheCherno/ImGuizmo
+[submodule "glm"]
+	path = glm
+	url = https://github.com/g-truc/glm

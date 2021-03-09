@@ -1,138 +1,89 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Source Files">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
-    <Filter Include="Header Files">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;hm;inl;inc;ipp;xsd</Extensions>
-    </Filter>
-    <Filter Include="Resource Files">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    <Filter Include="panels">
+      <UniqueIdentifier>{C8213A14-B4C3-64EA-9D7E-783E89BFEB3A}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\editor_layer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\imgui_layer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\panels\panel.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\panels\viewport_panel.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\panels\scene_hierarchy_panel.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\panels\log_panel.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\panels\property_editor_panel.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\util.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\panels\model_registry_panel.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\project.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\panels\project_editor_panel.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\editorconfig.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\panels\script_registry_panel.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\panels\material_editor_panel.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\panels\texture_viewer_panel.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\panels\lighting_panel.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="src\editor_layer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\imgui_layer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\panels\panel.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\panels\viewport_panel.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\panels\scene_hierarchy_panel.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="src\editor_layer.h" />
+    <ClInclude Include="src\editorconfig.h" />
+    <ClInclude Include="src\imgui_layer.h" />
+    <ClInclude Include="src\panels\lighting_panel.h">
+      <Filter>panels</Filter>
     </ClInclude>
     <ClInclude Include="src\panels\log_panel.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\panels\property_editor_panel.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\util.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\panels\model_registry_panel.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\project.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\panels\project_editor_panel.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\editorconfig.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\panels\script_registry_panel.h">
-      <Filter>Header Files</Filter>
+      <Filter>panels</Filter>
     </ClInclude>
     <ClInclude Include="src\panels\material_editor_panel.h">
-      <Filter>Header Files</Filter>
+      <Filter>panels</Filter>
+    </ClInclude>
+    <ClInclude Include="src\panels\model_registry_panel.h">
+      <Filter>panels</Filter>
+    </ClInclude>
+    <ClInclude Include="src\panels\panel.h">
+      <Filter>panels</Filter>
+    </ClInclude>
+    <ClInclude Include="src\panels\project_editor_panel.h">
+      <Filter>panels</Filter>
+    </ClInclude>
+    <ClInclude Include="src\panels\property_editor_panel.h">
+      <Filter>panels</Filter>
+    </ClInclude>
+    <ClInclude Include="src\panels\scene_hierarchy_panel.h">
+      <Filter>panels</Filter>
+    </ClInclude>
+    <ClInclude Include="src\panels\script_registry_panel.h">
+      <Filter>panels</Filter>
     </ClInclude>
     <ClInclude Include="src\panels\texture_viewer_panel.h">
-      <Filter>Header Files</Filter>
+      <Filter>panels</Filter>
     </ClInclude>
-    <ClInclude Include="src\panels\lighting_panel.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="src\panels\viewport_panel.h">
+      <Filter>panels</Filter>
     </ClInclude>
+    <ClInclude Include="src\project.h" />
+    <ClInclude Include="src\util.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
-    <None Include="imgui.ini" />
-    <None Include="steam_api64.dll" />
-    <None Include="shaders\rendered\fragment.shader" />
-    <None Include="shaders\rendered\vertex.shader" />
-    <None Include="shaders\material_preview\vertex.shader" />
-    <None Include="shaders\material_preview\fragment.shader" />
-    <None Include="shaders\point_depth\fragment.shader" />
-    <None Include="shaders\point_depth\geometry.shader" />
-    <None Include="shaders\point_depth\vertex.shader" />
-    <None Include="shaders\depth\vertex.shader" />
-    <None Include="shaders\depth\fragment.shader" />
-  </ItemGroup>
-  <ItemGroup>
-    <Font Include="fonts\OpenSans-Regular.ttf" />
-    <Font Include="fonts\OpenSans-Bold.ttf" />
+    <ClCompile Include="src\editor_layer.cpp" />
+    <ClCompile Include="src\editorconfig.cpp" />
+    <ClCompile Include="src\imgui_layer.cpp" />
+    <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\panels\lighting_panel.cpp">
+      <Filter>panels</Filter>
+    </ClCompile>
+    <ClCompile Include="src\panels\log_panel.cpp">
+      <Filter>panels</Filter>
+    </ClCompile>
+    <ClCompile Include="src\panels\material_editor_panel.cpp">
+      <Filter>panels</Filter>
+    </ClCompile>
+    <ClCompile Include="src\panels\model_registry_panel.cpp">
+      <Filter>panels</Filter>
+    </ClCompile>
+    <ClCompile Include="src\panels\panel.cpp">
+      <Filter>panels</Filter>
+    </ClCompile>
+    <ClCompile Include="src\panels\project_editor_panel.cpp">
+      <Filter>panels</Filter>
+    </ClCompile>
+    <ClCompile Include="src\panels\property_editor_panel.cpp">
+      <Filter>panels</Filter>
+    </ClCompile>
+    <ClCompile Include="src\panels\scene_hierarchy_panel.cpp">
+      <Filter>panels</Filter>
+    </ClCompile>
+    <ClCompile Include="src\panels\script_registry_panel.cpp">
+      <Filter>panels</Filter>
+    </ClCompile>
+    <ClCompile Include="src\panels\texture_viewer_panel.cpp">
+      <Filter>panels</Filter>
+    </ClCompile>
+    <ClCompile Include="src\panels\viewport_panel.cpp">
+      <Filter>panels</Filter>
+    </ClCompile>
+    <ClCompile Include="src\project.cpp" />
+    <ClCompile Include="src\util.cpp" />
   </ItemGroup>
 </Project>

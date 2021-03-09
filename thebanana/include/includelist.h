@@ -4,6 +4,9 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #define DIRECTINPUT_VERSION 0x800
+#ifdef UNICODE
+#undef UNICODE
+#endif
 #include <Windows.h>
 #include <initguid.h>
 #include <dinput.h>

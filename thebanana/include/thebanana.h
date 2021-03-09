@@ -3,8 +3,6 @@
 #include "components/components.h"
 #include "graphics/graphics.h"
 #include "physics/physics.h"
-#include "ui/ui.h"
-#include "sound/sound.h"
 #include "particlesystem/particlesystem.h"
 #include "main_module.h"
 #ifdef BANANA_MAIN

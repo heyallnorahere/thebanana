@@ -177,10 +177,6 @@ void sandbox_application_layer::init() {
 	p->get_transform().translate(0.f, -1.f, 0.f);
 	p->get_transform().scale(100.f, 1.f, 100.f);
 	p->add_tag("ground");
-	// load sounds
-	thebanana::g_game->get_sound_manager()->load_sound("click", "sounds/click.ogg");
-	// load a menu
-	thebanana::g_game->get_menu_manager()->load_menu(new thebanana::ui::menu("test_menu.json"));
 }
 void sandbox_application_layer::gameloop() {
 	thebanana::g_game->update();

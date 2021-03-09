@@ -410,3 +410,4 @@ steam-sdk/
 !models/*.obj
 # binaries in vendor folder
 !vendor/**
+bin-int/

@@ -6,7 +6,6 @@
 #include "input_manager.h"
 #include "physics/rigidbody.h"
 #include "graphics/framebuffer.h"
-#include "ui/ui.h"
 namespace thebanana {
 	namespace debug {
 		void init_imgui(HWND window) {

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|x64">
@@ -11,29 +11,26 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <VCProjectVersion>16.0</VCProjectVersion>
-    <ProjectGuid>{F2F9A9E7-8488-415A-BF56-9A7EF37E4664}</ProjectGuid>
+    <ProjectGuid>{7609AF9B-62C1-F0E8-CBC8-C944B79F8BD9}</ProjectGuid>
+    <IgnoreWarnCompileDuplicatedFilename>true</IgnoreWarnCompileDuplicatedFilename>
+    <Keyword>Win32Proj</Keyword>
     <RootNamespace>bananatree</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>Unicode</CharacterSet>
     <PlatformToolset>v142</PlatformToolset>
-    <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
+    <CharacterSet>Unicode</CharacterSet>
     <PlatformToolset>v142</PlatformToolset>
-    <WholeProgramOptimization>false</WholeProgramOptimization>
-    <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
-  </ImportGroup>
-  <ImportGroup Label="Shared">
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
@@ -43,52 +40,100 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <CopyLocalDeploymentContent>true</CopyLocalDeploymentContent>
+    <LinkIncremental>true</LinkIncremental>
+    <OutDir>..\bin\Debug-windows-x86_64\bananatree\</OutDir>
+    <IntDir>..\bin-int\Debug-windows-x86_64\bananatree\</IntDir>
+    <TargetName>bananatree</TargetName>
+    <TargetExt>.exe</TargetExt>
+    <IncludePath>..\thebanana\include;..\glm;..\vendor\glew\include;..\imgui\imgui;..\yaml\yaml-cpp\include;..\imguizmo\ImGuizmo;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <CopyLocalDeploymentContent>true</CopyLocalDeploymentContent>
+    <LinkIncremental>false</LinkIncremental>
+    <OutDir>..\bin\Release-windows-x86_64\bananatree\</OutDir>
+    <IntDir>..\bin-int\Release-windows-x86_64\bananatree\</IntDir>
+    <TargetName>bananatree</TargetName>
+    <TargetExt>.exe</TargetExt>
+    <IncludePath>..\thebanana\include;..\glm;..\vendor\glew\include;..\imgui\imgui;..\yaml\yaml-cpp\include;..\imguizmo\ImGuizmo;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>BANANA_WINDOWS;BANANA_DEBUG;_IMGUI_BUILD_DLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
-      <SDLCheck>true</SDLCheck>
-      <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)imguizmo\imguizmo;$(SolutionDir)yaml\yaml-cpp\include;$(SolutionDir)imgui\imgui;$(SolutionDir)thebanana\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <DisableSpecificWarnings>4996;%(DisableSpecificWarnings)</DisableSpecificWarnings>
-      <PreprocessorDefinitions>_IMGUI_BUILD_DLL;IMGUI_IMPL_OPENGL_LOADER_GLEW;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>false</MinimalRebuild>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
-      <SubSystem>Windows</SubSystem>
-      <AdditionalLibraryDirectories>$(OutDir);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>thebanana.lib;yaml.lib;imgui.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalOptions>/subsystem:windows %(AdditionalOptions)</AdditionalOptions>
     </Link>
+    <PostBuildEvent>
+      <Command>IF EXIST "..\bin\Debug-windows-x86_64\thebanana\thebanana.dll"\ (xcopy /Q /E /Y /I "..\bin\Debug-windows-x86_64\thebanana\thebanana.dll" "..\bin\Debug-windows-x86_64\bananatree" &gt; nul) ELSE (xcopy /Q /Y /I "..\bin\Debug-windows-x86_64\thebanana\thebanana.dll" "..\bin\Debug-windows-x86_64\bananatree" &gt; nul)
+IF EXIST "..\bin\Debug-windows-x86_64\imgui\imgui.dll"\ (xcopy /Q /E /Y /I "..\bin\Debug-windows-x86_64\imgui\imgui.dll" "..\bin\Debug-windows-x86_64\bananatree" &gt; nul) ELSE (xcopy /Q /Y /I "..\bin\Debug-windows-x86_64\imgui\imgui.dll" "..\bin\Debug-windows-x86_64\bananatree" &gt; nul)
+IF EXIST "..\vendor\opengl_viewport\bin\Debug\opengl_viewport.dll"\ (xcopy /Q /E /Y /I "..\vendor\opengl_viewport\bin\Debug\opengl_viewport.dll" "..\bin\Debug-windows-x86_64\bananatree" &gt; nul) ELSE (xcopy /Q /Y /I "..\vendor\opengl_viewport\bin\Debug\opengl_viewport.dll" "..\bin\Debug-windows-x86_64\bananatree" &gt; nul)
+IF EXIST "..\vendor\steam-sdk\bin\steam_api64.dll"\ (xcopy /Q /E /Y /I "..\vendor\steam-sdk\bin\steam_api64.dll" "..\bin\Debug-windows-x86_64\bananatree" &gt; nul) ELSE (xcopy /Q /Y /I "..\vendor\steam-sdk\bin\steam_api64.dll" "..\bin\Debug-windows-x86_64\bananatree" &gt; nul)
+IF EXIST "..\vendor\assimp\bin\Debug\assimp-vc142-mtd.dll"\ (xcopy /Q /E /Y /I "..\vendor\assimp\bin\Debug\assimp-vc142-mtd.dll" "..\bin\Debug-windows-x86_64\bananatree" &gt; nul) ELSE (xcopy /Q /Y /I "..\vendor\assimp\bin\Debug\assimp-vc142-mtd.dll" "..\bin\Debug-windows-x86_64\bananatree" &gt; nul)
+IF EXIST "..\vendor\glew\bin\Debug\glew32d.dll"\ (xcopy /Q /E /Y /I "..\vendor\glew\bin\Debug\glew32d.dll" "..\bin\Debug-windows-x86_64\bananatree" &gt; nul) ELSE (xcopy /Q /Y /I "..\vendor\glew\bin\Debug\glew32d.dll" "..\bin\Debug-windows-x86_64\bananatree" &gt; nul)
+IF EXIST "..\vendor\glew\bin\Release\glew32.dll"\ (xcopy /Q /E /Y /I "..\vendor\glew\bin\Release\glew32.dll" "..\bin\Debug-windows-x86_64\bananatree" &gt; nul) ELSE (xcopy /Q /Y /I "..\vendor\glew\bin\Release\glew32.dll" "..\bin\Debug-windows-x86_64\bananatree" &gt; nul)</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
-      <Optimization>MaxSpeed</Optimization>
+      <PreprocessorDefinitions>BANANA_WINDOWS;BANANA_RELEASE;_IMGUI_BUILD_DLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <SDLCheck>true</SDLCheck>
-      <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)imguizmo\imguizmo;$(SolutionDir)yaml\yaml-cpp\include;$(SolutionDir)imgui\imgui;$(SolutionDir)thebanana\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <DisableSpecificWarnings>4996;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <MinimalRebuild>false</MinimalRebuild>
+      <StringPooling>true</StringPooling>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <PreprocessorDefinitions>_IMGUI_BUILD_DLL;IMGUI_IMPL_OPENGL_LOADER_GLEW;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
-      <SubSystem>Windows</SubSystem>
+      <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>$(OutDir);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>thebanana.lib;yaml.lib;imgui.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <LinkTimeCodeGeneration>UseFastLinkTimeCodeGeneration</LinkTimeCodeGeneration>
+      <AdditionalDependencies>opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalOptions>/subsystem:windows %(AdditionalOptions)</AdditionalOptions>
     </Link>
+    <PostBuildEvent>
+      <Command>IF EXIST "..\bin\Release-windows-x86_64\thebanana\thebanana.dll"\ (xcopy /Q /E /Y /I "..\bin\Release-windows-x86_64\thebanana\thebanana.dll" "..\bin\Release-windows-x86_64\bananatree" &gt; nul) ELSE (xcopy /Q /Y /I "..\bin\Release-windows-x86_64\thebanana\thebanana.dll" "..\bin\Release-windows-x86_64\bananatree" &gt; nul)
+IF EXIST "..\bin\Release-windows-x86_64\imgui\imgui.dll"\ (xcopy /Q /E /Y /I "..\bin\Release-windows-x86_64\imgui\imgui.dll" "..\bin\Release-windows-x86_64\bananatree" &gt; nul) ELSE (xcopy /Q /Y /I "..\bin\Release-windows-x86_64\imgui\imgui.dll" "..\bin\Release-windows-x86_64\bananatree" &gt; nul)
+IF EXIST "..\vendor\opengl_viewport\bin\Release\opengl_viewport.dll"\ (xcopy /Q /E /Y /I "..\vendor\opengl_viewport\bin\Release\opengl_viewport.dll" "..\bin\Release-windows-x86_64\bananatree" &gt; nul) ELSE (xcopy /Q /Y /I "..\vendor\opengl_viewport\bin\Release\opengl_viewport.dll" "..\bin\Release-windows-x86_64\bananatree" &gt; nul)
+IF EXIST "..\vendor\steam-sdk\bin\steam_api64.dll"\ (xcopy /Q /E /Y /I "..\vendor\steam-sdk\bin\steam_api64.dll" "..\bin\Release-windows-x86_64\bananatree" &gt; nul) ELSE (xcopy /Q /Y /I "..\vendor\steam-sdk\bin\steam_api64.dll" "..\bin\Release-windows-x86_64\bananatree" &gt; nul)
+IF EXIST "..\vendor\assimp\bin\Release\assimp-vc142-mt.dll"\ (xcopy /Q /E /Y /I "..\vendor\assimp\bin\Release\assimp-vc142-mt.dll" "..\bin\Release-windows-x86_64\bananatree" &gt; nul) ELSE (xcopy /Q /Y /I "..\vendor\assimp\bin\Release\assimp-vc142-mt.dll" "..\bin\Release-windows-x86_64\bananatree" &gt; nul)
+IF EXIST "..\vendor\glew\bin\Release\glew32.dll"\ (xcopy /Q /E /Y /I "..\vendor\glew\bin\Release\glew32.dll" "..\bin\Release-windows-x86_64\bananatree" &gt; nul) ELSE (xcopy /Q /Y /I "..\vendor\glew\bin\Release\glew32.dll" "..\bin\Release-windows-x86_64\bananatree" &gt; nul)</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="src\editorconfig.cpp" />
+    <ClInclude Include="src\editor_layer.h" />
+    <ClInclude Include="src\editorconfig.h" />
+    <ClInclude Include="src\imgui_layer.h" />
+    <ClInclude Include="src\panels\lighting_panel.h" />
+    <ClInclude Include="src\panels\log_panel.h" />
+    <ClInclude Include="src\panels\material_editor_panel.h" />
+    <ClInclude Include="src\panels\model_registry_panel.h" />
+    <ClInclude Include="src\panels\panel.h" />
+    <ClInclude Include="src\panels\project_editor_panel.h" />
+    <ClInclude Include="src\panels\property_editor_panel.h" />
+    <ClInclude Include="src\panels\scene_hierarchy_panel.h" />
+    <ClInclude Include="src\panels\script_registry_panel.h" />
+    <ClInclude Include="src\panels\texture_viewer_panel.h" />
+    <ClInclude Include="src\panels\viewport_panel.h" />
+    <ClInclude Include="src\project.h" />
+    <ClInclude Include="src\util.h" />
+  </ItemGroup>
+  <ItemGroup>
     <ClCompile Include="src\editor_layer.cpp" />
+    <ClCompile Include="src\editorconfig.cpp" />
     <ClCompile Include="src\imgui_layer.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\panels\lighting_panel.cpp" />
@@ -106,67 +151,17 @@
     <ClCompile Include="src\util.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\editorconfig.h" />
-    <ClInclude Include="src\editor_layer.h" />
-    <ClInclude Include="src\imgui_layer.h" />
-    <ClInclude Include="src\panels\lighting_panel.h" />
-    <ClInclude Include="src\panels\log_panel.h" />
-    <ClInclude Include="src\panels\material_editor_panel.h" />
-    <ClInclude Include="src\panels\model_registry_panel.h" />
-    <ClInclude Include="src\panels\panel.h" />
-    <ClInclude Include="src\panels\project_editor_panel.h" />
-    <ClInclude Include="src\panels\property_editor_panel.h" />
-    <ClInclude Include="src\panels\scene_hierarchy_panel.h" />
-    <ClInclude Include="src\panels\script_registry_panel.h" />
-    <ClInclude Include="src\panels\texture_viewer_panel.h" />
-    <ClInclude Include="src\panels\viewport_panel.h" />
-    <ClInclude Include="src\project.h" />
-    <ClInclude Include="src\util.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="imgui.ini">
-      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</DeploymentContent>
-      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</DeploymentContent>
-    </None>
-    <None Include="packages.config" />
-    <None Include="shaders\depth\fragment.shader" />
-    <None Include="shaders\depth\vertex.shader" />
-    <None Include="shaders\point_depth\fragment.shader" />
-    <None Include="shaders\point_depth\geometry.shader" />
-    <None Include="shaders\point_depth\vertex.shader" />
-    <None Include="shaders\material_preview\fragment.shader" />
-    <None Include="shaders\material_preview\vertex.shader" />
-    <None Include="shaders\rendered\fragment.shader">
-      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</DeploymentContent>
-      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</DeploymentContent>
-    </None>
-    <None Include="shaders\rendered\vertex.shader">
-      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</DeploymentContent>
-      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</DeploymentContent>
-    </None>
-    <None Include="steam_api64.dll">
-      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</DeploymentContent>
-      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</DeploymentContent>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <Font Include="fonts\OpenSans-Bold.ttf">
-      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</DeploymentContent>
-      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</DeploymentContent>
-    </Font>
-    <Font Include="fonts\OpenSans-Regular.ttf">
-      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</DeploymentContent>
-      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</DeploymentContent>
-    </Font>
+    <ProjectReference Include="..\thebanana\thebanana.vcxproj">
+      <Project>{0706ABFF-7370-5F76-BCAE-101C28583DCB}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\yaml\yaml.vcxproj">
+      <Project>{7814A17C-644B-A20D-0D38-8810F94D1E0F}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\imgui\imgui.vcxproj">
+      <Project>{0098A80F-6CAC-D0C0-352E-7420A101CDF1}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
-    <Import Project="..\packages\glm.0.9.9.800\build\native\glm.targets" Condition="Exists('..\packages\glm.0.9.9.800\build\native\glm.targets')" />
   </ImportGroup>
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
-    </PropertyGroup>
-    <Error Condition="!Exists('..\packages\glm.0.9.9.800\build\native\glm.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\glm.0.9.9.800\build\native\glm.targets'))" />
-  </Target>
 </Project>

@@ -7,9 +7,6 @@
 #include "graphics/quad.h"
 #include "graphics/opengl/opengl_framebuffer.h"
 #include "graphics/opengl/opengl_quad.h"
-#include "sound/sound.h"
-#include "ui/menu_manager.h"
-#include "lua_interpreter.h"
 #include "shader_registry.h"
 #include "script_registry.h"
 #include "util.h"
@@ -40,7 +37,10 @@ namespace thebanana {
 		this->m_height = static_cast<float>(r.bottom - r.top);
 		this->m_aspect_ratio = this->m_width / this->m_height;
 		this->m_viewport = new opengl_viewport(opengl_viewport::viewport_attribs{ this->m_window, 0, 0, width, height, 4, 6, opengl_viewport::viewport_attribs::passed_window });
-		this->m_interpreter = new lua_interpreter;
+		unsigned int glew_error = glewInit();
+		if (glew_error != GLEW_OK) {
+			this->debug_print("got glew error, whoops");
+		}
 		this->m_scene = new scene(this);
 		this->m_input_manager = new input_manager(this);
 		this->m_shader_registry = new shader_registry(this);
@@ -57,17 +57,15 @@ namespace thebanana {
 		glEnable(GL_CULL_FACE);
 		glCullFace(GL_BACK);
 #ifdef _DEBUG
-		glEnable(GL_DEBUG_OUTPUT);
-		glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
-		glDebugMessageCallback(opengl_debug_function, this);
-		glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DONT_CARE, NULL, NULL, true);
+		int flags; glGetIntegerv(GL_CONTEXT_FLAGS, &flags);
+		if (flags & GL_CONTEXT_FLAG_DEBUG_BIT) {
+			glEnable(GL_DEBUG_OUTPUT);
+			glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
+			glDebugMessageCallback(opengl_debug_function, this);
+			glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DONT_CARE, NULL, NULL, true);
+		}
 #endif
-		sound::sound_manager::init_decoders();
-		sound::set_default_sound_api(sound::sound_api::openal);
 		graphics::set_default_graphics_api(graphics::graphics_api::opengl);
-		this->m_menu_manager = new ui::menu_manager(this);
-		this->m_menu_quad = graphics::quad::create(2.f, 2.f, this->m_menu_manager->get_texture(), true);
-		this->m_sound_manager = new sound::sound_manager(this);
 		this->m_show_cursor = false;
 		this->m_clip_cursor = true;
 		this->m_debug_menus_initialized = false;
@@ -105,18 +103,13 @@ namespace thebanana {
 	void game::update() {
 		if (!this->m_show_cursor) SetCursor(NULL);
 		this->m_frame++;
-		this->m_menu_manager->update();
 		this->m_input_manager->update_devices();
 		this->m_scene->update();
 	}
 	void game::render() {
-		this->m_menu_manager->draw();
 		glClearColor(0.1f, 0.1f, 0.1f, 1.f);
 		this->clear_screen();
 		this->m_scene->render();
-		if (this->m_menu_manager->menus_open()) {
-			this->m_menu_quad->render();
-		}
 		if (this->m_debug_menus_initialized) debug::render_imgui(this);
 	}
 	unsigned int game::get_current_frame() {

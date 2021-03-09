@@ -1,6 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="..\packages\opengl_shader.2.0.0\build\native\opengl_shader.props" Condition="Exists('..\packages\opengl_shader.2.0.0\build\native\opengl_shader.props')" />
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|x64">
       <Configuration>Debug</Configuration>
@@ -12,29 +11,26 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <VCProjectVersion>16.0</VCProjectVersion>
-    <ProjectGuid>{22FF39A1-5239-404E-AC77-B5AC0A6B0FEC}</ProjectGuid>
+    <ProjectGuid>{145A6C82-8039-EB1D-8951-76F4F5AF517F}</ProjectGuid>
+    <IgnoreWarnCompileDuplicatedFilename>true</IgnoreWarnCompileDuplicatedFilename>
+    <Keyword>Win32Proj</Keyword>
     <RootNamespace>sandbox</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>Unicode</CharacterSet>
     <PlatformToolset>v142</PlatformToolset>
-    <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
+    <CharacterSet>Unicode</CharacterSet>
     <PlatformToolset>v142</PlatformToolset>
-    <WholeProgramOptimization>false</WholeProgramOptimization>
-    <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
-  </ImportGroup>
-  <ImportGroup Label="Shared">
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
@@ -44,47 +40,80 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <CopyLocalDeploymentContent>true</CopyLocalDeploymentContent>
+    <LinkIncremental>true</LinkIncremental>
+    <OutDir>..\bin\Debug-windows-x86_64\sandbox\</OutDir>
+    <IntDir>..\bin-int\Debug-windows-x86_64\sandbox\</IntDir>
+    <TargetName>sandbox</TargetName>
+    <TargetExt>.exe</TargetExt>
+    <IncludePath>..\thebanana\include;..\glm;..\yaml\yaml-cpp\include;..\vendor\opengl_shader\include;$(IncludePath)</IncludePath>
+    <LibraryPath>..\vendor\opengl_shader\lib\Debug;..\vendor\glew\lib\Debug;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <CopyLocalDeploymentContent>true</CopyLocalDeploymentContent>
+    <LinkIncremental>false</LinkIncremental>
+    <OutDir>..\bin\Release-windows-x86_64\sandbox\</OutDir>
+    <IntDir>..\bin-int\Release-windows-x86_64\sandbox\</IntDir>
+    <TargetName>sandbox</TargetName>
+    <TargetExt>.exe</TargetExt>
+    <IncludePath>..\thebanana\include;..\glm;..\yaml\yaml-cpp\include;..\vendor\opengl_shader\include;$(IncludePath)</IncludePath>
+    <LibraryPath>..\vendor\opengl_shader\lib\Release;..\vendor\glew\lib\Release;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>BANANA_WINDOWS;BANANA_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
-      <SDLCheck>true</SDLCheck>
-      <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)yaml\yaml-cpp\include;$(SolutionDir)thebanana\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <MinimalRebuild>false</MinimalRebuild>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <DisableSpecificWarnings>4996;%(DisableSpecificWarnings)</DisableSpecificWarnings>
     </ClCompile>
     <Link>
-      <SubSystem>Windows</SubSystem>
-      <AdditionalLibraryDirectories>$(OutDir);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>thebanana.lib;yaml.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>opengl32.lib;opengl_shader.lib;glew32d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalOptions>/subsystem:windows %(AdditionalOptions)</AdditionalOptions>
     </Link>
+    <PostBuildEvent>
+      <Command>IF EXIST "..\bin\Debug-windows-x86_64\thebanana\thebanana.dll"\ (xcopy /Q /E /Y /I "..\bin\Debug-windows-x86_64\thebanana\thebanana.dll" "..\bin\Debug-windows-x86_64\sandbox" &gt; nul) ELSE (xcopy /Q /Y /I "..\bin\Debug-windows-x86_64\thebanana\thebanana.dll" "..\bin\Debug-windows-x86_64\sandbox" &gt; nul)
+IF EXIST "..\bin\Debug-windows-x86_64\imgui\imgui.dll"\ (xcopy /Q /E /Y /I "..\bin\Debug-windows-x86_64\imgui\imgui.dll" "..\bin\Debug-windows-x86_64\sandbox" &gt; nul) ELSE (xcopy /Q /Y /I "..\bin\Debug-windows-x86_64\imgui\imgui.dll" "..\bin\Debug-windows-x86_64\sandbox" &gt; nul)
+IF EXIST "..\vendor\opengl_viewport\bin\Debug\opengl_viewport.dll"\ (xcopy /Q /E /Y /I "..\vendor\opengl_viewport\bin\Debug\opengl_viewport.dll" "..\bin\Debug-windows-x86_64\sandbox" &gt; nul) ELSE (xcopy /Q /Y /I "..\vendor\opengl_viewport\bin\Debug\opengl_viewport.dll" "..\bin\Debug-windows-x86_64\sandbox" &gt; nul)
+IF EXIST "..\vendor\steam-sdk\bin\steam_api64.dll"\ (xcopy /Q /E /Y /I "..\vendor\steam-sdk\bin\steam_api64.dll" "..\bin\Debug-windows-x86_64\sandbox" &gt; nul) ELSE (xcopy /Q /Y /I "..\vendor\steam-sdk\bin\steam_api64.dll" "..\bin\Debug-windows-x86_64\sandbox" &gt; nul)
+IF EXIST "..\vendor\assimp\bin\Debug\assimp-vc142-mtd.dll"\ (xcopy /Q /E /Y /I "..\vendor\assimp\bin\Debug\assimp-vc142-mtd.dll" "..\bin\Debug-windows-x86_64\sandbox" &gt; nul) ELSE (xcopy /Q /Y /I "..\vendor\assimp\bin\Debug\assimp-vc142-mtd.dll" "..\bin\Debug-windows-x86_64\sandbox" &gt; nul)
+IF EXIST "..\vendor\glew\bin\Debug\glew32d.dll"\ (xcopy /Q /E /Y /I "..\vendor\glew\bin\Debug\glew32d.dll" "..\bin\Debug-windows-x86_64\sandbox" &gt; nul) ELSE (xcopy /Q /Y /I "..\vendor\glew\bin\Debug\glew32d.dll" "..\bin\Debug-windows-x86_64\sandbox" &gt; nul)
+IF EXIST "..\vendor\glew\bin\Release\glew32.dll"\ (xcopy /Q /E /Y /I "..\vendor\glew\bin\Release\glew32.dll" "..\bin\Debug-windows-x86_64\sandbox" &gt; nul) ELSE (xcopy /Q /Y /I "..\vendor\glew\bin\Release\glew32.dll" "..\bin\Debug-windows-x86_64\sandbox" &gt; nul)</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
-      <Optimization>MaxSpeed</Optimization>
+      <PreprocessorDefinitions>BANANA_WINDOWS;BANANA_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <SDLCheck>true</SDLCheck>
-      <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)yaml\yaml-cpp\include;$(SolutionDir)thebanana\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <MinimalRebuild>false</MinimalRebuild>
+      <StringPooling>true</StringPooling>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <DisableSpecificWarnings>4996;%(DisableSpecificWarnings)</DisableSpecificWarnings>
     </ClCompile>
     <Link>
-      <SubSystem>Windows</SubSystem>
+      <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>$(OutDir);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>thebanana.lib;yaml.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <LinkTimeCodeGeneration>UseFastLinkTimeCodeGeneration</LinkTimeCodeGeneration>
+      <AdditionalDependencies>opengl32.lib;opengl_shader.lib;glew32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalOptions>/subsystem:windows %(AdditionalOptions)</AdditionalOptions>
     </Link>
+    <PostBuildEvent>
+      <Command>IF EXIST "..\bin\Release-windows-x86_64\thebanana\thebanana.dll"\ (xcopy /Q /E /Y /I "..\bin\Release-windows-x86_64\thebanana\thebanana.dll" "..\bin\Release-windows-x86_64\sandbox" &gt; nul) ELSE (xcopy /Q /Y /I "..\bin\Release-windows-x86_64\thebanana\thebanana.dll" "..\bin\Release-windows-x86_64\sandbox" &gt; nul)
+IF EXIST "..\bin\Release-windows-x86_64\imgui\imgui.dll"\ (xcopy /Q /E /Y /I "..\bin\Release-windows-x86_64\imgui\imgui.dll" "..\bin\Release-windows-x86_64\sandbox" &gt; nul) ELSE (xcopy /Q /Y /I "..\bin\Release-windows-x86_64\imgui\imgui.dll" "..\bin\Release-windows-x86_64\sandbox" &gt; nul)
+IF EXIST "..\vendor\opengl_viewport\bin\Release\opengl_viewport.dll"\ (xcopy /Q /E /Y /I "..\vendor\opengl_viewport\bin\Release\opengl_viewport.dll" "..\bin\Release-windows-x86_64\sandbox" &gt; nul) ELSE (xcopy /Q /Y /I "..\vendor\opengl_viewport\bin\Release\opengl_viewport.dll" "..\bin\Release-windows-x86_64\sandbox" &gt; nul)
+IF EXIST "..\vendor\steam-sdk\bin\steam_api64.dll"\ (xcopy /Q /E /Y /I "..\vendor\steam-sdk\bin\steam_api64.dll" "..\bin\Release-windows-x86_64\sandbox" &gt; nul) ELSE (xcopy /Q /Y /I "..\vendor\steam-sdk\bin\steam_api64.dll" "..\bin\Release-windows-x86_64\sandbox" &gt; nul)
+IF EXIST "..\vendor\assimp\bin\Release\assimp-vc142-mt.dll"\ (xcopy /Q /E /Y /I "..\vendor\assimp\bin\Release\assimp-vc142-mt.dll" "..\bin\Release-windows-x86_64\sandbox" &gt; nul) ELSE (xcopy /Q /Y /I "..\vendor\assimp\bin\Release\assimp-vc142-mt.dll" "..\bin\Release-windows-x86_64\sandbox" &gt; nul)
+IF EXIST "..\vendor\glew\bin\Release\glew32.dll"\ (xcopy /Q /E /Y /I "..\vendor\glew\bin\Release\glew32.dll" "..\bin\Release-windows-x86_64\sandbox" &gt; nul) ELSE (xcopy /Q /Y /I "..\vendor\glew\bin\Release\glew32.dll" "..\bin\Release-windows-x86_64\sandbox" &gt; nul)</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="src\camera.h" />
@@ -96,95 +125,14 @@
     <ClCompile Include="src\player.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="models\cube.mtl">
-      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</DeploymentContent>
-      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</DeploymentContent>
-    </None>
-    <None Include="models\Lblock.mtl">
-      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</DeploymentContent>
-      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</DeploymentContent>
-    </None>
-    <None Include="packages.config" />
-    <None Include="shaders\2d\fragment.shader">
-      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</DeploymentContent>
-      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</DeploymentContent>
-    </None>
-    <None Include="shaders\2d\vertex.shader">
-      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</DeploymentContent>
-      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</DeploymentContent>
-    </None>
-    <None Include="shaders\basic\fragment.shader">
-      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</DeploymentContent>
-      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</DeploymentContent>
-    </None>
-    <None Include="shaders\basic\vertex.shader">
-      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</DeploymentContent>
-      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</DeploymentContent>
-    </None>
-    <None Include="shaders\depth\fragment.shader" />
-    <None Include="shaders\depth\geometry.shader" />
-    <None Include="shaders\depth\vertex.shader" />
-    <None Include="sounds\click.ogg">
-      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</DeploymentContent>
-      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</DeploymentContent>
-    </None>
-    <None Include="steam_api64.dll">
-      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</DeploymentContent>
-      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</DeploymentContent>
-    </None>
-    <None Include="sub_menu_script.lua">
-      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</DeploymentContent>
-      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</DeploymentContent>
-    </None>
-    <None Include="test_menu.json">
-      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</DeploymentContent>
-      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</DeploymentContent>
-    </None>
-    <None Include="test_script.lua">
-      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</DeploymentContent>
-      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</DeploymentContent>
-    </None>
-    <None Include="test_sub_menu.json">
-      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</DeploymentContent>
-      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</DeploymentContent>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="steam_appid.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="textures\test_texture.png">
-      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</DeploymentContent>
-      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</DeploymentContent>
-    </Image>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="models\cube.obj">
-      <FileType>Document</FileType>
-      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</DeploymentContent>
-      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</DeploymentContent>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="models\Lblock.obj">
-      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</DeploymentContent>
-      <FileType>Document</FileType>
-      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</DeploymentContent>
-    </None>
+    <ProjectReference Include="..\thebanana\thebanana.vcxproj">
+      <Project>{0706ABFF-7370-5F76-BCAE-101C28583DCB}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\yaml\yaml.vcxproj">
+      <Project>{7814A17C-644B-A20D-0D38-8810F94D1E0F}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
-    <Import Project="..\packages\glm.0.9.9.800\build\native\glm.targets" Condition="Exists('..\packages\glm.0.9.9.800\build\native\glm.targets')" />
-    <Import Project="..\packages\unofficial-flayan-glew.redist.2.1.0\build\native\unofficial-flayan-glew.redist.targets" Condition="Exists('..\packages\unofficial-flayan-glew.redist.2.1.0\build\native\unofficial-flayan-glew.redist.targets')" />
-    <Import Project="..\packages\unofficial-flayan-glew.2.1.0\build\native\unofficial-flayan-glew.targets" Condition="Exists('..\packages\unofficial-flayan-glew.2.1.0\build\native\unofficial-flayan-glew.targets')" />
   </ImportGroup>
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
-    </PropertyGroup>
-    <Error Condition="!Exists('..\packages\glm.0.9.9.800\build\native\glm.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\glm.0.9.9.800\build\native\glm.targets'))" />
-    <Error Condition="!Exists('..\packages\unofficial-flayan-glew.redist.2.1.0\build\native\unofficial-flayan-glew.redist.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\unofficial-flayan-glew.redist.2.1.0\build\native\unofficial-flayan-glew.redist.targets'))" />
-    <Error Condition="!Exists('..\packages\unofficial-flayan-glew.2.1.0\build\native\unofficial-flayan-glew.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\unofficial-flayan-glew.2.1.0\build\native\unofficial-flayan-glew.targets'))" />
-    <Error Condition="!Exists('..\packages\opengl_shader.2.0.0\build\native\opengl_shader.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\opengl_shader.2.0.0\build\native\opengl_shader.props'))" />
-  </Target>
 </Project>

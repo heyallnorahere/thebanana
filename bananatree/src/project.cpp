@@ -75,6 +75,7 @@ namespace bananatree {
 		return out;
 	}
 	project::project() {
+		this->m_editor_layer = NULL;
 		this->reset();
 	}
 	void project::set_editor_layer(editor_layer* il) {

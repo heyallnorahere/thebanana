@@ -1,9 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="..\packages\OpenAL.Soft.1.19.1\build\openal.soft.props" Condition="Exists('..\packages\OpenAL.Soft.1.19.1\build\openal.soft.props')" />
-  <Import Project="..\packages\skia.native.1.1.0\build\native\skia.native.props" Condition="Exists('..\packages\skia.native.1.1.0\build\native\skia.native.props')" />
-  <Import Project="..\packages\opengl_viewport.1.2.0\build\native\opengl_viewport.props" Condition="Exists('..\packages\opengl_viewport.1.2.0\build\native\opengl_viewport.props')" />
-  <Import Project="..\packages\opengl_shader.2.0.0\build\native\opengl_shader.props" Condition="Exists('..\packages\opengl_shader.2.0.0\build\native\opengl_shader.props')" />
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|x64">
       <Configuration>Debug</Configuration>
@@ -15,30 +11,26 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <VCProjectVersion>16.0</VCProjectVersion>
-    <ProjectGuid>{3FECBE35-6E24-468C-A08C-6C442A9CD08E}</ProjectGuid>
-    <RootNamespace>My3dplatformer</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
-    <ProjectName>thebanana</ProjectName>
+    <ProjectGuid>{0706ABFF-7370-5F76-BCAE-101C28583DCB}</ProjectGuid>
+    <IgnoreWarnCompileDuplicatedFilename>true</IgnoreWarnCompileDuplicatedFilename>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>thebanana</RootNamespace>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>Unicode</CharacterSet>
     <PlatformToolset>v142</PlatformToolset>
-    <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <WholeProgramOptimization>false</WholeProgramOptimization>
-    <CharacterSet>MultiByte</CharacterSet>
+    <CharacterSet>Unicode</CharacterSet>
     <PlatformToolset>v142</PlatformToolset>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
-  </ImportGroup>
-  <ImportGroup Label="Shared">
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
@@ -47,72 +39,133 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
-  <PropertyGroup />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <LinkIncremental>true</LinkIncremental>
+    <OutDir>..\bin\Debug-windows-x86_64\thebanana\</OutDir>
+    <IntDir>..\bin-int\Debug-windows-x86_64\thebanana\</IntDir>
+    <TargetName>thebanana</TargetName>
+    <TargetExt>.dll</TargetExt>
+    <IncludePath>..\vendor\assimp\include;..\vendor\mono\include;..\yaml\yaml-cpp\include;..\vendor\steam-sdk\include;..\third-party\minimp3;..\third-party\stb;..\third-party\json\single-include;..\imgui\imgui;..\glm;..\vendor\glew\include;..\vendor\opengl_viewport\include;..\vendor\opengl_shader\include;$(DXSDK_DIR)include;$(IncludePath)</IncludePath>
+    <LibraryPath>..\vendor\assimp\lib\Debug;..\vendor\mono\lib\Debug;..\vendor\glew\lib\Debug;..\vendor\opengl_viewport\lib\Debug;..\vendor\opengl_shader\lib\Debug;..\vendor\steam-sdk\lib;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <LinkIncremental>false</LinkIncremental>
+    <OutDir>..\bin\Release-windows-x86_64\thebanana\</OutDir>
+    <IntDir>..\bin-int\Release-windows-x86_64\thebanana\</IntDir>
+    <TargetName>thebanana</TargetName>
+    <TargetExt>.dll</TargetExt>
+    <IncludePath>..\vendor\assimp\include;..\vendor\mono\include;..\yaml\yaml-cpp\include;..\vendor\steam-sdk\include;..\third-party\minimp3;..\third-party\stb;..\third-party\json\single-include;..\imgui\imgui;..\glm;..\vendor\glew\include;..\vendor\opengl_viewport\include;..\vendor\opengl_shader\include;$(DXSDK_DIR)include;$(IncludePath)</IncludePath>
+    <LibraryPath>..\vendor\assimp\lib\Release;..\vendor\mono\lib\Release;..\vendor\glew\lib\Release;..\vendor\opengl_viewport\lib\Release;..\vendor\opengl_shader\lib\Release;..\vendor\steam-sdk\lib;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
-      <Optimization>Disabled</Optimization>
-      <SDLCheck>true</SDLCheck>
-      <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(SolutionDir)vendor\assimp\include;$(SolutionDir)vendor\mono\include;$(ProjectDir)src;$(SolutionDir)yaml\yaml-cpp\include;$(SolutionDir)steam-sdk\public;$(SolutionDir)third-party\minimp3;$(SolutionDir)third-party\stb;$(SolutionDir)third-party\json\single_include;$(SolutionDir)imgui\imgui;$(DXSDK_DIR)include;$(ProjectDir)include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <DisableSpecificWarnings>4996;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>BANANA_WINDOWS;BANANA_DEBUG;_IMGUI_BUILD_DLL;BANANA_BUILD;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>src;include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <Optimization>Disabled</Optimization>
+      <MinimalRebuild>false</MinimalRebuild>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <PreprocessorDefinitions>BANANA_BUILD;_IMGUI_BUILD_DLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
-      <AdditionalDependencies>opengl32.lib;dinput8.lib;imgui.lib;steam_api64.lib;yaml.lib;mono-2.0-sgen.lib;assimp-vc142-mtd.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(SolutionDir)vendor\assimp\lib\$(Configuration)\;$(SolutionDir)vendor\mono\lib\$(Configuration)\;$(OutDir);$(SolutionDir)steam-sdk\redistributable_bin\win64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>opengl32.lib;dinput8.lib;steam_api64.lib;mono-2.0-sgen.lib;opengl_viewport.lib;opengl_shader.lib;assimp-vc142-mtd.lib;glew32d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <ImportLibrary>..\bin\Debug-windows-x86_64\thebanana\thebanana.lib</ImportLibrary>
     </Link>
-    <Lib>
-      <AdditionalDependencies>dinput8.lib;imgui.lib;steam_api64.lib;yaml.lib;$(ModelLoaderLibraries);$(OpenGLViewportLibraries);$(ShaderLibraries);$(SkiaLibraries);%(AdditionalDependencies)</AdditionalDependencies>
-    </Lib>
-    <Lib>
-      <AdditionalLibraryDirectories>$(MSBuildThisFileDirectory)\..\runtimes\win-$(PlatformTarget)\native\;$(SolutionDir)steam-sdk\redistributable_bin\win64;$(OutDir);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-    </Lib>
-    <PostBuildEvent>
-      <Command>copy "$(SolutionDir)vendor\mono\bin\$(Configuration)\*.dll" "$(OutDir)"
-copy "$(SolutionDir)vendor\assimp\bin\$(Configuration)\*.dll" "$(OutDir)"</Command>
-    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
-      <Optimization>MaxSpeed</Optimization>
-      <FunctionLevelLinking>true</FunctionLevelLinking>
-      <IntrinsicFunctions>true</IntrinsicFunctions>
-      <SDLCheck>true</SDLCheck>
-      <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(SolutionDir)vendor\assimp\include;$(SolutionDir)vendor\mono\include;$(ProjectDir)src;$(SolutionDir)yaml\yaml-cpp\include;$(SolutionDir)steam-sdk\public;$(SolutionDir)third-party\minimp3;$(SolutionDir)third-party\stb;$(SolutionDir)third-party\json\single_include;$(SolutionDir)imgui\imgui;$(DXSDK_DIR)include;$(ProjectDir)include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <DisableSpecificWarnings>4996;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>BANANA_WINDOWS;BANANA_RELEASE;_IMGUI_BUILD_DLL;BANANA_BUILD;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>src;include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <Optimization>Full</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <MinimalRebuild>false</MinimalRebuild>
+      <StringPooling>true</StringPooling>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <PreprocessorDefinitions>BANANA_BUILD;_IMGUI_BUILD_DLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>opengl32.lib;dinput8.lib;imgui.lib;steam_api64.lib;yaml.lib;mono-2.0-sgen.lib;assimp-vc142-mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(SolutionDir)vendor\assimp\lib\$(Configuration)\;$(SolutionDir)vendor\mono\lib\$(Configuration)\;$(OutDir);$(SolutionDir)steam-sdk\redistributable_bin\win64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>opengl32.lib;dinput8.lib;steam_api64.lib;mono-2.0-sgen.lib;opengl_viewport.lib;opengl_shader.lib;assimp-vc142-mt.lib;glew32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <ImportLibrary>..\bin\Release-windows-x86_64\thebanana\thebanana.lib</ImportLibrary>
     </Link>
-    <Lib>
-      <AdditionalDependencies>dinput8.lib;imgui.lib;steam_api64.lib;yaml.lib;$(ModelLoaderLibraries);$(OpenGLViewportLibraries);$(ShaderLibraries);$(SkiaLibraries);%(AdditionalDependencies)</AdditionalDependencies>
-    </Lib>
-    <Lib>
-      <AdditionalLibraryDirectories>$(MSBuildThisFileDirectory)\..\runtimes\win-$(PlatformTarget)\native\;$(SolutionDir)steam-sdk\redistributable_bin\win64;$(OutDir);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <LinkTimeCodeGeneration>true</LinkTimeCodeGeneration>
-    </Lib>
-    <PostBuildEvent>
-      <Command>copy "$(SolutionDir)vendor\mono\bin\$(Configuration)\*.dll" "$(OutDir)"
-copy "$(SolutionDir)vendor\assimp\bin\$(Configuration)\*.dll" "$(OutDir)"</Command>
-    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="include\application_layer.h" />
+    <ClInclude Include="include\banana_api.h" />
+    <ClInclude Include="include\basic_gameobject.h" />
+    <ClInclude Include="include\component.h" />
+    <ClInclude Include="include\components\animation_component.h" />
+    <ClInclude Include="include\components\camera_component.h" />
+    <ClInclude Include="include\components\components.h" />
+    <ClInclude Include="include\components\light_component.h" />
+    <ClInclude Include="include\components\mesh_component.h" />
+    <ClInclude Include="include\components\native_script_component.h" />
+    <ClInclude Include="include\components\tag_component.h" />
+    <ClInclude Include="include\controller.h" />
+    <ClInclude Include="include\debug_tools.h" />
+    <ClInclude Include="include\game.h" />
+    <ClInclude Include="include\gameobject.h" />
+    <ClInclude Include="include\graphics\framebuffer.h" />
+    <ClInclude Include="include\graphics\graphics.h" />
+    <ClInclude Include="include\graphics\graphics_types.h" />
+    <ClInclude Include="include\graphics\index_buffer.h" />
+    <ClInclude Include="include\graphics\mesh.h" />
+    <ClInclude Include="include\graphics\quad.h" />
+    <ClInclude Include="include\graphics\texture.h" />
+    <ClInclude Include="include\graphics\util.h" />
+    <ClInclude Include="include\graphics\vertex_array_object.h" />
+    <ClInclude Include="include\graphics\vertex_buffer.h" />
+    <ClInclude Include="include\includelist.h" />
+    <ClInclude Include="include\input_manager.h" />
+    <ClInclude Include="include\input_utils.h" />
+    <ClInclude Include="include\keyboard.h" />
+    <ClInclude Include="include\keys.h" />
+    <ClInclude Include="include\main_module.h" />
+    <ClInclude Include="include\material.h" />
+    <ClInclude Include="include\model.h" />
+    <ClInclude Include="include\model_registry.h" />
+    <ClInclude Include="include\mouse.h" />
+    <ClInclude Include="include\particlesystem\particle_component.h" />
+    <ClInclude Include="include\particlesystem\particlesystem.h" />
+    <ClInclude Include="include\particlesystem\particlesystem_component.h" />
+    <ClInclude Include="include\physics\collider.h" />
+    <ClInclude Include="include\physics\physics.h" />
+    <ClInclude Include="include\physics\rigidbody.h" />
+    <ClInclude Include="include\scene.h" />
+    <ClInclude Include="include\scene_serializer.h" />
+    <ClInclude Include="include\script_module.h" />
+    <ClInclude Include="include\script_registry.h" />
+    <ClInclude Include="include\shader_registry.h" />
+    <ClInclude Include="include\static_mesh.h" />
+    <ClInclude Include="include\thebanana.h" />
+    <ClInclude Include="include\transform.h" />
+    <ClInclude Include="include\util.h" />
+    <ClInclude Include="src\graphics\opengl\opengl_ebo.h" />
+    <ClInclude Include="src\graphics\opengl\opengl_framebuffer.h" />
+    <ClInclude Include="src\graphics\opengl\opengl_quad.h" />
+    <ClInclude Include="src\graphics\opengl\opengl_texture.h" />
+    <ClInclude Include="src\graphics\opengl\opengl_vao.h" />
+    <ClInclude Include="src\graphics\opengl\opengl_vbo.h" />
+    <ClInclude Include="src\internal_only_includelist.h" />
+    <ClInclude Include="src\internal_util.h" />
+    <ClInclude Include="src\pch.h" />
+  </ItemGroup>
+  <ItemGroup>
     <ClCompile Include="src\application_layer.cpp" />
+    <ClCompile Include="src\basic_gameobject.cpp" />
     <ClCompile Include="src\component.cpp" />
     <ClCompile Include="src\components\animation_component.cpp" />
     <ClCompile Include="src\components\camera_component.cpp" />
@@ -142,141 +195,33 @@ copy "$(SolutionDir)vendor\assimp\bin\$(Configuration)\*.dll" "$(OutDir)"</Comma
     <ClCompile Include="src\input_manager.cpp" />
     <ClCompile Include="src\internal_util.cpp" />
     <ClCompile Include="src\keyboard.cpp" />
-    <ClCompile Include="src\lua_interpreter.cpp" />
     <ClCompile Include="src\material.cpp" />
     <ClCompile Include="src\model.cpp" />
     <ClCompile Include="src\model_registry.cpp" />
     <ClCompile Include="src\mouse.cpp" />
-    <ClCompile Include="src\basic_gameobject.cpp" />
-    <ClCompile Include="src\particlesystem\particlesystem_component.cpp" />
     <ClCompile Include="src\particlesystem\particle_component.cpp" />
+    <ClCompile Include="src\particlesystem\particlesystem_component.cpp" />
     <ClCompile Include="src\pch.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="src\physics\collider.cpp" />
     <ClCompile Include="src\physics\rigidbody.cpp" />
+    <ClCompile Include="src\scene.cpp" />
+    <ClCompile Include="src\scene_serializer.cpp" />
     <ClCompile Include="src\script_module.cpp" />
     <ClCompile Include="src\shader_registry.cpp" />
     <ClCompile Include="src\static_mesh.cpp" />
-    <ClCompile Include="src\scene.cpp" />
-    <ClCompile Include="src\scene_serializer.cpp" />
-    <ClCompile Include="src\sound\context.cpp" />
-    <ClCompile Include="src\sound\load_sound.cpp" />
-    <ClCompile Include="src\sound\misc.cpp" />
-    <ClCompile Include="src\sound\openal_sound_effect.cpp" />
-    <ClCompile Include="src\sound\sound_effect.cpp" />
-    <ClCompile Include="src\sound\sound_manager.cpp" />
     <ClCompile Include="src\transform.cpp" />
-    <ClCompile Include="src\ui\menu.cpp" />
-    <ClCompile Include="src\ui\menu_manager.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\banana_api.h" />
-    <ClInclude Include="include\application_layer.h" />
-    <ClInclude Include="include\components\camera_component.h" />
-    <ClInclude Include="include\components\components.h" />
-    <ClInclude Include="include\components\light_component.h" />
-    <ClInclude Include="include\components\native_script_component.h" />
-    <ClInclude Include="include\components\tag_component.h" />
-    <ClInclude Include="include\graphics\graphics.h" />
-    <ClInclude Include="include\graphics\index_buffer.h" />
-    <ClInclude Include="include\graphics\mesh.h" />
-    <ClInclude Include="include\graphics\util.h" />
-    <ClInclude Include="include\graphics\vertex_array_object.h" />
-    <ClInclude Include="include\graphics\vertex_buffer.h" />
-    <ClInclude Include="include\model.h" />
-    <ClInclude Include="src\graphics\opengl\opengl\opengl.h" />
-    <ClInclude Include="src\graphics\opengl\opengl\opengl_quad.h" />
-    <ClInclude Include="src\graphics\opengl\opengl\opengl_texture.h" />
-    <ClInclude Include="include\graphics\quad.h" />
-    <ClInclude Include="include\graphics\texture.h" />
-    <ClInclude Include="include\includelist.h" />
-    <ClInclude Include="include\keys.h" />
-    <ClInclude Include="include\material.h" />
-    <ClInclude Include="include\particlesystem\particlesystem.h" />
-    <ClInclude Include="include\particlesystem\particlesystem_component.h" />
-    <ClInclude Include="include\particlesystem\particle_component.h" />
-    <ClInclude Include="include\script_module.h" />
-    <ClInclude Include="src\graphics\opengl\opengl_ebo.h" />
-    <ClInclude Include="src\graphics\opengl\opengl_framebuffer.h" />
-    <ClInclude Include="src\graphics\opengl\opengl_quad.h" />
-    <ClInclude Include="src\graphics\opengl\opengl_texture.h" />
-    <ClInclude Include="src\graphics\opengl\opengl_vao.h" />
-    <ClInclude Include="src\graphics\opengl\opengl_vbo.h" />
-    <ClInclude Include="src\internal_only_includelist.h" />
-    <ClInclude Include="include\lua_interpreter.h" />
-    <ClInclude Include="include\main_module.h" />
-    <ClInclude Include="include\physics\physics.h" />
-    <ClInclude Include="include\script_registry.h" />
-    <ClInclude Include="include\scene_serializer.h" />
-    <ClInclude Include="include\shader_registry.h" />
-    <ClInclude Include="include\sound\context.h" />
-    <ClInclude Include="include\sound\misc.h" />
-    <ClInclude Include="include\sound\openal_sound_effect.h" />
-    <ClInclude Include="include\sound\sound.h" />
-    <ClInclude Include="include\sound\sound_effect.h" />
-    <ClInclude Include="include\sound\sound_manager.h" />
-    <ClInclude Include="include\thebanana.h" />
-    <ClInclude Include="include\ui\menu.h" />
-    <ClInclude Include="include\ui\menu_manager.h" />
-    <ClInclude Include="include\ui\ui.h" />
-    <ClInclude Include="include\component.h" />
-    <ClInclude Include="include\components\animation_component.h" />
-    <ClInclude Include="include\components\mesh_component.h" />
-    <ClInclude Include="include\controller.h" />
-    <ClInclude Include="include\debug_tools.h" />
-    <ClInclude Include="include\game.h" />
-    <ClInclude Include="include\gameobject.h" />
-    <ClInclude Include="include\graphics\framebuffer.h" />
-    <ClInclude Include="include\graphics\graphics_types.h" />
-    <ClInclude Include="src\graphics\opengl\opengl\opengl_framebuffer.h" />
-    <ClInclude Include="include\input_manager.h" />
-    <ClInclude Include="include\input_utils.h" />
-    <ClInclude Include="include\keyboard.h" />
-    <ClInclude Include="include\model_registry.h" />
-    <ClInclude Include="include\mouse.h" />
-    <ClInclude Include="include\basic_gameobject.h" />
-    <ClInclude Include="src\pch.h" />
-    <ClInclude Include="include\physics\collider.h" />
-    <ClInclude Include="include\physics\rigidbody.h" />
-    <ClInclude Include="include\static_mesh.h" />
-    <ClInclude Include="include\scene.h" />
-    <ClInclude Include="include\transform.h" />
-    <ClInclude Include="include\util.h" />
-    <ClInclude Include="src\internal_util.h" />
-    <ClInclude Include="src\sound\load_sound.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="models\skullbandana.fbx" />
-    <None Include="packages.config" />
-    <None Include="shaders\2d\fragment.shader" />
-    <None Include="shaders\2d\vertex.shader" />
-    <None Include="shaders\basic\fragment.shader" />
-    <None Include="shaders\basic\vertex.shader" />
+    <ProjectReference Include="..\imgui\imgui.vcxproj">
+      <Project>{0098A80F-6CAC-D0C0-352E-7420A101CDF1}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\yaml\yaml.vcxproj">
+      <Project>{7814A17C-644B-A20D-0D38-8810F94D1E0F}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
-    <Import Project="..\packages\unofficial-flayan-glew.redist.2.1.0\build\native\unofficial-flayan-glew.redist.targets" Condition="Exists('..\packages\unofficial-flayan-glew.redist.2.1.0\build\native\unofficial-flayan-glew.redist.targets')" />
-    <Import Project="..\packages\unofficial-flayan-glew.2.1.0\build\native\unofficial-flayan-glew.targets" Condition="Exists('..\packages\unofficial-flayan-glew.2.1.0\build\native\unofficial-flayan-glew.targets')" />
-    <Import Project="..\packages\glm.0.9.9.800\build\native\glm.targets" Condition="Exists('..\packages\glm.0.9.9.800\build\native\glm.targets')" />
-    <Import Project="..\packages\vorbis-msvc-x64.1.3.5.8787\build\native\vorbis-msvc-x64.targets" Condition="Exists('..\packages\vorbis-msvc-x64.1.3.5.8787\build\native\vorbis-msvc-x64.targets')" />
-    <Import Project="..\packages\ogg-msvc-x64.1.3.2.8787\build\native\ogg-msvc-x64.targets" Condition="Exists('..\packages\ogg-msvc-x64.1.3.2.8787\build\native\ogg-msvc-x64.targets')" />
-    <Import Project="..\packages\lua.5.4.2\build\native\Lua.targets" Condition="Exists('..\packages\lua.5.4.2\build\native\Lua.targets')" />
   </ImportGroup>
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
-    </PropertyGroup>
-    <Error Condition="!Exists('..\packages\unofficial-flayan-glew.redist.2.1.0\build\native\unofficial-flayan-glew.redist.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\unofficial-flayan-glew.redist.2.1.0\build\native\unofficial-flayan-glew.redist.targets'))" />
-    <Error Condition="!Exists('..\packages\unofficial-flayan-glew.2.1.0\build\native\unofficial-flayan-glew.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\unofficial-flayan-glew.2.1.0\build\native\unofficial-flayan-glew.targets'))" />
-    <Error Condition="!Exists('..\packages\glm.0.9.9.800\build\native\glm.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\glm.0.9.9.800\build\native\glm.targets'))" />
-    <Error Condition="!Exists('..\packages\opengl_shader.2.0.0\build\native\opengl_shader.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\opengl_shader.2.0.0\build\native\opengl_shader.props'))" />
-    <Error Condition="!Exists('..\packages\opengl_viewport.1.2.0\build\native\opengl_viewport.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\opengl_viewport.1.2.0\build\native\opengl_viewport.props'))" />
-    <Error Condition="!Exists('..\packages\skia.native.1.1.0\build\native\skia.native.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\skia.native.1.1.0\build\native\skia.native.props'))" />
-    <Error Condition="!Exists('..\packages\OpenAL.Soft.1.19.1\build\openal.soft.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\OpenAL.Soft.1.19.1\build\openal.soft.props'))" />
-    <Error Condition="!Exists('..\packages\vorbis-msvc-x64.1.3.5.8787\build\native\vorbis-msvc-x64.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\vorbis-msvc-x64.1.3.5.8787\build\native\vorbis-msvc-x64.targets'))" />
-    <Error Condition="!Exists('..\packages\ogg-msvc-x64.1.3.2.8787\build\native\ogg-msvc-x64.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\ogg-msvc-x64.1.3.2.8787\build\native\ogg-msvc-x64.targets'))" />
-    <Error Condition="!Exists('..\packages\lua.5.4.2\build\native\Lua.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\lua.5.4.2\build\native\Lua.targets'))" />
-  </Target>
 </Project>

@@ -4,7 +4,7 @@ namespace thebanana {
 	class script_registry;
 	class script_module {
 	public:
-#ifdef _WIN32
+#ifdef BANANA_WINDOWS
 		using module_t = HMODULE;
 #endif
 		BANANA_API script_module(script_registry* registry, const std::string& path);

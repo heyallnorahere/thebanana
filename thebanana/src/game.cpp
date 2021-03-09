@@ -84,11 +84,7 @@ namespace thebanana {
 		glDisable(GL_DEBUG_OUTPUT);
 		if (this->m_steam_initialized) this->shutdown_steam();
 		if (this->m_debug_menus_initialized) debug::clean_up_imgui();
-		delete this->m_sound_manager;
-		delete this->m_menu_quad;
-		delete this->m_menu_manager;
 		delete this->m_scene;
-		delete this->m_interpreter;
 		delete this->m_material_registry;
 		delete this->m_model_registry;
 		delete this->m_viewport;

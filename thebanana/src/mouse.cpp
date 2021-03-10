@@ -10,11 +10,11 @@ namespace thebanana {
 		return this->current;
 	}
 	void mouse::update() {
-		if (GetFocus() == this->parent->get_parent()->get_window() && this->parent->get_parent()->should_clip_cursor()) {
+		if (platform_specific::get_focus() == this->parent->get_parent()->get_window().m && this->parent->get_parent()->should_clip_cursor()) {
 			RECT clip_rect;
-			GetClientRect(this->parent->get_parent()->get_window(), &clip_rect);
-			ClientToScreen(this->parent->get_parent()->get_window(), (POINT*)& clip_rect.left);
-			ClientToScreen(this->parent->get_parent()->get_window(), (POINT*)& clip_rect.right);
+			GetClientRect(this->parent->get_parent()->get_window().m, &clip_rect);
+			ClientToScreen(this->parent->get_parent()->get_window().m, (POINT*)& clip_rect.left);
+			ClientToScreen(this->parent->get_parent()->get_window().m, (POINT*)& clip_rect.right);
 			ClipCursor(&clip_rect);
 		} else {
 			ClipCursor(NULL);

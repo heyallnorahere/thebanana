@@ -87,7 +87,7 @@ namespace bananatree {
 	void project::rename(const std::string& name) {
 		this->m_name = name;
 		std::string window_text = this->m_name + " - The Banana Tree";
-		SetWindowTextA(thebanana::g_game->get_window(), window_text.c_str());
+		SetWindowTextA((HWND)thebanana::g_game->get_window().m, window_text.c_str());
 	}
 	void project::reset() {
 		if (!this->m_temp_path.empty()) this->m_temp_path.clear();

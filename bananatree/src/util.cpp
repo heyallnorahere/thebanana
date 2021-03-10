@@ -20,7 +20,7 @@ namespace bananatree {
 			memset(file, 0, sizeof(file));
 			memset(&ofn, 0, sizeof(OPENFILENAMEA));
 			ofn.lStructSize = sizeof(OPENFILENAMEA);
-			ofn.hwndOwner = thebanana::g_game->get_window();
+			ofn.hwndOwner = (HWND)thebanana::g_game->get_window().m;
 			ofn.lpstrFile = file;
 			ofn.nMaxFile = sizeof(file);
 			ofn.lpstrFilter = filter;
@@ -40,7 +40,7 @@ namespace bananatree {
 			memset(file, 0, sizeof(file));
 			memset(&ofn, 0, sizeof(OPENFILENAMEA));
 			ofn.lStructSize = sizeof(OPENFILENAMEA);
-			ofn.hwndOwner = thebanana::g_game->get_window();
+			ofn.hwndOwner = (HWND)thebanana::g_game->get_window().m;
 			ofn.lpstrFile = file;
 			ofn.nMaxFile = sizeof(file);
 			ofn.lpstrFilter = filter;

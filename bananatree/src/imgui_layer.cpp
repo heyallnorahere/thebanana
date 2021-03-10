@@ -57,7 +57,7 @@ namespace bananatree {
 			style.Colors[ImGuiCol_WindowBg].w = 1.0f;
 		}
 		this->set_theme();
-		ImGui_ImplWin32_Init(thebanana::g_game->get_window(), wglGetCurrentContext());
+		ImGui_ImplWin32_Init((HWND)thebanana::g_game->get_window().m, wglGetCurrentContext());
 		ImGui_ImplOpenGL3_Init("#version 460");
 		this->add_panel<viewport_panel>()->set_imgui_layer(this);
 		this->add_panel<log_panel>();
@@ -147,11 +147,8 @@ namespace bananatree {
 	}
 	void imgui_layer::end() {
 		ImGuiIO& io = ImGui::GetIO();
-		RECT r;
-		GetWindowRect(thebanana::g_game->get_window(), &r);
-		float width = static_cast<float>(r.right - r.left);
-		float height = static_cast<float>(r.bottom - r.top);
-		io.DisplaySize = ImVec2(width, height);
+		glm::vec2 size = thebanana::g_game->get_window_size();
+		io.DisplaySize = ImVec2(size.x, size.y);
 		ImGui::Render();
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 		if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable) {

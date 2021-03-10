@@ -26,17 +26,13 @@ namespace thebanana {
 		this->m_frame = 0;
 		constexpr int width = 1600;
 		constexpr int height = 900;
-		this->m_window = CreateWindowA(BANANA_WINDOW_CLASS_NAME, title.c_str(), WS_VISIBLE | WS_SYSMENU | WS_MAXIMIZEBOX, CW_USEDEFAULT, CW_USEDEFAULT, width, height, NULL, NULL, module, this);
-		if (!this->m_window) {
+		this->m_window.m = CreateWindowA(BANANA_WINDOW_CLASS_NAME, title.c_str(), WS_VISIBLE | WS_SYSMENU | WS_MAXIMIZEBOX, CW_USEDEFAULT, CW_USEDEFAULT, width, height, NULL, NULL, module, this);
+		if (!this->m_window.m) {
 			this->debug_print("last error: " + std::to_string(GetLastError()));
 			__debugbreak();
 		}
-		RECT r;
-		GetWindowRect(this->m_window, &r);
-		this->m_width = static_cast<float>(r.right - r.left);
-		this->m_height = static_cast<float>(r.bottom - r.top);
-		this->m_aspect_ratio = this->m_width / this->m_height;
-		this->m_viewport = new opengl_viewport(opengl_viewport::viewport_attribs{ this->m_window, 0, 0, width, height, 4, 6, opengl_viewport::viewport_attribs::passed_window });
+		this->update_aspect_ratio();
+		this->m_viewport = new opengl_viewport(opengl_viewport::viewport_attribs{ this->m_window.m, 0, 0, width, height, 4, 6, opengl_viewport::viewport_attribs::passed_window });
 		unsigned int glew_error = glewInit();
 		if (glew_error != GLEW_OK) {
 			this->debug_print("got glew error, whoops");
@@ -94,7 +90,7 @@ namespace thebanana {
 		delete this->m_script_registry;
 	}
 	void game::destroy() {
-		DestroyWindow(this->m_window);
+		DestroyWindow(this->m_window.m);
 	}
 	void game::update() {
 		if (!this->m_show_cursor) SetCursor(NULL);
@@ -120,6 +116,7 @@ namespace thebanana {
 	ui::menu_manager* game::get_menu_manager() {
 		return this->m_menu_manager;
 	}
+#ifdef BANANA_WINDOWS
 	long long __stdcall game::wndproc(HWND window, unsigned int msg, unsigned long long w_param, long long l_param) {
 		ImGui_ImplWin32_WndProcHandler(window, msg, w_param, l_param);
 		switch (msg) {
@@ -128,13 +125,10 @@ namespace thebanana {
 			break;
 		case WM_SIZE:
 		{
-			RECT r;
-			GetWindowRect(window, &r);
 			if (g_game) {
-				long width = r.right - r.left;
-				long height = r.bottom - r.top;
-				g_game->update_size(width, height);
-				glViewport(0, 0, width, height);
+				g_game->update_aspect_ratio();
+				glm::vec2 size = g_game->get_window_size();
+				glViewport(0, 0, (int)size.x, (int)size.y);
 			}
 		}
 			break;
@@ -144,6 +138,7 @@ namespace thebanana {
 		}
 		return 0;
 	}
+#endif
 	float game::get_aspect_ratio() {
 		return this->m_aspect_ratio;
 	}
@@ -156,7 +151,7 @@ namespace thebanana {
 	void game::load_models() {
 		this->m_model_registry->load(this->m_descriptors);
 	}
-	HWND game::get_window() {
+	window& game::get_window() {
 		return this->m_window;
 	}
 	sound::sound_manager* game::get_sound_manager() {
@@ -194,7 +189,7 @@ namespace thebanana {
 		return this->m_material_registry;
 	}
 	void game::init_debug_menus() {
-		debug::init_imgui(this->m_window);
+		debug::init_imgui(this->m_window.m);
 		this->m_debug_menus_initialized = true;
 	}
 	void game::init_steam() {
@@ -267,7 +262,9 @@ namespace thebanana {
 		return this->m_debug_log.str();
 	}
 	glm::vec2 game::get_window_size() {
-		return glm::vec2(this->m_width, this->m_height);
+		size_t width, height;
+		platform_specific::get_size(this->m_window.m, width, height);
+		return glm::vec2((float)width, (float)height);
 	}
 	void game::shutdown_steam() {
 		SteamAPI_Shutdown();
@@ -322,5 +319,12 @@ namespace thebanana {
 		this->m_imgui_input_functions[typeid(property_classes::dropdown).hash_code()] = dropdown_input;
 		this->m_imgui_input_functions[typeid(property_classes::read_only_text).hash_code()] = readonly_input;
 		this->m_imgui_input_functions[typeid(property_classes::color).hash_code()] = color_input;
+	}
+	void game::update_aspect_ratio() {
+		glm::vec2 size = this->get_window_size();
+		this->m_aspect_ratio = size.x / size.y;
+	}
+	void game::set_aspect_ratio(float ratio) {
+		this->m_aspect_ratio = ratio;
 	}
 }

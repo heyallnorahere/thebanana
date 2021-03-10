@@ -71,7 +71,7 @@ extern "C" EXPORT void load_scripts(void* ptr) {
 }
 ```
 
-**Important:** you must add [these NuGet packages](readmefiles/packages.config) to compile and link your module correctly.
+**Important:** you must add [these NuGet packages](readmefiles/packages.config) to compile and link your module correctly. There is no Premake script for modules yet, though there will be once I am done with all other necessary things.
 
 Now, to use your script module, open your project in the Banana Tree and navigate to the project editor. Once that is done, open your Visual Studio solution (or input the solution directory) and specify the output file name of your code project. Afterwards, it should look something like this:
 
@@ -80,8 +80,7 @@ Now, to use your script module, open your project in the Banana Tree and navigat
 Then, click Save. This should build the project and attach it to the editor.
 
 ## TO BUILD
-### WINDOWS
-[Visual Studio 2019](https://visualstudio.microsoft.com/) solution/project included, with NuGet packages installed.
-The only thing you need to download is the [Steamworks SDK](https://partner.steamgames.com/) and copy the *contents* of the `sdk` folder into `(repository folder)/steam-sdk`. Then, copy `redistributable_bin/win64/steam_api64.dll` to the sandbox and editor project directories.
-
-If you've done this, you're good to go!
+There is a Premake script included in the repository, with executables in the `vendor` folder. To generate projects, run the following commands:
+- Windows: `vendor\premake5 vs2019`
+- MacOS: `No implementation yet`
+- Linux: `No implementation yet`

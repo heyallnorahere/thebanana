@@ -3,6 +3,9 @@
 #include "model_registry.h"
 #include "script_module.h"
 #include "banana_api.h"
+#ifdef BANANA_BUILD
+#include "window.h"
+#endif
 #define BANANA_WINDOW_CLASS_NAME "banana_ui"
 namespace thebanana {
 	class scene;
@@ -19,6 +22,14 @@ namespace thebanana {
 	namespace sound {
 		class sound_manager;
 	}
+#ifndef BANANA_BUILD
+	namespace platform_specific {
+		using window_t = size_t;
+	}
+#endif
+	struct window {
+		platform_specific::window_t m;
+	};
 	class game {
 	public:
 		BANANA_API game(const std::string& title, script_module::module_t module);
@@ -30,12 +41,14 @@ namespace thebanana {
 		BANANA_API input_manager* get_input_manager();
 		BANANA_API model_registry* get_model_registry();
 		BANANA_API ui::menu_manager* get_menu_manager();
+#ifdef BANANA_WINDOWS
 		BANANA_API static long long __stdcall wndproc(HWND window, unsigned int msg, unsigned long long w_param, long long l_param);
+#endif
 		BANANA_API float get_aspect_ratio();
 		BANANA_API scene* get_scene();
 		BANANA_API void add_model_desc(const model_registry::model_descriptor& desc);
 		BANANA_API void load_models();
-		BANANA_API HWND get_window();
+		BANANA_API window& get_window();
 		BANANA_API sound::sound_manager* get_sound_manager();
 		BANANA_API lua_interpreter* get_lua_interpreter();
 		BANANA_API bool& showing_cursor();
@@ -63,7 +76,8 @@ namespace thebanana {
 		BANANA_API std::list<rigidbody*>& get_rigidbody_list();
 		BANANA_API std::string get_debug_log();
 		BANANA_API glm::vec2 get_window_size();
-		template<typename T> void update_size(T width, T height);
+		BANANA_API void update_aspect_ratio();
+		BANANA_API void set_aspect_ratio(float ratio);
 		// very loose template stuff, but if you know what to do with it, it works
 		template<typename T> using imgui_ptr = void(*)(const char*, T*);
 		template<typename T> imgui_ptr<T> get_imgui_pointer();
@@ -73,7 +87,7 @@ namespace thebanana {
 		std::stringstream m_debug_log;
 		std::ofstream m_file_log;
 		unsigned int m_frame;
-		HWND m_window;
+		window m_window;
 #ifndef BANANA_BUILD
 		using opengl_viewport = void;
 #endif
@@ -88,7 +102,7 @@ namespace thebanana {
 		sound::sound_manager* m_sound_manager;
 		gameobject* m_menu_quad;
 		lua_interpreter* m_interpreter;
-		float m_aspect_ratio, m_width, m_height;
+		float m_aspect_ratio;
 		std::vector<model_registry::model_descriptor> m_descriptors;
 		bool m_show_cursor;
 		bool m_debug_menus_initialized;
@@ -101,11 +115,6 @@ namespace thebanana {
 		script_module::module_t m_executable;
 	};
 	BANANA_API extern game* g_game;
-	template<typename T> inline void game::update_size(T width, T height) {
-		this->m_width = static_cast<float>(width);
-		this->m_height = static_cast<float>(height);
-		this->m_aspect_ratio = this->m_width / this->m_height;
-	}
 	template<typename T> inline game::imgui_ptr<T> game::get_imgui_pointer() {
 		return (imgui_ptr<T>)this->m_imgui_input_functions[typeid(T).hash_code()];
 	}

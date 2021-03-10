@@ -23,6 +23,7 @@ workspace "thebanana"
         }
         optimize "on"
 outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
+group "misc"
 project "configfiles"
     kind "None"
     files {
@@ -30,6 +31,13 @@ project "configfiles"
         "README.md",
         ".gitignore"
     }
+project "docs"
+    location "docs"
+    kind "None"
+    files {
+        "%{prj.name}/**.md",
+    }
+group ""
 group "dependencies"
 project "imgui"
     location "imgui"
@@ -107,11 +115,14 @@ project "thebanana"
     files {
         "%{prj.name}/src/**.h",
         "%{prj.name}/src/**.cpp",
-        "%{prj.name}/include/**.h"
+        "%{prj.name}/include/**.h",
+        "%{prj.name}/os-src/%{cfg.system}/**.h",
+        "%{prj.name}/os-src/%{cfg.system}/**.cpp",
     }
     includedirs {
         "%{prj.name}/src",
-        "%{prj.name}/include"
+        "%{prj.name}/include",
+        "%{prj.name}/os-src/%{cfg.system}"
     }
     sysincludedirs {
         "vendor/assimp/include",

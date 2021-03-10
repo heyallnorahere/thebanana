@@ -1,5 +1,5 @@
 *.sln
-*.*proj*
+*proj*
 Makefile
 placeholder/
 imgui.ini

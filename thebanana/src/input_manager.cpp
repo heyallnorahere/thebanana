@@ -61,7 +61,7 @@ namespace thebanana {
 	}
 	void input_manager::update_devices() {
 		this->devices.remove_if([](const std::unique_ptr<device>& obj) { return !obj->connected(); });
-		if (GetFocus() != this->m_game->get_window()) return;
+		if (platform_specific::get_focus() != this->m_game->get_window().m) return;
 		for (auto& d : this->devices) {
 			d->update();
 		}

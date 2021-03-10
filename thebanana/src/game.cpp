@@ -7,6 +7,7 @@
 #include "graphics/quad.h"
 #include "graphics/opengl/opengl_framebuffer.h"
 #include "graphics/opengl/opengl_quad.h"
+#include "graphics/context.h"
 #include "shader_registry.h"
 #include "script_registry.h"
 #include "util.h"
@@ -43,7 +44,16 @@ namespace thebanana {
 			this->destroy();
 		}
 		this->update_aspect_ratio();
-		this->m_viewport = new opengl_viewport(opengl_viewport::viewport_attribs{ this->m_window.m, 0, 0, width, height, 4, 6, opengl_viewport::viewport_attribs::passed_window });
+		void* context_data;
+#ifdef RENDERER_OPENGL
+		graphics::context::opengl_data ogl_data = { 4, 6 };
+		context_data = &ogl_data;
+		graphics::set_default_graphics_api(graphics::graphics_api::opengl);
+#else
+		context_data = NULL;
+		graphics::set_default_graphics_api(graphics::graphics_api::none);
+#endif
+		this->m_context = graphics::context::create(this->m_window, context_data);
 		unsigned int glew_error = glewInit();
 		if (glew_error != GLEW_OK) {
 			this->debug_print("got glew error: " + std::string((const char*)glewGetErrorString(glew_error)));
@@ -76,7 +86,6 @@ namespace thebanana {
 			glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DONT_CARE, NULL, NULL, true);
 		}
 #endif
-		graphics::set_default_graphics_api(graphics::graphics_api::opengl);
 		this->m_show_cursor = false;
 		this->m_clip_cursor = true;
 		this->m_debug_menus_initialized = false;
@@ -97,7 +106,7 @@ namespace thebanana {
 		delete this->m_scene;
 		delete this->m_material_registry;
 		delete this->m_model_registry;
-		delete this->m_viewport;
+		delete this->m_context;
 		delete this->m_shader_registry;
 		delete this->m_input_manager;
 		delete this->m_module;
@@ -231,10 +240,10 @@ namespace thebanana {
 		this->m_clip_cursor = !this->m_clip_cursor;
 	}
 	void game::make_context_current() {
-		opengl_viewport::use(this->m_viewport);
+		this->m_context->bind();
 	}
 	void game::swap_buffers() {
-		this->m_viewport->swap_buffers();
+		this->m_context->swap_buffers();
 	}
 	void game::clear_screen() {
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);

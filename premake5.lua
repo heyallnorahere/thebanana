@@ -23,6 +23,18 @@ workspace "thebanana"
         }
         optimize "on"
 outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
+newoption {
+    trigger = "renderer",
+    value = "API",
+    description = "The 3D rendering API to use",
+    allowed = {
+        { "opengl", "OpenGL" },
+        { "none", "None" }
+    }
+}
+if not _OPTIONS["renderer"] then
+    _OPTIONS["renderer"] = "opengl"
+end
 group "misc"
 project "configfiles"
     kind "None"
@@ -136,7 +148,6 @@ project "thebanana"
         "imgui/imgui",
         "glm",
         "vendor/glew/include",
-        "vendor/opengl_viewport/include",
         "vendor/opengl_shader/include"
     }
     defines {
@@ -147,12 +158,15 @@ project "thebanana"
         "imgui",
         "yaml"
     }
+    filter "options:renderer=opengl"
+        defines {
+            "RENDERER_OPENGL"
+        }
     filter "system:windows"
         syslibdirs {
             "vendor/assimp/lib/%{cfg.buildcfg}/",
             "vendor/mono/lib/%{cfg.buildcfg}",
             "vendor/glew/lib/%{cfg.buildcfg}",
-            "vendor/opengl_viewport/lib/%{cfg.buildcfg}",
             "vendor/opengl_shader/lib/%{cfg.buildcfg}",
             "vendor/steam-sdk/lib"
         }
@@ -161,7 +175,6 @@ project "thebanana"
             "dinput8.lib",
             "steam_api64.lib",
             "mono-2.0-sgen.lib",
-            "opengl_viewport.lib",
             "opengl_shader.lib"
         }
     filter { "system:windows", "configurations:Debug" }
@@ -215,7 +228,6 @@ project "bananatree"
         postbuildcommands {
             '{COPY} "%{cfg.targetdir}/../thebanana/thebanana.dll" "%{cfg.targetdir}"',
             '{COPY} "%{cfg.targetdir}/../imgui/imgui.dll" "%{cfg.targetdir}"',
-            '{COPY} "../vendor/opengl_viewport/bin/%{cfg.buildcfg}/opengl_viewport.dll" "%{cfg.targetdir}"',
             '{COPY} "../vendor/steam-sdk/bin/steam_api64.dll" "%{cfg.targetdir}"',
         }
     filter { "system:windows", "configurations:Debug" }

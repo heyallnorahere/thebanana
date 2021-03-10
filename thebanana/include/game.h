@@ -23,6 +23,9 @@ namespace thebanana {
 	namespace sound {
 		class sound_manager;
 	}
+	namespace graphics {
+		class context;
+	}
 #ifndef BANANA_BUILD
 	namespace platform_specific {
 		using window_t = size_t;
@@ -92,10 +95,7 @@ namespace thebanana {
 		std::ofstream m_file_log;
 		unsigned int m_frame;
 		window m_window;
-#ifndef BANANA_BUILD
-		using opengl_viewport = void;
-#endif
-		opengl_viewport* m_viewport;
+		graphics::context* m_context;
 		scene* m_scene;
 		input_manager* m_input_manager;
 		model_registry* m_model_registry;

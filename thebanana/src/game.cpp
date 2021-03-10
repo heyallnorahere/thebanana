@@ -13,13 +13,19 @@
 #include "internal_util.h"
 #include "material.h"
 #include "cursor.h"
+#include "platform_misc.h"
+#ifdef BANANA_WINDOWS
 extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
+#endif
 namespace thebanana {
 	void opengl_debug_function(unsigned int source, unsigned int type, unsigned int id, unsigned int severity, int length, const char* message, const void* user_param) {
 		if (id == 131169 || id == 131185 || id == 131218 || id == 131204) return;
 		game* g = (game*)(void*)user_param;
 		g->debug_print(message);
+#ifdef BANANA_WINDOWS
 		__debugbreak();
+#endif
+		g->destroy();
 	}
 	game* g_game = NULL;
 	game::game(const std::string& title, script_module::module_t module) : m_executable(module) {
@@ -28,16 +34,23 @@ namespace thebanana {
 		this->m_frame = 0;
 		constexpr int width = 1600;
 		constexpr int height = 900;
-		this->m_window.m = CreateWindowA(BANANA_WINDOW_CLASS_NAME, title.c_str(), WS_VISIBLE | WS_SYSMENU | WS_MAXIMIZEBOX, CW_USEDEFAULT, CW_USEDEFAULT, width, height, NULL, NULL, module, this);
+		this->m_window.m = platform_specific::create_window(title, width, height, this);
 		if (!this->m_window.m) {
-			this->debug_print("last error: " + std::to_string(GetLastError()));
+			this->debug_print("last error: " + std::to_string(platform_specific::get_last_os_error()));
+#ifdef BANANA_WINDOWS
 			__debugbreak();
+#endif
+			this->destroy();
 		}
 		this->update_aspect_ratio();
 		this->m_viewport = new opengl_viewport(opengl_viewport::viewport_attribs{ this->m_window.m, 0, 0, width, height, 4, 6, opengl_viewport::viewport_attribs::passed_window });
 		unsigned int glew_error = glewInit();
 		if (glew_error != GLEW_OK) {
-			this->debug_print("got glew error, whoops");
+			this->debug_print("got glew error: " + std::string((const char*)glewGetErrorString(glew_error)));
+#ifdef BANANA_WINDOWS
+			__debugbreak();
+#endif
+			this->destroy();
 		}
 		this->m_scene = new scene(this);
 		this->m_input_manager = new input_manager(this);
@@ -70,10 +83,9 @@ namespace thebanana {
 		this->m_steam_initialized = false;
 		this->m_module = NULL;
 		this->fill_imgui_input_pointers();
-		char filename[256];
-		GetModuleFileNameA(NULL, filename, 256); // todo: make platform-specific call
-		this->m_file_log = std::ofstream(std::string(filename) + ".log");
-		this->m_file_log << "[start of " + std::string(filename) + ".log]\n";
+		std::string filename = platform_specific::get_module_name((platform_specific::module_t)this->m_executable);
+		this->m_file_log = std::ofstream(filename + ".log");
+		this->m_file_log << "[start of " + filename + ".log]\n";
 		char sizebuf[256];
 		sprintf(sizebuf, "width: %d, height: %d", width, height);
 		this->debug_print("successfully created graphics context:\n	backend: " + graphics::get_backend_version() + "\n	" + sizebuf);
@@ -346,5 +358,11 @@ namespace thebanana {
 	void game::set_custom_window_size(glm::vec2 size) {
 		this->m_has_custom_size = true;
 		this->m_custom_size = size;
+	}
+	void window::setup_window() {
+		platform_specific::setup_window();
+	}
+	int window::window_loop(application_layer* app_layer) {
+		return platform_specific::window_loop(app_layer);
 	}
 }

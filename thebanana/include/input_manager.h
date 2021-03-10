@@ -11,7 +11,7 @@ namespace thebanana {
 			input_manager* im;
 		};
 		struct dinput_device {
-			const DIDEVICEINSTANCE inst;
+			const DIDEVICEINSTANCEA inst;
 			dinput_callback_env env;
 		};
 		enum class device_type {
@@ -32,7 +32,7 @@ namespace thebanana {
 				T val;
 				unsigned char operator[](size_t index) const;
 			};
-			BANANA_API bool init(const dinput_device& device, IDirectInput8* context, input_manager* parent);
+			BANANA_API bool init(const dinput_device& device, IDirectInput8A* context, input_manager* parent);
 			BANANA_API virtual ~device();
 			virtual std::vector<button> get_buttons() = 0;
 			virtual void update() = 0;
@@ -41,7 +41,7 @@ namespace thebanana {
 		protected:
 			virtual const DIDATAFORMAT* get_format() = 0;
 			virtual void device_specific_init() = 0;
-			IDirectInputDevice8* device;
+			IDirectInputDevice8A* device;
 			input_manager* parent;
 		};
 		BANANA_API input_manager(game* g_game);
@@ -49,7 +49,7 @@ namespace thebanana {
 		BANANA_API std::vector<dinput_device> get_enumerated_devices();
 		BANANA_API ~input_manager();
 		BANANA_API device_type add_device(size_t index);
-		BANANA_API device_type add_device(const win32_string& name);
+		BANANA_API device_type add_device(const std::string& name);
 		BANANA_API void update_devices();
 		BANANA_API size_t get_num_devices();
 		BANANA_API std::vector<device::button> get_device_buttons(size_t index);
@@ -62,9 +62,9 @@ namespace thebanana {
 		BANANA_API size_t find_device(device_type type);
 	private:
 		game* m_game;
-		IDirectInput8* m_context;
+		IDirectInput8A* m_context;
 		dinput_callback_env* m_env;
-		BANANA_API static int __stdcall enum_callback(const DIDEVICEINSTANCE* inst, dinput_callback_env* passed_env);
+		BANANA_API static int __stdcall enum_callback(const DIDEVICEINSTANCEA* inst, dinput_callback_env* passed_env);
 		std::vector<dinput_device> enumerated_devices;
 		std::list<std::unique_ptr<device>> devices;
 	};

@@ -6,8 +6,7 @@
 #endif
 namespace thebanana {
 	namespace platform_specific {
-		void set_cursor(cursor_t c);
-		cursor_t load_cursor(const char* resource);
-		const char* make_cursor_location(cursor_types type);
+		std::string get_module_name(module_t module);
+		size_t get_last_os_error();
 	}
 }

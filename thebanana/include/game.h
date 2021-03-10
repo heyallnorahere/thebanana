@@ -8,6 +8,7 @@
 #endif
 #define BANANA_WINDOW_CLASS_NAME "banana_ui"
 namespace thebanana {
+	class application_layer;
 	class scene;
 	class input_manager;
 	class gameobject;
@@ -29,6 +30,8 @@ namespace thebanana {
 #endif
 	struct window {
 		platform_specific::window_t m;
+		BANANA_API static void setup_window();
+		BANANA_API static int window_loop(application_layer* app_layer);
 	};
 	class game {
 	public:

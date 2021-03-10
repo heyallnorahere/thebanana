@@ -8,7 +8,7 @@
 #include "internal_util.h"
 namespace thebanana {
 	input_manager::input_manager(game* g_game) : m_game(g_game) {
-		HRESULT hr = DirectInput8Create(HINST_THISCOMPONENT, DIRECTINPUT_VERSION, IID_IDirectInput8, (void**)& this->m_context, NULL);
+		HRESULT hr = DirectInput8Create(get_current_module(), DIRECTINPUT_VERSION, IID_IDirectInput8, (void**)& this->m_context, NULL);
 		if (FAILED(hr)) {
 			this->m_context = NULL;
 			return;
@@ -51,9 +51,9 @@ namespace thebanana {
 		this->devices.push_back(std::unique_ptr<device>(_device));
 		return type;
 	}
-	input_manager::device_type input_manager::add_device(const win32_string& name) {
+	input_manager::device_type input_manager::add_device(const std::string& name) {
 		for (size_t i = 0; i < this->enumerated_devices.size(); i++) {
-			if (win32_string(this->enumerated_devices[i].inst.tszProductName) == name) {
+			if (std::string(this->enumerated_devices[i].inst.tszProductName) == name) {
 				return this->add_device(i);
 			}
 		}
@@ -130,12 +130,12 @@ namespace thebanana {
 		}
 		return pos;
 	}
-	int __stdcall input_manager::enum_callback(const DIDEVICEINSTANCE* inst, dinput_callback_env* passed_env) {
+	int __stdcall input_manager::enum_callback(const DIDEVICEINSTANCEA* inst, dinput_callback_env* passed_env) {
 		dinput_callback_env env = *passed_env;
 		env.im->enumerated_devices.push_back({ *inst, env });
 		return DIENUM_CONTINUE;
 	}
-	bool input_manager::device::init(const dinput_device& device, IDirectInput8* context, input_manager* parent) {
+	bool input_manager::device::init(const dinput_device& device, IDirectInput8A* context, input_manager* parent) {
 		this->parent = parent;
 		HRESULT hr = context->CreateDevice(device.inst.guidInstance, &this->device, NULL);
 		if (FAILED(hr)) return false;

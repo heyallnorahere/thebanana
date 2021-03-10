@@ -34,6 +34,7 @@ namespace bananatree {
 		if (content_region.x > 0.f && content_region.y > 0.f) {
 			glViewport(0, 0, static_cast<int>(content_region.x), static_cast<int>(content_region.y));
 			thebanana::g_game->set_aspect_ratio(content_region.x / content_region.y);
+			thebanana::g_game->set_custom_window_size(glm::vec2(content_region.x, content_region.y));
 		}
 		thebanana::g_game->render();
 		this->m_framebuffer->unbind();

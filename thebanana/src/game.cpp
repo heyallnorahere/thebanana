@@ -12,6 +12,7 @@
 #include "util.h"
 #include "internal_util.h"
 #include "material.h"
+#include "cursor.h"
 extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 namespace thebanana {
 	void opengl_debug_function(unsigned int source, unsigned int type, unsigned int id, unsigned int severity, int length, const char* message, const void* user_param) {
@@ -23,6 +24,7 @@ namespace thebanana {
 	game* g_game = NULL;
 	game::game(const std::string& title, script_module::module_t module) : m_executable(module) {
 		srand(CURRENT_TIME(unsigned int));
+		this->m_has_custom_size = false;
 		this->m_frame = 0;
 		constexpr int width = 1600;
 		constexpr int height = 900;
@@ -69,7 +71,7 @@ namespace thebanana {
 		this->m_module = NULL;
 		this->fill_imgui_input_pointers();
 		char filename[256];
-		GetModuleFileNameA(NULL, filename, 256);
+		GetModuleFileNameA(NULL, filename, 256); // todo: make platform-specific call
 		this->m_file_log = std::ofstream(std::string(filename) + ".log");
 		this->m_file_log << "[start of " + std::string(filename) + ".log]\n";
 		char sizebuf[256];
@@ -90,10 +92,14 @@ namespace thebanana {
 		delete this->m_script_registry;
 	}
 	void game::destroy() {
-		DestroyWindow(this->m_window.m);
+		platform_specific::destroy_window(this->m_window.m);
 	}
 	void game::update() {
-		if (!this->m_show_cursor) SetCursor(NULL);
+		if (!this->m_show_cursor) {
+			const char* location = platform_specific::make_cursor_location(platform_specific::cursor_types::none);
+			platform_specific::cursor_t cursor = platform_specific::load_cursor(location);
+			platform_specific::set_cursor(cursor);
+		}
 		this->m_frame++;
 		this->m_input_manager->update_devices();
 		this->m_scene->update();
@@ -165,11 +171,15 @@ namespace thebanana {
 	}
 	void game::show_cursor() {
 		this->m_show_cursor = true;
-		SetCursor(LoadCursor(NULL, IDC_ARROW));
+		const char* location = platform_specific::make_cursor_location(platform_specific::cursor_types::arrow);
+		platform_specific::cursor_t cursor = platform_specific::load_cursor(location);
+		platform_specific::set_cursor(cursor);
 	}
 	void game::hide_cursor() {
 		this->m_show_cursor = false;
-		SetCursor(NULL);
+		const char* location = platform_specific::make_cursor_location(platform_specific::cursor_types::none);
+		platform_specific::cursor_t cursor = platform_specific::load_cursor(location);
+		platform_specific::set_cursor(cursor);
 	}
 	void game::toggle_cursor() {
 		if (this->m_show_cursor) this->hide_cursor();
@@ -253,7 +263,9 @@ namespace thebanana {
 		std::string msg = message + "\n";
 		this->m_debug_log << msg;
 		this->m_file_log << msg;
+#ifdef BANANA_WINDOWS
 		OutputDebugStringA(msg.c_str());
+#endif
 	}
 	std::list<rigidbody*>& game::get_rigidbody_list() {
 		return this->m_rigidbodies;
@@ -262,9 +274,13 @@ namespace thebanana {
 		return this->m_debug_log.str();
 	}
 	glm::vec2 game::get_window_size() {
-		size_t width, height;
-		platform_specific::get_size(this->m_window.m, width, height);
-		return glm::vec2((float)width, (float)height);
+		if (this->m_has_custom_size) {
+			return this->m_custom_size;
+		} else {
+			size_t width, height;
+			platform_specific::get_size(this->m_window.m, width, height);
+			return glm::vec2((float)width, (float)height);
+		}
 	}
 	void game::shutdown_steam() {
 		SteamAPI_Shutdown();
@@ -326,5 +342,9 @@ namespace thebanana {
 	}
 	void game::set_aspect_ratio(float ratio) {
 		this->m_aspect_ratio = ratio;
+	}
+	void game::set_custom_window_size(glm::vec2 size) {
+		this->m_has_custom_size = true;
+		this->m_custom_size = size;
 	}
 }

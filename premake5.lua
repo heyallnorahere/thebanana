@@ -116,13 +116,14 @@ project "thebanana"
         "%{prj.name}/src/**.h",
         "%{prj.name}/src/**.cpp",
         "%{prj.name}/include/**.h",
+        "%{prj.name}/os-src/*.h",
         "%{prj.name}/os-src/%{cfg.system}/**.h",
         "%{prj.name}/os-src/%{cfg.system}/**.cpp",
     }
     includedirs {
         "%{prj.name}/src",
         "%{prj.name}/include",
-        "%{prj.name}/os-src/%{cfg.system}"
+        "%{prj.name}/os-src"
     }
     sysincludedirs {
         "vendor/assimp/include",

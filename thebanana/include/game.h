@@ -78,6 +78,7 @@ namespace thebanana {
 		BANANA_API glm::vec2 get_window_size();
 		BANANA_API void update_aspect_ratio();
 		BANANA_API void set_aspect_ratio(float ratio);
+		BANANA_API void set_custom_window_size(glm::vec2 size);
 		// very loose template stuff, but if you know what to do with it, it works
 		template<typename T> using imgui_ptr = void(*)(const char*, T*);
 		template<typename T> imgui_ptr<T> get_imgui_pointer();
@@ -103,6 +104,8 @@ namespace thebanana {
 		gameobject* m_menu_quad;
 		lua_interpreter* m_interpreter;
 		float m_aspect_ratio;
+		bool m_has_custom_size;
+		glm::vec2 m_custom_size;
 		std::vector<model_registry::model_descriptor> m_descriptors;
 		bool m_show_cursor;
 		bool m_debug_menus_initialized;

@@ -21,7 +21,7 @@ namespace thebanana {
 			}
 			void opengl_quad::api_render() {
 				unsigned int shader = util::get_current_shader();
-				opengl_shader_library::shader::use(quad_shader);
+				quad_shader->bind();
 				glDisable(GL_DEPTH_TEST);
 				glBindVertexArray(this->m_vao);
 				glDrawElements(GL_TRIANGLES, this->m_index_count, GL_UNSIGNED_INT, NULL);
@@ -60,7 +60,7 @@ namespace thebanana {
 				glDeleteBuffers(1, &this->m_vbo);
 				glDeleteVertexArrays(1, &this->m_vao);
 			}
-			opengl_shader_library::shader* opengl_quad::quad_shader = NULL;
+			shader* opengl_quad::quad_shader = NULL;
 		}
 	}
 }

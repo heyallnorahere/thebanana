@@ -18,10 +18,10 @@ namespace bananatree {
 		}
 		thebanana::g_game->show_cursor();
 		thebanana::g_game->unclip_cursor();
-		thebanana::g_game->get_shader_registry()->register_shader("rendered", "rendered");
-		thebanana::g_game->get_shader_registry()->register_shader("material preview", "material_preview");
-		thebanana::g_game->get_shader_registry()->register_shader("depth", "depth");
-		thebanana::g_game->get_shader_registry()->register_shader("point_depth", "point_depth", true);
+		thebanana::g_game->get_shader_registry()->register_shader("rendered", "shaders/rendered/vertex.shader", "shaders/rendered/fragment.shader");
+		thebanana::g_game->get_shader_registry()->register_shader("material preview", "shaders/material_preview/vertex.shader", "shaders/material_preview/fragment.shader");
+		thebanana::g_game->get_shader_registry()->register_shader("depth", "shaders/depth/vertex.shader", "shaders/depth/fragment.shader");
+		thebanana::g_game->get_shader_registry()->register_shader("point_depth", "shaders/point_depth/vertex.shader", "shaders/point_depth/fragment.shader", "shaders/point_depth/geometry.shader");
 		thebanana::g_game->get_scene()->set_shader_name("material preview");
 		thebanana::g_game->get_scene()->set_depth_shader_name(thebanana::light_component::light_type::point, "point_depth");
 		thebanana::g_game->get_scene()->set_depth_shader_name(thebanana::light_component::light_type::directional, "depth");

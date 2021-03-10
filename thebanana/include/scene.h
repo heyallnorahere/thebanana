@@ -2,11 +2,11 @@
 #include "gameobject.h"
 #include "components/light_component.h"
 #include "banana_api.h"
-namespace opengl_shader_library {
-	class shader;
-}
 namespace thebanana {
 	class game;
+	namespace graphics {
+		class shader;
+	}
 	class scene {
 	public:
 		struct shadow_settings {
@@ -23,8 +23,8 @@ namespace thebanana {
 		BANANA_API size_t get_children_count() const;
 		BANANA_API const gameobject* get_child(size_t index) const;
 		BANANA_API gameobject* get_child(size_t index);
-		BANANA_API opengl_shader_library::shader* get_shader() const;
-		BANANA_API opengl_shader_library::shader* get_current_shader();
+		BANANA_API graphics::shader* get_shader() const;
+		BANANA_API graphics::shader* get_current_shader();
 		BANANA_API void set_shader_name(const std::string& shader_name);
 		BANANA_API void set_depth_shader_name(light_component::light_type type, const std::string& shader_name);
 		BANANA_API bool is_generating_shadows() const;
@@ -41,8 +41,8 @@ namespace thebanana {
 		void generate_shadows();
 		game* m_game;
 		std::list<std::unique_ptr<gameobject>> m_children;
-		opengl_shader_library::shader* m_shader;
-		std::map<light_component::light_type, opengl_shader_library::shader*> m_depth_shaders;
+		graphics::shader* m_shader;
+		std::map<light_component::light_type, graphics::shader*> m_depth_shaders;
 		light_component::light_type m_current_light_type;
 		shadow_settings m_shadow_settings;
 		bool m_generating_shadows;

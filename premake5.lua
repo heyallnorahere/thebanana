@@ -12,6 +12,14 @@ workspace "thebanana"
         defines {
             "BANANA_WINDOWS"
         }
+    filter "system:macosx"
+        defines {
+            "BANANA_MACOSX"
+        }
+    filter "system:linux"
+        defines {
+            "BANANA_LINUX"
+        }
     filter "configurations:Debug"
         defines {
             "BANANA_DEBUG"
@@ -148,7 +156,6 @@ project "thebanana"
         "imgui/imgui",
         "glm",
         "vendor/glew/include",
-        "vendor/opengl_shader/include"
     }
     defines {
         "_IMGUI_BUILD_DLL",
@@ -167,7 +174,6 @@ project "thebanana"
             "vendor/assimp/lib/%{cfg.buildcfg}/",
             "vendor/mono/lib/%{cfg.buildcfg}",
             "vendor/glew/lib/%{cfg.buildcfg}",
-            "vendor/opengl_shader/lib/%{cfg.buildcfg}",
             "vendor/steam-sdk/lib"
         }
         links {
@@ -175,7 +181,6 @@ project "thebanana"
             "dinput8.lib",
             "steam_api64.lib",
             "mono-2.0-sgen.lib",
-            "opengl_shader.lib"
         }
     filter { "system:windows", "configurations:Debug" }
         links {
@@ -261,7 +266,6 @@ project "sandbox"
         "thebanana/include",
         "glm",
         "yaml/yaml-cpp/include",
-        "vendor/opengl_shader/include",
     }
     links {
         "thebanana",
@@ -269,17 +273,14 @@ project "sandbox"
     }
     filter "system:windows"
         syslibdirs {
-            "vendor/opengl_shader/lib/%{cfg.buildcfg}",
             "vendor/glew/lib/%{cfg.buildcfg}",
         }
         links {
             "opengl32.lib",
-            "opengl_shader.lib"
         }
         postbuildcommands {
             '{COPY} "%{cfg.targetdir}/../thebanana/thebanana.dll" "%{cfg.targetdir}"',
             '{COPY} "%{cfg.targetdir}/../imgui/imgui.dll" "%{cfg.targetdir}"',
-            '{COPY} "../vendor/opengl_viewport/bin/%{cfg.buildcfg}/opengl_viewport.dll" "%{cfg.targetdir}"',
             '{COPY} "../vendor/steam-sdk/bin/steam_api64.dll" "%{cfg.targetdir}"',
         }
     filter { "system:windows", "configurations:Debug" }

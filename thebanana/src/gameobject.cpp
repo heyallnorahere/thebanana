@@ -8,6 +8,7 @@
 #include "components/native_script_component.h"
 #include "internal_util.h"
 #include "particlesystem/particle_component.h"
+#include "graphics/shader.h"
 namespace thebanana {
 	gameobject::gameobject() : last_collided_frame(0) {
 #ifdef BANANA_DEBUG
@@ -171,7 +172,7 @@ namespace thebanana {
 		for (auto& c : this->m_components) {
 			c->pre_render();
 		}
-		this->m_scene->get_current_shader()->get_uniforms().mat4("model", this->get_absolute_transform().get_matrix());
+		this->m_scene->get_current_shader()->uniform_mat4("model", this->get_absolute_transform().get_matrix());
 	}
 	void gameobject::update_components() {
 		for (auto& c : this->m_components) {

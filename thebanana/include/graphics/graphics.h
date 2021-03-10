@@ -9,3 +9,4 @@
 #include "vertex_buffer.h"
 #include "index_buffer.h"
 #include "context.h"
+#include "shader.h"

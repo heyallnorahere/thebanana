@@ -7,6 +7,7 @@
 #include "debug_tools.h"
 #include "internal_util.h"
 #include "material.h"
+#include "graphics/shader.h"
 namespace thebanana {
 	component::component(gameobject* obj) : parent(obj) {
 		this->uuid = generate_uuid();
@@ -81,7 +82,7 @@ namespace thebanana {
 		extern gameobject* current_selected_gameobject;
 	}
 	void debug_component::pre_render() {
-		this->parent->get_scene()->get_shader()->get_uniforms().vec3("fill_color", glm::vec3(1.f, 0.5f, 0.f));
+		this->parent->get_scene()->get_shader()->uniform_vec3("fill_color", glm::vec3(1.f, 0.5f, 0.f));
 		property<double>* flash_rate = this->find_property<double>("Flash rate");
 		property<double>* fl = this->find_property<double>("Flash length");
 		double time = CURRENT_TIME(double);
@@ -101,7 +102,7 @@ namespace thebanana {
 				this->flash_start_time = time;
 			}
 		}
-		this->parent->get_scene()->get_shader()->get_uniforms()._int("solid_color", solid && this->parent == debug::current_selected_gameobject);
+		this->parent->get_scene()->get_shader()->uniform_int("solid_color", solid && this->parent == debug::current_selected_gameobject);
 	}
 	component::property_base::dropdown::dropdown(const std::vector<std::string>& items, int initial_index) : m_items(items), m_index(initial_index) { }
 	component::property_base::dropdown::dropdown(const std::vector<const char*>& items, int initial_index) : m_index(initial_index) {

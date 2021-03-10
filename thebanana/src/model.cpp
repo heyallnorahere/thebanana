@@ -5,6 +5,7 @@
 #include "graphics/graphics_types.h"
 #include "graphics/util.h"
 #include "internal_util.h"
+#include "graphics/shader.h"
 namespace thebanana {
 	static glm::mat4 from_assimp(const aiMatrix4x4& m, bool transpose = false) {
 		glm::mat4 result(
@@ -56,14 +57,14 @@ namespace thebanana {
 		this->read_node_hierarchy(animation_time, this->m_scene->mRootNode, identity, animation_id);
 		unsigned int shader = graphics::util::get_current_shader();
 		if (shader) {
+			graphics::shader* current_shader = graphics::shader::create((void*)(size_t)shader);
 			for (size_t i = 0; i < this->m_bone_count; i++) {
 				assert(i < 100);
 				char name[256];
 				sprintf(name, "bones[%d]", i);
-				// todo: replace with engine call
-				auto location = glGetUniformLocation(shader, name);
-				glUniformMatrix4fv(location, 1, true, glm::value_ptr(this->m_bone_info[i].final_transform));
+				current_shader->uniform_mat4(name, this->m_bone_info[i].final_transform, true);
 			}
+			delete current_shader;
 		}
 		for (auto& mesh : this->m_meshes) {
 			mesh->render();

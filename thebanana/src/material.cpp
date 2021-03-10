@@ -2,6 +2,7 @@
 #include "material.h"
 #include <stb_image.h>
 #include "internal_util.h"
+#include "graphics/shader.h"
 namespace thebanana {
 	material::material() {
 		this->m_uuid = generate_uuid();
@@ -101,18 +102,19 @@ namespace thebanana {
 		auto get_uniform_name = [&](const std::string& name) {
 			return uniform_name + "." + name;
 		};
-		opengl_shader_library::uni u(shader_id);
-		u._int(get_uniform_name("tex"), 10);
-		u.vec3(get_uniform_name("diffuse"), this->m_diffuse);
-		u.vec3(get_uniform_name("specular"), this->m_specular);
-		u.vec3(get_uniform_name("ambient"), this->m_ambient);
-		u._float(get_uniform_name("shininess"), this->m_shininess);
+		graphics::shader* s = graphics::shader::create((void*)(size_t)shader_id);
+		s->uniform_int(get_uniform_name("tex"), 10);
+		s->uniform_vec3(get_uniform_name("diffuse"), this->m_diffuse);
+		s->uniform_vec3(get_uniform_name("specular"), this->m_specular);
+		s->uniform_vec3(get_uniform_name("ambient"), this->m_ambient);
+		s->uniform_float(get_uniform_name("shininess"), this->m_shininess);
 		bool has_normal_map = !this->m_normal_map_path.empty();
 		if (has_normal_map) {
 			this->m_normal_map->bind(11);
-			u._int("normal_map.tex", 11);
+			s->uniform_int("normal_map.tex", 11);
 		}
-		u._int("normal_map.exists", has_normal_map);
+		s->uniform_int("normal_map.exists", has_normal_map);
+		delete s;
 	}
 	void material::set_uuid(unsigned long long uuid) {
 		this->m_uuid = uuid;

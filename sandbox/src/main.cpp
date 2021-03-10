@@ -120,9 +120,8 @@ void sandbox_application_layer::init() {
 	thebanana::g_game->init_debug_menus();
 #endif
 	// load shaders
-	thebanana::g_game->get_shader_registry()->register_shader("basic", "basic");
-	thebanana::g_game->get_shader_registry()->register_shader("depth", "depth", true);
-	thebanana::g_game->get_shader_registry()->register_shader("2d", "2d");
+	thebanana::g_game->get_shader_registry()->register_shader("basic", "shaders/basic/vertex.shader", "shaders/basic/fragment.shader");
+	thebanana::g_game->get_shader_registry()->register_shader("depth", "shaders/depth/vertex.shader", "shaders/depth/fragment.shader", "shaders/depth/geometry.shader");
 	thebanana::g_game->get_scene()->set_shader_name("basic");
 	thebanana::g_game->get_scene()->set_depth_shader_name(thebanana::light_component::light_type::point, "depth");
 	thebanana::graphics::quad::init_opengl_shader("2d");

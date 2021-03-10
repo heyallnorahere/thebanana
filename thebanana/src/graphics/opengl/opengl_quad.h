@@ -1,5 +1,6 @@
 #pragma once
 #include "graphics/quad.h"
+#include "graphics/shader.h"
 namespace thebanana {
 	namespace graphics {
 		namespace opengl {
@@ -15,7 +16,7 @@ namespace thebanana {
 				void delete_quad();
 				unsigned int m_vao, m_vbo, m_ebo;
 				size_t m_index_count;
-				static opengl_shader_library::shader* quad_shader;
+				static shader* quad_shader;
 			};
 		}
 	}

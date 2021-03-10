@@ -3,6 +3,7 @@
 #include "gameobject.h"
 #include "game.h"
 #include "scene.h"
+#include "graphics/shader.h"
 namespace thebanana {
 	camera_component::camera_component(gameobject* object) : component(object) {
 		this->direction = glm::vec3(0.f, 0.f, 1.f);
@@ -19,8 +20,8 @@ namespace thebanana {
 	}
 	void camera_component::render() {
 		if (*this->get_property<bool>("Primary")) {
-			this->parent->get_scene()->get_current_shader()->get_uniforms().mat4("projection", this->calculate_projection());
-			this->parent->get_scene()->get_current_shader()->get_uniforms().mat4("view", this->calculate_view());
+			this->parent->get_scene()->get_current_shader()->uniform_mat4("projection", this->calculate_projection());
+			this->parent->get_scene()->get_current_shader()->uniform_mat4("view", this->calculate_view());
 		}
 	}
 	glm::mat4 camera_component::calculate_projection() {

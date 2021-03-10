@@ -10,6 +10,7 @@
 #include "physics/rigidbody.h"
 #include "components/camera_component.h"
 #include "graphics/util.h"
+#include "graphics/shader.h"
 namespace thebanana {
 	scene::scene(game* g) {
 		this->m_shader = NULL;
@@ -71,8 +72,8 @@ namespace thebanana {
 		}
 		this->m_generating_shadows = false;
 		glViewport(0, 0, (int)this->m_game->get_window_size().x, (int)this->m_game->get_window_size().y);
-		opengl_shader_library::shader::use(this->m_shader);
-		this->m_shader->get_uniforms()._float("far_plane", this->m_shadow_settings.far_plane);
+		this->m_shader->bind();
+		this->m_shader->uniform_float("far_plane", this->m_shadow_settings.far_plane);
 		this->render_scene();
 	}
 	size_t scene::get_children_count() const {
@@ -90,10 +91,10 @@ namespace thebanana {
 		const auto& c = *it;
 		return c.get();
 	}
-	opengl_shader_library::shader* scene::get_shader() const {
+	graphics::shader* scene::get_shader() const {
 		return this->m_shader;
 	}
-	opengl_shader_library::shader* scene::get_current_shader() {
+	graphics::shader* scene::get_current_shader() {
 		return this->m_generating_shadows ? this->m_depth_shaders[this->m_current_light_type] : this->m_shader;
 	}
 	void scene::set_shader_name(const std::string& shader_name) {
@@ -172,13 +173,13 @@ namespace thebanana {
 			auto light_data = light->get_data();
 			this->m_current_light_type = light_data.type;
 			if (!this->get_current_shader()) continue;
-			opengl_shader_library::shader::use(this->get_current_shader());
-			auto& u = this->get_current_shader()->get_uniforms();
+			this->get_current_shader()->bind();
+			graphics::shader* current_shader = this->get_current_shader();
 			switch (this->m_current_light_type) {
 			case light_component::light_type::point:
 			{
-				u.vec3("lightpos", light_data.position);
-				u._float("far_plane", this->m_shadow_settings.far_plane);
+				current_shader->uniform_vec3("lightpos", light_data.position);
+				current_shader->uniform_float("far_plane", this->m_shadow_settings.far_plane);
 				std::vector<glm::mat4> shadow_transforms;
 				shadow_transforms.push_back(shadow_projection * glm::lookAt(light_data.position, light_data.position + glm::vec3(1.0, 0.0, 0.0), glm::vec3(0.0, -1.0, 0.0)));
 				shadow_transforms.push_back(shadow_projection * glm::lookAt(light_data.position, light_data.position + glm::vec3(-1.0, 0.0, 0.0), glm::vec3(0.0, -1.0, 0.0)));
@@ -187,7 +188,7 @@ namespace thebanana {
 				shadow_transforms.push_back(shadow_projection * glm::lookAt(light_data.position, light_data.position + glm::vec3(0.0, 0.0, 1.0), glm::vec3(0.0, -1.0, 0.0)));
 				shadow_transforms.push_back(shadow_projection * glm::lookAt(light_data.position, light_data.position + glm::vec3(0.0, 0.0, -1.0), glm::vec3(0.0, -1.0, 0.0)));
 				for (size_t i = 0; i < shadow_transforms.size(); i++) {
-					u.mat4("shadow_matrices[" + std::to_string(i) + "]", shadow_transforms[i]);
+					current_shader->uniform_mat4("shadow_matrices[" + std::to_string(i) + "]", shadow_transforms[i]);
 				}
 			}
 				break;
@@ -204,7 +205,7 @@ namespace thebanana {
 				glm::mat4 light_view = glm::lookAt(lightpos, lightpos + light_data.direction, glm::vec3(0.f, 1.f, 0.f));
 				glm::mat4 light_space_matrix = light_projection * light_view;
 				light->set_light_space_matrix(light_space_matrix);
-				u.mat4("light_space_matrix", light_space_matrix);
+				current_shader->uniform_mat4("light_space_matrix", light_space_matrix);
 			}
 				break;
 			}

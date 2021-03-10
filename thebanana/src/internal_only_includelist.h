@@ -10,7 +10,6 @@
 #include <misc/cpp/imgui_stdlib.h>
 #include <steam/steam_api.h>
 #include <yaml-cpp/yaml.h>
-#include <opengl_shader.h>
 #include <mono/jit/jit.h>
 #include <mono/metadata/assembly.h>
 #include <mono/metadata/debug-helpers.h>

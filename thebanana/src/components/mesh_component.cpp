@@ -6,6 +6,7 @@
 #include "scene.h"
 #include "material.h"
 #include "graphics/util.h"
+#include "graphics/shader.h"
 namespace thebanana {
 	mesh_component::mesh_component(gameobject* obj) : component(obj) {
 		this->model_name = "none";
@@ -36,10 +37,10 @@ namespace thebanana {
 			if (!this->parent->get_scene()->is_generating_shadows()) {
 				material* mat = *this->get_property<material*>("Material");
 				if (mat) {
-					mat->send_to_shader(this->parent->get_scene()->get_current_shader()->get_id(), "shader_material");
+					mat->send_to_shader((size_t)this->parent->get_scene()->get_current_shader()->get_id(), "shader_material");
 				}
 				auto lights = this->parent->get_scene()->get_lights();
-				opengl_shader_library::uni& uniforms = this->parent->get_scene()->get_current_shader()->get_uniforms();
+				auto current_shader = this->parent->get_scene()->get_current_shader();
 				// im doing the for loop manually for the index
 				for (size_t i = 0; i < lights.size(); i++) {
 					if (i >= 30) break; // we dont have room for more than 30 lights (opengl texture limitations)
@@ -47,34 +48,34 @@ namespace thebanana {
 					auto get_uniform_name = [&](const std::string& name) {
 						return "lights[" + std::to_string(i) + "]." + name;
 					};
-					uniforms._int(get_uniform_name("type"), (int)light.type);
+					current_shader->uniform_int(get_uniform_name("type"), (int)light.type);
 					glm::vec3 position = light.position;
 					if (light.type == light_component::light_type::directional) {
 						position -= light.direction;
 					}
-					uniforms.vec3(get_uniform_name("position"), position);
-					uniforms.vec3(get_uniform_name("direction"), light.direction);
-					uniforms.vec3(get_uniform_name("diffuse"), light.diffuse);
-					uniforms.vec3(get_uniform_name("specular"), light.specular);
-					uniforms.vec3(get_uniform_name("ambient"), light.ambient);
-					uniforms._float(get_uniform_name("ambient_strength"), light.ambient_strength);
-					uniforms._float(get_uniform_name("cutoff"), light.cutoff);
+					current_shader->uniform_vec3(get_uniform_name("position"), position);
+					current_shader->uniform_vec3(get_uniform_name("direction"), light.direction);
+					current_shader->uniform_vec3(get_uniform_name("diffuse"), light.diffuse);
+					current_shader->uniform_vec3(get_uniform_name("specular"), light.specular);
+					current_shader->uniform_vec3(get_uniform_name("ambient"), light.ambient);
+					current_shader->uniform_float(get_uniform_name("ambient_strength"), light.ambient_strength);
+					current_shader->uniform_float(get_uniform_name("cutoff"), light.cutoff);
 					unsigned int texture = (unsigned int)light.shadowmap;
 					bool is_2d = graphics::util::is_2d(texture);
 					glActiveTexture(GL_TEXTURE12 + i);
 					glBindTexture(graphics::util::get_target(texture), texture);
-					uniforms._int(get_uniform_name(is_2d ? "depthmap_2d" : "depthmap_cube"), 12 + i);
-					uniforms.mat4("light_space_matrices[" + std::to_string(i) + "]", light.light_space_matrix);
+					current_shader->uniform_int(get_uniform_name(is_2d ? "depthmap_2d" : "depthmap_cube"), 12 + i);
+					current_shader->uniform_mat4("light_space_matrices[" + std::to_string(i) + "]", light.light_space_matrix);
 				}
-				uniforms._int("light_count", (int)lights.size());
+				current_shader->uniform_int("light_count", (int)lights.size());
 				gameobject* camera = this->parent->get_scene()->find_main_camera();
 				glm::vec3 viewpos = camera ? (glm::vec3)camera->get_absolute_transform() : glm::vec3(0.f);
-				uniforms.vec3("viewpos", viewpos);
+				current_shader->uniform_vec3("viewpos", viewpos);
 			}
 			// model_transform is the transform passed in to the model registry, transformed by the root transform of the aiScene
 			transform model_transform = this->parent->get_game()->get_model_registry()->get_transform(this->model_name);
 			// pass it in to the shader
-			this->parent->get_scene()->get_current_shader()->get_uniforms().mat4("model_transform", model_transform.get_matrix());
+			this->parent->get_scene()->get_current_shader()->uniform_mat4("model_transform", model_transform.get_matrix());
 			// get the animation index and the time relative to the start of the animation (if the parent object has an animation_component)
 			double animation_time = this->get_number_components<animation_component>() > 0 ? this->get_component<animation_component>().get_animation_time() : 0.0;
 			int animation_index = -1;

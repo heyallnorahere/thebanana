@@ -1,9 +1,12 @@
 #include <thebanana.h>
 #include "util.h"
+#ifdef BANANA_WINDOWS
 #include <commdlg.h>
+#endif
 namespace bananatree {
 	namespace util {
 		void* load_file_from_resource(int resource, const std::string& type, size_t& size) {
+#ifdef BANANA_WINDOWS
 			HRSRC resource_ = FindResourceA(NULL, MAKEINTRESOURCEA(resource), type.c_str());
 			if (!resource_) return NULL;
 			HGLOBAL global = LoadResource(NULL, resource_);
@@ -13,8 +16,12 @@ namespace bananatree {
 			size = (size_t)SizeofResource(NULL, resource_);
 			if (!size) return NULL;
 			return data;
+#else
+			return NULL;
+#endif
 		}
 		std::string open_dialog(const char* filter, int* index) {
+#ifdef BANANA_WINDOWS
 			OPENFILENAMEA ofn;
 			char file[256];
 			memset(file, 0, sizeof(file));
@@ -32,9 +39,11 @@ namespace bananatree {
 				}
 				return ofn.lpstrFile;
 			}
+#endif
 			return "";
 		}
 		std::string save_dialog(const char* filter, int* index) {
+#ifdef BANANA_WINDOWS
 			OPENFILENAMEA ofn;
 			char file[256];
 			memset(file, 0, sizeof(file));
@@ -53,6 +62,7 @@ namespace bananatree {
 				}
 				return ofn.lpstrFile;
 			}
+#endif
 			return "";
 		}
 		bool file_exists(const std::string& path) {
@@ -64,11 +74,15 @@ namespace bananatree {
 			else return false;
 		}
 		std::string make_temp_path(const std::string& prefix) {
+#ifdef BANANA_WINDOWS
 			char temp_path_buf[256];
 			char filename[260];
 			GetTempPathA(256, temp_path_buf);
 			GetTempFileNameA(temp_path_buf, prefix.c_str(), 0, filename);
 			return filename;
+#else
+			return "/";
+#endif
 		}
 	}
 }

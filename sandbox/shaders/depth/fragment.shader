@@ -1,4 +1,4 @@
-#version 460 core
+#version 410 core
 in vec4 fragpos;
 uniform vec3 lightpos;
 uniform float far_plane;

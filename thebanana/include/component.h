@@ -149,44 +149,44 @@ namespace thebanana {
 	template<typename T> inline T* component::property<T>::get_value() {
 		return this->value;
 	}
-	inline gameobject** component::property<gameobject*>::get_selection_window_ptr() const {
+	template<> inline gameobject** component::property<gameobject*>::get_selection_window_ptr() const {
 		return &((gameobject * &)this->selection_window_temp);
 	}
 	template<typename T> inline gameobject** component::property<T>::get_selection_window_ptr() const {
 		return NULL;
 	}
 #ifdef BANANA_BUILD
-	inline void component::property<int>::draw() const {
+	template<> inline void component::property<int>::draw() const {
 		this->g_game->get_imgui_pointer<int>()(this->name.c_str(), this->value);
 	}
-	inline void component::property<bool>::draw() const {
+	template<> inline void component::property<bool>::draw() const {
 		this->g_game->get_imgui_pointer<bool>()(this->name.c_str(), this->value);
 	}
-	inline void component::property<float>::draw() const {
+	template<> inline void component::property<float>::draw() const {
 		this->g_game->get_imgui_pointer<float>()(this->name.c_str(), this->value);
 	}
-	inline void component::property<double>::draw() const {
+	template<> inline void component::property<double>::draw() const {
 		this->g_game->get_imgui_pointer<double>()(this->name.c_str(), this->value);
 	}
-	inline void component::property<std::string>::draw() const {
+	template<> inline void component::property<std::string>::draw() const {
 		this->g_game->get_imgui_pointer<std::string>()(this->name.c_str(), this->value);
 	}
-	inline void component::property<glm::vec2>::draw() const {
+	template<> inline void component::property<glm::vec2>::draw() const {
 		this->g_game->get_imgui_pointer<glm::vec2>()(this->name.c_str(), this->value);
 	}
-	inline void component::property<glm::vec3>::draw() const {
+	template<> inline void component::property<glm::vec3>::draw() const {
 		this->g_game->get_imgui_pointer<glm::vec3>()(this->name.c_str(), this->value);
 	}
-	inline void component::property<glm::vec4>::draw() const {
+	template<> inline void component::property<glm::vec4>::draw() const {
 		this->g_game->get_imgui_pointer<glm::vec4>()(this->name.c_str(), this->value);
 	}
-	inline void component::property<component::property_base::dropdown>::draw() const {
+	template<> inline void component::property<component::property_base::dropdown>::draw() const {
 		this->g_game->get_imgui_pointer<dropdown>()(this->name.c_str(), this->value);
 	}
-	inline void component::property<component::property_base::read_only_text>::draw() const {
+	template<> inline void component::property<component::property_base::read_only_text>::draw() const {
 		this->g_game->get_imgui_pointer<read_only_text>()(this->name.c_str(), this->value);
 	}
-	inline void component::property<property_classes::color>::draw() const {
+	template<> inline void component::property<property_classes::color>::draw() const {
 		this->g_game->get_imgui_pointer<color>()(this->name.c_str(), this->value);
 	}
 	template<typename T> inline void component::property<T>::draw() const {
@@ -220,10 +220,10 @@ namespace thebanana {
 		ImGui::Text("sorry, no implementation for this type yet... heres the raw memory though");
 		ImGui::InputText(this->name.c_str(), (char*)this->ptr, sizeof(T));
 	}
-	inline void component::property<component::property_base::read_only_text>::send_to_yaml(void* out) const {
+	template<> inline void component::property<component::property_base::read_only_text>::send_to_yaml(void* out) const {
 		(*(YAML::Emitter*)out) << this->value->get_text();
 	}
-	inline void component::property<component::property_base::dropdown>::send_to_yaml(void* out) const {
+	template<> inline void component::property<component::property_base::dropdown>::send_to_yaml(void* out) const {
 		YAML::Emitter& _out = (*(YAML::Emitter*)out);
 		_out << YAML::BeginMap;
 		_out << YAML::Key << "index" << YAML::Value << *this->value->get_index_ptr();
@@ -236,13 +236,13 @@ namespace thebanana {
 	}
 	unsigned long long get_uuid(gameobject* obj);
 	unsigned long long get_uuid(material* mat);
-	inline void component::property<gameobject*>::send_to_yaml(void* out) const {
+	template<> inline void component::property<gameobject*>::send_to_yaml(void* out) const {
 		(*(YAML::Emitter*)out) << ((*this->value) ? ::thebanana::get_uuid(*this->value) : 0);
 	}
-	inline void component::property<material*>::send_to_yaml(void* out) const {
+	template<> inline void component::property<material*>::send_to_yaml(void* out) const {
 		(*(YAML::Emitter*)out) << ((*this->value) ? ::thebanana::get_uuid(*this->value) : 0);
 	}
-	inline void component::property<component::property_base::color>::send_to_yaml(void* out) const {
+	template<> inline void component::property<component::property_base::color>::send_to_yaml(void* out) const {
 		(*(YAML::Emitter*)out) << this->value->get_vector();
 	}
 	template<typename T> inline void component::property<T>::send_to_yaml(void* out) const {
@@ -252,7 +252,7 @@ namespace thebanana {
 	template<typename T> inline void component::property<T>::close_selection_window() {
 		this->selection_window_open = false;
 	}
-	inline void component::property<gameobject*>::close_selection_window() {
+	template<> inline void component::property<gameobject*>::close_selection_window() {
 		this->selection_window_open = false;
 		*this->value = this->selection_window_temp;
 	}

@@ -10,7 +10,8 @@ workspace "thebanana"
     startproject "bananatree"
     filter "system:windows"
         defines {
-            "BANANA_WINDOWS"
+            "BANANA_WINDOWS",
+            "_IMGUI_BUILD_DLL"
         }
     filter "system:macosx"
         defines {
@@ -18,7 +19,15 @@ workspace "thebanana"
         }
     filter "system:linux"
         defines {
-            "BANANA_LINUX"
+            "BANANA_LINUX",
+            "_IMGUI_BUILD_SO"
+        }
+        buildoptions {
+            "-fpermissive",
+            "-fPIC",
+        }
+        sysincludedirs {
+            "/usr/include"
         }
     filter "configurations:Debug"
         defines {
@@ -45,7 +54,7 @@ if not _OPTIONS["renderer"] then
 end
 group "misc"
 project "configfiles"
-    kind "None"
+    kind "Utility"
     files {
         "premake5.lua",
         "README.md",
@@ -53,7 +62,7 @@ project "configfiles"
     }
 project "docs"
     location "docs"
-    kind "None"
+    kind "Utility"
     files {
         "%{prj.name}/**.md",
     }
@@ -71,7 +80,6 @@ project "imgui"
         "%{prj.name}/imgui/*.h",
         "%{prj.name}/imgui/*.cpp",
         "%{prj.name}/imgui/backends/imgui_impl_opengl3.*",
-        "%{prj.name}/imgui/backends/imgui_impl_win32.*",
         "%{prj.name}/imgui/misc/cpp/imgui_stdlib.*",
         "imguizmo/ImGuizmo/ImGuizmo.*",
     }
@@ -87,12 +95,34 @@ project "imgui"
         "vendor/glew/lib/%{cfg.buildcfg}"
     }
     defines {
-        "_IMGUI_BUILD_DLL",
         "_IMGUI_BUILD",
     }
+    filter "system:linux"
+        syslibdirs {
+            "/usr/lib/x86_64-linux-gnu"
+        }
+        links {
+            "X11",
+            "GLEW",
+            "GLU",
+            "GL",
+            "xcb",
+            "X11-xcb",
+            "xcb-cursor",
+            "xcb-keysyms",
+            "xcb-randr",
+            "xcb-xkb",
+            "xcb-xfixes"
+        }
+        files {
+            "%{prj.name}/imgui/backends/imgui_impl_x11.*"
+        }
     filter "system:windows"
         links {
             "opengl32.lib"
+        }
+        files {
+            "%{prj.name}/imgui/backends/imgui_impl_win32.*",
         }
     filter { "system:windows", "configurations:Debug" }
         links {
@@ -149,7 +179,6 @@ project "thebanana"
         "vendor/assimp/include",
         "vendor/mono/include",
         "yaml/yaml-cpp/include",
-        "vendor/steam-sdk/include",
         "third-party/minimp3",
         "third-party/stb",
         "third-party/json/single-include",
@@ -158,7 +187,6 @@ project "thebanana"
         "vendor/glew/include",
     }
     defines {
-        "_IMGUI_BUILD_DLL",
         "BANANA_BUILD",
     }
     links {
@@ -169,17 +197,28 @@ project "thebanana"
         defines {
             "RENDERER_OPENGL"
         }
+    filter "system:linux"
+        syslibdirs {
+            "/usr/lib/x86_64-linux-gnu"
+        }
+        links {
+            "X11",
+            "GLEW",
+            "GLU",
+            "GL",
+            "assimp",
+            "xcb",
+            "X11-xcb"
+        }
     filter "system:windows"
         syslibdirs {
             "vendor/assimp/lib/%{cfg.buildcfg}/",
             "vendor/mono/lib/%{cfg.buildcfg}",
             "vendor/glew/lib/%{cfg.buildcfg}",
-            "vendor/steam-sdk/lib"
         }
         links {
             "opengl32.lib",
             "dinput8.lib",
-            "steam_api64.lib",
             "mono-2.0-sgen.lib",
         }
     filter { "system:windows", "configurations:Debug" }
@@ -222,10 +261,18 @@ project "bananatree"
         "thebanana",
         "yaml",
         "imgui",
+        "sandbox",
     }
-    defines {
-        "_IMGUI_BUILD_DLL",
-    }
+    filter "system:linux"
+        syslibdirs {
+            "/usr/lib/x86_64-linux-gnu",
+        }
+        links {
+            "X11",
+            "GLEW",
+            "GLU",
+            "GL",
+        }
     filter "system:windows"
         links {
             "opengl32.lib"
@@ -233,7 +280,6 @@ project "bananatree"
         postbuildcommands {
             '{COPY} "%{cfg.targetdir}/../thebanana/thebanana.dll" "%{cfg.targetdir}"',
             '{COPY} "%{cfg.targetdir}/../imgui/imgui.dll" "%{cfg.targetdir}"',
-            '{COPY} "../vendor/steam-sdk/bin/steam_api64.dll" "%{cfg.targetdir}"',
         }
     filter { "system:windows", "configurations:Debug" }
         postbuildcommands {
@@ -281,7 +327,6 @@ project "sandbox"
         postbuildcommands {
             '{COPY} "%{cfg.targetdir}/../thebanana/thebanana.dll" "%{cfg.targetdir}"',
             '{COPY} "%{cfg.targetdir}/../imgui/imgui.dll" "%{cfg.targetdir}"',
-            '{COPY} "../vendor/steam-sdk/bin/steam_api64.dll" "%{cfg.targetdir}"',
         }
     filter { "system:windows", "configurations:Debug" }
         postbuildcommands {

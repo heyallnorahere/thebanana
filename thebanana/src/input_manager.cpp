@@ -6,8 +6,12 @@
 #include "mouse.h"
 #include "game.h"
 #include "internal_util.h"
+#ifndef BANANA_WINDOWS
+#define DIENUM_CONTINUE 0
+#endif
 namespace thebanana {
 	input_manager::input_manager(game* g_game) : m_game(g_game) {
+#ifdef BANANA_WINDOWS // temporary
 		HRESULT hr = DirectInput8Create(get_current_module(), DIRECTINPUT_VERSION, IID_IDirectInput8, (void**)& this->m_context, NULL);
 		if (FAILED(hr)) {
 			this->m_context = NULL;
@@ -16,22 +20,28 @@ namespace thebanana {
 		this->m_env = new dinput_callback_env;
 		this->m_env->im = this;
 		this->enum_devices();
+#endif
 	}
 	void input_manager::enum_devices() {
+#ifdef BANANA_WINDOWS
 		this->m_env->time = CURRENT_TIME(double);
 		this->enumerated_devices.clear();
 		this->m_context->EnumDevices(DI8DEVCLASS_GAMECTRL, (LPDIENUMDEVICESCALLBACK)enum_callback, this->m_env, DIEDFL_ATTACHEDONLY);
 		this->m_context->EnumDevices(DI8DEVCLASS_KEYBOARD, (LPDIENUMDEVICESCALLBACK)enum_callback, this->m_env, DIEDFL_ATTACHEDONLY);
 		this->m_context->EnumDevices(DI8DEVCLASS_POINTER, (LPDIENUMDEVICESCALLBACK)enum_callback, this->m_env, DIEDFL_ATTACHEDONLY);
+#endif
 	}
 	std::vector<input_manager::dinput_device> input_manager::get_enumerated_devices() {
 		return this->enumerated_devices;
 	}
 	input_manager::~input_manager() {
+#ifdef BANANA_WINDOWS
 		delete this->m_env;
 		this->m_context->Release();
+#endif
 	}
 	input_manager::device_type input_manager::add_device(size_t index) {
+#ifdef BANANA_WINDOWS
 		device* _device;
 		device_type type = get_device_type(this->enumerated_devices[index]);
 		switch (type) {
@@ -50,21 +60,28 @@ namespace thebanana {
 		if (!_device->init(this->enumerated_devices[index], this->m_context, this)) return device_type::does_not_exist;
 		this->devices.push_back(std::unique_ptr<device>(_device));
 		return type;
+#else
+		return device_type::other;
+#endif
 	}
 	input_manager::device_type input_manager::add_device(const std::string& name) {
+#ifdef BANANA_WINDOWS
 		for (size_t i = 0; i < this->enumerated_devices.size(); i++) {
 			if (std::string(this->enumerated_devices[i].inst.tszProductName) == name) {
 				return this->add_device(i);
 			}
 		}
+#endif
 		return device_type::does_not_exist;
 	}
 	void input_manager::update_devices() {
+#ifdef BANANA_WINDOWS
 		this->devices.remove_if([](const std::unique_ptr<device>& obj) { return !obj->connected(); });
 		if (platform_specific::get_focus() != this->m_game->get_window().m) return;
 		for (auto& d : this->devices) {
 			d->update();
 		}
+#endif
 	}
 	size_t input_manager::get_num_devices() {
 		return this->devices.size();
@@ -76,6 +93,7 @@ namespace thebanana {
 		return d->get_buttons();
 	}
 	input_manager::device_type input_manager::get_device_type(const dinput_device& dev) {
+#ifdef BANANA_WINDOWS
 		unsigned int dt = dev.inst.dwDevType & 0b11111;
 		if (dt == DI8DEVTYPE_GAMEPAD)
 			return device_type::controller;
@@ -84,6 +102,9 @@ namespace thebanana {
 		else if (dt == DI8DEVTYPE_MOUSE)
 			return device_type::mouse;
 		else return device_type::other;
+#else
+		return device_type::other;
+#endif
 	}
 	input_manager::device_type input_manager::get_device_type(size_t index) {
 		auto it = this->devices.begin();
@@ -136,16 +157,20 @@ namespace thebanana {
 		return DIENUM_CONTINUE;
 	}
 	bool input_manager::device::init(const dinput_device& device, IDirectInput8A* context, input_manager* parent) {
+#ifdef BANANA_WINDOWS
 		this->parent = parent;
 		HRESULT hr = context->CreateDevice(device.inst.guidInstance, &this->device, NULL);
 		if (FAILED(hr)) return false;
 		this->device->SetDataFormat(this->get_format());
 		this->device->Acquire();
 		this->device_specific_init();
+#endif
 		return true;
 	}
 	input_manager::device::~device() {
+#ifdef BANANA_WINDOWS
 		this->device->Unacquire();
 		this->device->Release();
+#endif
 	}
 }

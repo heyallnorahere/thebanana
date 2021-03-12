@@ -7,7 +7,11 @@
 #include "main_module.h"
 #ifdef BANANA_MAIN
 ::thebanana::application_layer* create_application_layer();
+#ifdef BANANA_WINDOWS
 int __stdcall WinMain(HINSTANCE instance, HINSTANCE prev, char* cmd_line, int cmd_show) {
+#else
+int main() {
+#endif
 	::thebanana::application_layer* app_layer = create_application_layer();
 	::thebanana::window::setup_window();
 	::thebanana::g_game = new ::thebanana::game(app_layer->window_title(), ::thebanana::get_current_module());

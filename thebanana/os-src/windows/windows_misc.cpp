@@ -7,6 +7,9 @@ namespace thebanana {
 			GetModuleFileNameA(module, buf, 100);
 			return buf;
 		}
+		std::string get_command_line() {
+			return GetCommandLineA();
+		}
 		size_t get_last_os_error() {
 			return (size_t)GetLastError();
 		}
@@ -41,7 +44,7 @@ namespace thebanana {
 			int attribs[] = {
 				WGL_CONTEXT_MAJOR_VERSION_ARB, major_version,
 				WGL_CONTEXT_MINOR_VERSION_ARB, minor_version,
-				WGL_CONTEXT_FLAGS_ARB, GL_CONTEXT_FLAG_DEBUG_BIT,
+				WGL_CONTEXT_FLAGS_ARB, NULL,
 				NULL
 			};
 			if (wglewIsSupported("WGL_ARB_create_context")) {
@@ -68,6 +71,15 @@ namespace thebanana {
 		}
 		void bind(const gl_context_t& context) {
 			wglMakeCurrent(context.dc, context.context);
+		}
+		void init_imgui(window_t window) {
+			ImGui_ImplWin32_Init(window, wglGetCurrentContext());
+		}
+		void newframe_imgui() {
+			ImGui_ImplWin32_NewFrame();
+		}
+		void shutdown_imgui() {
+			ImGui_ImplWin32_Shutdown();
 		}
 	}
 }

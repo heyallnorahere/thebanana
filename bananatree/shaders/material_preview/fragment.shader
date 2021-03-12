@@ -1,4 +1,4 @@
-#version 460 core
+#version 410 core
 out vec4 fragment_color;
 in vec2 uv;
 struct material_t {

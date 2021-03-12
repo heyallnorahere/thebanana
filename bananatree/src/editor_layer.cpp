@@ -55,6 +55,7 @@ namespace bananatree {
 		return this->m_imgui_layer;
 	}
 	void editor_layer::launch_sandbox() {
+#ifdef BANANA_WINDOWS
 		PROCESS_INFORMATION pi = { 0 };
 		STARTUPINFOA si = { 0 };
 		std::string config =
@@ -78,6 +79,7 @@ namespace bananatree {
 		std::string workdir = this->m_config->get<std::string>("sandboxworkdir");
 		thebanana::g_game->debug_print("launching sandbox with command: " + args + " in " + workdir);
 		CreateProcessA(path.c_str(), (char*)args.c_str(), NULL, NULL, false, 0, NULL, workdir.c_str(), &si, &pi);
+#endif
 	}
 	void editor_layer::compile_scripts() {
 		std::string temp_scene_path = util::make_temp_path("bananatree_temp_scene");
@@ -89,6 +91,7 @@ namespace bananatree {
 		if (code_project_path.empty()) {
 			return;
 		}
+#ifdef BANANA_WINDOWS
 		PROCESS_INFORMATION pi = { 0 };
 		STARTUPINFOA si = { 0 };
 		std::string msbuild_path = this->m_config->get<std::string>("msbuild");
@@ -101,6 +104,7 @@ namespace bananatree {
 		std::string command = "msbuild /property:Configuration=" + config + " .";
 		CreateProcessA(msbuild_path.c_str(), (char*)command.c_str(), NULL, NULL, NULL, NULL, NULL, code_project_path.c_str(), &si, &pi);
 		WaitForSingleObject(pi.hProcess, INFINITE);
+#endif
 		this->attach_scripts();
 		this->m_imgui_layer->find_panel<scene_hierarchy_panel>()->set_selected_object(NULL);
 		serializer.deserialize(temp_scene_path);

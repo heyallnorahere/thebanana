@@ -10,6 +10,7 @@ namespace thebanana {
 		return this->current;
 	}
 	void controller::update() {
+#ifdef BANANA_WINDOWS
 		this->is_connected = SUCCEEDED(this->device->Poll());
 		this->device->GetDeviceState(sizeof(DIJOYSTATE), &this->state);
 		for (size_t i = 0; i < this->buttons; i++) {
@@ -29,6 +30,7 @@ namespace thebanana {
 		y = -(dinput_controller_axis(this->state.val.lRy) - 0.5f);
 		if (abs(y) < deadzone) y = 0.f;
 		this->js.right = glm::vec2(x, y);
+#endif
 	}
 	bool controller::connected() {
 		return this->is_connected;
@@ -40,9 +42,14 @@ namespace thebanana {
 		return this->js;
 	}
 	const DIDATAFORMAT* controller::get_format() {
+#ifdef BANANA_WINDOWS
 		return &c_dfDIJoystick;
+#else
+		return NULL;
+#endif
 	}
 	void controller::device_specific_init() {
+#ifdef BANANA_WINDOWS
 		DIDEVCAPS capabilities;
 		capabilities.dwSize = sizeof(DIDEVCAPS);
 		this->device->GetCapabilities(&capabilities);
@@ -55,5 +62,6 @@ namespace thebanana {
 		}
 		ZeroMemory(&this->state, sizeof(DIJOYSTATE));
 		this->parent->get_parent()->debug_print("created controller");
+#endif
 	}
 }

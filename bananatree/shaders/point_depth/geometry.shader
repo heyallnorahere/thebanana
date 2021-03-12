@@ -1,4 +1,4 @@
-#version 460 core
+#version 410 core
 layout(triangles) in;
 layout(triangle_strip, max_vertices = 18) out;
 uniform mat4 shadow_matrices[6];

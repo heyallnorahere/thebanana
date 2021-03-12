@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "opengl_shader.h"
+#include "game.h"
 static std::string read_file(const std::string& path) {
 	std::ifstream file(path);
 	std::stringstream content;
@@ -65,7 +66,12 @@ namespace thebanana {
 				// check the status...
 				int succeeded;
 				glGetProgramiv(this->m_id, GL_LINK_STATUS, &succeeded);
-				assert(succeeded);
+				if (!succeeded) {
+					char buf[256];
+					glGetProgramInfoLog(this->m_id, 256 * sizeof(char), NULL, buf);
+					std::cout << buf << std::endl;
+					assert(false);
+				}
 				// and clean up after yourself!
 				glDeleteShader(vs);
 				glDeleteShader(fs);

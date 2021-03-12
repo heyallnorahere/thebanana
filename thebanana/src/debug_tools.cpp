@@ -6,25 +6,26 @@
 #include "input_manager.h"
 #include "physics/rigidbody.h"
 #include "graphics/framebuffer.h"
+#include "platform_misc.h"
 namespace thebanana {
 	namespace debug {
-		void init_imgui(HWND window) {
+		void init_imgui(platform_specific::window_t window) {
 			IMGUI_CHECKVERSION();
 			ImGui::CreateContext();
 			ImGuiIO& io = ImGui::GetIO(); (void)io;
 			ImGui::StyleColorsDark();
-			ImGui_ImplWin32_Init(window, wglGetCurrentContext());
-			ImGui_ImplOpenGL3_Init("#version 460");
+			platform_specific::init_imgui(window);
+			ImGui_ImplOpenGL3_Init("#version 410");
 		}
 		void clean_up_imgui() {
 			ImGui_ImplOpenGL3_Shutdown();
-			ImGui_ImplWin32_Shutdown();
+			platform_specific::shutdown_imgui();
 			ImGui::DestroyContext();
 		}
 		constexpr ImGuiTreeNodeFlags open_flags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_OpenOnDoubleClick;
 		static int id;
 #define ID() char id_str[256]; sprintf(id_str, "node%d", id++)
-		__declspec(dllexport) gameobject* current_selected_gameobject = NULL;
+		BANANA_API gameobject* current_selected_gameobject = NULL;
 		static void set_current_gameobject(gameobject* obj, gameobject** object_ptr) {
 			if (ImGui::IsItemClicked()) {
 				*object_ptr = obj;
@@ -45,7 +46,7 @@ namespace thebanana {
 		}
 		void tree(gameobject* parent, gameobject** object_ptr) {
 			ID();
-			if (ImGui::TreeNodeEx(id_str, open_flags, "%s, children: %d", parent->get_nickname().c_str(), parent->get_children_count())) {
+			if (ImGui::TreeNodeEx(id_str, open_flags, "%s, children: %lu", parent->get_nickname().c_str(), parent->get_children_count())) {
 				set_current_gameobject(parent, object_ptr);
 				for (size_t i = 0; i < parent->get_children_count(); i++) {
 					gameobject* obj = parent->get_child(i);
@@ -126,9 +127,7 @@ namespace thebanana {
 		void property_editor(game* g_game, std::vector<selection_struct>& ptrs) {
 			ImGui::Begin("the banana: property editor");
 			if (current_selected_gameobject) {
-				char buf[256];
-				_ui64toa(reinterpret_cast<size_t>(current_selected_gameobject), buf, 0x10);
-				ImGui::Text("gameobject address: 0x%s", buf);
+				ImGui::Text("gameobject address: 0x%lX", (uint64_t)current_selected_gameobject);
 				ImGui::InputText("gameobject nickname", &current_selected_gameobject->get_nickname());
 				if (ImGui::Button("toggle transform menu")) {
 					transform_menu_values[current_selected_gameobject] = !(transform_menu_values[current_selected_gameobject]);
@@ -224,7 +223,7 @@ namespace thebanana {
 		}
 		void render_imgui(game* g_game) {
 			ImGui_ImplOpenGL3_NewFrame();
-			ImGui_ImplWin32_NewFrame();
+			platform_specific::newframe_imgui();
 			ImGui::NewFrame();
 			scene_hierarchy(g_game->get_scene());
 			debug_menu(g_game);

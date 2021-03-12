@@ -5,6 +5,12 @@
 #include "panels/model_registry_panel.h"
 #include "panels/project_editor_panel.h"
 #include "panels/material_editor_panel.h"
+namespace thebanana {
+	namespace platform_specific {
+		// a little hacky but hey it works
+		BANANA_API void set_window_title(WINDOW_T_REPLACEMENT window, const std::string& title);
+	}
+}
 namespace YAML {
 	template<> struct convert<glm::vec2> {
 		static Node encode(const glm::vec2& rhs) {
@@ -87,7 +93,7 @@ namespace bananatree {
 	void project::rename(const std::string& name) {
 		this->m_name = name;
 		std::string window_text = this->m_name + " - The Banana Tree";
-		SetWindowTextA((HWND)thebanana::g_game->get_window().m, window_text.c_str());
+		thebanana::platform_specific::set_window_title(thebanana::g_game->get_window().m, window_text);
 	}
 	void project::reset() {
 		if (!this->m_temp_path.empty()) this->m_temp_path.clear();

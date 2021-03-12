@@ -184,6 +184,7 @@ void sandbox_application_layer::gameloop() {
 #ifdef BANANA_DEBUG
 	if (thebanana::g_game->get_input_manager()->get_device_type(0) == thebanana::input_manager::device_type::keyboard) {
 		std::vector<thebanana::input_manager::device::button> btns = thebanana::g_game->get_input_manager()->get_device_buttons(0);
+#ifdef BANANA_WINDOWS
 		if (btns[DIK_EQUALS].down) {
 			thebanana::scene_serializer serializer(thebanana::g_game->get_scene());
 			serializer.serialize("scenes/test.basket");
@@ -192,6 +193,7 @@ void sandbox_application_layer::gameloop() {
 			thebanana::scene_serializer serializer(thebanana::g_game->get_scene());
 			serializer.deserialize("scenes/test.basket");
 		}
+#endif
 	}
 #endif
 }

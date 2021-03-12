@@ -2,6 +2,19 @@
 #include "util.h"
 #include "keys.h"
 #include "banana_api.h"
+#ifndef BANANA_WINDOWS
+#define DIDEVICEINSTANCEA int
+#define IDirectInput8A int
+#define DIDATAFORMAT int
+#define IDirectInputDevice8A int
+#define __stdcall
+struct DIJOYSTATE {
+	unsigned char rgbButtons[100];
+};
+struct DIMOUSESTATE {
+	unsigned char rgbButtons[100];
+};
+#endif
 namespace thebanana {
 	class game;
 	class input_manager {
@@ -68,10 +81,10 @@ namespace thebanana {
 		std::vector<dinput_device> enumerated_devices;
 		std::list<std::unique_ptr<device>> devices;
 	};
-	inline unsigned char input_manager::device::state_t<DIJOYSTATE>::operator[](size_t index) const {
+	template<> inline unsigned char input_manager::device::state_t<DIJOYSTATE>::operator[](size_t index) const {
 		return this->val.rgbButtons[index];
 	}
-	inline unsigned char input_manager::device::state_t<DIMOUSESTATE>::operator[](size_t index) const {
+	template<> inline unsigned char input_manager::device::state_t<DIMOUSESTATE>::operator[](size_t index) const {
 		return this->val.rgbButtons[index];
 	}
 	template<typename T> inline unsigned char input_manager::device::state_t<T>::operator[](size_t index) const {

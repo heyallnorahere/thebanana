@@ -50,8 +50,12 @@ namespace thebanana {
 		ogl_data.major_version = 4;
 #ifdef BANANA_MACOSX
 		ogl_data.minor_version = 1; // the most recent opengl version on mac is 4.1
-#else
+#endif
+#ifdef BANANA_WINDOWS
 		ogl_data.minor_version = 6;
+#endif
+#ifdef BANANA_LINUX
+		ogl_data.minor_version = 3;
 #endif
 		context_data = &ogl_data;
 		graphics::set_default_graphics_api(graphics::graphics_api::opengl);
@@ -160,8 +164,9 @@ namespace thebanana {
 		{
 			if (g_game) {
 				g_game->update_aspect_ratio();
-				glm::vec2 size = g_game->get_window_size();
-				glViewport(0, 0, (int)size.x, (int)size.y);
+				size_t width, height;
+				platform_specific::get_size(g_game->m_window.m, width, height);
+				glViewport(0, 0, (int)width, (int)height);
 			}
 		}
 			break;
@@ -213,7 +218,7 @@ namespace thebanana {
 		else this->show_cursor();
 	}
 	std::string game::get_steam_name() {
-		if (this->m_steam_initialized) return std::string(SteamFriends()->GetPersonaName());
+		if (this->m_steam_initialized) return std::string("todo: implement");
 		else return "test player";
 	}
 	shader_registry* game::get_shader_registry() {
@@ -230,7 +235,7 @@ namespace thebanana {
 		this->m_debug_menus_initialized = true;
 	}
 	void game::init_steam() {
-		SteamAPI_Init();
+		// todo: init
 		this->m_steam_initialized = true;
 	}
 	bool game::should_clip_cursor() {
@@ -259,7 +264,7 @@ namespace thebanana {
 	}
 	std::vector<std::string> game::get_command_line() {
 		std::vector<std::string> arguments;
-		std::string cmdline = GetCommandLineA();
+		std::string cmdline = platform_specific::get_command_line();
 		size_t offset = 0;
 		do {
 			size_t nextpos = cmdline.find("\" ", offset);
@@ -292,6 +297,8 @@ namespace thebanana {
 		this->m_file_log << msg;
 #ifdef BANANA_WINDOWS
 		OutputDebugStringA(msg.c_str());
+#else
+		std::cout << message << std::flush;
 #endif
 	}
 	std::list<rigidbody*>& game::get_rigidbody_list() {
@@ -310,7 +317,7 @@ namespace thebanana {
 		}
 	}
 	void game::shutdown_steam() {
-		SteamAPI_Shutdown();
+		// todo: shutdown
 	}
 	static void int_input(const char* label, int* v) {
 		ImGui::InputInt(label, v);

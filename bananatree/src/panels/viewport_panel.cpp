@@ -1,12 +1,16 @@
 #include <thebanana.h>
 #include "viewport_panel.h"
+#ifdef BANANA_WINDOWS
 #include <gl/GL.h>
+#elif defined BANANA_LINUX
+#include <GL/gl.h>
+#endif
 #include <imgui.h>
 #include <backends/imgui_impl_win32.h>
 #include <backends/imgui_impl_opengl3.h>
 #include <misc/cpp/imgui_stdlib.h>
 #include <ImGuizmo.h>
-#include "..\imgui_layer.h"
+#include "../imgui_layer.h"
 #include "scene_hierarchy_panel.h"
 namespace bananatree {
 	viewport_panel::viewport_panel() {
@@ -25,7 +29,9 @@ namespace bananatree {
 				break;
 			}
 		}
+#ifdef BANANA_WINDOWS
 		assert(this->m_keyboard_index != std::string::npos);
+#endif
 	}
 	void viewport_panel::render() {
 		ImGui::Begin("Viewport", &this->m_open);

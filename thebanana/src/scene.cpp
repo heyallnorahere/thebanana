@@ -20,7 +20,7 @@ namespace thebanana {
 	}
 	scene::~scene() {
 		char buf[256];
-		_ui64toa(this->m_children.size(), buf, 10);
+		sprintf(buf, "%ld", this->m_children.size());
 		this->m_game->debug_print("deleting " + std::string(buf) + (this->m_children.size() == 1 ? " object" : " objects"));
 	}
 	void scene::remove_object(size_t index) {
@@ -31,14 +31,14 @@ namespace thebanana {
 	}
 	void scene::clear() {
 		char buf[256];
-		_ui64toa(this->m_children.size(), buf, 10);
+		sprintf(buf, "%ld", this->m_children.size());
 		this->m_game->debug_print("deleting " + std::string(buf) + (this->m_children.size() == 1 ? " object" : " objects"));
 		this->m_children.clear();
 		this->m_game->get_rigidbody_list().clear();
 		this->set_shadow_defaults();
 	}
 	void scene::update() {
-#ifdef BANANA_DEBUG
+#if defined(BANANA_DEBUG) && defined(BANANA_WINDOWS)
 		{
 			bool toggle_control = false, toggle_cursor = false;
 			if (this->m_game->get_input_manager()->get_device_type(0) == input_manager::device_type::keyboard) {

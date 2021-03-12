@@ -11,14 +11,19 @@ namespace thebanana {
 	}
 	void mouse::update() {
 		if (platform_specific::get_focus() == this->parent->get_parent()->get_window().m && this->parent->get_parent()->should_clip_cursor()) {
+#ifdef BANANA_WINDOWS
 			RECT clip_rect;
 			GetClientRect(this->parent->get_parent()->get_window().m, &clip_rect);
 			ClientToScreen(this->parent->get_parent()->get_window().m, (POINT*)& clip_rect.left);
 			ClientToScreen(this->parent->get_parent()->get_window().m, (POINT*)& clip_rect.right);
 			ClipCursor(&clip_rect);
+#endif
 		} else {
+#ifdef BANANA_WINDOWS
 			ClipCursor(NULL);
+#endif
 		}
+#ifdef BANANA_WINDOWS
 		this->is_connected = SUCCEEDED(this->device->Poll());
 		HRESULT hr = this->device->GetDeviceState(sizeof(DIMOUSESTATE), &this->state);
 		if (FAILED(hr)) __debugbreak();
@@ -31,6 +36,7 @@ namespace thebanana {
 		float x = dinput_mouse_axis(this->state.val.lX);
 		float y = -dinput_mouse_axis(this->state.val.lY);
 		this->pos += glm::vec2(x, y);
+#endif
 	}
 	bool mouse::connected() {
 		return this->is_connected;
@@ -42,9 +48,14 @@ namespace thebanana {
 		return this->pos;
 	}
 	const DIDATAFORMAT* mouse::get_format() {
+#ifdef BANANA_WINDOWS
 		return &c_dfDIMouse;
+#else
+		return NULL;
+#endif
 	}
 	void mouse::device_specific_init() {
+#ifdef BANANA_WINDOWS
 		this->buttons = 4;
 		memset(&this->pos, 0, sizeof(glm::vec2));
 		this->current.resize(this->buttons);
@@ -54,5 +65,6 @@ namespace thebanana {
 		}
 		ZeroMemory(&this->state, sizeof(DIMOUSESTATE));
 		this->parent->get_parent()->debug_print("created mouse");
+#endif
 	}
 }

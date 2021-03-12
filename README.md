@@ -80,6 +80,7 @@ Now, to use your script module, open your project in the Banana Tree and navigat
 Then, click Save. This should build the project and attach it to the editor.
 
 ## TO BUILD
+### PROJECT FILES
 There is a Premake script included in the repository, with executables in the `vendor` folder. To generate projects, run the following commands:
 - Windows: `vendor\premake5 vs2019`
 - MacOS: `No implementation yet`

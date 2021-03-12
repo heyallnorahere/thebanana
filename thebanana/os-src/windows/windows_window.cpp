@@ -53,6 +53,9 @@ namespace thebanana {
 			width = (size_t)abs(r.right - r.left);
 			height = (size_t)abs(r.bottom - r.top);
 		}
+		void set_window_title(window_t window, const std::string& title) {
+			SetWindowTextA(window, title.c_str());
+		}
 		void destroy_window(window_t window) {
 			DestroyWindow(window);
 		}

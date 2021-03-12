@@ -1,4 +1,4 @@
-#version 460 core
+#version 410 core
 layout(location = 0) in vec3 pos;
 layout(location = 3) in ivec4 bone_ids;
 layout(location = 4) in vec4 weights;

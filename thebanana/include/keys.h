@@ -1,5 +1,6 @@
 #pragma once
 namespace thebanana {
+#ifdef BANANA_WINDOWS
 	enum key {
 		key_esc = DIK_ESCAPE,
 		key_f1 = DIK_F1,
@@ -57,6 +58,20 @@ namespace thebanana {
 		key_tab = DIK_TAB,
 		key_alt = DIK_LALT,
 	};
+#else
+	enum key {
+		key_ctrl,
+		key_shift,
+		key_alt,
+		key_n,
+		key_o,
+		key_s,
+		key_w,
+		key_e,
+		key_r,
+		key_t,
+	};
+#endif
 	enum mouse_button {
 		left_click = 0,
 		right_click = 1,

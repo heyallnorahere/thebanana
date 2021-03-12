@@ -16,6 +16,13 @@
 #include "panels/lighting_panel.h"
 #include "editor_layer.h"
 #include "util.h"
+namespace thebanana {
+	namespace platform_specific {
+		BANANA_API extern void init_imgui(platform_specific::window_t);
+		BANANA_API void newframe_imgui();
+		BANANA_API void shutdown_imgui();
+	}
+}
 namespace bananatree {
 	void create_static_mesh(bool* open, thebanana::gameobject* parent) {
 		std::string window_name = "Add static mesh to " + std::string(parent ? "gameobject" : "scene");
@@ -57,8 +64,8 @@ namespace bananatree {
 			style.Colors[ImGuiCol_WindowBg].w = 1.0f;
 		}
 		this->set_theme();
-		ImGui_ImplWin32_Init((HWND)thebanana::g_game->get_window().m, wglGetCurrentContext());
-		ImGui_ImplOpenGL3_Init("#version 460");
+		thebanana::platform_specific::init_imgui(thebanana::g_game->get_window().m);
+		ImGui_ImplOpenGL3_Init("#version 410");
 		this->add_panel<viewport_panel>()->set_imgui_layer(this);
 		this->add_panel<log_panel>();
 		this->add_panel<property_editor_panel>()->set_hierarchy(this->add_panel<scene_hierarchy_panel>());
@@ -72,7 +79,7 @@ namespace bananatree {
 	}
 	imgui_layer::~imgui_layer() {
 		ImGui_ImplOpenGL3_Shutdown();
-		ImGui_ImplWin32_Shutdown();
+		thebanana::platform_specific::shutdown_imgui();
 		ImGui::DestroyContext();
 	}
 	void imgui_layer::update() {
@@ -142,7 +149,7 @@ namespace bananatree {
 	}
 	void imgui_layer::begin() {
 		ImGui_ImplOpenGL3_NewFrame();
-		ImGui_ImplWin32_NewFrame();
+		thebanana::platform_specific::newframe_imgui();
 		ImGui::NewFrame();
 	}
 	void imgui_layer::end() {
@@ -294,7 +301,7 @@ namespace bananatree {
 				}
 				ImGui::EndMenu();
 			}
-#ifdef BANANA_DEBUG
+#if defined BANANA_DEBUG && BANANA_WINDOWS
 			if (ImGui::BeginMenu("Debug")) {
 				if (ImGui::MenuItem("Break")) {
 					__debugbreak();
@@ -329,6 +336,7 @@ namespace bananatree {
 		colors[ImGuiCol_TitleBgCollapsed] = ImVec4(0.15f, 0.1505f, 0.151f, 1.f);
 	}
 	void imgui_layer::parse_inputs() {
+#ifdef BANANA_WINDOWS
 		auto input_manager = thebanana::g_game->get_input_manager();
 		bool control = input_manager->get_key(thebanana::key_ctrl).held;
 		bool shift = input_manager->get_key(thebanana::key_shift).held;
@@ -355,6 +363,7 @@ namespace bananatree {
 		if (input_manager->get_key(thebanana::key_t).down && alt) {
 			this->find_panel<viewport_panel>()->set_gizmo_operation(viewport_panel::gizmo_operation::scale);
 		}
+#endif
 	}
 	void imgui_layer::save_project_as() {
 		std::string path = util::save_dialog("Banana Project (*.tree)\0*.tree");

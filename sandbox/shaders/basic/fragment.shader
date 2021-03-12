@@ -1,4 +1,4 @@
-#version 460 core
+#version 410 core
 out vec4 fragment_color;
 in vec2 uv;
 struct material_t {
@@ -17,7 +17,7 @@ struct light {
 	samplerCube depthmap;
 };
 uniform material_t shader_material;
-uniform light lights[100];
+uniform light lights[16];
 uniform int light_count;
 uniform vec3 viewpos;
 uniform float far_plane;

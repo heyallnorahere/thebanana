@@ -10,6 +10,7 @@ namespace thebanana {
 		return this->current;
 	}
 	void keyboard::update() {
+#ifdef BANANA_WINDOWS
 		this->is_connected = SUCCEEDED(this->device->Poll());
 		this->device->GetDeviceState(sizeof(unsigned char) * 256, &this->state);
 		for (size_t i = 0; i < this->keys; i++) {
@@ -18,6 +19,7 @@ namespace thebanana {
 		calc_pressed(this->current, this->state, this->keys);
 		calc_down(this->current, this->last, this->keys);
 		calc_up(this->current, this->last, this->keys);
+#endif
 	}
 	bool keyboard::connected() {
 		return this->is_connected;
@@ -26,9 +28,14 @@ namespace thebanana {
 		return input_manager::device_type::keyboard;
 	}
 	const DIDATAFORMAT* keyboard::get_format() {
+#ifdef BANANA_WINDOWS
 		return &c_dfDIKeyboard;
+#else
+		return NULL;
+#endif
 	}
 	void keyboard::device_specific_init() {
+#ifdef BANANA_WINDOWS
 		DIDEVCAPS capabilities;
 		ZeroMemory(&capabilities, sizeof(DIDEVCAPS));
 		capabilities.dwSize = sizeof(DIDEVCAPS);
@@ -37,5 +44,6 @@ namespace thebanana {
 		this->current.resize(this->keys);
 		this->last.resize(this->keys);
 		this->parent->get_parent()->debug_print("created keyboard");
+#endif
 	}
 }

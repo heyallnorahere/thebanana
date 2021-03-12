@@ -6,7 +6,11 @@
 #ifdef BANANA_BUILD
 #include "window.h"
 #endif
-#define BANANA_WINDOW_CLASS_NAME "banana_ui"
+#ifdef BANANA_LINUX
+#define WINDOW_T_REPLACEMENT uint32_t
+#else
+#define WINDOW_T_REPLACEMENT size_t
+#endif
 namespace thebanana {
 	class application_layer;
 	class scene;
@@ -28,7 +32,7 @@ namespace thebanana {
 	}
 #ifndef BANANA_BUILD
 	namespace platform_specific {
-		using window_t = size_t;
+		using window_t = WINDOW_T_REPLACEMENT;
 	}
 #endif
 	struct window {

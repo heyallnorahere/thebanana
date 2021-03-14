@@ -1,6 +1,3 @@
-*.sln
-*proj*
-Makefile
 placeholder/
 imgui.ini
 !bananatree/imgui.ini
@@ -22,5 +19,8 @@ packages/
 *.so*
 # mac bs
 .DS_Store
-*.xcworkspace/
 *.log
+*.sln
+*proj*
+Makefile
+*.xcworkspace/

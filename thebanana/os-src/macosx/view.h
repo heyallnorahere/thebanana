@@ -1,4 +1,4 @@
-@interface BananaContentView : NSView<NSTextInputClient>
+@interface BananaContentView : NSOpenGLView
 {
     NSWindow* window;
 }

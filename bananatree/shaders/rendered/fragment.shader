@@ -21,7 +21,7 @@ struct light {
 	sampler2D depthmap_2d;
 };
 uniform material_t shader_material;
-uniform light lights[8];
+uniform light lights[7];
 uniform mat4 light_space_matrices[30];
 uniform int light_count;
 uniform vec3 viewpos;

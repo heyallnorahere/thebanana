@@ -69,6 +69,8 @@ project "docs"
     }
 group ""
 group "dependencies"
+filter "system:macosx"
+    include "vendor/glad"
 project "imgui"
     location "imgui"
     kind "SharedLib"
@@ -88,16 +90,21 @@ project "imgui"
         "%{prj.name}/imgui"
     }
     sysincludedirs {
-        "vendor/glew/include",
         "vendor/freetype2/include"
     }
     syslibdirs {
         "vendor/freetype2/lib/%{cfg.buildcfg}",
-        "vendor/glew/lib/%{cfg.buildcfg}"
     }
     defines {
         "_IMGUI_BUILD",
     }
+    filter "system:not macosx"
+        sysincludedirs {
+            "vendor/glew/include",
+        }
+        syslibdirs {
+            "vendor/glew/lib/%{cfg.buildcfg}"
+        }
     filter "system:linux"
         syslibdirs {
             "/usr/lib/x86_64-linux-gnu"
@@ -119,14 +126,14 @@ project "imgui"
             "%{prj.name}/imgui/backends/imgui_impl_x11.*"
         }
     filter "system:macosx"
-        syslibdirs {
-            "/usr/local/opt/glew/lib"
-        }
         links {
             "OpenGL.framework",
-            "GLEW",
             "Foundation.framework",
-            "Cocoa.framework"
+            "Cocoa.framework",
+            "glad"
+        }
+        sysincludedirs {
+            "vendor/glad/include"
         }
         files {
             "%{prj.name}/imgui/backends/imgui_impl_osx.*"
@@ -196,7 +203,6 @@ project "thebanana"
         "third-party/json/single-include",
         "imgui/imgui",
         "glm",
-        "vendor/glew/include",
     }
     defines {
         "BANANA_BUILD",
@@ -208,6 +214,9 @@ project "thebanana"
     filter "system:not macosx"
         pchheader "pch.h"
         pchsource "%{prj.name}/src/pch.cpp"
+        sysincludedirs {
+            "vendor/glew/include",
+        }
     filter "options:renderer=opengl"
         defines {
             "RENDERER_OPENGL"
@@ -226,19 +235,21 @@ project "thebanana"
             "X11-xcb"
         }
     filter "system:macosx"
-        syslibdirs {
-            "/usr/local/opt/glew/lib",
+        libdirs {
             "/usr/local/opt/assimp/lib"
         }
         links {
             "OpenGL.framework",
-            "GLEW",
             "Foundation.framework",
             "Cocoa.framework",
-            "assimp"
+            "assimp",
+            "glad"
         }
         files {
             "%{prj.name}/os-src/%{cfg.system}/**.mm"
+        }
+        sysincludedirs {
+            "vendor/glad/include"
         }
     filter "system:windows"
         syslibdirs {
@@ -306,6 +317,11 @@ project "bananatree"
     filter "system:macosx"
         links {
             "OpenGL.framework",
+        }
+    filter { "system:macosx", "action:xcode*" }
+        postbuildcommands {
+            '{COPY} "fonts" "%{cfg.targetdir}"',
+            '{COPY} "shaders" "%{cfg.targetdir}"',
         }
     filter "system:windows"
         links {

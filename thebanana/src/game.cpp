@@ -19,6 +19,11 @@
 extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 #endif
 namespace thebanana {
+#ifdef BANANA_MACOSX
+	namespace platform_specific {
+		extern void* load_opengl_function(const char* name);
+	}
+#endif
 	void opengl_debug_function(unsigned int source, unsigned int type, unsigned int id, unsigned int severity, int length, const char* message, const void* user_param) {
 		if (id == 131169 || id == 131185 || id == 131218 || id == 131204) return;
 		game* g = (game*)(void*)user_param;
@@ -64,6 +69,9 @@ namespace thebanana {
 		graphics::set_default_graphics_api(graphics::graphics_api::none);
 #endif
 		this->m_context = graphics::context::create(this->m_window, context_data);
+#ifdef BANANA_MACOSX
+		gladLoadGLLoader(platform_specific::load_opengl_function);
+#else
 		unsigned int glew_error = glewInit();
 		if (glew_error != GLEW_OK) {
 			this->debug_print("got glew error: " + std::string((const char*)glewGetErrorString(glew_error)));
@@ -72,6 +80,7 @@ namespace thebanana {
 #endif
 			this->destroy();
 		}
+#endif
 		this->m_scene = new scene(this);
 		this->m_input_manager = new input_manager(this);
 		this->m_shader_registry = new shader_registry(this);
@@ -107,7 +116,7 @@ namespace thebanana {
 		this->m_file_log << "[start of " + filename + ".log]\n";
 		char sizebuf[256];
 		sprintf(sizebuf, "width: %d, height: %d", width, height);
-		this->debug_print("successfully created graphics context:\n\tbackend: " + graphics::get_backend_version() + "\n\t" + sizebuf + "\n");
+		this->debug_print("successfully created graphics context:\n\tbackend: " + graphics::get_backend_version() + "\n\t" + sizebuf);
 	}
 	game::~game() {
 		glDisable(GL_DEBUG_OUTPUT);
@@ -301,7 +310,7 @@ namespace thebanana {
 #ifdef BANANA_WINDOWS
 		OutputDebugStringA(msg.c_str());
 #else
-		std::cout << message << std::flush;
+		std::cout << msg << std::flush;
 #endif
 	}
 	std::list<rigidbody*>& game::get_rigidbody_list() {

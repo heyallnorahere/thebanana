@@ -4,10 +4,16 @@
 #import <backends/imgui_impl_osx.h>
 #include "macosx_internal.h"
 #import "view.h"
+#include <crt_externs.h>
 namespace thebanana {
     namespace platform_specific {
         std::string get_module_name(module_t module) {
-            return "thebanana"; // no way to check from inside the program, it seems
+            char** executable_name = _NSGetProgname();
+            if (executable_name) {
+                return *executable_name;
+            } else {
+                return "thebanana";
+            }
         }
         std::string get_command_line() {
             return "";
@@ -52,6 +58,7 @@ namespace thebanana {
             BananaContentView* view = (BananaContentView*)[_window contentView];
             context.view = view;
             context.context = [[NSOpenGLContext alloc] initWithFormat:format shareContext:nil];
+            [(NSOpenGLContext*)context.context setView:view];
             assert(context.context != NULL);
             [format release];
             bind(context);

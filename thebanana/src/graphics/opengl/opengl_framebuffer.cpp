@@ -33,7 +33,7 @@ namespace thebanana {
 			}
 			void opengl_framebuffer::setup() {
 				this->m_attachments.clear();
-				glCreateFramebuffers(1, &this->m_id);
+				glGenFramebuffers(1, &this->m_id);
 				glBindFramebuffer(GL_FRAMEBUFFER, this->m_id);
 				if (this->m_specification.buffers & specification::color) {
 					attachment_settings settings = this->m_specification.color_settings;
@@ -44,7 +44,7 @@ namespace thebanana {
 					unsigned int min_filter = (settings.min_filter ? settings.min_filter : GL_LINEAR);
 					unsigned int mag_filter = (settings.mag_filter ? settings.mag_filter : GL_LINEAR);
 					unsigned int color;
-					glCreateTextures(type, 1, &color);
+					glGenTextures(1, &color);
 					glBindTexture(type, color);
 					if (settings.texture_proc) settings.texture_proc(&this->m_specification);
 					else glTexImage2D(type, NULL, internal_format, this->m_specification.width, this->m_specification.height, NULL, format, GL_UNSIGNED_BYTE, NULL);
@@ -66,10 +66,10 @@ namespace thebanana {
 					unsigned int wrap_s = (settings.wrap_s ? settings.wrap_s : GL_CLAMP_TO_BORDER);
 					unsigned int wrap_t = (settings.wrap_t ? settings.wrap_t : GL_CLAMP_TO_BORDER);
 					unsigned int depth;
-					glCreateTextures(type, 1, &depth);
+					glGenTextures(1, &depth);
 					glBindTexture(type, depth);
 					if (settings.texture_proc) settings.texture_proc(&this->m_specification);
-					else glTexStorage2D(type, 1, internal_format, this->m_specification.width, this->m_specification.height);
+					else glTexImage2D(type, NULL, internal_format, this->m_specification.width, this->m_specification.height, NULL, format, GL_FLOAT, NULL);
 					glTexParameteri(type, GL_TEXTURE_MIN_FILTER, min_filter);
 					glTexParameteri(type, GL_TEXTURE_MAG_FILTER, mag_filter);
 					glTexParameteri(type, GL_TEXTURE_WRAP_S, wrap_s);

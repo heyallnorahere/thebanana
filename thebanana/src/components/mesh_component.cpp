@@ -60,7 +60,7 @@ namespace thebanana {
 					current_shader->uniform_vec3(get_uniform_name("ambient"), light.ambient);
 					current_shader->uniform_float(get_uniform_name("ambient_strength"), light.ambient_strength);
 					current_shader->uniform_float(get_uniform_name("cutoff"), light.cutoff);
-					unsigned int texture = (unsigned int)light.shadowmap;
+					unsigned int texture = (unsigned int)(size_t)light.shadowmap;
 					bool is_2d = graphics::util::is_2d(texture);
 					glActiveTexture(GL_TEXTURE12 + i);
 					glBindTexture(graphics::util::get_target(texture), texture);

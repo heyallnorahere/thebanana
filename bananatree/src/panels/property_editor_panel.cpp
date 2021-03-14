@@ -290,7 +290,7 @@ namespace bananatree {
 					if (typeid(c).hash_code() == typeid(thebanana::light_component).hash_code()) {
 						thebanana::light_component& lc = (thebanana::light_component&)c;
 						thebanana::graphics::framebuffer* db = lc.get_depthbuffer();
-						int texture = (int)db->get_attachments()[db->get_attachment_map().depth_index].value;
+						int texture = (int)(size_t)db->get_attachments()[db->get_attachment_map().depth_index].value;
 						if (thebanana::graphics::util::is_2d(texture)) {
 							if (ImGui::Button("View depth map")) {
 								this->m_texture_viewer->set_texture(texture);

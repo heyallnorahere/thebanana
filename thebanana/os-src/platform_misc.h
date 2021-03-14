@@ -4,6 +4,8 @@
 #include "windows/windows_defs.h"
 #elif defined BANANA_LINUX
 #include "linux/linux_defs.h"
+#elif defined BANANA_MACOSX
+#include "macosx/macosx_defs.h"
 #else
 #error no other platforms supported
 #endif

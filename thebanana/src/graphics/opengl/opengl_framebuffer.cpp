@@ -87,11 +87,11 @@ namespace thebanana {
 			}
 			void opengl_framebuffer::clean_up() {
 				if (this->m_specification.buffers & specification::color) {
-					unsigned int color = (unsigned int)this->m_attachments[this->m_attachment_map.color_index].value;
+					unsigned int color = (unsigned int)(size_t)this->m_attachments[this->m_attachment_map.color_index].value;
 					glDeleteTextures(1, &color);
 				}
 				if (this->m_specification.buffers & specification::depth) {
-					unsigned int depth = (unsigned int)this->m_attachments[this->m_attachment_map.depth_index].value;
+					unsigned int depth = (unsigned int)(size_t)this->m_attachments[this->m_attachment_map.depth_index].value;
 					glDeleteTextures(1, &depth);
 				}
 				glDeleteFramebuffers(1, &this->m_id);

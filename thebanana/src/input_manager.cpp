@@ -164,13 +164,9 @@ namespace thebanana {
 		this->device->SetDataFormat(this->get_format());
 		this->device->Acquire();
 		this->device_specific_init();
-#endif
 		return true;
-	}
-	input_manager::device::~device() {
-#ifdef BANANA_WINDOWS
-		this->device->Unacquire();
-		this->device->Release();
+#else
+		return true;
 #endif
 	}
 }

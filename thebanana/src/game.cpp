@@ -107,7 +107,7 @@ namespace thebanana {
 		this->m_file_log << "[start of " + filename + ".log]\n";
 		char sizebuf[256];
 		sprintf(sizebuf, "width: %d, height: %d", width, height);
-		this->debug_print("successfully created graphics context:\n	backend: " + graphics::get_backend_version() + "\n	" + sizebuf);
+		this->debug_print("successfully created graphics context:\n\tbackend: " + graphics::get_backend_version() + "\n\t" + sizebuf + "\n");
 	}
 	game::~game() {
 		glDisable(GL_DEBUG_OUTPUT);
@@ -121,6 +121,9 @@ namespace thebanana {
 		delete this->m_input_manager;
 		delete this->m_module;
 		delete this->m_script_registry;
+#ifdef BANANA_MACOSX
+        delete (platform_specific::_window_t*)this->m_window.m;
+#endif
 	}
 	void game::destroy() {
 		platform_specific::destroy_window(this->m_window.m);
@@ -358,17 +361,17 @@ namespace thebanana {
 		ImGui::ColorEdit3(label, &value->get_vector().x);
 	}
 	void game::fill_imgui_input_pointers() {
-		this->m_imgui_input_functions[typeid(int).hash_code()] = int_input;
-		this->m_imgui_input_functions[typeid(bool).hash_code()] = bool_input;
-		this->m_imgui_input_functions[typeid(float).hash_code()] = float_input;
-		this->m_imgui_input_functions[typeid(double).hash_code()] = double_input;
-		this->m_imgui_input_functions[typeid(std::string).hash_code()] = text_input;
-		this->m_imgui_input_functions[typeid(glm::vec2).hash_code()] = float2_input;
-		this->m_imgui_input_functions[typeid(glm::vec3).hash_code()] = float3_input;
-		this->m_imgui_input_functions[typeid(glm::vec4).hash_code()] = float4_input;
-		this->m_imgui_input_functions[typeid(property_classes::dropdown).hash_code()] = dropdown_input;
-		this->m_imgui_input_functions[typeid(property_classes::read_only_text).hash_code()] = readonly_input;
-		this->m_imgui_input_functions[typeid(property_classes::color).hash_code()] = color_input;
+		this->m_imgui_input_functions[typeid(int).hash_code()] = (void*)int_input;
+		this->m_imgui_input_functions[typeid(bool).hash_code()] = (void*)bool_input;
+		this->m_imgui_input_functions[typeid(float).hash_code()] = (void*)float_input;
+		this->m_imgui_input_functions[typeid(double).hash_code()] = (void*)double_input;
+		this->m_imgui_input_functions[typeid(std::string).hash_code()] = (void*)text_input;
+		this->m_imgui_input_functions[typeid(glm::vec2).hash_code()] = (void*)float2_input;
+		this->m_imgui_input_functions[typeid(glm::vec3).hash_code()] = (void*)float3_input;
+		this->m_imgui_input_functions[typeid(glm::vec4).hash_code()] = (void*)float4_input;
+		this->m_imgui_input_functions[typeid(property_classes::dropdown).hash_code()] = (void*)dropdown_input;
+		this->m_imgui_input_functions[typeid(property_classes::read_only_text).hash_code()] = (void*)readonly_input;
+		this->m_imgui_input_functions[typeid(property_classes::color).hash_code()] = (void*)color_input;
 	}
 	void game::update_aspect_ratio() {
 		glm::vec2 size = this->get_window_size();

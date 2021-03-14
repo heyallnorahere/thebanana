@@ -3,9 +3,10 @@
 #include "camera.h"
 const float speed = 0.01f;
 player_behavior::player_behavior(thebanana::gameobject* object, thebanana::native_script_component* nsc) : script(object, nsc) {
-	this->add_property(new thebanana::component::property<float>(speed, "speed"));
-	this->add_property(new thebanana::component::property<thebanana::gameobject*>(NULL, "camera"));
-	this->add_property(new thebanana::component::property<glm::vec2>(glm::vec2(0.f, -90.f), "last_camera_angle"));
+	thebanana::component::property_factory factory;
+	this->add_property(factory.create<float>(speed, "speed"));
+	this->add_property(factory.create<thebanana::gameobject*>(NULL, "camera"));
+	this->add_property(factory.create<glm::vec2>(glm::vec2(0.f, -90.f), "last_camera_angle"));
 	this->m_walking = false;
 }
 void player_behavior::initialize() {

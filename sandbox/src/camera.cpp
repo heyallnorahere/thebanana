@@ -2,10 +2,11 @@
 #include "camera.h"
 camera_behavior::camera_behavior(thebanana::gameobject* object, thebanana::native_script_component* nsc) : script(object, nsc) {
 	this->parent->get_nickname() = "camera";
-	this->add_property(new thebanana::component::property<float>(2.f, "distance"));
-	this->add_property(new thebanana::component::property<thebanana::gameobject*>(NULL, "player"));
-	this->add_property(new thebanana::component::property<glm::vec3>(glm::vec3(0.f, 0.f, 1.f), "direction"));
-	this->add_property(new thebanana::component::property<glm::vec2>(glm::vec2(0.f, -90.f), "angle"));
+	thebanana::component::property_factory factory;
+	this->add_property(factory.create<float>(2.f, "distance"));
+	this->add_property(factory.create<thebanana::gameobject*>(NULL, "player"));
+	this->add_property(factory.create<glm::vec3>(glm::vec3(0.f, 0.f, 1.f), "direction"));
+	this->add_property(factory.create<glm::vec2>(glm::vec2(0.f, -90.f), "angle"));
 #ifdef BANANA_DEBUG
 	this->remove_component<thebanana::debug_component>();
 #endif

@@ -146,4 +146,22 @@ namespace thebanana {
 	glm::vec3& component::property_base::color::get_vector() {
 		return this->m_vector;
 	}
+	template<typename T> static component::property<T>* create_property(const T& value, const std::string& name) {
+		return new component::property<T>(value, name);
+	}
+	component::property_factory::property_factory() {
+#define ADD_PROPERTY_TYPE(type) this->m_function_map[typeid(type).hash_code()] = (void*)create_property<type>
+		ADD_PROPERTY_TYPE(int);
+		ADD_PROPERTY_TYPE(bool);
+		ADD_PROPERTY_TYPE(float);
+		ADD_PROPERTY_TYPE(double);
+		ADD_PROPERTY_TYPE(glm::vec2);
+		ADD_PROPERTY_TYPE(glm::vec3);
+		ADD_PROPERTY_TYPE(glm::vec4);
+		ADD_PROPERTY_TYPE(property_base::read_only_text);
+		ADD_PROPERTY_TYPE(property_base::dropdown);
+		ADD_PROPERTY_TYPE(property_base::color);
+		ADD_PROPERTY_TYPE(gameobject*);
+		ADD_PROPERTY_TYPE(material*);		
+	}
 }

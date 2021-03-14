@@ -4,6 +4,8 @@
 #include <gl/GL.h>
 #elif defined BANANA_LINUX
 #include <GL/gl.h>
+#elif defined BANANA_MACOSX
+#include <OpenGL/gl.h>
 #endif
 #include <imgui.h>
 #include <backends/imgui_impl_win32.h>

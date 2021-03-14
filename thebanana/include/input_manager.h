@@ -46,7 +46,12 @@ namespace thebanana {
 				unsigned char operator[](size_t index) const;
 			};
 			BANANA_API bool init(const dinput_device& device, IDirectInput8A* context, input_manager* parent);
-			BANANA_API virtual ~device();
+			virtual ~device() {
+#ifdef BANANA_WINDOWS
+				this->device->Unacquire();
+				this->device->Release();
+#endif
+			}
 			virtual std::vector<button> get_buttons() = 0;
 			virtual void update() = 0;
 			virtual bool connected() = 0;

@@ -15,7 +15,8 @@ workspace "thebanana"
         }
     filter "system:macosx"
         defines {
-            "BANANA_MACOSX"
+            "BANANA_MACOSX",
+            "_IMGUI_BUILD_DYLIB"
         }
     filter "system:linux"
         defines {
@@ -117,6 +118,19 @@ project "imgui"
         files {
             "%{prj.name}/imgui/backends/imgui_impl_x11.*"
         }
+    filter "system:macosx"
+        syslibdirs {
+            "/usr/local/opt/glew/lib"
+        }
+        links {
+            "OpenGL.framework",
+            "GLEW",
+            "Foundation.framework",
+            "Cocoa.framework"
+        }
+        files {
+            "%{prj.name}/imgui/backends/imgui_impl_osx.*"
+        }
     filter "system:windows"
         links {
             "opengl32.lib"
@@ -160,8 +174,6 @@ project "thebanana"
     staticruntime "off"
     targetdir ("bin/" .. outputdir .. "/%{prj.name}")
     objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
-    pchheader "pch.h"
-    pchsource "%{prj.name}/src/pch.cpp"
     files {
         "%{prj.name}/src/**.h",
         "%{prj.name}/src/**.cpp",
@@ -193,6 +205,9 @@ project "thebanana"
         "imgui",
         "yaml"
     }
+    filter "system:not macosx"
+        pchheader "pch.h"
+        pchsource "%{prj.name}/src/pch.cpp"
     filter "options:renderer=opengl"
         defines {
             "RENDERER_OPENGL"
@@ -209,6 +224,21 @@ project "thebanana"
             "assimp",
             "xcb",
             "X11-xcb"
+        }
+    filter "system:macosx"
+        syslibdirs {
+            "/usr/local/opt/glew/lib",
+            "/usr/local/opt/assimp/lib"
+        }
+        links {
+            "OpenGL.framework",
+            "GLEW",
+            "Foundation.framework",
+            "Cocoa.framework",
+            "assimp"
+        }
+        files {
+            "%{prj.name}/os-src/%{cfg.system}/**.mm"
         }
     filter "system:windows"
         syslibdirs {
@@ -272,6 +302,10 @@ project "bananatree"
             "GLEW",
             "GLU",
             "GL",
+        }
+    filter "system:macosx"
+        links {
+            "OpenGL.framework",
         }
     filter "system:windows"
         links {

@@ -81,6 +81,13 @@ namespace thebanana {
 		private:
 			T* value;
 		};
+		class property_factory {
+		public:
+			BANANA_API property_factory();
+			template<typename T> property<T>* create(const T& value, const std::string& name);
+		private:
+			std::map<size_t, void*> m_function_map;
+		};
 		BANANA_API component(gameobject* obj);
 		// runs either when the parent gameobject is added to a scene/another gameobject or when the component is added to a gameobject; do not add other components during this stage, do it in constructor instead
 		BANANA_API virtual void initialize();
@@ -278,5 +285,10 @@ namespace thebanana {
 			}
 		}
 		return result;
+	}
+	template<typename T> inline component::property<T>* component::property_factory::create(const T& value, const std::string& name) {
+		void* address = this->m_function_map[typeid(T).hash_code()];
+		auto function = (property<T>*(*)(const T&, const std::string&))address;
+		return function(value, name);
 	}
 }

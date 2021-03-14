@@ -20,3 +20,6 @@ packages/
 *.make
 .vscode/
 *.so*
+# mac bs
+.DS_Store
+*.xcworkspace/

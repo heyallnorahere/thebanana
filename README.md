@@ -83,5 +83,5 @@ Then, click Save. This should build the project and attach it to the editor.
 ### PROJECT FILES
 There is a Premake script included in the repository, with executables in the `vendor` folder. To generate projects, run the following commands:
 - Windows: `vendor\premake5 vs2019`
-- MacOS: `No implementation yet`
-- Linux: `No implementation yet`
+- MacOS: `vendor/premake5-macosx gmake` OR `vendor/premake5-macosx xcode4`
+- Linux: `vendor/premake5-linux gmake`

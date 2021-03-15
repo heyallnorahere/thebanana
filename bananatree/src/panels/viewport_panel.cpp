@@ -59,7 +59,12 @@ namespace bananatree {
 			glm::mat4 projection = camera.calculate_projection();
 			glm::mat4 view = camera.calculate_view();
 			glm::mat4 transform = selected_object->get_absolute_transform();
-			bool snap = thebanana::g_game->get_input_manager()->get_key(thebanana::key_ctrl).held;
+			bool snap =
+#ifdef BANANA_WINDOWS // temp
+				thebanana::g_game->get_input_manager()->get_key(thebanana::key_ctrl).held;
+#else
+				false;
+#endif
 			float snap_value = 0.5f;
 			if (this->m_gizmo_operation == gizmo_operation::rotate) {
 				snap_value = 45.f;

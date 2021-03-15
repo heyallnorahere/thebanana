@@ -186,13 +186,13 @@ project "thebanana"
         "%{prj.name}/src/**.cpp",
         "%{prj.name}/include/**.h",
         "%{prj.name}/os-src/*.h",
-        "%{prj.name}/os-src/%{cfg.system}/**.h",
-        "%{prj.name}/os-src/%{cfg.system}/**.cpp",
+        "%{prj.name}/platform/%{cfg.system}/**.h",
+        "%{prj.name}/platform/%{cfg.system}/**.cpp",
     }
     includedirs {
         "%{prj.name}/src",
         "%{prj.name}/include",
-        "%{prj.name}/os-src"
+        "%{prj.name}/platform"
     }
     sysincludedirs {
         "vendor/assimp/include",
@@ -246,7 +246,7 @@ project "thebanana"
             "glad"
         }
         files {
-            "%{prj.name}/os-src/%{cfg.system}/**.mm"
+            "%{prj.name}/platform/%{cfg.system}/**.mm"
         }
         sysincludedirs {
             "vendor/glad/include"
@@ -289,6 +289,11 @@ project "bananatree"
     files {
         "%{prj.name}/src/**.h",
         "%{prj.name}/src/**.cpp",
+        "%{prj.name}/platform/%{cfg.system}/**.cpp",
+        "%{prj.name}/platform/%{cfg.system}/**.h",
+    }
+    includedirs {
+        "%{prj.name}/src"
     }
     sysincludedirs {
         "thebanana/include",
@@ -317,6 +322,11 @@ project "bananatree"
     filter "system:macosx"
         links {
             "OpenGL.framework",
+            "Foundation.framework",
+            "Cocoa.framework",
+        }
+        files {
+            "%{prj.name}/platform/%{cfg.system}/**.mm",
         }
     filter { "system:macosx", "action:xcode*" }
         postbuildcommands {

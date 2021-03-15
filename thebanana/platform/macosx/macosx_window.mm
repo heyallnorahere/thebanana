@@ -8,6 +8,7 @@
 #import "delegate.h"
 #import "view.h"
 #include "platform_misc.h"
+#include <memory>
 void create_menu_bar();
 @implementation BananaAppDelegate
 - (void)applicationWillFinishLaunching:(NSNotification *)notification {
@@ -109,6 +110,7 @@ void create_menu_bar() {
 }
 namespace thebanana {
     namespace platform_specific {
+        BANANA_API bool omit_app_layer_update = false;
         CFBundleRef openglframework;
         void* load_opengl_function(const char* name) {
             CFStringRef symbol_name = CFStringCreateWithCString(kCFAllocatorDefault, name, kCFStringEncodingASCII);
@@ -140,7 +142,10 @@ namespace thebanana {
                         [NSApp sendEvent:event];
                    }
                 }
-                app_layer->gameloop();
+                if (!omit_app_layer_update) app_layer->gameloop();
+                else {
+                    break;
+                }
             }
             return 0;
         }
@@ -164,7 +169,7 @@ namespace thebanana {
                 return (size_t)window_struct;
             }
         }
-        NSWindow* get_window(window_t window) {
+        BANANA_API NSWindow* get_window(window_t window) {
             _window_t* window_struct = (_window_t*)window;
             return window_struct->data->window;
         }

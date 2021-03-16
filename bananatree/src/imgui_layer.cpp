@@ -18,6 +18,7 @@
 #include "util.h"
 #define STB_IMAGE_WRITE_IMPLEMENTATION
 #include <stb_image_write.h>
+#include <GL/glew.h>
 namespace thebanana {
 	namespace platform_specific {
 		BANANA_API extern void init_imgui(platform_specific::window_t);
@@ -25,6 +26,7 @@ namespace thebanana {
 		BANANA_API void shutdown_imgui();
 	}
 }
+unsigned int vao, vbo;
 namespace bananatree {
 	void create_static_mesh(bool* open, thebanana::gameobject* parent) {
 		std::string window_name = "Add static mesh to " + std::string(parent ? "gameobject" : "scene");
@@ -78,8 +80,25 @@ namespace bananatree {
 		this->add_panel<material_editor_panel>()->set_project(this->m_editor_layer->get_project());
 		this->find_panel<material_editor_panel>()->set_texture_viewer(this->find_panel<texture_viewer_panel>());
 		this->add_panel<lighting_panel>();
+		thebanana::g_game->get_shader_registry()->register_shader("test", "shaders/test/vertex.shader", "shaders/test/fragment.shader");
+		struct vertex {
+			glm::vec3 pos, color;
+		};
+		std::vector<vertex> vertices = {
+			{ glm::vec3(-0.5f, -0.5f, 0.f), glm::vec3(1.f, 0.f, 0.f) },
+			{ glm::vec3(0.5f, -0.5f, 0.f), glm::vec3(0.f, 1.f, 0.f) },
+			{ glm::vec3(0.f, 0.5f, 0.f), glm::vec3(0.f, 0.f, 1.f) },
+		};
+		glGenVertexArrays(1, &vao);
+		glBindVertexArray(vao);
+		glGenBuffers(1, &vbo);
+		glBindBuffer(GL_ARRAY_BUFFER, vbo);
+		glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(vertex), vertices.data(), GL_STATIC_DRAW);
+		glBindVertexArray(NULL);
 	}
 	imgui_layer::~imgui_layer() {
+		glDeleteBuffers(1, &vbo);
+		glDeleteVertexArrays(1, &vao);
 		ImGui_ImplOpenGL3_Shutdown();
 		thebanana::platform_specific::shutdown_imgui();
 		ImGui::DestroyContext();
@@ -98,6 +117,12 @@ namespace bananatree {
 		}
 		ImGui::End();
 		this->end();
+		thebanana::graphics::shader* shader = thebanana::g_game->get_shader_registry()->get_shader("test");
+		shader->bind();
+		glBindVertexArray(vao);
+		glDrawArrays(GL_TRIANGLES, 0, 3);
+		glBindVertexArray(NULL);
+		shader->unbind();
 	}
 	panel* imgui_layer::get_panel(size_t index) {
 		auto& p = this->m_panels[index];

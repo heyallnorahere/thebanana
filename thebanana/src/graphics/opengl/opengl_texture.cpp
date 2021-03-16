@@ -32,8 +32,9 @@ namespace thebanana {
 			void opengl_texture::get_data(void* buffer) {
 				int format, internal_format;
 				this->get_format(format, internal_format);
-				size_t size = (size_t)this->m_width * (size_t)this->m_height * (size_t)this->m_channels * sizeof(unsigned char);
-				glGetTextureImage(this->id, NULL, format, GL_UNSIGNED_BYTE, size, buffer);
+                this->bind(0);
+                glGetTexImage(GL_TEXTURE_2D, NULL, format, GL_UNSIGNED_BYTE, buffer);
+                this->unbind();
 			}
 			opengl_texture::~opengl_texture() {
 				this->destroy_texture();

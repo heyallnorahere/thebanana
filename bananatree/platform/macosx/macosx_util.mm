@@ -24,7 +24,7 @@ namespace bananatree {
                         break;
                     }
                 }
-                if (str.length() == 0) {
+                if (str.length() == 0 || filter[offset + 1] == '\0') {
                     offset = std::string::npos;
                 } else {
                     temp.push_back(str);
@@ -35,11 +35,24 @@ namespace bananatree {
             std::vector<NSString*> strings;
             for (size_t i = 1; i < (temp.size() - (temp.size() % 2)); i += 2) {
                 std::string filetype = temp[i];
-                size_t pos = filetype.find('.');
-                if (pos != std::string::npos) {
-                    filetype = filetype.substr(pos + 1);
+                std::vector<std::string> subtypes;
+                std::string extension;
+                for (char c : filetype) {
+                    if (c == ',') {
+                        subtypes.push_back(extension);
+                        extension.clear();
+                    } else {
+                        extension.append(std::string(&c, 1));
+                    }
                 }
-                strings.push_back(@(filetype.c_str()));
+                subtypes.push_back(extension);
+                for (std::string type : subtypes) {
+                    size_t pos = type.find('.');
+                    if (pos != std::string::npos) {
+                        type = type.substr(pos + 1);
+                    }
+                    strings.push_back(@(type.c_str()));
+                }
             }
             NSArray<NSString*>* array = [NSArray arrayWithObjects:strings.data() count:strings.size()];
             return array;

@@ -36,7 +36,6 @@ namespace bananatree {
 		ImGui::SameLine();
 		if (ImGui::Button("New")) {
 			unsigned long long uuid = thebanana::g_game->get_material_registry()->new_material();
-			this->refresh();
 			for (size_t i = 0; i < thebanana::g_game->get_material_registry()->get_count(); i++) {
 				thebanana::material* mat = thebanana::g_game->get_material_registry()->get(i);
 				if (mat->get_uuid() == uuid) {
@@ -45,6 +44,7 @@ namespace bananatree {
 			}
 			thebanana::material* mat = thebanana::g_game->get_material_registry()->get((size_t)this->m_index - 1);
 			this->add_material_desc(mat);
+			this->refresh();
 		}
 		size_t index = (size_t)this->m_index;
 		if (index > 0) {

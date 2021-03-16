@@ -22,6 +22,7 @@ namespace bananatree {
 		gizmo_operation get_gizmo_operation();
 		void set_transformation_mode(transformation_mode mode);
 		transformation_mode get_transformation_mode();
+        thebanana::graphics::framebuffer* get_framebuffer();
 	private:
 		std::unique_ptr<thebanana::graphics::framebuffer> m_framebuffer;
 		imgui_layer* m_imgui_layer;

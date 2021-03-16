@@ -24,3 +24,4 @@ packages/
 *proj*
 Makefile
 *.xcworkspace/
+debugoutput/

@@ -109,4 +109,7 @@ namespace bananatree {
 	viewport_panel::transformation_mode viewport_panel::get_transformation_mode() {
 		return this->m_transformation_mode;
 	}
+    thebanana::graphics::framebuffer* viewport_panel::get_framebuffer() {
+        return this->m_framebuffer.get();
+    }
 }

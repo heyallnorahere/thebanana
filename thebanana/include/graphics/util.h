@@ -8,6 +8,8 @@ namespace thebanana {
 			BANANA_API unsigned int get_bound_framebuffer();
 			BANANA_API unsigned int get_current_shader();
 			BANANA_API void unbind_all_textures(const std::vector<unsigned int>& types);
+            BANANA_API void get_texture_data(void* texid, void* buffer);
+            BANANA_API void get_texture_size(void* texid, size_t& width, size_t& height);
 		}
 	}
 }

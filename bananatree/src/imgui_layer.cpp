@@ -16,6 +16,8 @@
 #include "panels/lighting_panel.h"
 #include "editor_layer.h"
 #include "util.h"
+#define STB_IMAGE_WRITE_IMPLEMENTATION
+#include <stb_image_write.h>
 namespace thebanana {
 	namespace platform_specific {
 		BANANA_API extern void init_imgui(platform_specific::window_t);
@@ -301,17 +303,30 @@ namespace bananatree {
 				}
 				ImGui::EndMenu();
 			}
-#if defined BANANA_DEBUG && BANANA_WINDOWS
+#if defined BANANA_DEBUG
 			if (ImGui::BeginMenu("Debug")) {
+#ifdef BANANA_WINDOWS
 				if (ImGui::MenuItem("Break")) {
 					__debugbreak();
 				}
+#endif
+                if (ImGui::MenuItem("Dump viewport framebuffer")) {
+                    viewport_panel* panel = this->find_panel<viewport_panel>();
+                    thebanana::graphics::framebuffer* fb = panel->get_framebuffer();
+                    void* attachment = fb->get_attachments()[fb->get_attachment_map().color_index].value;
+                    size_t width, height;
+                    thebanana::graphics::util::get_texture_size(attachment, width, height);
+                    void* buffer = malloc(sizeof(unsigned char) * width * height * 4 /* RGBA */);
+                    thebanana::graphics::util::get_texture_data(attachment, buffer);
+                    stbi_write_png("debugoutput/framebuffer_dump.png", width, height, 4, buffer, width * 4);
+                    free(buffer);
+                }
 				ImGui::EndMenu();
 			}
 #endif
 			ImGui::EndMenuBar();
 			if (this->m_static_mesh_creation_window_open) create_static_mesh(&this->m_static_mesh_creation_window_open, NULL);
-		}
+        }
 	}
 	//https://github.com/TheCherno/Hazel/blob/master/Hazel/src/Hazel/ImGui/ImGuiLayer.cpp
 	void imgui_layer::set_theme() {

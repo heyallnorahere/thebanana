@@ -133,6 +133,7 @@ namespace thebanana {
         }
         int window_loop(application_layer* app_layer) {
             while (running) {
+                if (!omit_app_layer_update) app_layer->gameloop();
                 @autoreleasepool {
                     for (;;) {
                         NSEvent* event = [NSApp nextEventMatchingMask:NSEventMaskAny untilDate:[NSDate distantPast] inMode:NSDefaultRunLoopMode dequeue:YES];
@@ -142,8 +143,7 @@ namespace thebanana {
                         [NSApp sendEvent:event];
                    }
                 }
-                if (!omit_app_layer_update) app_layer->gameloop();
-                else {
+                if (omit_app_layer_update) {
                     break;
                 }
             }

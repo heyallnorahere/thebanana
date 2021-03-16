@@ -301,7 +301,8 @@ project "bananatree"
         "vendor/glew/include",
         "imgui/imgui",
         "yaml/yaml-cpp/include",
-        "imguizmo/ImGuizmo"
+        "imguizmo/ImGuizmo",
+        "third-party/stb"
     }
     links {
         "thebanana",

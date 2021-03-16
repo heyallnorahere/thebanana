@@ -31,7 +31,6 @@ namespace thebanana {
 #ifdef BANANA_WINDOWS
 		__debugbreak();
 #endif
-		g->destroy();
 	}
 	game* g_game = NULL;
 	game::game(const std::string& title, script_module::module_t module) : m_executable(module) {

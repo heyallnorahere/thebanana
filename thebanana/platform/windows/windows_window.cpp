@@ -35,32 +35,32 @@ namespace thebanana {
 				DWORD error = GetLastError();
 				__debugbreak();
 			}
-			return CreateWindowA(CLASS_NAME, title.c_str(), WS_VISIBLE | WS_SYSMENU | WS_MAXIMIZEBOX, CW_USEDEFAULT, CW_USEDEFAULT, width, height, NULL, NULL, NULL, g);
+			return (window_t)CreateWindowA(CLASS_NAME, title.c_str(), WS_VISIBLE | WS_SYSMENU | WS_MAXIMIZEBOX, CW_USEDEFAULT, CW_USEDEFAULT, width, height, NULL, NULL, NULL, g);
 		}
 		size_t get_width(window_t window) {
 			RECT r;
-			GetClientRect(window, &r);
+			GetClientRect((HWND)window, &r);
 			return (size_t)abs(r.right - r.left);
 		}
 		size_t get_height(window_t window) {
 			RECT r;
-			GetClientRect(window, &r);
+			GetClientRect((HWND)window, &r);
 			return (size_t)abs(r.bottom - r.top);
 		}
 		void get_size(window_t window, size_t& width, size_t& height) {
 			RECT r;
-			GetClientRect(window, &r);
+			GetClientRect((HWND)window, &r);
 			width = (size_t)abs(r.right - r.left);
 			height = (size_t)abs(r.bottom - r.top);
 		}
 		void set_window_title(window_t window, const std::string& title) {
-			SetWindowTextA(window, title.c_str());
+			SetWindowTextA((HWND)window, title.c_str());
 		}
 		void destroy_window(window_t window) {
-			DestroyWindow(window);
+			DestroyWindow((HWND)window);
 		}
 		window_t get_focus() {
-			return GetFocus();
+			return (window_t)GetFocus();
 		}
 	}
 }

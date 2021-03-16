@@ -15,7 +15,7 @@ namespace thebanana {
 		}
 		gl_context_t make_opengl_context(window_t window, int major_version, int minor_version) {
 			gl_context_t result;
-			result.dc = GetDC(window);
+			result.dc = GetDC((HWND)window);
 			result.context = NULL;
 			PIXELFORMATDESCRIPTOR pfd;
 			ZeroMemory(&pfd, sizeof(PIXELFORMATDESCRIPTOR));
@@ -73,7 +73,7 @@ namespace thebanana {
 			wglMakeCurrent(context.dc, context.context);
 		}
 		void init_imgui(window_t window) {
-			ImGui_ImplWin32_Init(window, wglGetCurrentContext());
+			ImGui_ImplWin32_Init((HWND)window, wglGetCurrentContext());
 		}
 		void newframe_imgui() {
 			ImGui_ImplWin32_NewFrame();

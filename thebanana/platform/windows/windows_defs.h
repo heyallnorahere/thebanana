@@ -1,7 +1,7 @@
 #pragma once
 namespace thebanana {
 	namespace platform_specific {
-		using window_t = HWND;
+		using window_t = size_t;
 		using cursor_t = HCURSOR;
 		using module_t = HMODULE;
 		struct gl_context_t {

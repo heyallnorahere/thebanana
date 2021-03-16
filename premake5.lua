@@ -56,6 +56,8 @@ end
 group "misc"
 project "configfiles"
     kind "Utility"
+    targetdir ("bin/" .. outputdir .. "/%{prj.name}")
+    objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
     files {
         "premake5.lua",
         "README.md",
@@ -64,13 +66,14 @@ project "configfiles"
 project "docs"
     location "docs"
     kind "Utility"
+    targetdir ("bin/" .. outputdir .. "/%{prj.name}")
+    objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
     files {
         "%{prj.name}/**.md",
     }
 group ""
 group "dependencies"
-filter "system:macosx"
-    include "vendor/glad"
+include "vendor/glad"
 project "imgui"
     location "imgui"
     kind "SharedLib"
@@ -185,7 +188,7 @@ project "thebanana"
         "%{prj.name}/src/**.h",
         "%{prj.name}/src/**.cpp",
         "%{prj.name}/include/**.h",
-        "%{prj.name}/os-src/*.h",
+        "%{prj.name}/platform/*.h",
         "%{prj.name}/platform/%{cfg.system}/**.h",
         "%{prj.name}/platform/%{cfg.system}/**.cpp",
     }

@@ -13,9 +13,9 @@ namespace thebanana {
 		if (platform_specific::get_focus() == this->parent->get_parent()->get_window().m && this->parent->get_parent()->should_clip_cursor()) {
 #ifdef BANANA_WINDOWS
 			RECT clip_rect;
-			GetClientRect(this->parent->get_parent()->get_window().m, &clip_rect);
-			ClientToScreen(this->parent->get_parent()->get_window().m, (POINT*)& clip_rect.left);
-			ClientToScreen(this->parent->get_parent()->get_window().m, (POINT*)& clip_rect.right);
+			GetClientRect((HWND)this->parent->get_parent()->get_window().m, &clip_rect);
+			ClientToScreen((HWND)this->parent->get_parent()->get_window().m, (POINT*)& clip_rect.left);
+			ClientToScreen((HWND)this->parent->get_parent()->get_window().m, (POINT*)& clip_rect.right);
 			ClipCursor(&clip_rect);
 #endif
 		} else {

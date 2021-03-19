@@ -66,7 +66,7 @@ class sandbox_application_layer : public thebanana::application_layer {
 public:
 	virtual void register_scripts() override;
 	virtual void init() override;
-	virtual void gameloop() override;
+	virtual void render() override;
 	virtual std::string window_title() override;
 private:
 };
@@ -177,8 +177,7 @@ void sandbox_application_layer::init() {
 	p->get_transform().scale(100.f, 1.f, 100.f);
 	p->add_tag("ground");
 }
-void sandbox_application_layer::gameloop() {
-	thebanana::g_game->update();
+void sandbox_application_layer::render() {
 	thebanana::g_game->render();
 	thebanana::g_game->swap_buffers();
 #ifdef BANANA_DEBUG

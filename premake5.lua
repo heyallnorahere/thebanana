@@ -126,7 +126,7 @@ project "imgui"
             "xcb-xfixes"
         }
         files {
-            "%{prj.name}/imgui/backends/imgui_impl_x11.*"
+            "%{prj.name}/extensions/backends/imgui_impl_x11.*"
         }
     filter "system:macosx"
         links {
@@ -205,6 +205,7 @@ project "thebanana"
         "third-party/stb",
         "third-party/json/single-include",
         "imgui/imgui",
+        "imgui/extensions",
         "glm",
     }
     defines {

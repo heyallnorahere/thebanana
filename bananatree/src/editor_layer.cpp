@@ -33,11 +33,13 @@ namespace bananatree {
 		path = this->m_config->get<std::string>("startupscene");
 		if (!path.empty()) {
 			this->m_imgui_layer->open_scene(path);
-		}		
+		}
 	}
-	void editor_layer::gameloop() {
+	void editor_layer::update() {
 		thebanana::g_game->update();
 		this->m_imgui_layer->update();
+	}
+	void editor_layer::render() {
 		thebanana::g_game->clear_screen();
 		this->m_imgui_layer->render();
 		thebanana::g_game->swap_buffers();

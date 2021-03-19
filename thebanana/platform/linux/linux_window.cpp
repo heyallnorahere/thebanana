@@ -74,6 +74,7 @@ namespace thebanana {
                         }
                         break;
                     case XCB_EXPOSE:
+                        app_layer->render();
                         xcb_flush(connection);
                         break;
                     case XCB_CLIENT_MESSAGE:
@@ -88,7 +89,7 @@ namespace thebanana {
                         break;
                     }
                 }
-                app_layer->gameloop();
+                app_layer->update();
             }
             return 0;
         }

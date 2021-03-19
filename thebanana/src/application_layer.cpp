@@ -5,7 +5,13 @@ namespace thebanana {
 	void application_layer::register_scripts() { }
 	void application_layer::init() { }
 	void application_layer::gameloop() {
+		this->update();
+		this->render();
+	}
+	void application_layer::update() {
 		g_game->update();
+	}
+	void application_layer::render() {
 		g_game->render();
 		g_game->swap_buffers();
 	}

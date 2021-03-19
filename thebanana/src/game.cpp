@@ -50,17 +50,7 @@ namespace thebanana {
 		this->update_aspect_ratio();
 		void* context_data;
 #ifdef RENDERER_OPENGL
-		graphics::context::opengl_data ogl_data;
-		ogl_data.major_version = 4;
-#ifdef BANANA_MACOSX
-		ogl_data.minor_version = 1; // the most recent opengl version on mac is 4.1
-#endif
-#ifdef BANANA_WINDOWS
-		ogl_data.minor_version = 6;
-#endif
-#ifdef BANANA_LINUX
-		ogl_data.minor_version = 3;
-#endif
+		graphics::context::opengl_data ogl_data = { 4, 1 };
 		context_data = &ogl_data;
 		graphics::set_default_graphics_api(graphics::graphics_api::opengl);
 #else

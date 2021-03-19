@@ -6,7 +6,8 @@ namespace bananatree {
 	class editor_layer : public thebanana::application_layer {
 	public:
 		virtual void init() override;
-		virtual void gameloop() override;
+		virtual void update() override;
+		virtual void render() override;
 		virtual void clean_up() override;
 		virtual std::string window_title() override;
 		std::shared_ptr<project> get_project();

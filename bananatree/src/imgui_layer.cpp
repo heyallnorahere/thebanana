@@ -228,7 +228,7 @@ namespace bananatree {
 					this->save_project_as();
 				}
 				if (ImGui::MenuItem("Open Project...")) {
-					std::string path = util::open_dialog("Banana Project (*.tree)\0*.tree");
+					std::string path = util::open_dialog("Banana Project (*.tree)\0*.tree\0");
 					if (!path.empty()) {
 						thebanana::g_game->get_model_registry()->reload(std::vector<thebanana::model_registry::model_descriptor>());
 						this->m_editor_layer->get_project()->load(path);
@@ -381,7 +381,7 @@ namespace bananatree {
 #endif
 	}
 	void imgui_layer::save_project_as() {
-		std::string path = util::save_dialog("Banana Project (*.tree)\0*.tree");
+		std::string path = util::save_dialog("Banana Project (*.tree)\0*.tree\0");
 		if (!path.empty()) {
 			this->m_editor_layer->get_project()->save(path);
 		}

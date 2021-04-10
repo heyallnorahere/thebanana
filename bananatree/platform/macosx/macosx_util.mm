@@ -15,7 +15,7 @@ namespace bananatree {
         static NSArray<NSString*>* parse_filter(const char* filter) {
             size_t pos = 0;
             std::vector<std::string> temp;
-            auto find = [&]() -> size_t {
+            auto find = [](size_t& pos, const char* filter, std::vector<std::string>& temp) -> size_t {
                 size_t offset = pos + 1;
                 std::string str = std::string(filter + offset);
                 for (size_t i = offset; ; i++) {
@@ -26,12 +26,11 @@ namespace bananatree {
                 }
                 if (str.length() == 0 || filter[offset + 1] == '\0') {
                     offset = std::string::npos;
-                } else {
-                    temp.push_back(str);
                 }
+                temp.push_back(str);
                 return offset;
             };
-            while ((pos = find()) != std::string::npos) { /* wait*/ }
+            while ((pos = find(pos, filter, temp)) != std::string::npos) { /* wait*/ }
             std::vector<NSString*> strings;
             for (size_t i = 1; i < (temp.size() - (temp.size() % 2)); i += 2) {
                 std::string filetype = temp[i];

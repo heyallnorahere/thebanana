@@ -15,7 +15,33 @@
 #include "../imgui_layer.h"
 #include "scene_hierarchy_panel.h"
 namespace bananatree {
+	thebanana::graphics::vertex_array_object* vao;
+	thebanana::graphics::vertex_buffer* vbo;
 	viewport_panel::viewport_panel() {
+		struct vert {
+			glm::vec3 pos, color;
+		};
+		std::vector<vert> vertices = {
+			{ glm::vec3(-0.5f, -0.5f, 0.f), glm::vec3(1.f, 0.f, 0.f) },
+			{ glm::vec3( 0.5f, -0.5f, 0.f), glm::vec3(0.f, 1.f, 0.f) },
+			{ glm::vec3( 0.0f,  0.5f, 0.f), glm::vec3(0.f, 0.f, 1.f) },
+		};
+		vao = thebanana::graphics::vertex_array_object::create();
+		vao->bind();
+		thebanana::graphics::vertex_buffer::data vbo_data;
+		vbo_data.data = vertices.data();
+		vbo_data.size = vertices.size() * sizeof(vert);
+		vbo_data.vertex_count = vertices.size();
+		thebanana::graphics::vertex_buffer::data::vertex_attrib vbo_attrib;
+		vbo_attrib.size = sizeof(glm::vec3);
+		vbo_attrib.type = thebanana::graphics::vertex_buffer::data::vertex_attrib::type_float;
+		vbo_attrib.normalize = false;
+		vbo_attrib.elements = 3;
+		vbo_data.attributes.push_back(vbo_attrib);
+		vbo_data.attributes.push_back(vbo_attrib);
+		vbo = thebanana::graphics::vertex_buffer::create(vbo_data);
+		vao->unbind();
+		thebanana::g_game->get_shader_registry()->register_shader("test", "shaders/test/vertex.shader", "shaders/test/fragment.shader");
 		this->m_gizmo_operation = gizmo_operation::translate;
 		this->m_transformation_mode = transformation_mode::local;
 		thebanana::graphics::framebuffer::specification spec;
@@ -35,6 +61,10 @@ namespace bananatree {
 		assert(this->m_keyboard_index != std::string::npos);
 #endif
 	}
+	viewport_panel::~viewport_panel() {
+		delete vbo;
+		delete vao;
+	}
 	void viewport_panel::render() {
 		ImGui::Begin("Viewport", &this->m_open);
 		ImVec2 content_region = ImGui::GetContentRegionAvail();
@@ -45,6 +75,11 @@ namespace bananatree {
 			thebanana::g_game->set_custom_window_size(glm::vec2(content_region.x, content_region.y));
 		}
 		thebanana::g_game->render();
+		//^ test
+		thebanana::g_game->get_shader_registry()->get_shader("test")->bind();
+		vao->bind();
+		vbo->draw();
+		vao->unbind();
 		this->m_framebuffer->unbind();
 		auto att = this->m_framebuffer->get_attachments();
 		void* texture = att[this->m_framebuffer->get_attachment_map().color_index].value;

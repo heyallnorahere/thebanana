@@ -16,13 +16,14 @@
 #include "panels/lighting_panel.h"
 #include "editor_layer.h"
 #include "util.h"
+#include <glad/glad.h>
 #define STB_IMAGE_WRITE_IMPLEMENTATION
 #include <stb_image_write.h>
 namespace thebanana {
 	namespace platform_specific {
 		BANANA_API extern void init_imgui(platform_specific::window_t);
-		BANANA_API void newframe_imgui();
-		BANANA_API void shutdown_imgui();
+		BANANA_API extern void newframe_imgui();
+		BANANA_API extern void shutdown_imgui();
 	}
 }
 namespace bananatree {

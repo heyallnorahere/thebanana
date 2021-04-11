@@ -62,9 +62,14 @@ namespace thebanana {
                 return result;
             }
             if (glxewIsSupported("GLX_ARB_create_context")) {
+                int flags = 0;
+#ifdef BANANA_DEBUG
+                flags |= GLX_CONTEXT_DEBUG_BIT_ARB;
+#endif
                 int attribs[] = {
                     GLX_CONTEXT_MAJOR_VERSION_ARB, major_version,
                     GLX_CONTEXT_MINOR_VERSION_ARB, minor_version,
+                    GLX_CONTEXT_FLAGS_ARB, flags,
                     None
                 };
                 result.context = glXCreateContextAttribsARB(display, fb_config, NULL, true, attribs);

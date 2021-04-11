@@ -15,6 +15,7 @@ namespace bananatree {
 			world = 1,
 		};
 		viewport_panel();
+		~viewport_panel();
 		virtual void render() override;
 		virtual std::string get_menu_text() override;
 		void set_imgui_layer(imgui_layer* il);

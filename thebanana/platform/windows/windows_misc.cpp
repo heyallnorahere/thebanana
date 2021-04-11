@@ -41,10 +41,14 @@ namespace thebanana {
 			if (glew_error != GLEW_OK) {
 				return result;
 			}
+			int flags = 0;
+#ifdef BANANA_DEBUG
+			flags |= WGL_CONTEXT_DEBUG_BIT_ARB;
+#endif
 			int attribs[] = {
 				WGL_CONTEXT_MAJOR_VERSION_ARB, major_version,
 				WGL_CONTEXT_MINOR_VERSION_ARB, minor_version,
-				WGL_CONTEXT_FLAGS_ARB, NULL,
+				WGL_CONTEXT_FLAGS_ARB, flags,
 				NULL
 			};
 			if (wglewIsSupported("WGL_ARB_create_context")) {

@@ -1,3 +1,15 @@
+newoption {
+    trigger = "renderer",
+    value = "API",
+    description = "The 3D rendering API to use",
+    allowed = {
+        { "opengl", "OpenGL" },
+        { "none", "None" }
+    }
+}
+if not _OPTIONS["renderer"] then
+    _OPTIONS["renderer"] = "opengl"
+end
 workspace "thebanana"
 	architecture "x64"
 	configurations {
@@ -16,7 +28,8 @@ workspace "thebanana"
     filter "system:macosx"
         defines {
             "BANANA_MACOSX",
-            "_IMGUI_BUILD_DYLIB"
+            "_IMGUI_BUILD_DYLIB",
+            "GL_SILENCE_DEPRECATION"
         }
     filter "system:linux"
         defines {
@@ -40,19 +53,11 @@ workspace "thebanana"
             "BANANA_RELEASE"
         }
         optimize "on"
+    filter "options:renderer=opengl"
+        defines {
+            "RENDERER_OPENGL"
+        }
 outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
-newoption {
-    trigger = "renderer",
-    value = "API",
-    description = "The 3D rendering API to use",
-    allowed = {
-        { "opengl", "OpenGL" },
-        { "none", "None" }
-    }
-}
-if not _OPTIONS["renderer"] then
-    _OPTIONS["renderer"] = "opengl"
-end
 group "misc"
 project "configfiles"
     kind "Utility"
@@ -221,10 +226,6 @@ project "thebanana"
         sysincludedirs {
             "vendor/glew/include",
         }
-    filter "options:renderer=opengl"
-        defines {
-            "RENDERER_OPENGL"
-        }
     filter "system:linux"
         syslibdirs {
             "/usr/lib/x86_64-linux-gnu"
@@ -332,6 +333,9 @@ project "bananatree"
         }
         files {
             "%{prj.name}/platform/%{cfg.system}/**.mm",
+        }
+        sysincludedirs {
+            "vendor/glad/include"
         }
     filter { "system:macosx", "action:xcode*" }
         postbuildcommands {

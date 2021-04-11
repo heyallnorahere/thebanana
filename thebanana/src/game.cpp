@@ -8,6 +8,8 @@
 #include "graphics/opengl/opengl_framebuffer.h"
 #include "graphics/opengl/opengl_quad.h"
 #include "graphics/context.h"
+#include "graphics/vertex_array_object.h"
+#include "graphics/vertex_buffer.h"
 #include "shader_registry.h"
 #include "script_registry.h"
 #include "util.h"
@@ -33,6 +35,8 @@ namespace thebanana {
 #endif
 	}
 	game* g_game = NULL;
+	graphics::vertex_array_object* vao;
+	graphics::vertex_buffer* vbo;
 	game::game(const std::string& title, script_module::module_t module) : m_executable(module) {
 		srand(CURRENT_TIME(unsigned int));
 		this->m_has_custom_size = false;

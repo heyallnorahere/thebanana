@@ -37,3 +37,4 @@
 #include <typeinfo>
 #include <thread>
 #include <limits>
+#include <type_traits>

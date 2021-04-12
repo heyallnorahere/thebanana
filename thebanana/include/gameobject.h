@@ -77,12 +77,14 @@ namespace thebanana {
 		return obj;
 	}
 	template<typename _Ty> inline _Ty& gameobject::add_component() {
+		static_assert(std::is_base_of<component, _Ty>::value, "type is not a child type of component");
 		_Ty* c = new _Ty(this);
 		if (this->initialized) this->init_component(c);
 		this->m_components.push_back(std::unique_ptr<component>(c));
 		return *c;
 	}
 	template<typename _Ty> inline _Ty& gameobject::get_component(size_t index) {
+		static_assert(std::is_base_of<component, _Ty>::value, "type is not a child type of component");
 		if (typeid(_Ty).hash_code() == typeid(component).hash_code()) {
 			auto it = this->m_components.begin();
 			std::advance(it, index % this->m_components.size());

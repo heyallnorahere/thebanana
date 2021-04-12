@@ -1,5 +1,6 @@
 #pragma once
 #include "banana_api.h"
+#include "graphics_types.h"
 namespace thebanana {
 	namespace graphics {
 		namespace util {

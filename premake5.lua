@@ -23,7 +23,8 @@ workspace "thebanana"
     filter "system:windows"
         defines {
             "BANANA_WINDOWS",
-            "_IMGUI_BUILD_DLL"
+            "_IMGUI_BUILD_DLL",
+            "_CRT_SECURE_NO_WARNINGS"
         }
     filter "system:macosx"
         defines {

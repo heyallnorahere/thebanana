@@ -16,7 +16,6 @@
 #include "panels/lighting_panel.h"
 #include "editor_layer.h"
 #include "util.h"
-#include <glad/glad.h>
 #define STB_IMAGE_WRITE_IMPLEMENTATION
 #include <stb_image_write.h>
 namespace thebanana {

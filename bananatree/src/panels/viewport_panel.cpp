@@ -75,11 +75,13 @@ namespace bananatree {
 			thebanana::g_game->set_custom_window_size(glm::vec2(content_region.x, content_region.y));
 		}
 		thebanana::g_game->render();
+		/*
 		//^ test
 		thebanana::g_game->get_shader_registry()->get_shader("test")->bind();
 		vao->bind();
 		vbo->draw();
 		vao->unbind();
+		*/
 		this->m_framebuffer->unbind();
 		auto att = this->m_framebuffer->get_attachments();
 		void* texture = att[this->m_framebuffer->get_attachment_map().color_index].value;

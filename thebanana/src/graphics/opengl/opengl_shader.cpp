@@ -34,7 +34,10 @@ namespace thebanana {
 				this->m_id = (size_t)id;
 			}
 			opengl_shader::~opengl_shader() {
-				glDeleteProgram(this->m_id);
+				if (this->m_original) {
+					g_game->debug_print("deleting shader: " + std::to_string(this->m_id));
+					glDeleteProgram(this->m_id);
+				}
 			}
 			void opengl_shader::bind() {
 				glUseProgram(this->m_id);

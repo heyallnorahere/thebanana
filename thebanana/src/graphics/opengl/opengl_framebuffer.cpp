@@ -59,7 +59,7 @@ namespace thebanana {
 					attachment_settings settings = this->m_specification.depth_settings;
 					unsigned int type = (settings.type ? settings.type : GL_TEXTURE_2D);
 					unsigned int internal_format = (settings.internal_format ? settings.internal_format : GL_DEPTH24_STENCIL8);
-					unsigned int format = (settings.format ? settings.format : GL_DEPTH24_STENCIL8);
+					unsigned int format = (settings.format ? settings.format : GL_DEPTH_STENCIL);
 					unsigned int attachment_type = (settings.attachment_type ? settings.attachment_type : GL_DEPTH_STENCIL_ATTACHMENT);
 					unsigned int min_filter = (settings.min_filter ? settings.min_filter : GL_NEAREST);
 					unsigned int mag_filter = (settings.mag_filter ? settings.mag_filter : GL_NEAREST);
@@ -69,7 +69,7 @@ namespace thebanana {
 					glGenTextures(1, &depth);
 					glBindTexture(type, depth);
 					if (settings.texture_proc) settings.texture_proc(&this->m_specification);
-					else glTexImage2D(type, NULL, internal_format, this->m_specification.width, this->m_specification.height, NULL, format, GL_FLOAT, NULL);
+					else glTexImage2D(type, NULL, internal_format, this->m_specification.width, this->m_specification.height, NULL, format, GL_UNSIGNED_INT_24_8, NULL);
 					glTexParameteri(type, GL_TEXTURE_MIN_FILTER, min_filter);
 					glTexParameteri(type, GL_TEXTURE_MAG_FILTER, mag_filter);
 					glTexParameteri(type, GL_TEXTURE_WRAP_S, wrap_s);

@@ -158,7 +158,7 @@ namespace thebanana {
 		for (auto& c : this->m_children) {
 			c->render();
 		}
-		graphics::util::unbind_all_textures({ GL_TEXTURE_2D, GL_TEXTURE_CUBE_MAP });
+		graphics::util::unbind_all_textures({ graphics::TEXTURE_2D, graphics::TEXTURE_CUBE_MAP });
 	}
 	void scene::generate_shadows() {
 		this->m_generating_shadows = true;

@@ -3,11 +3,10 @@
 namespace thebanana {
 	namespace graphics {
 		namespace opengl {
-			unsigned int get_target(unsigned int texture);
-			bool is_2d(unsigned int texture);
+			graphics_enum get_target(unsigned int texture);
 			unsigned int get_bound_framebuffer();
 			unsigned int get_current_shader();
-			void unbind_all_textures(const std::vector<unsigned int>& types);
+			void unbind_all_textures(const std::vector<graphics_enum>& types);
 			void get_texture_data(void* texid, void* buffer);
 			void get_texture_size(void* texid, size_t& width, size_t& height);
 			graphics_enum to_enum(unsigned int e);

@@ -63,7 +63,7 @@ namespace thebanana {
 					unsigned int texture = (unsigned int)(size_t)light.shadowmap;
 					bool is_2d = graphics::util::is_2d(texture);
 					glActiveTexture(GL_TEXTURE12 + i);
-					glBindTexture(graphics::util::get_target(texture), texture);
+					glBindTexture(graphics::util::from_enum(graphics::util::get_target(texture)), texture);
 					current_shader->uniform_int(get_uniform_name(is_2d ? "depthmap_2d" : "depthmap_cube"), 12 + i);
 					current_shader->uniform_mat4("light_space_matrices[" + std::to_string(i) + "]", light.light_space_matrix);
 				}

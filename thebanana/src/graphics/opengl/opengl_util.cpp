@@ -3,16 +3,13 @@
 namespace thebanana {
 	namespace graphics {
 		namespace opengl {
-			unsigned int get_target(unsigned int texture) {
+			graphics_enum get_target(unsigned int texture) {
 				int target;
 				glActiveTexture(GL_TEXTURE0);
 				glBindTexture(GL_TEXTURE_2D, texture);
 				glGetTexParameteriv(GL_TEXTURE_2D, GL_TEXTURE_TARGET, &target);
 				glBindTexture(GL_TEXTURE_2D, NULL);
-				return (unsigned int)target;
-			}
-			bool is_2d(unsigned int texture) {
-				return get_target(texture) == GL_TEXTURE_2D;
+				return to_enum((unsigned int)target);
 			}
 			unsigned int get_bound_framebuffer() {
 				int bound_framebuffer;
@@ -24,13 +21,14 @@ namespace thebanana {
 				glGetIntegerv(GL_CURRENT_PROGRAM, &current_shader);
 				return (unsigned int)current_shader;
 			}
-			void unbind_all_textures(const std::vector<unsigned int>& types) {
+			void unbind_all_textures(const std::vector<graphics_enum>& types) {
 				for (unsigned int texture_index = 0; texture_index < 30; texture_index++) {
 					glActiveTexture(GL_TEXTURE0 + texture_index);
 					for (auto type : types) {
-						glBindTexture(type, NULL);
+						glBindTexture(from_enum(type), NULL);
 					}
 				}
+				glActiveTexture(GL_TEXTURE0);
 			}
 			void get_texture_data(void* texid, void* buffer) {
 				int format;
@@ -110,6 +108,9 @@ namespace thebanana {
 				case GL_CLAMP_TO_BORDER:
 					return CLAMP_TO_BORDER;
 					break;
+				case GL_CLAMP_TO_EDGE:
+					return CLAMP_TO_EDGE;
+					break;
 				case GL_TEXTURE_CUBE_MAP_POSITIVE_X:
 					return TEXTURE_CUBE_MAP_POSITIVE_X;
 					break;
@@ -176,6 +177,9 @@ namespace thebanana {
 					break;
 				case CLAMP_TO_BORDER:
 					return GL_CLAMP_TO_BORDER;
+					break;
+				case CLAMP_TO_EDGE:
+					return GL_CLAMP_TO_EDGE;
 					break;
 				case TEXTURE_CUBE_MAP_POSITIVE_X:
 					return GL_TEXTURE_CUBE_MAP_POSITIVE_X;

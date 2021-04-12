@@ -26,6 +26,7 @@ namespace thebanana {
 			INT,
 			BYTE,
 			CLAMP_TO_BORDER,
+			CLAMP_TO_EDGE,
 			TEXTURE_CUBE_MAP_POSITIVE_X,
 			NONE
 		};

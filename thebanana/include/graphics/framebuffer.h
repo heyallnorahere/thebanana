@@ -7,15 +7,15 @@ namespace thebanana {
 		public:
 			struct specification;
 			struct attachment_settings {
-				unsigned int type = 0;
-				unsigned int internal_format = 0;
-				unsigned int format = 0;
-				unsigned int attachment_type = 0;
-				unsigned int min_filter = 0;
-				unsigned int mag_filter = 0;
-				unsigned int wrap_s = 0;
-				unsigned int wrap_t = 0;
-				unsigned int wrap_r = 0;
+				graphics_enum type = NONE;
+				graphics_enum internal_format = NONE;
+				graphics_enum format = NONE;
+				graphics_enum attachment_type = NONE;
+				graphics_enum min_filter = NONE;
+				graphics_enum mag_filter = NONE;
+				graphics_enum wrap_s = NONE;
+				graphics_enum wrap_t = NONE;
+				graphics_enum wrap_r = NONE;
 				void(*texture_proc)(specification* spec) = NULL;
 				void(*framebuffer_attachment_proc)(unsigned int id, specification* spec) = NULL;
 			};

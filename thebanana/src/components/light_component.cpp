@@ -46,11 +46,11 @@ namespace thebanana {
 			graphics::framebuffer::attachment_settings& depth_settings = spec.depth_settings;
 			switch (this->m_type) {
 			case light_type::point:
-				depth_settings.type = GL_TEXTURE_CUBE_MAP;
-				depth_settings.wrap_r = GL_CLAMP_TO_EDGE;
-				depth_settings.attachment_type = GL_DEPTH_ATTACHMENT;
-				depth_settings.internal_format = GL_DEPTH_COMPONENT;
-				depth_settings.format = GL_DEPTH_COMPONENT;
+				depth_settings.type = graphics::TEXTURE_CUBE_MAP;
+				depth_settings.wrap_r = graphics::CLAMP_TO_EDGE;
+				depth_settings.attachment_type = graphics::DEPTH_ATTACHMENT;
+				depth_settings.internal_format = graphics::DEPTH_COMPONENT;
+				depth_settings.format = graphics::DEPTH_COMPONENT;
 				depth_settings.texture_proc = [](graphics::framebuffer::specification* spec) {
 					for (unsigned int i = 0; i < 6; i++) {
 						glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, spec->depth_settings.internal_format, spec->width, spec->height, 0, spec->depth_settings.format, GL_FLOAT, NULL);
@@ -62,10 +62,10 @@ namespace thebanana {
 				break;
 			case light_type::directional:
 			case light_type::spotlight:
-				depth_settings.type = GL_TEXTURE_2D;
-				depth_settings.attachment_type = GL_DEPTH_ATTACHMENT;
-				depth_settings.internal_format = GL_DEPTH_COMPONENT;
-				depth_settings.format = GL_DEPTH_COMPONENT;
+				depth_settings.type = graphics::TEXTURE_2D;
+				depth_settings.attachment_type = graphics::DEPTH_ATTACHMENT;
+				depth_settings.internal_format = graphics::DEPTH_COMPONENT;
+				depth_settings.format = graphics::DEPTH_COMPONENT;
 				depth_settings.texture_proc = [](graphics::framebuffer::specification* spec) {
 					glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, spec->width, spec->height, 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL);
 				};

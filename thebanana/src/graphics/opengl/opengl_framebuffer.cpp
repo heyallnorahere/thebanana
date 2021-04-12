@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "opengl_framebuffer.h"
+#include "opengl_util.h"
 namespace thebanana {
 	namespace graphics {
 		namespace opengl {
@@ -37,12 +38,12 @@ namespace thebanana {
 				glBindFramebuffer(GL_FRAMEBUFFER, this->m_id);
 				if (this->m_specification.buffers & specification::color) {
 					attachment_settings settings = this->m_specification.color_settings;
-					unsigned int type = (settings.type ? settings.type : GL_TEXTURE_2D);
-					unsigned int internal_format = (settings.internal_format ? settings.internal_format : GL_RGBA8);
-					unsigned int format = (settings.format ? settings.format : GL_RGBA);
-					unsigned int attachment_type = (settings.attachment_type ? settings.attachment_type : GL_COLOR_ATTACHMENT0);
-					unsigned int min_filter = (settings.min_filter ? settings.min_filter : GL_LINEAR);
-					unsigned int mag_filter = (settings.mag_filter ? settings.mag_filter : GL_LINEAR);
+					unsigned int type = (settings.type != NONE ? from_enum(settings.type) : GL_TEXTURE_2D);
+					unsigned int internal_format = (settings.internal_format != NONE ? from_enum(settings.internal_format) : GL_RGBA8);
+					unsigned int format = (settings.format != NONE ? from_enum(settings.format) : GL_RGBA);
+					unsigned int attachment_type = (settings.attachment_type != NONE ? from_enum(settings.attachment_type) : GL_COLOR_ATTACHMENT0);
+					unsigned int min_filter = (settings.min_filter != NONE ? from_enum(settings.min_filter) : GL_LINEAR);
+					unsigned int mag_filter = (settings.mag_filter != NONE ? from_enum(settings.mag_filter) : GL_LINEAR);
 					unsigned int color;
 					glGenTextures(1, &color);
 					glBindTexture(type, color);
@@ -57,14 +58,14 @@ namespace thebanana {
 				}
 				if (this->m_specification.buffers & specification::depth) {
 					attachment_settings settings = this->m_specification.depth_settings;
-					unsigned int type = (settings.type ? settings.type : GL_TEXTURE_2D);
-					unsigned int internal_format = (settings.internal_format ? settings.internal_format : GL_DEPTH24_STENCIL8);
-					unsigned int format = (settings.format ? settings.format : GL_DEPTH_STENCIL);
-					unsigned int attachment_type = (settings.attachment_type ? settings.attachment_type : GL_DEPTH_STENCIL_ATTACHMENT);
-					unsigned int min_filter = (settings.min_filter ? settings.min_filter : GL_NEAREST);
-					unsigned int mag_filter = (settings.mag_filter ? settings.mag_filter : GL_NEAREST);
-					unsigned int wrap_s = (settings.wrap_s ? settings.wrap_s : GL_CLAMP_TO_BORDER);
-					unsigned int wrap_t = (settings.wrap_t ? settings.wrap_t : GL_CLAMP_TO_BORDER);
+					unsigned int type = (settings.type != NONE ? from_enum(settings.type) : GL_TEXTURE_2D);
+					unsigned int internal_format = (settings.internal_format != NONE ? from_enum(settings.internal_format) : GL_DEPTH24_STENCIL8);
+					unsigned int format = (settings.format != NONE ? from_enum(settings.format) : GL_DEPTH_STENCIL);
+					unsigned int attachment_type = (settings.attachment_type != NONE ? from_enum(settings.attachment_type) : GL_DEPTH_STENCIL_ATTACHMENT);
+					unsigned int min_filter = (settings.min_filter != NONE ? from_enum(settings.min_filter) : GL_NEAREST);
+					unsigned int mag_filter = (settings.mag_filter != NONE ? from_enum(settings.mag_filter) : GL_NEAREST);
+					unsigned int wrap_s = (settings.wrap_s != NONE ? from_enum(settings.wrap_s) : GL_CLAMP_TO_BORDER);
+					unsigned int wrap_t = (settings.wrap_t != NONE ? from_enum(settings.wrap_t) : GL_CLAMP_TO_BORDER);
 					unsigned int depth;
 					glGenTextures(1, &depth);
 					glBindTexture(type, depth);
@@ -75,8 +76,8 @@ namespace thebanana {
 					glTexParameteri(type, GL_TEXTURE_WRAP_S, wrap_s);
 					glTexParameteri(type, GL_TEXTURE_WRAP_T, wrap_t);
 					// by default, there is no WRAP_R property
-					if (settings.wrap_r) {
-						glTexParameteri(type, GL_TEXTURE_WRAP_R, settings.wrap_r);
+					if (settings.wrap_r != NONE) {
+						glTexParameteri(type, GL_TEXTURE_WRAP_R, from_enum(settings.wrap_r));
 					}
 					if (settings.framebuffer_attachment_proc) settings.framebuffer_attachment_proc(depth, &this->m_specification);
 					else glFramebufferTexture2D(GL_FRAMEBUFFER, attachment_type, type, depth, 0);

@@ -4,27 +4,19 @@
 namespace thebanana {
 	namespace graphics {
 		namespace util {
-			unsigned int get_target(unsigned int texture) {
+			graphics_enum get_target(unsigned int texture) {
 				graphics_api api = get_default_graphics_api();
 				switch (api) {
 				case graphics_api::opengl:
 					return opengl::get_target(texture);
 					break;
 				default:
-					return 0;
+					return NONE;
 					break;
 				}
 			}
 			bool is_2d(unsigned int texture) {
-				graphics_api api = get_default_graphics_api();
-				switch (api) {
-				case graphics_api::opengl:
-					return opengl::is_2d(texture);
-					break;
-				default:
-					return false;
-					break;
-				}
+				return get_target(texture) == TEXTURE_2D;
 			}
 			unsigned int get_bound_framebuffer() {
 				graphics_api api = get_default_graphics_api();
@@ -48,7 +40,7 @@ namespace thebanana {
 					break;
 				}
 			}
-			void unbind_all_textures(const std::vector<unsigned int>& types) {
+			void unbind_all_textures(const std::vector<graphics_enum>& types) {
 				graphics_api api = get_default_graphics_api();
 				switch (api) {
 				case graphics_api::opengl:

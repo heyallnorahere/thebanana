@@ -78,6 +78,28 @@ namespace thebanana {
 					break;
 				}
 			}
+			graphics_enum to_enum(unsigned int e) {
+				graphics_api api = get_default_graphics_api();
+				switch (api) {
+				case graphics_api::opengl:
+					return opengl::to_enum(e);
+					break;
+				default:
+					return NONE;
+					break;
+				}
+			}
+			unsigned int from_enum(graphics_enum e) {
+				graphics_api api = get_default_graphics_api();
+				switch (api) {
+				case graphics_api::opengl:
+					return opengl::from_enum(e);
+					break;
+				default:
+					return 0;
+					break;
+				}
+			}
 		}
 	}
 }

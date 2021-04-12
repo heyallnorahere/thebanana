@@ -10,6 +10,8 @@ namespace thebanana {
 			void unbind_all_textures(const std::vector<unsigned int>& types);
 			void get_texture_data(void* texid, void* buffer);
 			void get_texture_size(void* texid, size_t& width, size_t& height);
+			graphics_enum to_enum(unsigned int e);
+			unsigned int from_enum(graphics_enum e);
 		}
 	}
 }

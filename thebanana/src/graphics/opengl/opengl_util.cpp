@@ -51,6 +51,140 @@ namespace thebanana {
 				width = w;
 				height = h;
 			}
+			graphics_enum to_enum(unsigned int e) {
+				switch (e) {
+				case GL_FRAMEBUFFER:
+					return FRAMEBUFFER;
+					break;
+				case GL_TEXTURE_2D:
+					return TEXTURE_2D;
+					break;
+				case GL_TEXTURE_CUBE_MAP:
+					return TEXTURE_CUBE_MAP;
+					break;
+				case GL_RGBA8:
+					return RGBA8;
+					break;
+				case GL_DEPTH24_STENCIL8:
+					return DEPTH24_STENCIL8;
+					break;
+				case GL_RGBA:
+					return RGBA;
+					break;
+				case GL_DEPTH_STENCIL:
+					return DEPTH_STENCIL;
+					break;
+				case GL_DEPTH_COMPONENT:
+					return DEPTH_COMPONENT;
+					break;
+				case GL_COLOR_ATTACHMENT0:
+					return COLOR_ATTACHMENT;
+					break;
+				case GL_DEPTH_ATTACHMENT:
+					return DEPTH_ATTACHMENT;
+					break;
+				case GL_DEPTH_STENCIL_ATTACHMENT:
+					return DEPTH_STENCIL_ATTACHMENT;
+					break;
+				case GL_LINEAR:
+					return LINEAR;
+					break;
+				case GL_NEAREST:
+					return NEAREST;
+					break;
+				case GL_UNSIGNED_BYTE:
+					return UNSIGNED_BYTE;
+					break;
+				case GL_UNSIGNED_INT:
+					return UNSIGNED_INT;
+					break;
+				case GL_FLOAT:
+					return FLOAT;
+					break;
+				case GL_INT:
+					return INT;
+					break;
+				case GL_BYTE:
+					return BYTE;
+					break;
+				case GL_CLAMP_TO_BORDER:
+					return CLAMP_TO_BORDER;
+					break;
+				case GL_TEXTURE_CUBE_MAP_POSITIVE_X:
+					return TEXTURE_CUBE_MAP_POSITIVE_X;
+					break;
+				default:
+					return NONE;
+					break;
+				}
+			}
+			unsigned int from_enum(graphics_enum e) {
+				switch (e) {
+				case FRAMEBUFFER:
+					return GL_FRAMEBUFFER;
+					break;
+				case TEXTURE_2D:
+					return GL_TEXTURE_2D;
+					break;
+				case TEXTURE_CUBE_MAP:
+					return GL_TEXTURE_CUBE_MAP;
+					break;
+				case RGBA8:
+					return GL_RGBA8;
+					break;
+				case DEPTH24_STENCIL8:
+					return GL_DEPTH24_STENCIL8;
+					break;
+				case RGBA:
+					return GL_RGBA;
+					break;
+				case DEPTH_STENCIL:
+					return GL_DEPTH_STENCIL;
+					break;
+				case DEPTH_COMPONENT:
+					return GL_DEPTH_COMPONENT;
+					break;
+				case COLOR_ATTACHMENT:
+					return GL_COLOR_ATTACHMENT0;
+					break;
+				case DEPTH_ATTACHMENT:
+					return GL_DEPTH_ATTACHMENT;
+					break;
+				case DEPTH_STENCIL_ATTACHMENT:
+					return GL_DEPTH_STENCIL_ATTACHMENT;
+					break;
+				case LINEAR:
+					return GL_LINEAR;
+					break;
+				case NEAREST:
+					return GL_NEAREST;
+					break;
+				case UNSIGNED_BYTE:
+					return GL_UNSIGNED_BYTE;
+					break;
+				case UNSIGNED_INT:
+					return GL_UNSIGNED_INT;
+					break;
+				case FLOAT:
+					return GL_FLOAT;
+					break;
+				case INT:
+					return GL_INT;
+					break;
+				case BYTE:
+					return GL_BYTE;
+					break;
+				case CLAMP_TO_BORDER:
+					return GL_CLAMP_TO_BORDER;
+					break;
+				case TEXTURE_CUBE_MAP_POSITIVE_X:
+					return GL_TEXTURE_CUBE_MAP_POSITIVE_X;
+					break;
+				default:
+					return 0;
+					break;
+				}
+			}
 		}
 	}
 }

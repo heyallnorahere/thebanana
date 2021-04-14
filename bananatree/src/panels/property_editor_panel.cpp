@@ -231,7 +231,7 @@ namespace bananatree {
 		if (object) {
 			ImGui::InputText("Gameobject Nickname", &object->get_nickname());
 			char buf[256];
-			sprintf(buf, "%ld", object->get_uuid());
+			sprintf(buf, "%llu", object->get_uuid());
 			ImGui::Text("Gameobject UUID: %s", buf);
 			ImGui::Separator();
 			ImGui::Text("Transform");
@@ -305,9 +305,9 @@ namespace bananatree {
 						if (typeid(*p).hash_code() == typeid(thebanana::component::property<thebanana::gameobject*>).hash_code()) {
 							thebanana::component::property<thebanana::gameobject*>* prop = (thebanana::component::property<thebanana::gameobject*>*)p.get();
 							char buf[256];
-							sprintf(buf, "%ld", c.get_uuid());
+							sprintf(buf, "%llu", c.get_uuid());
 							std::string uuidstring = buf;
-							sprintf(buf, "%lu", i);
+							sprintf(buf, "%llu", i);
 							char id[256];
 							sprintf(id, "%s, %s", uuidstring.c_str(), buf);
 							ImGui::PushID(id);
@@ -328,9 +328,9 @@ namespace bananatree {
 						} else if (typeid(*p).hash_code() == typeid(thebanana::component::property<thebanana::material*>).hash_code()) {
 							thebanana::component::property<thebanana::material*>* prop = (thebanana::component::property<thebanana::material*>*)p.get();
 							char buf[256];
-							sprintf(buf, "%lu", c.get_uuid());
+							sprintf(buf, "%llu", c.get_uuid());
 							std::string uuidstring = buf;
-							sprintf(buf, "%lu", i);
+							sprintf(buf, "%llu", i);
 							char id[256];
 							sprintf(id, "%s, %s", uuidstring.c_str(), buf);
 							ImGui::PushID(id);

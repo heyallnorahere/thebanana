@@ -61,7 +61,7 @@ namespace thebanana {
 			for (size_t i = 0; i < this->m_bone_count; i++) {
 				assert(i < 100);
 				char name[256];
-				sprintf(name, "bones[%d]", i);
+				sprintf(name, "bones[%llu]", i);
 				current_shader->uniform_mat4(name, this->m_bone_info[i].final_transform, true);
 			}
 			delete current_shader;

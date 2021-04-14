@@ -214,7 +214,7 @@ namespace thebanana {
 		out << YAML::EndSeq;
 		out << YAML::EndMap;
 		char uuidbuf[256];
-		sprintf(uuidbuf, "%ld", object->get_uuid());
+		sprintf(uuidbuf, "%llu", object->get_uuid());
 		g_game->debug_print("serialized object\nnickname: " + object->get_nickname() + "\nUUID: " + uuidbuf);
 	}
 	void scene_serializer::serialize(const std::string& path) {
@@ -460,7 +460,7 @@ namespace thebanana {
 		gameobject* o = s->find(uuid);
 		if (o) {
 			char uuidbuf[256];
-			sprintf(uuidbuf, "%ld", uuid);
+			sprintf(uuidbuf, "%llu", uuid);
 			g_game->debug_print("failed to load object; an object with the uuid of " + std::string(uuidbuf) + " already exists");
 			delete object;
 			return NULL;
@@ -490,7 +490,7 @@ namespace thebanana {
 			gameobject* obj = deserialize_object(n, object, s);
 		}
 		char uuidbuf[256];
-		sprintf(uuidbuf, "%ld", object->get_uuid());
+		sprintf(uuidbuf, "%llu", object->get_uuid());
 		g_game->debug_print("deserialized object\nnickname: " + object->get_nickname() + "\nUUID: " + uuidbuf);
 		return object;
 	}

@@ -268,6 +268,10 @@ project "thebanana"
             "dinput8.lib",
             "mono-2.0-sgen.lib",
         }
+        postbuildcommands {
+            '{COPY} "%{cfg.targetdir}/thebanana.dll" "%{cfg.targetdir}/../bananatree"',
+            '{COPY} "%{cfg.targetdir}/thebanana.dll" "%{cfg.targetdir}/../sandbox"',
+        }
     filter { "system:windows", "configurations:Debug" }
         links {
             "assimp-vc142-mtd.lib",
@@ -286,7 +290,7 @@ group ""
 group "tools"
 project "bananatree"
     location "bananatree"
-    kind "ConsoleApp"
+    kind "WindowedApp"
     language "C++"
     cppdialect "C++17"
     staticruntime "off"
@@ -355,16 +359,11 @@ project "bananatree"
         postbuildcommands {
             '{COPY} "../vendor/assimp/bin/Debug/assimp-vc142-mtd.dll" "%{cfg.targetdir}"',
             '{COPY} "../vendor/glew/bin/Debug/glew32d.dll" "%{cfg.targetdir}"',
-            '{COPY} "../vendor/glew/bin/Release/glew32.dll" "%{cfg.targetdir}"',
         }
     filter { "system:windows", "configurations:Release" }
         postbuildcommands {
             '{COPY} "../vendor/assimp/bin/Release/assimp-vc142-mt.dll" "%{cfg.targetdir}"',
             '{COPY} "../vendor/glew/bin/Release/glew32.dll" "%{cfg.targetdir}"',
-        }
-    filter { "system:windows", "action:vs*" }
-        linkoptions {
-            "/subsystem:windows"
         }
 project "sandbox"
     location "sandbox"
@@ -395,7 +394,6 @@ project "sandbox"
             "opengl32.lib",
         }
         postbuildcommands {
-            '{COPY} "%{cfg.targetdir}/../thebanana/thebanana.dll" "%{cfg.targetdir}"',
             '{COPY} "%{cfg.targetdir}/../imgui/imgui.dll" "%{cfg.targetdir}"',
         }
     filter { "system:windows", "configurations:Debug" }
